@@ -121,7 +121,7 @@
                                 <tr>
                                     <td>{{ date('Y-m-d', strtotime($detalhe->date)) }}</td>
                                     <td>{{ $detalhe->budget }}</td>
-                                    <td>{{ $detalhe->total }}</td>
+                                    <td>{{ $detalhe->total }}€</td>
                                     <td>{{ $detalhe->status }}</td>
                                     <td>
                                         <button type="button" class="btn btn-primary" wire:click="detalhePropostaModal({{ json_encode($detalhe) }})">
