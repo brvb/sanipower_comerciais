@@ -138,16 +138,13 @@ class DetalheEncomenda extends Component
         } else {
             $this->perPage = 10;
         }
-
         
     }
 
     public function mount($codvisita, $cliente, $codEncomenda)
     {
-        if(session('Camp1') != 1)
-        {
-            session(['Camp' => 0]);
-        }
+        session(['Camp' => 0]);
+        
         $this->initProperties();
         $this->idCliente = $cliente;
         $this->codEncomenda = $codEncomenda;
@@ -348,7 +345,6 @@ class DetalheEncomenda extends Component
     public function searchSubFamily($idCategory, $idFamily, $idSubFamily)
     {
         session(['Camp' => 1]);
-        session(['Camp1' => 1]);
         $this->searchProduct = "";
         session(['searchProduct' => $this->searchProduct]);
 
