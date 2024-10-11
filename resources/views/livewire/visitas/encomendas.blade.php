@@ -117,7 +117,7 @@
                                 <tr>
                                     <td>{{ date('Y-m-d', strtotime($detalhe->date)) }}</td>
                                     <td>{{ $detalhe->order }}</td>
-                                    <td>{{ $detalhe->total }}</td>
+                                    <td>{{ $detalhe->total }}€</td>
                                     <td>{{ $detalhe->status }}</td>
                                     <td>
                                         <button type="button" class="btn btn-primary" wire:click="detalheEncomendaModal({{ json_encode($detalhe) }})">
