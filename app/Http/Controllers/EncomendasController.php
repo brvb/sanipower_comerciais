@@ -35,15 +35,15 @@ class EncomendasController extends Controller
         $checkCarrinho = Carrinho::where("id_user", Auth::user()->id)
                     ->where('id_cliente',$detailsClientes->customers[0]->no)
                     ->first();
-
-        if(empty($checkCarrinho)){
+        
+        if(empty($checkCarrinho->id_encomenda) ){
             $codEncomenda = $detailsClientes->customers[0]->no;
             $randomChar = mt_rand(1000000, 9999999);
             $codEncomenda .= $randomChar;
         }else{
             $codEncomenda = $checkCarrinho->id_encomenda;
+          
         }
-        
         return view('encomendas.details',["codvisita" => null,"idCliente" => $id,"nameCliente" => $detailsClientes->customers[0]->name, "codEncomenda" => $codEncomenda, "encomenda" => null]);
     }
 
