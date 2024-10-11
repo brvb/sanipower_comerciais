@@ -1493,19 +1493,20 @@
                 const backgroundColor = trElement.style.backgroundColor;
 
                 
-                if (backgroundColor === 'rgb(65, 198, 160)') {
+                {{-- if (backgroundColor === 'rgb(65, 198, 160)') {
                     return;
-                }
+                } --}}
 
                 const quantidadeInserida = parseInt(input.value);
                 const quantidadeMinima = parseInt(input.getAttribute('data-qtd'));
 
                 
                 if (!isNaN(quantidadeInserida) && quantidadeInserida < quantidadeMinima) {
-                    const comentarioArea = document.querySelector(`textarea[id="addTextosEncomenda${input.getAttribute('id')}"]`);
+                    {{-- const comentarioArea = document.querySelector(`textarea[id="addTextosEncomenda${input.getAttribute('id')}"]`);
                     if (!comentarioArea || comentarioArea.value.trim() === '') {
                         allCommentsProvided = false;
-                    }
+                    } --}}
+                    allCommentsProvided = false;
                 }
             });
 
@@ -1515,9 +1516,9 @@
                 const backgroundColor = trElement.style.backgroundColor;
 
               
-                if (backgroundColor === 'rgb(65, 198, 160)') {
+                {{-- if (backgroundColor === 'rgb(65, 198, 160)') {
                     return;
-                }
+                } --}}
 
                 const quantidadeInserida = parseInt(input.value);
                 const quantidadeMinima = parseInt(input.getAttribute('data-qtd'));

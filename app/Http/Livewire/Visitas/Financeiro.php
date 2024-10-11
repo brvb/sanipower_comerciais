@@ -193,13 +193,7 @@ class Financeiro extends Component
         $this->anexos=  $currentAnexos;
         $this->tempPaths = $currentAnexos;
    
-      
-
-
-
         Session::put('visitasPropostasAnexos', $currentAnexos);
-
-
 
         $updatedPaths = [];
         foreach ($this->anexos as $file) {
@@ -245,31 +239,33 @@ class Financeiro extends Component
     }
     
 
-    public function updatedAnexos()
+    public function updatedAnexos() 
     {
-        // Recupera o valor atual da sessão ou um array vazio caso não exista
         $currentAnexos = Session::get('visitasPropostasAnexos', []);
-
+        
+        $maxFileSize = 10 * 1024 * 1024; 
+        
         foreach ($this->anexos as $anexo) {
-            // Recupera o nome original do arquivo
+            if ($anexo->getSize() > $maxFileSize) {
+                $this->dispatchBrowserEvent('sendToaster', ["message" => "O arquivo deve ter no máximo 10 MB.", "status" => "error"]);
+                return false;
+            }
+    
             $originalName = $anexo->getClientOriginalName();
-    
-            // Armazena o arquivo em 'temp' usando o nome original com um timestamp para evitar conflitos
+            
             $path = $anexo->storeAs('temp', time() . '&' . $originalName, 'public');
-    
-            // Adiciona o novo arquivo ao array temporário
+            
             $currentAnexos[] = [
                 'path' => $path,
                 'original_name' => $originalName,
             ];
         }
-    
-        // Atualiza a sessão com os anexos combinados (antigos e novos)
+        
         Session::put('visitasPropostasAnexos', $currentAnexos);
-    
-        // Atualiza a propriedade local também, caso precise refletir isso no estado do componente
+        
         $this->tempPaths = $currentAnexos;
     }
+    
 
     public function render()
     {
