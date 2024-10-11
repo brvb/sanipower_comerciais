@@ -726,10 +726,10 @@
                                                                         <tr style="background-color:{{ $prod->color }}">
                                                                             <td>{{ $prod->referense }}</td>
                                                                             <td>{{ $prod->model }}</td>
-                                                                            <td>{{ $prod->pvp }}</td>
+                                                                            <td>{{ $prod->pvp }}€</td>
                                                                             <td>{{ $prod->discount }}</td>
                                                                             {{-- <td>{{ $prod->discount2 }}</td> --}}
-                                                                            <td>{{ $prod->price }}</td>
+                                                                            <td>{{ $prod->price }}€</td>
                                                                             <td>{{ $prod->quantity }}</td>
                                                                             <td style="text-align:center;font-size:large;">
                                                                                 @if ($prod->in_stock == true)
@@ -1234,10 +1234,10 @@
                                             <tr wire:key="product-{{ $i }}" style="background-color:{{ $prod->color }}" >
                                                 <td>{{ $prod->referense }}</td>
                                                 <td>{{ $prod->model }}</td>
-                                                <td>{{ $prod->pvp }}</td>
+                                                <td>{{ $prod->pvp }}€</td>
                                                 <td>{{ $prod->discount }}</td>
                                                 {{-- <td>{{ $prod->discount2 }}</td> --}}
-                                                <td>{{ $prod->price }}</td>
+                                                <td>{{ $prod->price }}€</td>
                                                 <td>{{ $prod->quantity }}</td>
                                                 <td style="text-align:center;font-size:large;">
                                                     @if ($prod->in_stock == true)

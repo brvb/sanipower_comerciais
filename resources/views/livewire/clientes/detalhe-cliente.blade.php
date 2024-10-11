@@ -315,7 +315,7 @@
                                                         <tr>
                                                             <td>{{date('Y-m-d',strtotime($clt->date))}}</td>
                                                             <td>{{$clt->order}}</td>
-                                                            <td>{{$clt->total}}</td>
+                                                            <td>{{$clt->total}}€</td>
                                                             <td>{{$clt->status}}</td>
                                                         </tr>
                                                     @endforeach

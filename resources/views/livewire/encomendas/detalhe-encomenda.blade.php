@@ -253,7 +253,7 @@
                                                 class="ti-money text-light"></i></span>
                                     </div>
                                     <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->current_account }}" readonly>
+                                        value="{{ $detalhesCliente->customers[0]->current_account }}€" readonly>
                                 </div>
                             </div>
 
@@ -646,32 +646,30 @@
                                                 {{-- @dd(session('Camp')) --}}
                                                 @if (session('Camp') == 0)
                                                     @if($campanhas->count())
-                                                         @foreach ($campanhas as $prodt)
+                                                         @foreach ($campanhas as $cam)
                                                          <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-3">
                                                             <div class="card card-decoration card-outline-primary border border-2">
                                                                      {{-- <a href="javascript:void(0)"
-                                                                     wire:click="openDetailProduto({{ json_encode($prodt->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subfamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})"
+                                                                     wire:click="openDetailProduto({{ json_encode($cam->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subfamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})"
                                                                      style="pointer-events: auto"> --}}
                                                                          <div class="mb-1">
-                                                                             <img src="https://storage.sanipower.pt/storage/{{ $prodt->capa }}"
+                                                                             <img src="https://storage.sanipower.pt/storage/{{ $cam->capa }}"
                                                                                  class="card-img-top" alt="...">
                                                                              <div class="body-decoration">
-                                                                                 <h5 class="title-description">{{ $prodt->titulo }}</h5>
+                                                                                 <h5 class="title-description">{{ $cam->titulo }}</h5>
                                                                              </div>
                                                                          </div>
                                                                      </a>
                                                                      <div class="card-body container-buttons" style="z-index:10;">
-                                                                        <a href="https://storage.sanipower.pt/storage/{{ $prodt->ficheiro }}" target="_blank">
+                                                                        <a href="https://storage.sanipower.pt/storage/{{ $cam->ficheiro }}" target="_blank">
                                                                          <button class="btn btn-sm btn-primary">
-                                                                                 {{-- wire:click="adicionarProduto({{ json_encode($prodt->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subfamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})">  --}}
+                                                                                 {{-- wire:click="adicionarProduto({{ json_encode($cam->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subfamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})">  --}}
                                                                              <i class="ti-shopping-cart"></i><span> Ver Produtos </span>
                                                                          </button></a>
                                                                      </div>
                                                                  </div>
                                                              </div>
                                                          @endforeach
-                                                            </div>
-                                                        </div></center>
                                                      <!-- Links de paginação -->
                                                      {{-- <div class="d-flex justify-content-center">
                                                          {{ $products->links('vendor.pagination.livewire-bootstrap') }}
@@ -679,44 +677,42 @@
                                                  @else
                                                      <p>Sem Campanhas para exibir.</p>
                                                  @endif 
-                                                 </div>
-
                                                 @else
-                                                @php
-                                                    $searchSubFamily = session('searchSubFamily');
-                                                @endphp
-                                                 @if($products->count())
-                                                    @foreach ($products as $prodt)
-                                                        <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-3">
-                                                            <div class="card card-decoration card-outline-primary border border-2">
-                                                                <a href="javascript:void(0)"
-                                                                wire:click="openDetailProduto({{ json_encode($prodt->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subfamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})"
-                                                                style="pointer-events: auto">
-                                                                    <div class="mb-1">
-                                                                        <img src="https://storage.sanipower.pt/storage/produtos/{{ $prodt->family_number }}/{{ $prodt->family_number }}-{{ $prodt->subfamily_number }}-{{ $prodt->product_number }}.jpg"
-                                                                            class="card-img-top" alt="...">
-                                                                        <div class="body-decoration">
-                                                                            <h5 class="title-description">{{ $prodt->product_name }}</h5>
+                                                    @php
+                                                        $searchSubFamily = session('searchSubFamily');
+                                                    @endphp
+                                                    @if($products->count())
+                                                        @foreach ($products as $prodt)
+                                                            <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-3">
+                                                                <div class="card card-decoration card-outline-primary border border-2">
+                                                                    <a href="javascript:void(0)"
+                                                                    wire:click="openDetailProduto({{ json_encode($prodt->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subfamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})"
+                                                                    style="pointer-events: auto">
+                                                                        <div class="mb-1">
+                                                                            <img src="https://storage.sanipower.pt/storage/produtos/{{ $prodt->family_number }}/{{ $prodt->family_number }}-{{ $prodt->subfamily_number }}-{{ $prodt->product_number }}.jpg"
+                                                                                class="card-img-top" alt="...">
+                                                                            <div class="body-decoration">
+                                                                                <h5 class="title-description">{{ $prodt->product_name }}</h5>
+                                                                            </div>
                                                                         </div>
+                                                                    </a>
+                                                                    <div class="card-body container-buttons" style="z-index:10;">
+                                                                        <button class="btn btn-sm btn-primary"
+                                                                                wire:click="adicionarProduto({{ json_encode($prodt->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subfamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})"> 
+                                                                            <i class="ti-shopping-cart"></i><span> Compra rápida</span>
+                                                                        </button>
                                                                     </div>
-                                                                </a>
-                                                                <div class="card-body container-buttons" style="z-index:10;">
-                                                                    <button class="btn btn-sm btn-primary"
-                                                                            wire:click="adicionarProduto({{ json_encode($prodt->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subfamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})"> 
-                                                                        <i class="ti-shopping-cart"></i><span> Compra rápida</span>
-                                                                    </button>
                                                                 </div>
                                                             </div>
+                                                        @endforeach
+                                                        <!-- Links de paginação -->
+                                                        <div class="d-flex justify-content-center">
+                                                            {{ $products->links('vendor.pagination.livewire-bootstrap') }}
                                                         </div>
-                                                    @endforeach
-                                                <!-- Links de paginação -->
-                                                <div class="d-flex justify-content-center">
-                                                    {{ $products->links('vendor.pagination.livewire-bootstrap') }}
-                                                </div>
-                                            @else
-                                                <p>Sem produtos para exibir.</p>
-                                            @endif
-                                            @endif 
+                                                    @else
+                                                        <p>Sem produtos para exibir.</p>
+                                                    @endif
+                                                @endif 
                                             </div>
                                         </div>
                                     </div>
@@ -784,9 +780,9 @@
                                         <tr style="background-color:{{ $prod->color }}">
                                             <td>{{ $prod->referense }}</td>
                                             <td>{{ $prod->model }}</td>
-                                            <td>{{ $prod->pvp }}</td>
+                                            <td>{{ $prod->pvp }}€</td>
                                             <td>{{ $prod->discount }}</td>
-                                            <td>{{ $prod->price }}</td>
+                                            <td>{{ $prod->price }}€</td>
                                             <td>{{ $prod->quantity }}</td>
                                             <td style="text-align:center;font-size:large;">
                                                 @if ($prod->in_stock == true)
@@ -940,7 +936,6 @@
                             </thead>
                             <tbody>
                             @forelse ($arrayCart as $img => $prod)
-
                                 @if($prod->inkit == 1)
 
                                         @php
@@ -1355,10 +1350,10 @@
                                             <tr wire:key="product-{{ $i }}" style="background-color:{{ $prod->color }}" >
                                                 <td>{{ $prod->referense }}</td>
                                                 <td>{{ $prod->model }}</td>
-                                                <td>{{ $prod->pvp }}</td>
+                                                <td>{{ $prod->pvp }}€</td>
                                                 <td>{{ $prod->discount }}</td>
                                                 {{-- <td>{{ $prod->discount2 }}</td> --}}
-                                                <td>{{ $prod->price }}</td>
+                                                <td>{{ $prod->price }}€</td>
                                                 <td>{{ $prod->quantity }}</td>
                                                 <td style="text-align:center;font-size:large;">
                                                     @if ($prod->in_stock == true)
