@@ -209,7 +209,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text bg-carolina"><i class="ti-money text-light"></i></span>
                                         </div>
-                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->current_account}}" readonly>
+                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->current_account}}€" readonly>
                                     </div>
                                 </div>
 
