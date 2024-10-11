@@ -418,8 +418,15 @@ class DetalheEncomenda extends Component
     {
         // dd('AQUI');
         session(['Camp' => 0]);
-        session(['Camp1' => 0]);
 
+        session(['searchNameCategory' => ""]);
+        session(['searchNameFamily' => ""]);
+        session(['searchNameSubFamily' => ""]);
+
+        // $sessions = session()->all();
+    
+        // Exibe todas as sessões
+        // dd($sessions); // Isso irá parar a execução e mostrar as sessões
     }
 
     public function updatedSearchProduct()
