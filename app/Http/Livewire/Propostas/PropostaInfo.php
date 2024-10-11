@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Propostas;
 
+use App\Mail\SendComentario;
 use Dompdf\Dompdf;
 use Livewire\Component;
 use App\Models\Carrinho;
@@ -182,8 +183,6 @@ class PropostaInfo extends Component
         array_push($this->emailArray,Auth::user()->email);
         
         $this->dispatchBrowserEvent('chooseEmail');
-
-     
     }
 
     public function enviarEmailClientes($proposta)
@@ -365,6 +364,8 @@ public function adjudicarPropostaOpemModal($proposta)
 
     public function sendComentario($idProposta)
     {
+        $message = "";
+        $propostas = $this->clientesRepository->getPropostaID($idProposta);
         if (empty($this->comentarioEncomenda)) {
             $message = "O campo de comentário está vazio!";
             $status = "error";
@@ -376,13 +377,25 @@ public function adjudicarPropostaOpemModal($proposta)
             if ($responseArray["success"] == true) {
                 $message = "Comentário adicionado com sucesso!";
                 $status = "success";
+
+                $emailArray = explode("; ", $propostas->budgets[0]->email);
+                
+                // $this->emailArray = $emailArray;  remover para o email ir para o cliente
+                $this->emailArray = [];
+
+                array_push($this->emailArray,Auth::user()->email);
+
+                foreach($this->emailArray as $i => $email)
+                {
+                    Mail::to($email)->send(new SendComentario($propostas, $this->comentarioEncomenda));
+                }
             } else {
                 $message = "Não foi possível adicionar o comentário!";
                 $status = "error";
             }
         }
         // dd($idProposta);
-        $propostas = $this->clientesRepository->getPropostaID($idProposta);
+        
         
         if (property_exists($propostas, 'budgets') && isset($propostas->budgets[0])) {
             Session::put('proposta', $propostas->budgets[0]);

@@ -138,8 +138,9 @@
                                         class="form-control" 
                                         id="inputGroupFile02" 
                                         wire:model="anexos" 
-                                        style="display:none;"
-                                        multiple>
+                                        style="display:none;" 
+                                        multiple
+                                        onchange="validateFileSize()">
                                 </div>
 
                                 @if(Session::has('visitasPropostasAnexos'))
@@ -148,11 +149,12 @@
                                             @foreach(Session::get('visitasPropostasAnexos') as $file)
                                             <li>
                                                 @if(isset($file['path']))
-                                                <button wire:click="removeAnexo('{{ $file['path'] }}')" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
-                                                    <a href="{{ asset('storage/' . $file['path']) }}" target="_blank">
+                                                    <button wire:click="removeAnexo('{{ $file['path'] }}')" class="btn btn-danger btn-sm">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                    <a href="{{ asset('storage/' . $file['path']) }}" download="{{ $file['original_name'] }}">
                                                         {{ $file['original_name'] }}
                                                     </a>
-                                                    
                                                 @else
                                                     @php
                                                         $filename = strstr($file, '/');
@@ -160,13 +162,15 @@
                                                         $filenameSee = strstr($file, '&');
                                                         $filenameSee = ltrim($filenameSee, '&');
                                                     @endphp
-                                                    <button wire:click="removeAnexo('{{ $file }}')" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
-                                                    <a href="{{ asset('storage/anexos/' . $filename) }}" target="_blank">
+                                                    <button wire:click="removeAnexo('{{ $file }}')" class="btn btn-danger btn-sm">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                    <a href="{{ asset('storage/anexos/' . $filename) }}" download="{{ $filenameSee }}">
                                                         {{ $filenameSee }}
                                                     </a>
-                                                    
                                                 @endif
                                             </li>
+
 
                                             @endforeach
                                         </ul>
@@ -192,9 +196,50 @@
     <!-- FIM TABELA  -->
 
 
-    <!-- MODALS -->
+    <script>
 
+        function validateFileSize() {
+           const maxFileSize = 10 * 1024 * 1024;
+            const input = document.getElementById('inputGroupFile02');
 
+            for (const file of input.files) {
+                if (file.size > maxFileSize) {
+                    const message = `O arquivo ${file.name} excede o tamanho máximo permitido de 10MB.`;
+                
+                    toastr.warning(message);
+                    input.value = '';
+                    return;
+                }
+            }
+
+        }
+
+        window.addEventListener('sendToaster', function(e) {
+
+            if (e.detail.status == "success") {
+                toastr.success(e.detail.message);
+            }
+
+            if (e.detail.status == "error") {
+                toastr.warning(e.detail.message);
+            }
+            
+            $("#modalInformacao").modal('hide');
+            $("#modalTarefas").modal('hide');
+            $("#modalAddTarefa").modal('hide');
+            $("#agendarVisita").modal('hide');
+
+        });
+
+        window.addEventListener('DOMContentLoaded', (event) => {
+            if ("{{ session('success') }}") {
+                toastr.success("{{ session('success') }}");
+            }
+            if("{{ session('warning') }}"){
+                toastr.warning("{{ session('warning') }}");
+            }
+        });
+    </script>
     
 
 </div>
