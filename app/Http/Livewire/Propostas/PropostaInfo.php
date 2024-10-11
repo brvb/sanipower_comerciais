@@ -395,8 +395,9 @@ public function adjudicarPropostaOpemModal($proposta)
                 }
             
                 // Remover possíveis emails duplicados
+                array_push($this->emailArray,Auth::user()->email);
                 $this->emailArray = array_unique($this->emailArray);
-
+                
                 foreach($this->emailArray as $i => $email)
                 {
                     Mail::to($email)->send(new SendComentario($propostas, $this->comentarioEncomenda));
