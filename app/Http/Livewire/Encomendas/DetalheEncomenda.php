@@ -100,7 +100,7 @@ class DetalheEncomenda extends Component
     public $referenciaFinalizar;
 
     public $lojaFinalizar = "";
-
+    
     public $condicoesFinalizar = false;
     public $chequeFinalizar = false;
     public $pagamentoFinalizar = false;
@@ -144,6 +144,10 @@ class DetalheEncomenda extends Component
 
     public function mount($codvisita, $cliente, $codEncomenda)
     {
+        if(session('Camp1') != 1)
+        {
+            session(['Camp' => 0]);
+        }
         $this->initProperties();
         $this->idCliente = $cliente;
         $this->codEncomenda = $codEncomenda;
@@ -160,8 +164,6 @@ class DetalheEncomenda extends Component
             Session::forget('OpenTabAdjudicarda');
         }
 
-        // dd(session('searchSubFamily'));
-        // session(['searchSubFamily' => $this->searchSubFamily]);
         $this->showLoaderPrincipal = true;
     }
     public function rechargeFamily($id)
@@ -345,8 +347,11 @@ class DetalheEncomenda extends Component
 
     public function searchSubFamily($idCategory, $idFamily, $idSubFamily)
     {
+        session(['Camp' => 1]);
+        session(['Camp1' => 1]);
         $this->searchProduct = "";
         session(['searchProduct' => $this->searchProduct]);
+
 
         // $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
         // $this->detailsClientes = $arrayCliente["object"];
@@ -406,6 +411,14 @@ class DetalheEncomenda extends Component
         return redirect()->route('encomendas.detail', ['id' => $this->idCliente]);
         // $this->dispatchBrowserEvent('refreshPage');
         // $this->dispatchBrowserEvent('refreshAllComponent');
+
+    }
+
+    public function ShowCampanhas()
+    {
+        // dd('AQUI');
+        session(['Camp' => 0]);
+        session(['Camp1' => 0]);
 
     }
 
@@ -1083,6 +1096,7 @@ class DetalheEncomenda extends Component
     
     public function render()
     {
+
         $this->quantidadeLines = 0;
 
         $detailProduto = session('detailProduto');
@@ -1314,7 +1328,10 @@ class DetalheEncomenda extends Component
         }
 
         $this->lojas = $this->encomendasRepository->getLojas();
-        $campanhas = Campanhas::where('ativa', 1)->get();
+        $campanhas = Campanhas::where('ativa', 1)
+        ->where('destaque', 1)
+        ->where('dh_fim', '>', now())
+        ->get();
         // dd($products);
         return view('livewire.encomendas.detalhe-encomenda', [
             "products" => $products,

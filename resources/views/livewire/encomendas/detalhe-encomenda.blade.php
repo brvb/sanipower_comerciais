@@ -612,13 +612,14 @@
                                             @endforeach
                                         
                                             <!-- Aqui você pode adicionar um item manual para campanhas -->
-                                            <button class="accordion2" style="background-color: #ffcc00;">Campanhas<span class="arrow"><i class="fa-regular fa-square-caret-down"></i></span></button>
-                                            <div class="panel2">
+                                            {{-- <button class="accordion2" style="background-color: #ffcc00;" wire:click="ShowCampanhas">Campanhas<span class="arrow"><i class="fa-regular fa-square-caret-down"></i></span></button> --}}
+                                            <button class="accordion2" style="background-color: #ffcc00;" wire:click="ShowCampanhas">Campanhas</button>
+                                            {{-- <div class="panel2">
                                                 <!-- Aqui você pode adicionar o conteúdo de campanhas -->
                                                 @foreach ($campanhas as $campanha)
                                                     <a wire:click="searchCampanha({{ $campanha->bostamp }})" href="#"> {{ $campanha->titulo }}</a>
                                                 @endforeach
-                                            </div>
+                                            </div> --}}
                                         </div>
                                         
                                         <div class="col-md-9">
@@ -642,6 +643,45 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                {{-- @dd(session('Camp')) --}}
+                                                @if (session('Camp') == 0)
+                                                    @if($campanhas->count())
+                                                         @foreach ($campanhas as $prodt)
+                                                         <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-3">
+                                                            <div class="card card-decoration card-outline-primary border border-2">
+                                                                     {{-- <a href="javascript:void(0)"
+                                                                     wire:click="openDetailProduto({{ json_encode($prodt->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subfamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})"
+                                                                     style="pointer-events: auto"> --}}
+                                                                         <div class="mb-1">
+                                                                             <img src="https://storage.sanipower.pt/storage/{{ $prodt->capa }}"
+                                                                                 class="card-img-top" alt="...">
+                                                                             <div class="body-decoration">
+                                                                                 <h5 class="title-description">{{ $prodt->titulo }}</h5>
+                                                                             </div>
+                                                                         </div>
+                                                                     </a>
+                                                                     <div class="card-body container-buttons" style="z-index:10;">
+                                                                        <a href="https://storage.sanipower.pt/storage/{{ $prodt->ficheiro }}" target="_blank">
+                                                                         <button class="btn btn-sm btn-primary">
+                                                                                 {{-- wire:click="adicionarProduto({{ json_encode($prodt->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subfamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})">  --}}
+                                                                             <i class="ti-shopping-cart"></i><span> Ver Produtos </span>
+                                                                         </button></a>
+                                                                     </div>
+                                                                 </div>
+                                                             </div>
+                                                         @endforeach
+                                                            </div>
+                                                        </div></center>
+                                                     <!-- Links de paginação -->
+                                                     {{-- <div class="d-flex justify-content-center">
+                                                         {{ $products->links('vendor.pagination.livewire-bootstrap') }}
+                                                     </div> --}}
+                                                 @else
+                                                     <p>Sem Campanhas para exibir.</p>
+                                                 @endif 
+                                                 </div>
+
+                                                @else
                                                 @php
                                                     $searchSubFamily = session('searchSubFamily');
                                                 @endphp
@@ -675,6 +715,7 @@
                                                 </div>
                                             @else
                                                 <p>Sem produtos para exibir.</p>
+                                            @endif
                                             @endif 
                                             </div>
                                         </div>
