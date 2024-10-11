@@ -1570,18 +1570,20 @@
                 const trElement = input.closest('tr');
                 const backgroundColor = trElement.style.backgroundColor;
 
-                if (backgroundColor === 'rgb(65, 198, 160)') {
+                {{-- if (backgroundColor === 'rgb(65, 198, 160)') {
                     return;
-                }
+                } --}}
 
                 const quantidadeInserida = parseInt(input.value);
                 const quantidadeMinima = parseInt(input.getAttribute('data-qtd'));
 
                 if (!isNaN(quantidadeInserida) && quantidadeInserida < quantidadeMinima) {
-                    const comentarioArea = document.querySelector(`textarea[id="addTextosEncomenda${input.getAttribute('id')}"]`);
-                    if (!comentarioArea || comentarioArea.value.trim() === '') {
+               
+                        {{-- const comentarioArea = document.querySelector(`textarea[id="addTextosEncomenda${input.getAttribute('id')}"]`);
+                        if (!comentarioArea || comentarioArea.value.trim() === '') {
+                            allCommentsProvided = false; 
+                        } --}}
                         allCommentsProvided = false; 
-                    }
                 }
             });
 
@@ -1589,9 +1591,9 @@
                 const trElement = input.closest('tr');
                 const backgroundColor = trElement.style.backgroundColor;
 
-                if (backgroundColor === 'rgb(65, 198, 160)') {
+                {{-- if (backgroundColor === 'rgb(65, 198, 160)') {
                     return;
-                }
+                } --}}
 
                 const quantidadeInserida = parseInt(input.value);
                 const quantidadeMinima = parseInt(input.getAttribute('data-qtd'));
@@ -1643,9 +1645,10 @@
                         $('#addProductProposta'+id).removeAttr('disabled');
                     });
                 }
+
             }else{
                 const commentButton = document.getElementById('addCommentEncomenda' + id);
-
+                
                 if (commentButton) {
                     textarea.addEventListener('input', function() {
 
@@ -1722,6 +1725,8 @@
                     $('#addProductEncomenda'+id).removeAttr('disabled');
                     $('#addProductProposta'+id).removeAttr('disabled');
                 } else {
+                    addAllButton.disabled = !(allValid && allCommentsProvided);
+
                     $('#addProductEncomenda'+id).attr('disabled', 'disabled');
                     $('#addProductProposta'+id).attr('disabled', 'disabled');
                 }
