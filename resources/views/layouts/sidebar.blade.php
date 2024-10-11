@@ -81,8 +81,8 @@
             @if (Auth::user()->nivel == '1')
             <li class="li-hover">
                 <a href="{{route('profile.create')}}" class="{{ Str::contains(request()->route()->getName(), 'profile.create') ? 'text-info' : '' }}">
-                    <i class="ti-id-badge"></i>
-                    <span>Utilizadores</span>
+                    <i class="fa fa-gear"></i>
+                    <span>Configurações</span>
                 </a>
             </li>
             @endif
