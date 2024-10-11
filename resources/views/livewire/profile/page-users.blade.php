@@ -41,6 +41,122 @@
         </div>
     </div>
 </div>
+
+<div class="col-12" style="padding-left: 0;">
+    <div class="card mb-3">
+        <div>
+            <div>
+                <a data-bs-toggle="collapse" href="#gruposEmail" role="button" aria-expanded="false" aria-controls="gruposEmail">
+                    <div class="card-header d-block">
+                        <div class="row">
+                            <div class="col-xl-8 col-xs-12">
+                                <div class="caption uppercase">
+                                    <i class="ti-user"></i> Grupos de email
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-xs-12 text-right">
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCriaGrupo">
+                                    <i class="ti-plus"></i> Criar Grupos
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <div class="collapse card-body" id="gruposEmail">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover init-datatable">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Título</th>
+                                    <th>Descrição</th>
+                                    <th>Emails</th>
+                                    <th style="width: 15%;">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($grupos as $grupo)
+                                    <tr>
+                                        <td>{{ $grupo->titulo }}</td>
+                                        <td>{{ $grupo->descricao }}</td>
+                                        <td>{{ $grupo->emails }}</td>
+                                        <td>
+                                            <!-- Botão para editar -->
+                                            <button class="btn btn-primary btn-sm" wire:click="edit({{ $grupo->id }})">
+                                                Editar
+                                            </button>
+                                            <!-- Botão para excluir -->
+                                            <button class="btn btn-danger btn-sm" wire:click="delete({{ $grupo->id }})" onclick="return confirm('Tem certeza que deseja excluir este grupo?')">
+                                                Excluir
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="text-center">Nenhum grupo de email encontrado.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal de Criação/Edição de Grupo -->
+<div class="modal fade" id="modalCriaGrupo" tabindex="-1" aria-labelledby="modalCriaGrupoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalCriaGrupoLabel">{{ $grupoId ? 'Editar Grupo de Email' : 'Adicionar Novo Grupo de Email' }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form wire:submit.prevent="salvarGrupo" id="formCriaGrupo">
+                    <div class="mb-3">
+                        <label for="titulo" class="form-label">Título</label>
+                        <input type="text" id="titulo" class="form-control" wire:model.defer="titulo">
+                        @error('titulo') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="descricao" class="form-label">Descrição</label>
+                        <textarea id="descricao" class="form-control" wire:model.defer="descricao" rows="3"></textarea>
+                        @error('descricao') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="emails" class="form-label">Emails</label>
+                        <textarea id="emails" class="form-control" wire:model.defer="emails" rows="3" placeholder="Digite os emails separados por vírgula"></textarea>
+                        @error('emails') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="local_funcionamento" class="form-label">Local de Funcionamento</label>
+                        <select id="local_funcionamento" class="form-control" wire:model.defer="local_funcionamento">
+                            <option value="">Selecione o local</option>
+                            <option value="comentarios_propostas">Comentários Prostas</option>
+                            <option value="comentarios_encomendas">Comentários Encomendas</option>
+                        </select>
+                        @error('local_funcionamento') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Salvar Grupo</button>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{-- utilizadores --}}
 <div class="col-12" style="padding-left: 0;">
     <div class="card mb-3">
         <div>
@@ -136,6 +252,26 @@
         </div>
     </div>
 </div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="crossorigin="anonymous"></script>
+
+<script>
+    window.addEventListener('close-modal', event => {
+        var modal = new bootstrap.Modal(document.getElementById('modalCriaGrupo'));
+        modal.hide();
+        window.location.reload();
+    });
+
+    window.addEventListener('open-edit-modal', event => {
+        var modal = new bootstrap.Modal(document.getElementById('modalCriaGrupo'));
+        modal.show();
+    });
+</script>
+
+
+
 
 <div class="modal fade" id="modalAdicionarUser" tabindex="-1" role="dialog" aria-labelledby="modalAdicionarUserLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">

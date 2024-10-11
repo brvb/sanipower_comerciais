@@ -1142,7 +1142,7 @@ class ClientesRepository implements ClientesInterface
     public function getEncomendaID($encomendaID): object
     {
         $curl = curl_init();
-
+        dd(env('SANIPOWER_URL_DIGITAL').'/api/documents/orders?order_id='.$encomendaID);
         curl_setopt_array($curl, array(
 
             CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/orders?order_id='.$encomendaID,
@@ -1211,8 +1211,6 @@ class ClientesRepository implements ClientesInterface
             "date" => date('Y-m-d').'T'.date('H:i:s'),
             "hour" => date('H:i:s')
         ];
-
-     
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -1235,7 +1233,6 @@ class ClientesRepository implements ClientesInterface
         curl_close($curl);
 
         $response_decoded = json_decode($response);
-
         if ($response_decoded->success == true) {
             // Inserção bem-sucedida
             return response()->json([

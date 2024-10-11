@@ -2,9 +2,13 @@
 
 namespace App\Http\Livewire\Encomendas;
 
+use App\Mail\SendComentario;
+
+
 use Dompdf\Dompdf;
 use Livewire\Component;
 use App\Models\Carrinho;
+use App\Models\GrupoEmail;
 use App\Mail\SendEncomenda;
 use App\Models\Comentarios;
 use Livewire\WithPagination;
@@ -161,7 +165,8 @@ class EncomendaInfo extends Component
     }
 
     public function sendComentario($idEncomenda)
-    {
+    {   
+        $encomendas = $this->clientesRepository->getEncomendaID($idEncomenda);
         if (empty($this->comentarioEncomenda)) {
             $message = "O campo de comentário está vazio!";
             $status = "error";
@@ -169,15 +174,35 @@ class EncomendaInfo extends Component
             $response = $this->clientesRepository->sendComentarios($idEncomenda, $this->comentarioEncomenda, "encomendas");
             
             $responseArray = $response->getData(true);
+            
             if ($responseArray["success"] == true) {
+                
                 $message = "Comentário adicionado com sucesso!";
                 $status = "success";
+
+                $grupos = GrupoEmail::where('local_funcionamento', 'comentarios_encomendas')->get();
+                
+                $this->emailArray = [];
+            
+                foreach ($grupos as $grupo) {
+                    $emails = array_map('trim', explode(',', $grupo->emails));
+            
+                    $this->emailArray = array_merge($this->emailArray, $emails);
+                }
+            
+                $this->emailArray = array_unique($this->emailArray);
+
+                foreach($this->emailArray as $i => $email)
+                {
+                    Mail::to($email)->send(new SendComentario($encomendas, $this->comentarioEncomenda));
+                }
             } else {
                 $message = "Não foi possível adicionar o comentário!";
                 $status = "error";
             }
-        }
-        $encomendas = $this->clientesRepository->getEncomendaID($idEncomenda);
+        } 
+        // dd($idEncomenda);
+        
         // Session::put('encomendaINFO',$encomendas->orders[0]);
         if (property_exists($encomendas, 'orders') && isset($encomendas->orders[0])) {
             Session::put('encomendaINFO', $encomendas->orders[0]);
