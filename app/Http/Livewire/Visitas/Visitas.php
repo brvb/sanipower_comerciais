@@ -281,8 +281,9 @@ class Visitas extends Component
         $this->visitas = VisitasAgendadas::query()
         ->when($this->nomeCliente, function($query) {
 
-           
-            $query->where('cliente', 'like', '%' . $this->nomeCliente . '%');
+            $nomeCliente = str_replace('*', '%', $this->nomeCliente);
+            // $this->nomeCliente = $nomeCliente;
+            $query->where('cliente', 'like', '%' . $nomeCliente . '%');
                        
            
         }) ->when($this->estadoVisita, function($query) {
