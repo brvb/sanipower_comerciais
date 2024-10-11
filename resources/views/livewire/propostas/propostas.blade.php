@@ -229,7 +229,7 @@
                                         <td>{{ date('Y-m-d', strtotime($pro->date)) }}</td>
                                         <td>{{$pro->budget}}</td>
                                         <td>{{$pro->name}}</td>
-                                        <td>{{$pro->total}}</td>
+                                        <td>{{$pro->total}}€</td>
                                         <td>{{$pro->status}}</td>
                                         <td>
                                         {{-- {{dd($pro)}} --}}
