@@ -39,7 +39,7 @@
     <div class="container">
         <h1>Comentário sobre a {{ $propostas->budgets[0]->budget }}</h1>
         
-        <p>Gostaríamos de informar que um novo comentário foi adicionado a<strong>{{ $propostas->budgets[0]->budget }}</strong>:</p>
+        <p>Gostaríamos de informar que um novo comentário foi adicionado a <strong>{{ $propostas->budgets[0]->budget }}</strong>:</p>
         
         <p><strong>Comentário:</strong> {{ $comentario }}</p>
         

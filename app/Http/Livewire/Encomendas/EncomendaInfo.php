@@ -189,6 +189,7 @@ class EncomendaInfo extends Component
             
                     $this->emailArray = array_merge($this->emailArray, $emails);
                 }
+                array_push($this->emailArray,Auth::user()->email);
             
                 $this->emailArray = array_unique($this->emailArray);
 
