@@ -112,7 +112,7 @@
                                         <td>{{ date('Y-m-d', strtotime($details->date_issue))}}</td>
                                         <td>{{ date('Y-m-d', strtotime($details->due_date))}}</td>
                                         <td>{{ number_format($details->not_regularized, 2, ',', '.') }}</td>
-                                        <td>{{ number_format($details->balance, 2, ',', '.') }}</td>
+                                        <td>{{ number_format($details->balance, 2, ',', '.') }}€</td>
                                     </tr>
                                 @endforeach
                             </tbody>
