@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Profile;
 
 use Livewire\Component;
 use App\Models\User;
+use App\Models\GrupoEmail;
 use Livewire\WithPagination;
 
 class PageUsers extends Component
@@ -17,7 +18,20 @@ class PageUsers extends Component
     public $pageChosen;
     public $perPage;
     public $numberMaxPages;
+    public $titulo;
+    public $descricao;
+    public $emails;
+    public $grupoId;
+    public $local_funcionamento;
 
+
+    protected $rules = [
+        'titulo' => 'required|string|max:50',
+        'descricao' => 'nullable|string|max:250',
+        'emails' => 'required|string',
+        'local_funcionamento' => 'required|string'
+    ];
+    
     private function initProperties(): void
     {
         if (isset($this->perPage)) {
@@ -72,9 +86,53 @@ class PageUsers extends Component
     {
         return $page == $this->pageChosen;
     }
+    public function salvarGrupo()
+    {
+        $this->validate();
 
+        GrupoEmail::updateOrCreate(
+            ['id' => $this->grupoId],
+            [
+                'titulo' => $this->titulo,
+                'descricao' => $this->descricao,
+                'emails' => $this->emails,
+                'local_funcionamento' => $this->local_funcionamento
+            ]
+        );
+        
+
+        $this->dispatchBrowserEvent('close-modal');
+
+        $this->reset(['titulo', 'descricao', 'emails', 'grupoId']);
+
+        session()->flash('message', 'Grupo de email salvo com sucesso!');
+    }
+    public function edit($id)
+    {
+        $grupo = GrupoEmail::findOrFail($id);
+        $this->grupoId = $grupo->id;
+        $this->titulo = $grupo->titulo;
+        $this->descricao = $grupo->descricao;
+        $this->emails = $grupo->emails;
+        $this->local_funcionamento = $grupo->local_funcionamento;
+    
+        // Emitir evento para abrir o modal de edição
+        $this->dispatchBrowserEvent('open-edit-modal');
+    }
+    
+
+    public function delete($id)
+    {
+        $grupo = GrupoEmail::find($id);
+        if ($grupo) {
+            $grupo->delete();
+            session()->flash('message', 'Grupo deletado com sucesso!');
+        }
+    }
     public function render()
     {
+
+        $grupos = GrupoEmail::all();
         $users = User::query()
             ->when($this->filterNome, function($query) {
                 $query->where('name', 'like', '%' . $this->filterNome . '%');
@@ -91,7 +149,7 @@ class PageUsers extends Component
         $this->numberMaxPages = $users->lastPage();
 
         return view('livewire.profile.page-users', [
-            'users' => $users,
+            'users' => $users,'grupos' => $grupos
         ]);
     }
 }

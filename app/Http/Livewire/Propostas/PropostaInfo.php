@@ -3,9 +3,11 @@
 namespace App\Http\Livewire\Propostas;
 
 use App\Mail\SendComentario;
+
 use Dompdf\Dompdf;
 use Livewire\Component;
 use App\Models\Carrinho;
+use App\Models\GrupoEmail;
 use App\Mail\SendProposta;
 use App\Models\Comentarios;
 use Livewire\WithPagination;
@@ -378,12 +380,22 @@ public function adjudicarPropostaOpemModal($proposta)
                 $message = "Comentário adicionado com sucesso!";
                 $status = "success";
 
-                $emailArray = explode("; ", $propostas->budgets[0]->email);
-                
-                // $this->emailArray = $emailArray;  remover para o email ir para o cliente
-                $this->emailArray = [];
+                $grupos = GrupoEmail::where('local_funcionamento', 'comentarios_prostas')->get();
 
-                array_push($this->emailArray,Auth::user()->email);
+                // Inicializar o array para armazenar os emails coletados
+                $this->emailArray = [];
+            
+                // Iterar sobre os grupos e extrair os emails, separando por vírgula
+                foreach ($grupos as $grupo) {
+                    // Explode os emails do campo 'emails' e remove espaços em branco
+                    $emails = array_map('trim', explode(',', $grupo->emails));
+            
+                    // Adiciona os emails ao array $this->emailArray
+                    $this->emailArray = array_merge($this->emailArray, $emails);
+                }
+            
+                // Remover possíveis emails duplicados
+                $this->emailArray = array_unique($this->emailArray);
 
                 foreach($this->emailArray as $i => $email)
                 {
