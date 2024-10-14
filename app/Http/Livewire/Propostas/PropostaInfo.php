@@ -380,21 +380,16 @@ public function adjudicarPropostaOpemModal($proposta)
                 $message = "Comentário adicionado com sucesso!";
                 $status = "success";
 
-                $grupos = GrupoEmail::where('local_funcionamento', 'comentarios_prostas')->get();
+                $grupos = GrupoEmail::where('local_funcionamento', 'comentarios_propostas')->get();
 
-                // Inicializar o array para armazenar os emails coletados
                 $this->emailArray = [];
             
-                // Iterar sobre os grupos e extrair os emails, separando por vírgula
                 foreach ($grupos as $grupo) {
-                    // Explode os emails do campo 'emails' e remove espaços em branco
                     $emails = array_map('trim', explode(',', $grupo->emails));
             
-                    // Adiciona os emails ao array $this->emailArray
                     $this->emailArray = array_merge($this->emailArray, $emails);
                 }
             
-                // Remover possíveis emails duplicados
                 array_push($this->emailArray,Auth::user()->email);
                 $this->emailArray = array_unique($this->emailArray);
                 
@@ -422,10 +417,7 @@ public function adjudicarPropostaOpemModal($proposta)
         // Session::put('proposta',$propostas->budgets[0]);
          
 
-
-        // Reinicia os detalhes da encomenda
         $this->comentarioEncomenda = "";
-        // Exibe a mensagem usando o evento do navegador
         $this->dispatchBrowserEvent('checkToaster', ["message" => $message, "status" => $status]);
     }
 

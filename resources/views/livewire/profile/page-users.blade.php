@@ -105,6 +105,21 @@
     </div>
 </div>
 
+<style>
+    .tag {
+        background-color: #1791ba;
+        color: #fff;
+        border-radius: 50px;
+        padding: 10px 20px;
+        margin: 0 5px 10px 0;
+        font-size: 14px;
+        display: inline-block;
+        }
+
+    .tag.highlight {
+        background-color: #273c75;
+    }
+</style>
 
 <!-- Modal de Criação/Edição de Grupo -->
 <div class="modal fade" id="modalCriaGrupo" tabindex="-1" aria-labelledby="modalCriaGrupoLabel" aria-hidden="true">
@@ -112,7 +127,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalCriaGrupoLabel">{{ $grupoId ? 'Editar Grupo de Email' : 'Adicionar Novo Grupo de Email' }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
             </div>
             <div class="modal-body">
                 <form wire:submit.prevent="salvarGrupo" id="formCriaGrupo">
@@ -133,12 +148,12 @@
                         <textarea id="emails" class="form-control" wire:model.defer="emails" rows="3" placeholder="Digite os emails separados por vírgula"></textarea>
                         @error('emails') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
-
+                    <div id="tags"></div>
                     <div class="mb-3">
                         <label for="local_funcionamento" class="form-label">Local de Funcionamento</label>
                         <select id="local_funcionamento" class="form-control" wire:model.defer="local_funcionamento">
                             <option value="">Selecione o local</option>
-                            <option value="comentarios_propostas">Comentários Prostas</option>
+                            <option value="comentarios_propostas">Comentários Propostas</option>
                             <option value="comentarios_encomendas">Comentários Encomendas</option>
                         </select>
                         @error('local_funcionamento') <span class="text-danger">{{ $message }}</span> @enderror
@@ -154,7 +169,77 @@
         </div>
     </div>
 </div>
+<script>
+    const tagsEl = document.getElementById('tags')
+    const textarea = document.getElementById('emails')
 
+    textarea.focus()
+
+    textarea.addEventListener('keyup', (e) => {
+        createTags(e.target.value)
+
+        if(e.key === 'Enter') {
+            setTimeout(() => {
+                e.target.value = ''
+            }, 10)
+
+            randomSelect()
+        }
+    })
+
+    function createTags(input) {
+        const tags = input.split(',').filter(tag => tag.trim() !== '').map(tag => tag.trim())
+        
+        tagsEl.innerHTML = ''
+
+        tags.forEach(tag => {
+            const tagEl = document.createElement('span')
+            tagEl.classList.add('tag')
+            tagEl.innerText = tag
+            tagsEl.appendChild(tagEl)
+        })
+    }
+
+    function randomSelect() {
+        const times = 30
+
+        const interval = setInterval(() => {
+            const randomTag = pickRandomTag()
+        
+        if (randomTag !== undefined) {
+            highlightTag(randomTag)
+
+            setTimeout(() => {
+                unHighlightTag(randomTag)
+            }, 100)
+        }
+        }, 100);
+
+        setTimeout(() => {
+            clearInterval(interval)
+
+            setTimeout(() => {
+                const randomTag = pickRandomTag()
+
+                highlightTag(randomTag)
+            }, 100)
+
+        }, times * 100)
+    }
+
+    function pickRandomTag() {
+        const tags = document.querySelectorAll('.tag')
+        return tags[Math.floor(Math.random() * tags.length)]
+    }
+
+    function highlightTag(tag) {
+        tag.classList.add('highlight')
+    }
+
+    function unHighlightTag(tag) {
+        tag.classList.remove('highlight')
+    }
+</script>
 
 {{-- utilizadores --}}
 <div class="col-12" style="padding-left: 0;">
