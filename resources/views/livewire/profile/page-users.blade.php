@@ -33,7 +33,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="ti-microphone-alt"></i></span>
                             </div>
-                            <input type="text" class="form-control" placeholder="Telemóvel" wire:model.debounce.300ms="filterTelemovel">
+                            <input type="tel" name="fone" class="form-control" placeholder="Telemóvel" wire:model.debounce.300ms="filterTelemovel">
                         </div>
                     </div>
                 </div>
@@ -49,12 +49,12 @@
                 <a data-bs-toggle="collapse" href="#gruposEmail" role="button" aria-expanded="false" aria-controls="gruposEmail">
                     <div class="card-header d-block">
                         <div class="row">
-                            <div class="col-xl-8 col-xs-12">
+                            <div class="col">
                                 <div class="caption uppercase">
                                     <i class="ti-user"></i> Grupos de email
                                 </div>
                             </div>
-                            <div class="col-xl-4 col-xs-12 text-right">
+                            <div class="col text-right">
                                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCriaGrupo">
                                     <i class="ti-plus"></i> Criar Grupos
                                 </button>
@@ -248,12 +248,12 @@
             <div>
                 <div class="card-header d-block">
                     <div class="row">
-                        <div class="col-xl-8 col-xs-12">
+                        <div class="col-12 col-sm-4">
                             <div class="caption uppercase">
                                 <i class="ti-user"></i> Utilizadores
                             </div>
                         </div>
-                        <div class="col-xl-4 col-xs-12 text-right">
+                        <div class="col-12 col-sm-8 text-right">
                             <button class="btn btn-primary" id="abrirModalCriaUser"><i class="ti-plus"></i> Criar Utilizador</button>
                         </div>
                     </div>

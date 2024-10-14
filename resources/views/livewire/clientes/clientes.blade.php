@@ -149,18 +149,16 @@
             <div class="card mb-3">
                 <div class="card-header d-block">
                     <div class="row">
-                        <div class="col-xl-8 col-xs-12">
+                        <div class="col-12 col-sm-4">
                             <div class="caption uppercase">
                                 <i class="ti-user"></i> Clientes
                             </div>
                         </div>
-                        <div class="col-xl-4 col-xs-12 text-right">
-
-                            <div class="tools">
-                                <a href="javascript:void(0);" class="btn btn-sm btn-primary"
-                                    wire:click="criarCliente"><i class="ti-user"></i> Novo Cliente</a>
-                            </div>
-
+                        <div class="col-12 col-sm-8 text-right">
+                            <a href="javascript:void(0);" class="btn btn-sm btn-primary"
+                                wire:click="criarCliente">
+                                <i class="ti-user"></i> Novo Cliente
+                            </a>
                         </div>
                     </div>
 
@@ -276,16 +274,11 @@
     </div>
 </div>
     <script>
-        // Obtém todas as linhas da tabela
         const tableRows = document.querySelectorAll('tr[data-href]');
 
-        // Adiciona um ouvinte de evento de clique a cada linha
         tableRows.forEach(function(row) {
             row.addEventListener('click', function() {
-                // Obtém o URL de destino do atributo data-href
                 const href = row.dataset.href;
-
-                // Redireciona o usuário para o URL de destino
                 window.location.href = href;
             });
         });
@@ -294,29 +287,23 @@
             Livewire.hook('message.sent', () => {
                 document.getElementById('loader').style.display = 'block';
             });
-
-            // Oculta o loader quando o Livewire terminar de carregar
             Livewire.hook('message.processed', () => {
                 document.getElementById('loader').style.display = 'none';
             });
         });
 
 
-
         document.addEventListener('DOMContentLoaded', function() {
-            // Abrir modal ao clicar no botão "Criar Cliente"
             window.addEventListener('openClienteModal', function() {
                 jQuery("#criarCliente").modal('show');
             });
 
-            // Fechar modal e exibir notificações do Toastr
             window.addEventListener('checkToaster', function(e) {
                 jQuery("#criarCliente").modal('hide');
 
                 if (e.detail.status == "success") {
                     toastr.success(e.detail.message);
                 }
-
                 if (e.detail.status == "error") {
                     toastr.warning(e.detail.message);
                 }

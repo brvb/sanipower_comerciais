@@ -180,17 +180,15 @@
             <div class="card mb-3">
                 <div class="card-header d-block">
                     <div class="row">
-                        <div class="col-xl-8 col-xs-12">
+                        <div class="col-12 col-sm-4">
                             <div class="caption uppercase">
                                 <i class="ti-user"></i> Encomendas
                             </div>
                         </div>
-                        <div class="col-xl-4 col-xs-12 text-right">
-                            <div class="tools">
-                               
-                                <a wire:click="adicionarEncomenda" style="color:white!important;" class="btn btn-sm btn-success"
-                                    ><i class="ti-book"></i> Adicionar Encomenda</a>
-                            </div>
+                        <div class="col-12 col-sm-8 text-right">
+                            <a wire:click="adicionarEncomenda" style="color:white!important;" class="btn btn-sm btn-success">
+                                <i class="ti-book"></i> Adicionar Encomenda
+                            </a>
                         </div>
                     </div>
 
