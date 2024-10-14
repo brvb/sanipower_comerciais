@@ -13,7 +13,7 @@ class PageUsers extends Component
     protected $listeners = ['refreshTable' => '$refresh'];
     public $filterNome;
     public $filterEmail;
-    public $filterTelemovel;
+    public $filterTelemovel = "";
     public $totalRecords;
     public $pageChosen;
     public $perPage;
