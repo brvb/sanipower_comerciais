@@ -1169,7 +1169,7 @@ class ClientesRepository implements ClientesInterface
     public function getPropostaID($propostaID): object
     {
         $curl = curl_init();
-
+        // dd(env('SANIPOWER_URL_DIGITAL').'/api/documents/budget?budget_id='.$propostaID);
         curl_setopt_array($curl, array(
 
             CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/budget?budget_id='.$propostaID,
