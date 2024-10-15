@@ -11,7 +11,7 @@ class Campanhas extends Model
 
     use HasFactory;
 
-    protected $connection = 'campanha';
+    // protected $connection = 'campanha';
     protected $table="campanhas";
 
     protected $fillable = [
