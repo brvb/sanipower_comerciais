@@ -1,10 +1,17 @@
 @extends('main')
 @section('body')
+
+    <div class="row">
+        <div class="col">
+            <ol class="breadcrumb" style="padding-left: 25px;">
+                <li class="breadcrumb-item"><a href=""><i class="fa fa-tag"></i> Campanhas</a></li>
+            </ol>
+        </div>
+    </div>
+
     
     @livewire('campanhas.campanha')
  
-    
-
 @endsection
 
 @push('scripts_footer')

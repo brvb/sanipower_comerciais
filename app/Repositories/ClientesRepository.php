@@ -1142,7 +1142,7 @@ class ClientesRepository implements ClientesInterface
     public function getEncomendaID($encomendaID): object
     {
         $curl = curl_init();
-        dd(env('SANIPOWER_URL_DIGITAL').'/api/documents/orders?order_id='.$encomendaID);
+        
         curl_setopt_array($curl, array(
 
             CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/orders?order_id='.$encomendaID,
@@ -1169,7 +1169,7 @@ class ClientesRepository implements ClientesInterface
     public function getPropostaID($propostaID): object
     {
         $curl = curl_init();
-
+        // dd(env('SANIPOWER_URL_DIGITAL').'/api/documents/budget?budget_id='.$propostaID);
         curl_setopt_array($curl, array(
 
             CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/budget?budget_id='.$propostaID,

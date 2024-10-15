@@ -213,19 +213,20 @@
             <div class="card mb-3">
                 <div class="card-header d-block">
                     <div class="row">
-                        <div class="col-xl-8 col-xs-12">
+                        <div class="col-12 col-sm-4">
                             <div class="caption uppercase">
                                 <i class="ti-user"></i> Visitas
                             </div>
                         </div>
-                        <div class="col-xl-4 col-xs-12 text-right">
+                        <div class="col-12 col-sm-8 text-right">
                             <div class="tools">
                                 <a href="javascript:void(0);" class="btn btn-sm btn-primary"
-                                    wire:click="agendarVisita"><i class="ti-alarm-clock"></i> Agendar Visita</a>
-
-                                    <!-- IR PARA A ROTA -->
-                                <a href="{{ route('visitas.clientes') }}" class="btn btn-sm btn-success"
-                                    ><i class="ti-agenda"></i> Adicionar Visita</a>
+                                    wire:click="agendarVisita">
+                                    <i class="ti-alarm-clock"></i> Agendar Visita
+                                </a>
+                                <a href="{{ route('visitas.clientes') }}" class="btn btn-sm btn-success">
+                                    <i class="ti-agenda"></i> Adicionar Visita
+                                </a>
                             </div>
                         </div>
                     </div>
