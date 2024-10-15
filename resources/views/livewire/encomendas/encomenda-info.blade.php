@@ -478,7 +478,6 @@
         </div>
     </div>
 
-
     <div class="modal fade" id="modalComentario" tabindex="-1" role="dialog" aria-labelledby="modalComentario" aria-hidden="true" >
         <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -498,7 +497,7 @@
                        
                 </div>
                 <div class="modal-footer">
-                    <a href="#tab6" id="sendComentario" wire:click="sendComentario({{json_encode($encomendaComentarioId)}})" data-toggle="tab" class="nav-link btn btn-outline-primary">Adicionar Comentário</a>
+                    <a href="#tab6" id="sendComentario" wire:click="sendComentario({{json_encode($encomenda->id)}})" data-toggle="tab" class="nav-link btn btn-outline-primary">Adicionar Comentário</a>
                 </div>
             </div>
         </div>
@@ -508,8 +507,6 @@
         window.addEventListener('chooseEmail', function(e) {
             $("#emailCheckBox").prop('checked', false);
             $("#modalProposta").modal();
-
-            
         });
 
         window.addEventListener('openComentario', function(e) {
