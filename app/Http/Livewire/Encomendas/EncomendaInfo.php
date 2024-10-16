@@ -136,11 +136,12 @@ class EncomendaInfo extends Component
 
     public function mount($encomenda)
     {   
-        
+        // dd($encomenda);
         $this->initProperties();
         $this->encomenda = $encomenda;
         
         $encomendas = $this->clientesRepository->getEncomendaID($encomenda->id);
+        //  dd($encomenda);
         if (property_exists($encomendas, 'orders') && isset($encomendas->orders[0])) {
             Session::put('encomendaINFO', $encomendas->orders[0]);
         } else {
@@ -167,35 +168,37 @@ class EncomendaInfo extends Component
     public function sendComentario($idEncomenda)
     {   
         $encomendas = $this->clientesRepository->getEncomendaID($idEncomenda);
+        // dd($encomendas);
         if (empty($this->comentarioEncomenda)) {
             $message = "O campo de comentário está vazio!";
             $status = "error";
         } else {
             $response = $this->clientesRepository->sendComentarios($idEncomenda, $this->comentarioEncomenda, "encomendas");
-            
+     
             $responseArray = $response->getData(true);
-            
+        
             if ($responseArray["success"] == true) {
-                
+            
                 $message = "Comentário adicionado com sucesso!";
                 $status = "success";
+                if (property_exists($encomendas, 'orders') && isset($encomendas->orders[0])) {
+                    $grupos = GrupoEmail::where('local_funcionamento', 'comentarios_encomendas')->get();
+                    if(isset($grupos)){
+                        $this->emailArray = [];
+                        foreach ($grupos as $grupo) {
+                            $emails = array_map('trim', explode(',', $grupo->emails));
+                            
+                            $this->emailArray = array_merge($this->emailArray, $emails);
+                        }
+                        // array_push($this->emailArray,Auth::user()->email);
+                    
+                        $this->emailArray = array_unique($this->emailArray);
 
-                $grupos = GrupoEmail::where('local_funcionamento', 'comentarios_encomendas')->get();
-                
-                $this->emailArray = [];
-            
-                foreach ($grupos as $grupo) {
-                    $emails = array_map('trim', explode(',', $grupo->emails));
-            
-                    $this->emailArray = array_merge($this->emailArray, $emails);
-                }
-                array_push($this->emailArray,Auth::user()->email);
-            
-                $this->emailArray = array_unique($this->emailArray);
-
-                foreach($this->emailArray as $i => $email)
-                {
-                    Mail::to($email)->send(new SendComentario($encomendas, $this->comentarioEncomenda));
+                        foreach($this->emailArray as $i => $email)
+                        {
+                            Mail::to($email)->send(new SendComentario($encomendas, $this->comentarioEncomenda));
+                        }
+                    }
                 }
             } else {
                 $message = "Não foi possível adicionar o comentário!";
@@ -311,7 +314,7 @@ class EncomendaInfo extends Component
         $comentario = Comentarios::with('user')->where('stamp', $encomenda->id)->where('tipo', 'encomendas')->orderBy('id','DESC')->skip(env('COMENTARIO_NUMBER'))->take(PHP_INT_MAX)->get();
 
         $this->firstComentario = Comentarios::with('user')->where('stamp', $encomenda->id)->where('tipo', 'encomendas')->orderBy('id','DESC')->take(env('COMENTARIO_NUMBER'))->get();
-     
+    
         $this->comentario = $comentario;
 
         foreach ($encomenda->lines as $prod){
@@ -354,6 +357,5 @@ class EncomendaInfo extends Component
             }
         }
         return view('livewire.encomendas.encomenda-info',["encomenda" => $encomenda,"arrayCart" =>$arrayCart]);
-
     }
 }

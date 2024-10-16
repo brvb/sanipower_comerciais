@@ -344,19 +344,24 @@
 
 <script>
     window.addEventListener('close-modal', event => {
-        var modal = new bootstrap.Modal(document.getElementById('modalCriaGrupo'));
-        modal.hide();
-        window.location.reload();
+        jQuery('#modalCriaGrupo').modal('hide');
     });
 
     window.addEventListener('open-edit-modal', event => {
-        var modal = new bootstrap.Modal(document.getElementById('modalCriaGrupo'));
-        modal.show();
+        jQuery('#modalCriaGrupo').modal('show');
+    });
+
+     window.addEventListener('checkToaster', function(e) {
+        if (e.detail.status == "success") {
+            jQuery('#modalCriaGrupo').modal('hide');
+            toastr.success(e.detail.message);
+        }
+        if(e.detail.status == "error"){
+            jQuery('#modalCriaGrupo').modal('hide');
+            toastr.warning(e.detail.message);
+        }
     });
 </script>
-
-
-
 
 <div class="modal fade" id="modalAdicionarUser" tabindex="-1" role="dialog" aria-labelledby="modalAdicionarUserLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">

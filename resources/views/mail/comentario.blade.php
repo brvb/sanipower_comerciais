@@ -37,16 +37,17 @@
 </head>
 <body>
     <div class="container">
-        <h1>Comentário sobre a {{ $propostas->budgets[0]->budget }}</h1>
+    {{-- @dd($propostas->budgets[0]); --}}
+        <h1>Comentário sobre a @if(isset($propostas->orders)){{$propostas->orders[0]->order}}@else{{$propostas->budgets[0]->budget}}@endif</h1>
         
-        <p>Gostaríamos de informar que um novo comentário foi adicionado a <strong>{{ $propostas->budgets[0]->budget }}</strong>:</p>
+        <p>Gostaríamos de informar que um novo comentário foi adicionado a <strong>@if(isset( $propostas->orders)){{$propostas->orders[0]->order}}@else{{$propostas->budgets[0]->budget}}@endif</strong>:</p>
         
         <p><strong>Comentário:</strong> {{ $comentario }}</p>
         
         <p><strong>Detalhes do Cliente:</strong></p>
         <ul>
-            <li><strong>Nome:</strong> {{ $propostas->budgets[0]->name }}</li>
-            <li><strong>Email:</strong> {{ $propostas->budgets[0]->email }}</li>
+            <li><strong>Nome:</strong> @if(isset($propostas->orders )){{ $propostas->orders[0]->name }}@else{{ $propostas->budgets[0]->name }}@endif</li>
+            <li><strong>Email:</strong> @if(isset($propostas->orders)){{ $propostas->orders[0]->email }}@else{{ $propostas->budgets[0]->email }}@endif</li>
         </ul>
 
         <p>Agradecemos pela sua atenção. Caso tenha dúvidas ou precise de mais informações, estamos à disposição para ajudar.</p>

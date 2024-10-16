@@ -379,23 +379,25 @@ public function adjudicarPropostaOpemModal($proposta)
             if ($responseArray["success"] == true) {
                 $message = "Comentário adicionado com sucesso!";
                 $status = "success";
+                if (property_exists($propostas, 'budgets') && isset($propostas->budgets[0])) {
+                    $grupos = GrupoEmail::where('local_funcionamento', 'comentarios_propostas')->get();
+                    if(isset($grupos)){
+                        $this->emailArray = [];
 
-                $grupos = GrupoEmail::where('local_funcionamento', 'comentarios_propostas')->get();
-
-                $this->emailArray = [];
-            
-                foreach ($grupos as $grupo) {
-                    $emails = array_map('trim', explode(',', $grupo->emails));
-            
-                    $this->emailArray = array_merge($this->emailArray, $emails);
-                }
-            
-                array_push($this->emailArray,Auth::user()->email);
-                $this->emailArray = array_unique($this->emailArray);
-                
-                foreach($this->emailArray as $i => $email)
-                {
-                    Mail::to($email)->send(new SendComentario($propostas, $this->comentarioEncomenda));
+                        foreach ($grupos as $grupo) {
+                            $emails = array_map('trim', explode(',', $grupo->emails));
+                    
+                            $this->emailArray = array_merge($this->emailArray, $emails);
+                        }
+                    
+                        // array_push($this->emailArray,Auth::user()->email); Esse é o email do utilizador atual
+                        $this->emailArray = array_unique($this->emailArray);
+                        
+                        foreach($this->emailArray as $i => $email)
+                        {
+                            Mail::to($email)->send(new SendComentario($propostas, $this->comentarioEncomenda));
+                        }
+                    }
                 }
             } else {
                 $message = "Não foi possível adicionar o comentário!";
@@ -430,22 +432,15 @@ public function adjudicarPropostaOpemModal($proposta)
             $rota = "propostas";
             $parametro = "";
         }
-        
         if($rota != "")
         {
-            
             if($parametro != "")
             {
                 return redirect()->route($rota,$parametro);
             }
-
             return redirect()->route($rota);
-
-        
         }
-        
     }
-    
     public function render()
     {
         $proposta = session('proposta');
@@ -495,7 +490,6 @@ public function adjudicarPropostaOpemModal($proposta)
                 }
             }
         }
-        
 
         $cliente = $this->clientesRepository->getListagemClienteAllFiltro(10,1,"",$proposta->number,"","","","",auth::user()->id_phc);
         $proposta = session()->get('proposta');
