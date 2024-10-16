@@ -383,7 +383,7 @@ public function adjudicarPropostaOpemModal($proposta)
                     $grupos = GrupoEmail::where('local_funcionamento', 'comentarios_propostas')->get();
                     if(isset($grupos)){
                         $this->emailArray = [];
-                    
+
                         foreach ($grupos as $grupo) {
                             $emails = array_map('trim', explode(',', $grupo->emails));
                     

@@ -1483,7 +1483,7 @@
         const addAllButton = document.getElementById('addAllButton');
 
         function checkQuantitiesAndComments() {
-            console.log("rello");
+
             let allValid = true; 
             let allCommentsProvided = true;
 

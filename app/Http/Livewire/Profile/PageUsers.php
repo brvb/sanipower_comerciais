@@ -88,25 +88,53 @@ class PageUsers extends Component
     }
     public function salvarGrupo()
     {
-        $this->validate();
+        $emailError = "";
+    
+        $this->validate([
+            'emails' => ['required', 'string', function ($attribute, $value, $fail) use (&$emailError) {
+                $emails = explode(',', $value);
+                
+                foreach ($emails as $email) {
+                    $email = trim($email);
+                    
+                    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                        $emailError .= $email . ' '; 
+                    }
+                }
+            }],
+        ]);
+    
+        if ($emailError) {
+            $this->dispatchBrowserEvent('close-modal');
 
-        GrupoEmail::updateOrCreate(
-            ['id' => $this->grupoId],
-            [
-                'titulo' => $this->titulo,
-                'descricao' => $this->descricao,
-                'emails' => $this->emails,
-                'local_funcionamento' => $this->local_funcionamento
-            ]
-        );
+            $message = "Os seguintes emails são inválidos:" . $emailError;
+            $status = "error";
+            $this->dispatchBrowserEvent('close-modal');
+
+            $this->dispatchBrowserEvent('checkToaster', ["message" => $message, "status" => $status]);
+        } else {
+            GrupoEmail::updateOrCreate(
+                ['id' => $this->grupoId],
+                [
+                    'titulo' => $this->titulo,
+                    'descricao' => $this->descricao,
+                    'emails' => $this->emails,
+                    'local_funcionamento' => $this->local_funcionamento
+                ]
+            );
+    
+            $this->dispatchBrowserEvent('close-modal');
         
+            $this->reset(['titulo', 'descricao', 'emails', 'grupoId']);
+            $this->dispatchBrowserEvent('close-modal');
 
-        $this->dispatchBrowserEvent('close-modal');
-
-        $this->reset(['titulo', 'descricao', 'emails', 'grupoId']);
-
-        session()->flash('message', 'Grupo de email salvo com sucesso!');
+            $message = "Grupo de email salvo com sucesso!";
+            $status = "success";
+            $this->dispatchBrowserEvent('checkToaster', ["message" => $message, "status" => $status]);
+        }
     }
+    
+    
     public function edit($id)
     {
         $grupo = GrupoEmail::findOrFail($id);
