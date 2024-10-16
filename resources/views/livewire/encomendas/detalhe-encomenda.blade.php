@@ -661,11 +661,9 @@
                                                                          </div>
                                                                      </a>
                                                                      <div class="card-body container-buttons" style="z-index:10;">
-                                                                        <a href="https://storage.sanipower.pt/storage/{{ $cam->ficheiro }}" target="_blank">
-                                                                         <button class="btn btn-sm btn-primary">
-                                                                                 {{-- wire:click="adicionarProduto({{ json_encode($cam->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subfamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})">  --}}
+                                                                         <button class="btn btn-sm btn-primary" wire:click="GetprodCamp('{{ $cam->bostamp }}')">
                                                                              <i class="ti-shopping-cart"></i><span> Ver Produtos </span>
-                                                                         </button></a>
+                                                                         </button>
                                                                      </div>
                                                                  </div>
                                                              </div>
@@ -677,6 +675,39 @@
                                                  @else
                                                      <p>Sem Campanhas para exibir.</p>
                                                  @endif 
+                                                @else
+                                                @if(session('CampProds') !== null)
+                                                    @if($products->count())
+                                                        @foreach ($products as $prodt)
+                                                            <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-3">
+                                                                <div class="card card-decoration card-outline-primary border border-2">
+                                                                    {{-- <a href="javascript:void(0)"
+                                                                    wire:click="openDetailProduto({{ json_encode($prodt->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subfamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})"
+                                                                    style="pointer-events: auto"> --}}
+                                                                        <div class="mb-1">
+                                                                            {{-- <img src="https://storage.sanipower.pt/storage/produtos/{{ $prodt->family_number }}/{{ $prodt->family_number }}-{{ $prodt->subfamily_number }}-{{ $prodt->product_number }}.jpg" --}}
+                                                                                {{-- class="card-img-top" alt="..."> --}}
+                                                                            <div class="body-decoration">
+                                                                                <h5 class="title-description">{{ $prodt->referense }}</h5>
+                                                                            </div>
+                                                                        </div>
+                                                                    </a>
+                                                                    <div class="card-body container-buttons" style="z-index:10;">
+                                                                        <button class="btn btn-sm btn-primary"
+                                                                                wire:click="adicionarProduto({{ json_encode($prodt->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subfamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})"> 
+                                                                            <i class="ti-shopping-cart"></i><span> Compra rápida</span>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        @endforeach
+                                                        <!-- Links de paginação -->
+                                                        {{-- <div class="d-flex justify-content-center">
+                                                            {{ $products->links('vendor.pagination.livewire-bootstrap') }}
+                                                        </div> --}}
+                                                    @else
+                                                        <p>Sem produtos para exibir.</p>
+                                                    @endif
                                                 @else
                                                     @php
                                                         $searchSubFamily = session('searchSubFamily');
@@ -713,6 +744,7 @@
                                                         <p>Sem produtos para exibir.</p>
                                                     @endif
                                                 @endif 
+                                                @endif
                                             </div>
                                         </div>
                                     </div>

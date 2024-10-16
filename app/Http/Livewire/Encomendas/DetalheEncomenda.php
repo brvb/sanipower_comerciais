@@ -238,6 +238,34 @@ class DetalheEncomenda extends Component
 
     }
 
+    public function addProdCamp($referense)
+    {
+        // $this->quickBuyProducts = $this->encomendasRepository->getProdutos($categoryNumber, $familyNumber, $subFamilyNumber, $productNumber, $customerNumber);
+
+        $this->tabDetail = "";
+        $this->tabProdutos = "show active";
+        $this->tabDetalhesEncomendas = "";
+        $this->tabDetalhesCampanhas = "";
+        $this->tabFinalizar = "";
+
+        $this->specificProduct = 0;
+
+        // session(['quickBuyProducts' => $this->quickBuyProducts]);
+        // session(['productName' => $productName]);
+
+        // session(['detailProduto' => $this->detailProduto]);
+        // session(['productNameDetail' => $productName]);
+
+        // session(['family' => $familyNumber]);
+        // session(['subFamily' => $subFamilyNumber]);
+        // session(['productNumber' => $productNumber]);
+
+        $this->produtosRapida = [];
+
+        $this->dispatchBrowserEvent('compraRapida');
+
+    }
+
     public function verEncomenda()
     {
         // Atualizar abas
@@ -412,6 +440,15 @@ class DetalheEncomenda extends Component
         // $this->dispatchBrowserEvent('refreshPage');
         // $this->dispatchBrowserEvent('refreshAllComponent');
 
+    }
+
+    public function GetprodCamp($bostamp)
+    {
+        // dd($bostamp);
+        session(['Camp' => 1]);
+        session(['Camp1' => 1]);
+        session(['CampProds' => $bostamp]);
+        return redirect()->route('encomendas.detail', ['id' => $this->idCliente]);
     }
 
     public function ShowCampanhas()
@@ -1284,6 +1321,17 @@ class DetalheEncomenda extends Component
 
                     if ($this->searchProduct != "") {
                         $this->searchSubFamily = $this->encomendasRepository->getSubFamilySearch($this->searchProduct);
+                    }
+                }
+
+                if (session('CampProds') !== null) {
+                    $this->searchProduct = session('CampProds');
+
+                    if ($this->searchProduct != "") {
+                        $products = $this->encomendasRepository->getprodCamp($this->searchProduct);
+                        dd($products);
+                        $products = isset($products->product) ? collect($products->product) : collect([]);
+                        
                     }
                 }
 

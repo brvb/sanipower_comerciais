@@ -46,106 +46,6 @@ Route::middleware('auth')->group(function () {
     });
     
 
-    Route::get('/api/salesman-data', function() {
-        $curl = curl_init();
-        $user = request()->user(); 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/analytics/objectives?Salesman_number='.$user->id_phc,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'GET',
-                CURLOPT_HTTPHEADER => array(
-                    'Content-Type: application/json'
-                ),
-        ));
-    
-        $response = curl_exec($curl);
-        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        curl_close($curl);
-    
-        $response_decoded = json_decode($response);
-        return response()->json($response_decoded);
-    });
-
-    Route::get('/api/salesman-data90days', function() {
-        $curl = curl_init();
-        $user = request()->user(); 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/analytics/90days_objectives?Salesman_number='.$user->id_phc,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'GET',
-                CURLOPT_HTTPHEADER => array(
-                    'Content-Type: application/json'
-                ),
-        ));
-    
-        $response = curl_exec($curl);
-        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        curl_close($curl);
-    
-        $response_decoded = json_decode($response);
-        return response()->json($response_decoded);
-    });
-
-    Route::get('/api/salesman-datatop500', function() {
-        $curl = curl_init();
-        $user = request()->user(); 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/analytics/top500_objectives?Salesman_number='.$user->id_phc,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'GET',
-                CURLOPT_HTTPHEADER => array(
-                    'Content-Type: application/json'
-                ),
-        ));
-    
-        $response = curl_exec($curl);
-        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        curl_close($curl);
-    
-        $response_decoded = json_decode($response);
-        return response()->json($response_decoded);
-    });
-
-    Route::get('/api/salesman-datamargin', function() {
-        $curl = curl_init();
-        $user = request()->user(); 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/analytics/margin_objectives?Salesman_number='.$user->id_phc,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'GET',
-                CURLOPT_HTTPHEADER => array(
-                    'Content-Type: application/json'
-                ),
-        ));
-    
-        $response = curl_exec($curl);
-        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        curl_close($curl);
-    
-        $response_decoded = json_decode($response);
-        return response()->json($response_decoded);
-    });
-
     Route::get('/clientes', [ClientesController::class, 'index'])->name('clientes');
     Route::get('/clientes/detalhes/{id}', [ClientesController::class, 'showDetail'])->name('clientes.detail');
 
@@ -178,8 +78,4 @@ Route::middleware('auth')->group(function () {
 
 
 });
-
-
-
-
 require __DIR__ . '/auth.php';
