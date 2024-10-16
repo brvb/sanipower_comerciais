@@ -134,7 +134,6 @@ class CalendarDashboard extends Component
         $this->clientes = [$this->clientesRepository->getAllListagemClientesObject()];
 
         $this->comerciais = User::where('nivel','3')->get();
-        
         return view('livewire.dashboard.calendar-dashboard');
     }
 }
