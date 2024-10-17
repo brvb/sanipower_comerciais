@@ -88,13 +88,27 @@ class Analysis extends Component
         // dd($response_decoded);
         if(isset($response_decoded->Message))
         {
-            return;
+            session(['objectiveProd' => 0]);
+            session(['salesProd' => 0]);
+
+            return $this->dispatchBrowserEvent('callJavascriptFunction', [
+                'function' => 'productSalesChart',
+                'objectiveProd' => session('objectiveProd') ?? 0, // ou o campo correto da resposta
+                'salesProd' => session('salesProd') ?? 0,
+                'objectiveOBJ1' => session('objectiveOBJ1') ?? 0, // ou o campo correto da resposta
+                'salesOBJ1' => session('salesOBJ1') ?? 0,
+                'objectiveOBJ2' => session('objectiveOBJ2') ?? 0, // ou o campo correto da resposta
+                'salesOBJ2' => session('salesOBJ2') ?? 0,
+                'objectiveOBJ3' => session('objectiveOBJ3') ?? 0, // ou o campo correto da resposta
+                'salesOBJ3' => session('salesOBJ3') ?? 0    
+            ]);
+
         }
         session(['objectiveProd' => $response_decoded->objective]);
         session(['salesProd' => $response_decoded->sales]);
 
         return $this->dispatchBrowserEvent('callJavascriptFunction', [
-            'function' => 'ObjetivoFat1',
+            'function' => 'productSalesChart',
             'objectiveProd' => session('objectiveProd') ?? 0, // ou o campo correto da resposta
             'salesProd' => session('salesProd') ?? 0,
             'objectiveOBJ1' => session('objectiveOBJ1') ?? 0, // ou o campo correto da resposta
@@ -135,7 +149,20 @@ class Analysis extends Component
         // dd( env('SANIPOWER_URL_DIGITAL').'/api/analytics/objectives?Salesman_number=59&year='.$this->Year.'&month='.$this->Month, $response_decoded);
         if(isset($response_decoded->Message))
         {
-            return;
+            session(['objectiveOBJ1' => 0]);
+            session(['salesOBJ1' => 0]);
+
+            return $this->dispatchBrowserEvent('callJavascriptFunction', [
+                'function' => 'ObjetivoFat1',
+                'objectiveProd' => session('objectiveProd') ?? 0, // ou o campo correto da resposta
+                'salesProd' => session('salesProd') ?? 0,
+                'objectiveOBJ1' => session('objectiveOBJ1') ?? 0, // ou o campo correto da resposta
+                'salesOBJ1' => session('salesOBJ1') ?? 0,
+                'objectiveOBJ2' => session('objectiveOBJ2') ?? 0, // ou o campo correto da resposta
+                'salesOBJ2' => session('salesOBJ2') ?? 0,
+                'objectiveOBJ3' => session('objectiveOBJ3') ?? 0, // ou o campo correto da resposta
+                'salesOBJ3' => session('salesOBJ3') ?? 0    
+            ]);
         }
 
         session(['objectiveOBJ1' => $response_decoded->objective]);
@@ -183,7 +210,20 @@ class Analysis extends Component
         // dd( env('SANIPOWER_URL_DIGITAL').'/api/analytics/objectives?Salesman_number=59&year='.$this->Year.'&month='.$this->Month, $response_decoded);
         if(isset($response_decoded->Message))
         {
-            return;
+            session(['objectiveOBJ2' => 0]);
+            session(['salesOBJ2' => 0]);
+
+            return $this->dispatchBrowserEvent('callJavascriptFunction', [
+                'function' => 'ObjetivoFat2',
+                'objectiveProd' => session('objectiveProd') ?? 0, // ou o campo correto da resposta
+                'salesProd' => session('salesProd') ?? 0,
+                'objectiveOBJ1' => session('objectiveOBJ1') ?? 0, // ou o campo correto da resposta
+                'salesOBJ1' => session('salesOBJ1') ?? 0,
+                'objectiveOBJ2' => session('objectiveOBJ2') ?? 0, // ou o campo correto da resposta
+                'salesOBJ2' => session('salesOBJ2') ?? 0,
+                'objectiveOBJ3' => session('objectiveOBJ3') ?? 0, // ou o campo correto da resposta
+                'salesOBJ3' => session('salesOBJ3') ?? 0    
+            ]);
         }
 
         session(['objectiveOBJ2' => $response_decoded->objective]);
@@ -231,7 +271,20 @@ class Analysis extends Component
         // dd( env('SANIPOWER_URL_DIGITAL').'/api/analytics/objectives?Salesman_number=59&year='.$this->Year.'&month='.$this->Month, $response_decoded);
         if(isset($response_decoded->Message))
         {
-            return;
+            session(['objectiveOBJ3' => 0]);
+            session(['salesOBJ3' => 0]);
+
+            return $this->dispatchBrowserEvent('callJavascriptFunction', [
+                'function' => 'ObjetivoFat3',
+                'objectiveProd' => session('objectiveProd') ?? 0, // ou o campo correto da resposta
+                'salesProd' => session('salesProd') ?? 0,
+                'objectiveOBJ1' => session('objectiveOBJ1') ?? 0, // ou o campo correto da resposta
+                'salesOBJ1' => session('salesOBJ1') ?? 0,
+                'objectiveOBJ2' => session('objectiveOBJ2') ?? 0, // ou o campo correto da resposta
+                'salesOBJ2' => session('salesOBJ2') ?? 0,
+                'objectiveOBJ3' => session('objectiveOBJ3') ?? 0, // ou o campo correto da resposta
+                'salesOBJ3' => session('salesOBJ3') ?? 0    
+            ]);
         }
 
         session(['objectiveOBJ3' => $response_decoded->objective]);
