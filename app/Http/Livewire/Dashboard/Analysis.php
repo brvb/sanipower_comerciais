@@ -31,6 +31,8 @@ class Analysis extends Component
     public $Year2;
     public $Month3;
     public $Year3;
+    
+    public $INICIO;
 
     public function mount()
     {       
@@ -41,8 +43,6 @@ class Analysis extends Component
                 $this->showTop500 = $preferences->Top500 == 1 ? true : false;
                 $this->showObjMargin = $preferences->ObjMargin == 1 ? true : false;
             }
-            $this->objective = 10000; // Exemplo de valor de objetivo
-            $this->sales = 8000; // Exemplo de valor de vendas
 
             $this->Month = now()->month; 
             $this->Year = now()->year;   
@@ -53,12 +53,27 @@ class Analysis extends Component
             $this->Month3 = now()->month; 
             $this->Year3 = now()->year;
 
-            $this->updateDateproductSalesChart();
-            $this->updateDateObjetivoFat1();
-            $this->updateDateObjetivoFat2();
-            $this->updateDateObjetivoFat3();
+            $this->INICIO = 1;            
 
-    }
+    }   
+
+    public function FlushAll()
+        {
+            dd('AQUI');
+            $this->dispatchBrowserEvent('callJavascriptFunction', [
+                'function' => 'productSalesChart',
+                'objectiveProd' => session('objectiveProd') ?? 0,
+                'salesProd' => session('salesProd') ?? 0,
+                'objectiveOBJ1' => session('objectiveOBJ1') ?? 0,
+                'salesOBJ1' => session('salesOBJ1') ?? 0,
+                'objectiveOBJ2' => session('objectiveOBJ2') ?? 0,
+                'salesOBJ2' => session('salesOBJ2') ?? 0,
+                'objectiveOBJ3' => session('objectiveOBJ3') ?? 0,
+                'salesOBJ3' => session('salesOBJ3') ?? 0    
+            ]);
+
+        }
+    
 
     public function updateDateproductSalesChart()
     {
@@ -93,13 +108,13 @@ class Analysis extends Component
 
             return $this->dispatchBrowserEvent('callJavascriptFunction', [
                 'function' => 'productSalesChart',
-                'objectiveProd' => session('objectiveProd') ?? 0, // ou o campo correto da resposta
+                'objectiveProd' => session('objectiveProd') ?? 0,
                 'salesProd' => session('salesProd') ?? 0,
-                'objectiveOBJ1' => session('objectiveOBJ1') ?? 0, // ou o campo correto da resposta
+                'objectiveOBJ1' => session('objectiveOBJ1') ?? 0,
                 'salesOBJ1' => session('salesOBJ1') ?? 0,
-                'objectiveOBJ2' => session('objectiveOBJ2') ?? 0, // ou o campo correto da resposta
+                'objectiveOBJ2' => session('objectiveOBJ2') ?? 0,
                 'salesOBJ2' => session('salesOBJ2') ?? 0,
-                'objectiveOBJ3' => session('objectiveOBJ3') ?? 0, // ou o campo correto da resposta
+                'objectiveOBJ3' => session('objectiveOBJ3') ?? 0,
                 'salesOBJ3' => session('salesOBJ3') ?? 0    
             ]);
 
@@ -109,13 +124,13 @@ class Analysis extends Component
 
         return $this->dispatchBrowserEvent('callJavascriptFunction', [
             'function' => 'productSalesChart',
-            'objectiveProd' => session('objectiveProd') ?? 0, // ou o campo correto da resposta
+            'objectiveProd' => session('objectiveProd') ?? 0,
             'salesProd' => session('salesProd') ?? 0,
-            'objectiveOBJ1' => session('objectiveOBJ1') ?? 0, // ou o campo correto da resposta
+            'objectiveOBJ1' => session('objectiveOBJ1') ?? 0,
             'salesOBJ1' => session('salesOBJ1') ?? 0,
-            'objectiveOBJ2' => session('objectiveOBJ2') ?? 0, // ou o campo correto da resposta
+            'objectiveOBJ2' => session('objectiveOBJ2') ?? 0,
             'salesOBJ2' => session('salesOBJ2') ?? 0,
-            'objectiveOBJ3' => session('objectiveOBJ3') ?? 0, // ou o campo correto da resposta
+            'objectiveOBJ3' => session('objectiveOBJ3') ?? 0,
             'salesOBJ3' => session('salesOBJ3') ?? 0    
         ]);
 
@@ -154,13 +169,13 @@ class Analysis extends Component
 
             return $this->dispatchBrowserEvent('callJavascriptFunction', [
                 'function' => 'ObjetivoFat1',
-                'objectiveProd' => session('objectiveProd') ?? 0, // ou o campo correto da resposta
+                'objectiveProd' => session('objectiveProd') ?? 0,
                 'salesProd' => session('salesProd') ?? 0,
-                'objectiveOBJ1' => session('objectiveOBJ1') ?? 0, // ou o campo correto da resposta
+                'objectiveOBJ1' => session('objectiveOBJ1') ?? 0,
                 'salesOBJ1' => session('salesOBJ1') ?? 0,
-                'objectiveOBJ2' => session('objectiveOBJ2') ?? 0, // ou o campo correto da resposta
+                'objectiveOBJ2' => session('objectiveOBJ2') ?? 0,
                 'salesOBJ2' => session('salesOBJ2') ?? 0,
-                'objectiveOBJ3' => session('objectiveOBJ3') ?? 0, // ou o campo correto da resposta
+                'objectiveOBJ3' => session('objectiveOBJ3') ?? 0,
                 'salesOBJ3' => session('salesOBJ3') ?? 0    
             ]);
         }
@@ -170,13 +185,13 @@ class Analysis extends Component
 
         return $this->dispatchBrowserEvent('callJavascriptFunction', [
             'function' => 'ObjetivoFat1',
-            'objectiveProd' => session('objectiveProd') ?? 0, // ou o campo correto da resposta
+            'objectiveProd' => session('objectiveProd') ?? 0,
             'salesProd' => session('salesProd') ?? 0,
-            'objectiveOBJ1' => session('objectiveOBJ1') ?? 0, // ou o campo correto da resposta
+            'objectiveOBJ1' => session('objectiveOBJ1') ?? 0, 
             'salesOBJ1' => session('salesOBJ1') ?? 0,
-            'objectiveOBJ2' => session('objectiveOBJ2') ?? 0, // ou o campo correto da resposta
+            'objectiveOBJ2' => session('objectiveOBJ2') ?? 0,
             'salesOBJ2' => session('salesOBJ2') ?? 0,
-            'objectiveOBJ3' => session('objectiveOBJ3') ?? 0, // ou o campo correto da resposta
+            'objectiveOBJ3' => session('objectiveOBJ3') ?? 0,
             'salesOBJ3' => session('salesOBJ3') ?? 0    
         ]);
 
@@ -215,13 +230,13 @@ class Analysis extends Component
 
             return $this->dispatchBrowserEvent('callJavascriptFunction', [
                 'function' => 'ObjetivoFat2',
-                'objectiveProd' => session('objectiveProd') ?? 0, // ou o campo correto da resposta
+                'objectiveProd' => session('objectiveProd') ?? 0,
                 'salesProd' => session('salesProd') ?? 0,
-                'objectiveOBJ1' => session('objectiveOBJ1') ?? 0, // ou o campo correto da resposta
+                'objectiveOBJ1' => session('objectiveOBJ1') ?? 0,
                 'salesOBJ1' => session('salesOBJ1') ?? 0,
-                'objectiveOBJ2' => session('objectiveOBJ2') ?? 0, // ou o campo correto da resposta
+                'objectiveOBJ2' => session('objectiveOBJ2') ?? 0,
                 'salesOBJ2' => session('salesOBJ2') ?? 0,
-                'objectiveOBJ3' => session('objectiveOBJ3') ?? 0, // ou o campo correto da resposta
+                'objectiveOBJ3' => session('objectiveOBJ3') ?? 0,
                 'salesOBJ3' => session('salesOBJ3') ?? 0    
             ]);
         }
@@ -231,13 +246,13 @@ class Analysis extends Component
 
         return $this->dispatchBrowserEvent('callJavascriptFunction', [
             'function' => 'ObjetivoFat2',
-            'objectiveProd' => session('objectiveProd') ?? 0, // ou o campo correto da resposta
+            'objectiveProd' => session('objectiveProd') ?? 0,
             'salesProd' => session('salesProd') ?? 0,
-            'objectiveOBJ1' => session('objectiveOBJ1') ?? 0, // ou o campo correto da resposta
+            'objectiveOBJ1' => session('objectiveOBJ1') ?? 0,
             'salesOBJ1' => session('salesOBJ1') ?? 0,
-            'objectiveOBJ2' => session('objectiveOBJ2') ?? 0, // ou o campo correto da resposta
+            'objectiveOBJ2' => session('objectiveOBJ2') ?? 0,
             'salesOBJ2' => session('salesOBJ2') ?? 0,
-            'objectiveOBJ3' => session('objectiveOBJ3') ?? 0, // ou o campo correto da resposta
+            'objectiveOBJ3' => session('objectiveOBJ3') ?? 0,
             'salesOBJ3' => session('salesOBJ3') ?? 0    
         ]);
 
@@ -276,13 +291,13 @@ class Analysis extends Component
 
             return $this->dispatchBrowserEvent('callJavascriptFunction', [
                 'function' => 'ObjetivoFat3',
-                'objectiveProd' => session('objectiveProd') ?? 0, // ou o campo correto da resposta
+                'objectiveProd' => session('objectiveProd') ?? 0,
                 'salesProd' => session('salesProd') ?? 0,
-                'objectiveOBJ1' => session('objectiveOBJ1') ?? 0, // ou o campo correto da resposta
+                'objectiveOBJ1' => session('objectiveOBJ1') ?? 0,
                 'salesOBJ1' => session('salesOBJ1') ?? 0,
-                'objectiveOBJ2' => session('objectiveOBJ2') ?? 0, // ou o campo correto da resposta
+                'objectiveOBJ2' => session('objectiveOBJ2') ?? 0,
                 'salesOBJ2' => session('salesOBJ2') ?? 0,
-                'objectiveOBJ3' => session('objectiveOBJ3') ?? 0, // ou o campo correto da resposta
+                'objectiveOBJ3' => session('objectiveOBJ3') ?? 0, 
                 'salesOBJ3' => session('salesOBJ3') ?? 0    
             ]);
         }
@@ -292,13 +307,13 @@ class Analysis extends Component
 
         return $this->dispatchBrowserEvent('callJavascriptFunction', [
             'function' => 'ObjetivoFat3',
-            'objectiveProd' => session('objectiveProd') ?? 0, // ou o campo correto da resposta
+            'objectiveProd' => session('objectiveProd') ?? 0, 
             'salesProd' => session('salesProd') ?? 0,
-            'objectiveOBJ1' => session('objectiveOBJ1') ?? 0, // ou o campo correto da resposta
+            'objectiveOBJ1' => session('objectiveOBJ1') ?? 0, 
             'salesOBJ1' => session('salesOBJ1') ?? 0,
-            'objectiveOBJ2' => session('objectiveOBJ2') ?? 0, // ou o campo correto da resposta
+            'objectiveOBJ2' => session('objectiveOBJ2') ?? 0, 
             'salesOBJ2' => session('salesOBJ2') ?? 0,
-            'objectiveOBJ3' => session('objectiveOBJ3') ?? 0, // ou o campo correto da resposta
+            'objectiveOBJ3' => session('objectiveOBJ3') ?? 0, 
             'salesOBJ3' => session('salesOBJ3') ?? 0    
         ]);
 

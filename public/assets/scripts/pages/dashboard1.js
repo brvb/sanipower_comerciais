@@ -34498,15 +34498,10 @@ var Dashboard1 = function() {
     return {
         init: function() {
             yearCompareChart();
-            // productSalesChart();
-            // expensesChart();
-            // ObjetivoFat1();
-            // ObjetivoFat2();
-            // ObjetivoFat3();
             sparklineChart1();
             sparklineChart2();
-            handleThemeSwitchTab();
-            toastrDemo();
+            // handleThemeSwitchTab();
+            // toastrDemo();
             fetchRssArticles();
         }
     }
