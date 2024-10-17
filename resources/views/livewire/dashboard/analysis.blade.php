@@ -1,4 +1,5 @@
 <div>
+<div>
 <div class="row" style="margin-left: 10px;">
     @if ($this->show90dias == true)
     <div class="col-lg-6 col-md-12 col-sm-12">
@@ -83,7 +84,7 @@
     </div> 
     @endif
 </div>
-</div>
+
 <!-- EOF MAIN-BODY -->
 <style>
     .row {
@@ -115,17 +116,19 @@
 
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script>
+    document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('callJavascriptFunction', event => {
             // Chame sua função JavaScript diretamente passando os dados
-
+            console.log(event.detail.objectiveProd);
             productSalesChart(event.detail.objectiveProd, event.detail.salesProd);
             ObjetivoFat1(event.detail.objectiveOBJ1, event.detail.salesOBJ1);
             ObjetivoFat2(event.detail.objectiveOBJ2, event.detail.salesOBJ2);
-            ObjetivoFat3(event.detail.objectiveOBJ3, event.detail.salesOBJ3);
+            ObjetivoFat3(event.detail.objectiveOBJ3, event.detail.salesOBJ3);    
 
-
-            
         });
+    
+    });
+
     function productSalesChart(objective, sales) {
         // const objective = event.detail.objective;
         // const sales = event.detail.sales;
@@ -346,3 +349,27 @@
                 chart.render(); // Renderiza o gráfico com os novos dados
     }
 </script>
+@if ($this->INICIO == 1)
+@php
+    echo "<script>setTimeout(function() {
+        const event = new CustomEvent('callJavascriptFunction', {
+            detail: {
+                objectiveProd: ".session('objectiveProd').",
+                salesProd: ".session('salesProd').",
+                objectiveOBJ1: ".session('objectiveOBJ1').",
+                salesOBJ1: ".session('salesOBJ1').",
+                objectiveOBJ2: ".session('objectiveOBJ2').",
+                salesOBJ2: ".session('salesOBJ2').",
+                objectiveOBJ3: ".session('objectiveOBJ3').",
+                salesOBJ3: ".session('salesOBJ3')."
+            }
+        });
+        // Disparar o evento
+        window.dispatchEvent(event);
+    }, 2000);</script>";
+
+    $this->INICIO == 0;
+@endphp  
+@endif
+</div>
+</div>
