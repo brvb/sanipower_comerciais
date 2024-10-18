@@ -680,44 +680,51 @@
             }
 
             moreComments();
-
-            // Add events on every Livewire update
+            
             Livewire.hook('message.processed', (message, component) => {
                 moreComments();
             });
         });
 
         jQuery(document).ready(function() {
-            jQuery('.checkboxItem').each(function() {
-                jQuery(this).prop('checked', true);
-            });
+            const url = new URL(window.location.href);
+            if (!url.searchParams.has('reloaded')) {
+                url.searchParams.append('reloaded', 'true');
+                window.location.href = url.href;
+            } else {
+                jQuery('.checkboxItem').each(function() {
+                    jQuery(this).prop('checked', true);
+                });
+            }
         });
+
+
        
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     // Função para sincronizar os checkboxes
+        {{-- document.addEventListener('DOMContentLoaded', function() {
+             // Função para sincronizar os checkboxes
     
-        //     function syncCheckboxes() {
-        //         var isChecked = document.querySelector('.checkboxAll').checked;
-        //         document.querySelectorAll('.checkboxItem').forEach(function(checkbox) {
-        //             checkbox.checked = isChecked;
-        //         });
-        //     }
+            function syncCheckboxes() {
+                 var isChecked = document.querySelector('.checkboxAll').checked;
+                 document.querySelectorAll('.checkboxItem').forEach(function(checkbox) {
+                    checkbox.checked = isChecked;
+                });
+            }
 
-        //     document.querySelector('.checkboxAll').addEventListener('click', function() {
-        //         syncCheckboxes();
-        //     });
+            document.querySelector('.checkboxAll').addEventListener('click', function() {
+                syncCheckboxes();
+        });
 
-        //     document.addEventListener('livewire:load', function() {
+             document.addEventListener('livewire:load', function() {
 
-        //         Livewire.on('syncCheckbox', (checkBoxTrue) => {
-        //             document.querySelector('.checkboxAll').checked = checkBoxTrue;
-        //             document.querySelectorAll('.checkboxItem').forEach(function(checkbox) {
-        //                 checkbox.checked = checkBoxTrue;
-        //             });
-        //         });
-        //         syncCheckboxes();
-        //     });
-        // });
+        Livewire.on('syncCheckbox', (checkBoxTrue) => {
+                     document.querySelector('.checkboxAll').checked = checkBoxTrue;
+                     document.querySelectorAll('.checkboxItem').forEach(function(checkbox) {
+                         checkbox.checked = checkBoxTrue;
+                     });
+                 });
+                 syncCheckboxes();
+             });
+         }); --}}
 
     </script>
     

@@ -21,7 +21,7 @@
 @push('scripts_footer')
 
 <script>
-     document.addEventListener('livewire:load', function() {
+        document.addEventListener('livewire:load', function() {
             Livewire.hook('message.sent', () => {
                 document.getElementById('loader').style.display = 'block';
             });

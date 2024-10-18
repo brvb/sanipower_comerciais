@@ -271,6 +271,7 @@ class PropostaInfo extends Component
     // }
 public function adjudicarPropostaOpemModal($proposta)
 {
+    
     $this->dispatchBrowserEvent('open-modal-adjudicar-proposta', ["proposta" => $proposta]);
 }
 

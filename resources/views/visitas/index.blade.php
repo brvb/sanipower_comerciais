@@ -21,6 +21,22 @@
 
 @push('scripts_footer')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+    @if (session('status') && session('message'))
+        <script>
+            window.onload = function() {
+                let status = '{{ session('status') }}';
+                let message = '{{ session('message') }}';
+
+                if (status === 'success') {
+                    toastr.success(message);
+                } else if (status === 'error') {
+                    toastr.error(message);
+                }
+            };
+        </script>
+    @endif
+
 <script>
      document.addEventListener('livewire:load', function() {
             Livewire.hook('message.sent', () => {
