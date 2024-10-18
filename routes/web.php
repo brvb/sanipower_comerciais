@@ -9,6 +9,7 @@ use App\Http\Controllers\PropostasController;
 use App\Http\Controllers\VisitasController;
 use App\Http\Controllers\VisitasNewController;
 use App\Http\Controllers\CampanhasController;
+use App\Http\Controllers\AnaliseController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -74,6 +75,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/getCode', [OfficeController::class, 'getCode']);
 
     Route::get('/campanhas', [CampanhasController::class, 'index'])->name('campanhas');
+
+    Route::get('/Analise', [AnaliseController::class, 'index'])->name('Analise');
+
 
 
 
