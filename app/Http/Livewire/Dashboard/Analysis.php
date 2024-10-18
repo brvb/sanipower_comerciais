@@ -328,6 +328,7 @@ class Analysis extends Component
     public function render()
     {
         // dd('AQUI');
+        $this->INICIO = 1;
         return view('livewire.dashboard.analysis');
     }
 }

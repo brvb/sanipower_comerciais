@@ -366,7 +366,7 @@
         });
         // Disparar o evento
         window.dispatchEvent(event);
-    }, 2000);</script>";
+    }, 1000);</script>";
 
     $this->INICIO == 0;
 @endphp  
