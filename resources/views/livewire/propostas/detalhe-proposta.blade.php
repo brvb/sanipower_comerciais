@@ -600,7 +600,7 @@
                                                                     class="arrow"><i class="fa-regular fa-square-caret-down"></i></span></button>
                                                             <div class="panel2">
                                                                 @foreach ($family->subfamily as $subfamily)
-                                                                    <a wire:click="searchSubFamily({{ $contaCat }},{{ json_encode($family->id) }},{{ json_encode($subfamily->id) }})"
+                                                                    <a wire:click="searchSubFamily({{ $category->id }},{{ json_encode($family->id) }},{{ json_encode($subfamily->id) }})"
                                                                         href="#">{{ $subfamily->id }} -
                                                                         {{ $subfamily->name }}</a>
                                                                 @endforeach
@@ -609,6 +609,7 @@
                                                     </div>
                                                 @endif
                                             @endforeach
+                                        <button class="accordion2" style="background-color: #ffcc00;" wire:click="ShowCampanhas">Campanhas</button>
                                         </div>
                                         <div class="col-md-9">
                                             <div class="row">
@@ -630,6 +631,71 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                @if (session('Camp') == 0)
+                                                    @if($campanhas->count())
+                                                         @foreach ($campanhas as $cam)
+                                                         <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-3">
+                                                            <div class="card card-decoration card-outline-primary border border-2">
+                                                                     {{-- <a href="javascript:void(0)"
+                                                                     wire:click="openDetailProduto({{ json_encode($cam->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subfamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})"
+                                                                     style="pointer-events: auto"> --}}
+                                                                         <div class="mb-1">
+                                                                             <img src="https://storage.sanipower.pt/storage/{{ $cam->capa }}"
+                                                                                 class="card-img-top" alt="...">
+                                                                             <div class="body-decoration">
+                                                                                 <h5 class="title-description">{{ $cam->titulo }}</h5>
+                                                                             </div>
+                                                                         </div>
+                                                                     </a>
+                                                                     <div class="card-body container-buttons" style="z-index:10;">
+                                                                         <button class="btn btn-sm btn-primary" wire:click="GetprodCamp('{{ $cam->bostamp }}')">
+                                                                             <i class="ti-shopping-cart"></i><span> Ver Produtos </span>
+                                                                         </button>
+                                                                     </div>
+                                                                 </div>
+                                                             </div>
+                                                         @endforeach
+                                                     <!-- Links de paginação -->
+                                                     {{-- <div class="d-flex justify-content-center">
+                                                         {{ $products->links('vendor.pagination.livewire-bootstrap') }}
+                                                     </div> --}}
+                                                 @else
+                                                     <p>Sem Campanhas para exibir.</p>
+                                                 @endif 
+                                                @else
+                                                @if(session('CampProds') !== null)
+                                                @if($products->count())
+                                                    @foreach ($products as $prodt)
+                                                        <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-3">
+                                                            <div class="card card-decoration card-outline-primary border border-2">
+                                                                <a href="javascript:void(0)"
+                                                                wire:click="openDetailProduto({{ json_encode($prodt->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subFamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})"
+                                                                style="pointer-events: auto">
+                                                                    <div class="mb-1">
+                                                                        <img src="https://storage.sanipower.pt/storage/produtos/{{ $prodt->family_number }}/{{ $prodt->family_number }}-{{ $prodt->subFamily_number }}-{{ $prodt->product_number }}.jpg"
+                                                                            class="card-img-top" alt="...">
+                                                                        <div class="body-decoration">
+                                                                            <h5 class="title-description">{{ $prodt->product_name }}</h5>
+                                                                        </div>
+                                                                    </div>
+                                                                </a>
+                                                                <div class="card-body container-buttons" style="z-index:10;">
+                                                                    <button class="btn btn-sm btn-primary"
+                                                                            wire:click="adicionarProduto({{ json_encode($prodt->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subFamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})"> 
+                                                                        <i class="ti-shopping-cart"></i><span> Compra rápida</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                    <!-- Links de paginação -->
+                                                    {{-- <div class="d-flex justify-content-center">
+                                                        {{ $products->links('vendor.pagination.livewire-bootstrap') }}
+                                                    </div> --}}
+                                                @else
+                                                    <p>Sem produtos para exibir.</p>
+                                                @endif
+                                            @else
                                                  @if($products->count())
                                                     @foreach ($products as $prodt)
                                                         <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-3">
@@ -660,7 +726,9 @@
                                                     </div>
                                                 @else
                                                     <p>Sem produtos para exibir.</p>
-                                                @endif                                                 
+                                                @endif
+                                                @endif
+                                                @endif                                                   
                                             </div>
                                         </div>
                                     </div>
