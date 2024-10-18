@@ -449,20 +449,30 @@
                                                 <thead class="thead-light">
                                                     <tr>
                                                         <th>Data</th>
-                                                        <th>Encomenda</th>
+                                                        <th>Documento</th>
+                                                        <th>Total liquido</th>
+                                                        <th>Total IVA</th>
                                                         <th>Total</th>
-                                                        <th>Estado</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>2024/04/12</td>
-                                                        <td>Encomenda 77</td>
-                                                        <td>500</td>
-                                                        <td>Nova</td>
-                                                    </tr>
-
-
+                                                    {{-- @dd($analisesCliente->items()) --}}
+                                                    @if ($analisesCliente && $analisesCliente->count())
+                                                        @foreach ($analisesCliente->items() as $clt)
+                                                            <tr>
+                                                                <td>{{ date('Y-m-d', strtotime($clt->date)) }}</td>
+                                                                <td>{{ $clt->document }}</td>
+                                                                <td>{{ $clt->net_total }}€</td>
+                                                                <td>{{ $clt->total_tax }}€</td>
+                                                                <td>{{ $clt->total }}€</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @else
+                                                        <tr>
+                                                            {{-- @dd($analisesCliente) --}}
+                                                            <td colspan="5">Nenhuma análise disponível.</td>
+                                                        </tr>
+                                                    @endif
                                                 </tbody>
                                             </table>
                                         </div>
