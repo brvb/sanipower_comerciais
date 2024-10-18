@@ -46,7 +46,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/profile/create', [ProfileController::class, 'create'])->name('profile.create');
     });
     
-
     Route::get('/clientes', [ClientesController::class, 'index'])->name('clientes');
     Route::get('/clientes/detalhes/{id}', [ClientesController::class, 'showDetail'])->name('clientes.detail');
 
@@ -76,10 +75,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/campanhas', [CampanhasController::class, 'index'])->name('campanhas');
 
+
     Route::get('/Analise', [AnaliseController::class, 'index'])->name('Analise');
-
-
-
 
 });
 require __DIR__ . '/auth.php';

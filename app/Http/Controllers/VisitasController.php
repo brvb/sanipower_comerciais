@@ -49,8 +49,25 @@ class VisitasController extends Controller
     {
         $visitaAgendada = VisitasAgendadas::where('id',$id)->first();
 
-          
+
+        if ($visitaAgendada == null) {
+            session()->flash('status', 'error');
+            session()->flash('message', 'Nao foi encontrado a visita. (erro : VT-404)');
+
+            return redirect()->route('visitas');
+        }
+
+        // dd($visitaAgendada);
+        
         $arrayCliente = $this->clientesRepository->getDetalhesCliente($visitaAgendada->client_id);
+
+        if ($arrayCliente == null) {
+            session()->flash('status', 'error');
+            session()->flash('message', 'Nao foi encontrado o cliente da visita. (erro : VT-405)');
+
+            return redirect()->route('visitas');
+        }
+
         $detailsClientes = $arrayCliente["object"];
         
         return view('visitas.details',["idVisita" => $id, "idCliente" => $visitaAgendada->client_id, "nameCliente" => $detailsClientes->customers[0]->name, "tst" => "1"]);

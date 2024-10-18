@@ -59,15 +59,14 @@ class ClientesRepository implements ClientesInterface
 
         }
         else {
-
-            $currentItems = [];
-
-            $itemsPaginate = new LengthAwarePaginator($currentItems, $response_decoded->total_pages,$perPage);
+            $arrayInfo = ["paginator" => null, "nr_paginas" => null, "nr_registos" => null];
+     
+            return $arrayInfo; 
         }
 
         $arrayInfo = ["paginator" => $itemsPaginate, "nr_paginas" => $response_decoded->total_pages, "nr_registos" => $response_decoded->total_records];
+        
         return $arrayInfo; 
-
     }
 
     public function getAllListagemClientesObject(): object
@@ -442,7 +441,7 @@ class ClientesRepository implements ClientesInterface
     {
         $curl = curl_init();
         curl_setopt_array($curl, array(
-            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/customers/GetCustomers?id='.$id,
+            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/customers/GetCustomers?id='. $id,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -460,14 +459,27 @@ class ClientesRepository implements ClientesInterface
         curl_close($curl);
 
         $response_decoded = json_decode($response);
+        if (isset($response_decoded->Message) && $response_decoded->Message === 'An error has occurred.') {
+            return  [
+                "object" => null,
+                "nr_paginas" =>null, 
+                "nr_registos" => null
+            ];
+        } else {
+            return 
+            [
+                "object" => $response_decoded,
+                "nr_paginas" => $response_decoded->total_pages, 
+                "nr_registos" => $response_decoded->total_records
+            ];
+        }
 
-
-       return 
-        [
-            "object" => $response_decoded,
-            "nr_paginas" => $response_decoded->total_pages, 
-            "nr_registos" => $response_decoded->total_records
-        ];
+    //    return 
+    //     [
+    //         "object" => $response_decoded,
+    //         "nr_paginas" => $response_decoded->total_pages, 
+    //         "nr_registos" => $response_decoded->total_records
+    //     ];
     }
 
    
