@@ -50,6 +50,7 @@ class DetalheVisitas extends Component
     public string $comentario_propostas = "";
     public string $comentario_financeiro = "";
     public string $comentario_occorencias = "";
+    
 
     public int $checkStatus;
 
@@ -238,6 +239,10 @@ class DetalheVisitas extends Component
         $this->pageChosen = $page;
         $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
         $this->detailsClientes = $arrayCliente["object"];
+
+        $arrayAna = $this->clientesRepository->getListagemAnalisesCliente($this->perPage,$this->pageChosen,$this->idCliente);
+        dd($arrayAna);
+        $this->analysisClientes = $arrayAna["paginator"];
 
         $this->tabRelatorio = "";
         $this->tabDetail = "";
@@ -1142,7 +1147,16 @@ class DetalheVisitas extends Component
 
         $this->tiposVisitaCollection = TiposVisitas::all();
         
-        $getVisitaID = VisitasAgendadas::where('id',$this->idVisita)->first();
+        $getVisitaID = VisitasAgendadas::where('id',$this->idVisita)->first();  
+        // $this->analisesCliente ?? collect();
+        $arrayAna = $this->clientesRepository->getListagemAnalisesCliente($this->perPage,$this->pageChosen,$this->idCliente);
+        
+        // dd($arrayAna["paginator"]);
+        
+        $this->analysisClientes = $arrayAna["paginator"];
+        $this->analisesCliente ?? collect();  
+
+        // dd($this->analysisClientes);
         return view('livewire.visitas.detalhe-visitas',["detalhesCliente" => $this->detailsClientes, "analisesCliente" => $this->analysisClientes, "getVisita" => $getVisitaID]);
     }
 }

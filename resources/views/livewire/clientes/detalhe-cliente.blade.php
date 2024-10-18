@@ -304,9 +304,10 @@
                                                 <thead class="thead-light">
                                                     <tr>
                                                         <th>Data</th>
-                                                        <th>Encomenda</th>
+                                                        <th>Documento</th>
+                                                        <th>Total liquido</th>
+                                                        <th>Total IVA</th>
                                                         <th>Total</th>
-                                                        <th>Estado</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -314,16 +315,17 @@
                                                     @foreach ($analisesCliente as $clt )
                                                         <tr>
                                                             <td>{{date('Y-m-d',strtotime($clt->date))}}</td>
-                                                            <td>{{$clt->order}}</td>
+                                                            <td>{{$clt->document}}</td>
+                                                            <td>{{$clt->net_total}}€</td>
+                                                            <td>{{$clt->total_tax}}€</td>
                                                             <td>{{$clt->total}}€</td>
-                                                            <td>{{$clt->status}}</td>
                                                         </tr>
                                                     @endforeach
 
                                                 </tbody>
                                             </table>
                                         </div>
-                                        {{ $analisesCliente->links() }}
+                                        {{-- {{ $analisesCliente->links() }} --}}
                                     </div>
                                 </div>
                             </div>

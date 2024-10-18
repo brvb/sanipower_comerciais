@@ -108,25 +108,11 @@ class ClientesRepository implements ClientesInterface
 
     public function getListagemAnalisesCliente($perPage,$page,$idCliente): array
     {
-        $nomeCliente = '&Name=';
-        $numeroCliente = '&Customer_number=0';
-        $zonaCliente = '&Zone=';
-        $mobileCliente = '&Mobile_phone=';
-        $emailCliente = '&Email=';
-        $nifCliente = '&Nif=';
-        $commentCliente = '&Comments=0';
-        $typeCliente = '&type=0';
-        
-        $startDate = '&start_date=1900-01-01';
-        $endDate = '&end_date=2900-12-31';
-        $statusEncomenda = '&status=0';
-
-        $string = $nomeCliente.$numeroCliente.$zonaCliente.$mobileCliente.$emailCliente.$nifCliente.$commentCliente.$typeCliente.$startDate.$endDate.$statusEncomenda;
 
         $curl = curl_init();
-        // dd(env('SANIPOWER_URL_DIGITAL').'/api/documents/orders?perPage='.$perPage.'&Page='.$page.'&customer_id='.$idCliente.'&Salesman_number='.Auth::user()->id_phc.$string);
+        // dd(env('SANIPOWER_URL_DIGITAL').'/api/documents/sales?perPage='.$perPage.'&Page='.$page.'&customer_id='.$idCliente);
         curl_setopt_array($curl, array(
-            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/orders?perPage='.$perPage.'&Page='.$page.'&customer_id='.$idCliente.'&Salesman_number='.Auth::user()->id_phc.$string,
+            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/sales?perPage='.$perPage.'&Page='.$page.'&customer_id='.$idCliente,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -146,9 +132,9 @@ class ClientesRepository implements ClientesInterface
         // dd($response_decoded);
     
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
-        if($response_decoded->orders != null)
+        if($response_decoded->sales != null)
         {   
-            $currentItems = array_slice($response_decoded->orders, $perPage * ($currentPage - 1), $perPage);
+            $currentItems = array_slice($response_decoded->sales, $perPage * ($currentPage - 1), $perPage);
             
             $itemsPaginate = new LengthAwarePaginator($currentItems, $response_decoded->total_pages,$perPage);
  
@@ -454,7 +440,6 @@ class ClientesRepository implements ClientesInterface
     public function getDetalhesCliente($id): array
     {
         $curl = curl_init();
-
         curl_setopt_array($curl, array(
             CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/customers/GetCustomers?id='. $id,
             CURLOPT_RETURNTRANSFER => true,
