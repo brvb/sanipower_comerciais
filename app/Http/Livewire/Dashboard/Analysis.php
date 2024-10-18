@@ -53,6 +53,12 @@ class Analysis extends Component
             $this->Month3 = now()->month; 
             $this->Year3 = now()->year;
 
+            $this->updateDateproductSalesChart();
+            $this->updateDateObjetivoFat1();
+            $this->updateDateObjetivoFat2();
+            $this->updateDateObjetivoFat3();
+
+
             $this->INICIO = 1;            
 
     }   
@@ -307,13 +313,13 @@ class Analysis extends Component
 
         return $this->dispatchBrowserEvent('callJavascriptFunction', [
             'function' => 'ObjetivoFat3',
-            'objectiveProd' => session('objectiveProd') ?? 0, 
+            'objectiveProd' => session('objectiveProd') ?? 0,
             'salesProd' => session('salesProd') ?? 0,
-            'objectiveOBJ1' => session('objectiveOBJ1') ?? 0, 
+            'objectiveOBJ1' => session('objectiveOBJ1') ?? 0,
             'salesOBJ1' => session('salesOBJ1') ?? 0,
-            'objectiveOBJ2' => session('objectiveOBJ2') ?? 0, 
+            'objectiveOBJ2' => session('objectiveOBJ2') ?? 0,
             'salesOBJ2' => session('salesOBJ2') ?? 0,
-            'objectiveOBJ3' => session('objectiveOBJ3') ?? 0, 
+            'objectiveOBJ3' => session('objectiveOBJ3') ?? 0,
             'salesOBJ3' => session('salesOBJ3') ?? 0    
         ]);
 
@@ -322,6 +328,7 @@ class Analysis extends Component
     public function render()
     {
         // dd('AQUI');
+        $this->INICIO = 1;
         return view('livewire.dashboard.analysis');
     }
 }

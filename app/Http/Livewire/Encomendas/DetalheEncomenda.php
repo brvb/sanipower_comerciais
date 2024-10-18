@@ -377,6 +377,7 @@ class DetalheEncomenda extends Component
     {
         session(['Camp' => 1]);
         session(['Camp1' => 1]);
+        session(['CampProds' => null]);
         $this->searchProduct = "";
         session(['searchProduct' => $this->searchProduct]);
 
@@ -445,10 +446,10 @@ class DetalheEncomenda extends Component
     public function GetprodCamp($bostamp)
     {
         // dd($bostamp);
-        // session(['Camp' => 1]);
-        // session(['Camp1' => 1]);
-        // session(['CampProds' => $bostamp]);
-        // return redirect()->route('encomendas.detail', ['id' => $this->idCliente]);
+        session(['Camp' => 1]);
+        session(['Camp1' => 1]);
+        session(['CampProds' => $bostamp]);
+        return redirect()->route('encomendas.detail', ['id' => $this->idCliente]);
     }
 
     public function ShowCampanhas()
@@ -479,6 +480,8 @@ class DetalheEncomenda extends Component
             session(['searchSubFamily' => $this->searchSubFamily]);
 
             session(['searchProduct' => $this->searchProduct]);
+
+            session(['CampProds' => null]);
         } else {
             $this->searchSubFamily = $this->encomendasRepository->getSubFamily($this->actualCategory, $this->actualFamily, $this->actualSubFamily);
             session(['searchSubFamily' => $this->searchSubFamily]);
@@ -1324,16 +1327,16 @@ class DetalheEncomenda extends Component
                     }
                 }
 
-                // if (session('CampProds') !== null) {
-                //     $this->searchProduct = session('CampProds');
+                if (session('CampProds') !== null) {
+                    $this->searchProduct = session('CampProds');
 
-                //     if ($this->searchProduct != "") {
-                //         $products = $this->encomendasRepository->getprodCamp($this->searchProduct);
-                //         dd($products);
-                //         $products = isset($products->product) ? collect($products->product) : collect([]);
+                    if ($this->searchProduct != "") {
+                        $products = $this->encomendasRepository->getprodCamp($this->searchProduct);
+                        // dd($products);
+                        $products = isset($products->product) ? collect($products->product) : collect([]);
                         
-                //     }
-                // }
+                    }
+                }
 
         $this->carrinhoCompras = Carrinho::where('id_cliente', $this->detailsClientes->customers[0]->no)
             ->where('id_user', Auth::user()->id)
