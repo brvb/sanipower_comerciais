@@ -21,6 +21,8 @@ use App\Interfaces\EncomendasInterface;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Models\Campanhas;
+
 
 class DetalheProposta extends Component
 {
@@ -151,7 +153,10 @@ class DetalheProposta extends Component
 
     public function mount($codvisita, $cliente, $codEncomenda)
     {
-        
+        if(session('Camp1') != 1)
+        {
+            session(['Camp' => 0]);
+        }
         $this->initProperties();
         $this->idCliente = $cliente;
         $this->codEncomenda = $codEncomenda;
@@ -345,8 +350,39 @@ class DetalheProposta extends Component
         $this->dispatchBrowserEvent('refreshComponent', ["id" => $idCategory]);
     }
 
+    public function addProdCamp($referense)
+    {
+        // $this->quickBuyProducts = $this->encomendasRepository->getProdutos($categoryNumber, $familyNumber, $subFamilyNumber, $productNumber, $customerNumber);
+
+        $this->tabDetail = "";
+        $this->tabProdutos = "show active";
+        $this->tabDetalhesPropostas = "";
+        $this->tabDetalhesCampanhas = "";
+        $this->tabFinalizar = "";
+
+        $this->specificProduct = 0;
+
+        // session(['quickBuyProducts' => $this->quickBuyProducts]);
+        // session(['productName' => $productName]);
+
+        // session(['detailProduto' => $this->detailProduto]);
+        // session(['productNameDetail' => $productName]);
+
+        // session(['family' => $familyNumber]);
+        // session(['subFamily' => $subFamilyNumber]);
+        // session(['productNumber' => $productNumber]);
+
+        $this->produtosRapida = [];
+
+        $this->dispatchBrowserEvent('compraRapida');
+
+    }
+
     public function searchSubFamily($idCategory, $idFamily, $idSubFamily)
     {
+        session(['Camp' => 1]);
+        session(['Camp1' => 1]);
+        session(['CampProds' => null]);
         $this->searchProduct = "";
         session(['searchProduct' => $this->searchProduct]);
 
@@ -427,6 +463,8 @@ class DetalheProposta extends Component
             session(['searchSubFamily' => $this->searchSubFamily]);
 
             session(['searchProduct' => $this->searchProduct]);
+            
+            session(['CampProds' => null]);
         } else {
             $this->searchSubFamily = $this->PropostasRepository->getSubFamily($this->actualCategory, $this->actualFamily, $this->actualSubFamily);
             session(['searchSubFamily' => $this->searchSubFamily]);
@@ -443,6 +481,30 @@ class DetalheProposta extends Component
 
         $this->dispatchBrowserEvent('refreshAllComponent');
 
+    }
+
+    public function GetprodCamp($bostamp)
+    {
+        // dd($bostamp);
+        session(['Camp' => 1]);
+        session(['Camp1' => 1]);
+        session(['CampProds' => $bostamp]);
+        return redirect()->route('propostas.detail', ['id' => $this->idCliente]);
+    }
+
+    public function ShowCampanhas()
+    {
+        // dd('AQUI');
+        session(['Camp' => 0]);
+
+        session(['searchNameCategory' => ""]);
+        session(['searchNameFamily' => ""]);
+        session(['searchNameSubFamily' => ""]);
+
+        // $sessions = session()->all();
+    
+        // Exibe todas as sessões
+        // dd($sessions); // Isso irá parar a execução e mostrar as sessões
     }
 
     public function resetFilter($idCategory)
@@ -1375,6 +1437,18 @@ class DetalheProposta extends Component
             }
 
         }
+
+        if (session('CampProds') !== null) {
+            $this->searchProduct = session('CampProds');
+
+            if ($this->searchProduct != "") {
+                $products = $this->encomendasRepository->getprodCamp($this->searchProduct);
+                // dd($products);
+                $products = isset($products->product) ? collect($products->product) : collect([]);
+                
+            }
+        }
+
         $this->carrinhoCompras = Carrinho::where('id_cliente', $this->detailsClientes->customers[0]->no)
             ->where('id_user', Auth::user()->id)
             ->where('id_proposta', '!=', '')
@@ -1417,6 +1491,12 @@ class DetalheProposta extends Component
         }
         // dd($arrayCart);
        // Retorno da view com a paginação
+
+       $campanhas = Campanhas::where('ativa', 1)
+        ->where('destaque', 1)
+        ->where('dh_fim', '>', now())
+        ->get();
+
         return view('livewire.propostas.detalhe-proposta', [
             "products" => $products,
             "onkit" => $onkit,
@@ -1426,7 +1506,8 @@ class DetalheProposta extends Component
             "getCategoriesAll" => $this->getCategoriesAll,
             "searchSubFamily" => $this->searchSubFamily,
             "arrayCart" => $arrayCart,
-            "codEncomenda" => $this->codEncomenda
+            "codEncomenda" => $this->codEncomenda,
+            "campanhas" => $campanhas
         ]);
 
     }
