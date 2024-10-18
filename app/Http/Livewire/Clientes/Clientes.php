@@ -33,6 +33,8 @@ class Clientes extends Component
     public ?string $criarnumeroCliente = '';
     public ?string $criarzonaCliente = '';
     public ?string $criarnumContribuinte = '';
+    public $erroConsulta;
+
 
 
     public function boot(ClientesInterface $clientesRepository)
@@ -62,16 +64,20 @@ class Clientes extends Component
     public function mount()
     {
         $this->initProperties();
-        $arrayClientes = $this->clientesRepository->getListagemClientes($this->perPage,$this->pageChosen);
-        $this->clientes = $arrayClientes["paginator"];
-     
-
-        $this->numberMaxPages = $arrayClientes["nr_paginas"];
-        $this->totalRecords = $arrayClientes["nr_registos"];
-
-
+        $arrayClientes = $this->clientesRepository->getListagemClientes($this->perPage, $this->pageChosen);
+    
+        if (!$arrayClientes["paginator"]) {
+            // Armazena uma flag indicando erro
+            session()->flash('status', 'error');
+            session()->flash('message', 'Ocorreu um erro ao tentar consultar os clientes.(erro: CL-401)');
+            $this->erroConsulta = true;
+        } else {
+            $this->clientes = $arrayClientes["paginator"];
+            $this->numberMaxPages = $arrayClientes["nr_paginas"];
+            $this->totalRecords = $arrayClientes["nr_registos"];
+        }
     }
-
+    
     public function updatedNomeCliente()
     {
         $this->pageChosen = 1;
@@ -292,9 +298,15 @@ class Clientes extends Component
         return 'livewire.pagination';
     }
 
-
     public function render()
-    {
-        return view('livewire.clientes.clientes',["clientes" => $this->clientes]);
+    {   
+        if ($this->erroConsulta == true) {
+            // Aqui você redireciona para a rota 'dashboard', mudando a URL corretamente
+            return view('dashboard');
+        }
+    
+        // Caso não haja erro, renderiza a view dos clientes
+        return view('livewire.clientes.clientes', ["clientes" => $this->clientes]);
     }
+    
 }

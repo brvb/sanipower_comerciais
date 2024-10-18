@@ -105,8 +105,6 @@ class PageUsers extends Component
         ]);
     
         if ($emailError) {
-            $this->dispatchBrowserEvent('close-modal');
-
             $message = "Os seguintes emails são inválidos:" . $emailError;
             $status = "error";
             $this->dispatchBrowserEvent('close-modal');
@@ -131,6 +129,7 @@ class PageUsers extends Component
             $message = "Grupo de email salvo com sucesso!";
             $status = "success";
             $this->dispatchBrowserEvent('checkToaster', ["message" => $message, "status" => $status]);
+
         }
     }
     
