@@ -84,7 +84,7 @@
                     <span>Análise</span>
                 </a>
             </li>
-            
+             
             @if (Auth::user()->nivel == '1')
             <li class="li-hover">
                 <a href="{{route('profile.create')}}" class="{{ Str::contains(request()->route()->getName(), 'profile.create') ? 'text-info' : '' }}">
