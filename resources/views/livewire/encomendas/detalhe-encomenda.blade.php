@@ -601,7 +601,7 @@
                                                                 {{ $family->name }}<span class="arrow"><i class="fa-regular fa-square-caret-down"></i></span></button>
                                                             <div class="panel2">
                                                                 @foreach ($family->subfamily as $subfamily)
-                                                                    <a wire:click="searchSubFamily({{ $contaCat }},{{ json_encode($family->id) }},{{ json_encode($subfamily->id) }})"
+                                                                    <a wire:click="searchSubFamily({{ $category->id }},{{ json_encode($family->id) }},{{ json_encode($subfamily->id) }})"
                                                                         href="#">{{ $subfamily->id }} -
                                                                         {{ $subfamily->name }}</a>
                                                                 @endforeach
