@@ -60,8 +60,8 @@
                                         Deve-se fechar a proposta após a Adjudicar?
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" wire:click="adjudicarProposta({{ json_encode($proposta) }},'false')">Manter aberta</button>
-                                        <button type="button" class="btn btn-primary" wire:click="adjudicarProposta({{ json_encode($proposta) }},'true')">Fecha proposta</button>
+                                        <button type="button" class="btn btn-secondary" wire:click="adjudicarProposta({{ json_encode($proposta) }},0)">Manter aberta</button>
+                                        <button type="button" class="btn btn-primary" wire:click="adjudicarProposta({{ json_encode($proposta) }},1)">Fecha proposta</button>
                                     </div>
                                 </div>
                             </div>
@@ -454,7 +454,9 @@
                             <tbody>
                                 @forelse ($arrayCart as $img => $item)
                                     @forelse ($item as $prod)
+                                
                                         <tr data-href="#"  style="border-top:1px solid #9696969c!important; border-bottom:1px solid #9696969c!important;">
+                                        @if($prod->awarded == false)
                                             @if($check == false)
                                                 @if($cliente[0])
                                                     <td>
@@ -476,6 +478,17 @@
                                                 @endif
 
                                             @endif
+                                        @else
+                                            <td>
+                                                <div class="form-checkbox">
+                                                    <label>
+                                                        <input type="checkbox" data-id="{{ $prod->id }}"
+                                                            wire:model.defer="selectedItemsAdjudicar.{{ $prod->id }}" disabled>
+                                                        <span class="checkmark" style="font-size: 12px;"><i class="fa fa-check pick"></i></span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                        @endif
 
 
 
