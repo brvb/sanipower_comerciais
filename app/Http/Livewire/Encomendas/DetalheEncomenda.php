@@ -886,6 +886,7 @@ class DetalheEncomenda extends Component
             }else{
                 $id_proposta = $prod->id_proposta;
             }
+        
             $arrayProdutos[$count] = [
                 "id" => $count,
                 "reference" => $prod->referencia,
@@ -900,8 +901,9 @@ class DetalheEncomenda extends Component
                 "total" => $totalItem,
                 "notes" => $comentario,
                 "visit_id" => $visitaCheck,
-                "budgets_id" => $prod->id_line,
-                "awarded" => $prod->awarded,
+                "budgets_id" =>  $id_proposta,
+                "id_line" => $prod->id_line,
+                "awarded" => $prod->awarded
             ];
         }
         // dd($arrayProdutos);
@@ -958,9 +960,7 @@ class DetalheEncomenda extends Component
             "type" => "order",
             "lines" => array_values($arrayProdutos)
         ];
-       
 
-    
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
