@@ -40,7 +40,7 @@ class EncomendasRepository implements EncomendasInterface
 
         $response_decoded = json_decode($response);
     
-        return $response_decoded; 
+        return $response_decoded;
 
     }
 

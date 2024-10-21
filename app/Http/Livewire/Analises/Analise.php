@@ -57,7 +57,12 @@ class Analise extends Component
 
     public function render()
     {
-         
+        if ($this->table == null) {
+            session()->flash('status', 'error');
+            session()->flash('message', 'Erro ao consultar as Analises! (erro : AN-404)');
+
+            return view('dashboard');
+        }
          return view('livewire.Analise.analise', ['tabela' => $this->table]);
     }
 }
