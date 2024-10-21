@@ -959,6 +959,7 @@ class DetalheEncomenda extends Component
             "lines" => array_values($arrayProdutos)
         ];
        
+        
     
         $curl = curl_init();
 
