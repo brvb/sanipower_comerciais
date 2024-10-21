@@ -953,7 +953,7 @@ class DetalheEncomenda extends Component
             "payment_conditions" => $condicaoPagamento,
             "salesman_number" => Auth::user()->id_phc,
             "type" => "order",
-            // "awarded" => $parametroStatusAdjudicar,
+            "awarded" => $parametroStatusAdjudicar,
             "lines" => array_values($arrayProdutos)
         ];
        
