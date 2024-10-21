@@ -277,7 +277,6 @@ public function adjudicarPropostaOpemModal($proposta)
 
     public function adjudicarProposta($proposta, $status)
     {
-
         $flag = false;
 
         foreach($this->selectedItemsAdjudicar as $item)
@@ -337,11 +336,27 @@ public function adjudicarPropostaOpemModal($proposta)
                 }
             }
         }
-       
+        // $array = [
+        //     "id_proposta" => $proposta["id"],
+        //     "id_encomenda" => $idEncomenda,
+        //     "id_cliente" => $proposta["number"],
+        //     "id_user" => Auth::user()->id,
+        //     "referencia" => $prop["reference"],
+        //     "designacao" => $prop["description"],
+        //     "price" => $prop["price"],
+        //     "discount" => $prop["discount"],
+        //     "discount2" => $prop["discount2"],
+        //     "qtd" => $prop["quantity"],
+        //     "iva" => $prop["tax"],
+        //     "pvp" => $prop["pvp"],
+        //     "model" => $prop["model"],
+        //     "image_ref" => "https://storage.sanipower.pt/storage/produtos/".$prop["family_number"]."/".$prop["family_number"]."-".$prop["subfamily_number"]."-".$prop["product_number"].".jpg",
+        //     "proposta_info" => $proposta["budget"]
+        // ];
+        // dd($array);        
           
     
         $this->clientes = $this->clientesRepository->getListagemClienteAllFiltro(10,1,"",$proposta["number"],"","","","",0);
-
         session(['OpenTabAdjudicarda' => "OpentabArtigos"]);
 
         session(['parametroStatusAdjudicar' => $status]);
