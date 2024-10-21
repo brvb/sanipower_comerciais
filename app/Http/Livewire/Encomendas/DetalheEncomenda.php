@@ -902,7 +902,7 @@ class DetalheEncomenda extends Component
                 "notes" => $comentario,
                 "visit_id" => $visitaCheck,
                 "budgets_id" =>  $id_proposta,
-                "id_line" => $prod->id_line,
+                "origin_id" => $prod->id_line,
                 "awarded" => $prod->awarded
             ];
         }
