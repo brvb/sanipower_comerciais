@@ -89,13 +89,13 @@
                 <td>{{ $propostaData['nif'] }}</td>
             </tr>
             <tr>
-                <th>Endereço</th>
+                <th>Morada</th>
                 <td>{{ $propostaData['address'] }}</td>
                 <th>Cidade</th>
                 <td>{{ $propostaData['city'] }}</td>
             </tr>
             <tr>
-                <th>CEP</th>
+                <th>Localidade</th>
                 <td>{{ $propostaData['zipcode'] }}</td>
                 <th>Zona</th>
                 <td>{{ $propostaData['zone'] }}</td>
@@ -127,7 +127,7 @@
                         <td>{{ $line['description'] }}</td>
                         <td>{{ $line['quantity'] }}</td>
                         <td>{{ number_format($line['price'], 2, ',', '.') }}</td>
-                        <td>{{ number_format($line['discount'], 2, ',', '.') }}</td>
+                        <td>{{ number_format($line['discount'], 2, ',', '.') }}%</td>
                         <td>{{ number_format($line['total'], 2, ',', '.') }}</td>
                     </tr>
                 @endforeach
