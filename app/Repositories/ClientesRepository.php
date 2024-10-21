@@ -735,7 +735,13 @@ class ClientesRepository implements ClientesInterface
         // dd(env('SANIPOWER_URL_DIGITAL').'/api/documents/orders?perPage='.$perPage.'&Page='.$page.'&customer_id='.$idCliente.'&Salesman_number='. Auth::user()->id_phc.$string, $response_decoded);
 
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
-
+        if(isset($response_decoded->Message))
+        {
+        if($response_decoded->Message == "An error has occurred.")
+        {
+            $response_decoded = null;
+        }
+        }
         if($response_decoded != null && $response_decoded->orders != null)
         {
             $currentItems = array_slice($response_decoded->orders, $perPage * ($currentPage - 1), $perPage);
