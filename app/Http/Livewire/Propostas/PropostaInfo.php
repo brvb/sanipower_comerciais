@@ -269,14 +269,15 @@ class PropostaInfo extends Component
     //         $this->dispatchBrowserEvent('hide-confirmation-modal');
     //     }
     // }
-public function adjudicarPropostaOpemModal($proposta)
-{
-    
-    $this->dispatchBrowserEvent('open-modal-adjudicar-proposta', ["proposta" => $proposta]);
-}
-
-    public function adjudicarProposta($proposta)
+    public function adjudicarPropostaOpemModal($proposta)
     {
+        
+        $this->dispatchBrowserEvent('open-modal-adjudicar-proposta', ["proposta" => $proposta]);
+    }
+
+    public function adjudicarProposta($proposta, $status)
+    {
+      
         // dd($proposta);
         $flag = false;
         foreach($this->selectedItemsAdjudicar as $item)
@@ -305,8 +306,8 @@ public function adjudicarPropostaOpemModal($proposta)
         }else{
             $idEncomenda = $proposta["id"];
         }
-        
-
+       
+       
         foreach($this->selectedItemsAdjudicar as $id => $item)
         {
             if($item == true)
@@ -315,23 +316,32 @@ public function adjudicarPropostaOpemModal($proposta)
                 {
                     if($id == $prop["id"])
                     {
-                        Carrinho::create([
-                            "id_proposta" => $proposta["id"],
-                            "id_encomenda" => $idEncomenda,
-                            "id_cliente" => $proposta["number"],
-                            "id_user" => Auth::user()->id,
-                            "referencia" => $prop["reference"],
-                            "designacao" => $prop["description"],
-                            "price" => $prop["price"],
-                            "discount" => $prop["discount"],
-                            "discount2" => $prop["discount2"],
-                            "qtd" => $prop["quantity"],
-                            "iva" => $prop["tax"],
-                            "pvp" => $prop["pvp"],
-                            "model" => $prop["model"],
-                            "image_ref" => "https://storage.sanipower.pt/storage/produtos/".$prop["family_number"]."/".$prop["family_number"]."-".$prop["subfamily_number"]."-".$prop["product_number"].".jpg",
-                            "proposta_info" => $proposta["budget"],
-                        ]);
+                        $var = Carrinho::where("id_line",$prop["id"])->first();
+                        if($var){
+                            Carrinho::where('id_line', $prop["id"])->update([
+                                "awarded" => $status,
+                            ]);
+                        }else{
+                                Carrinho::create([
+                                "id_proposta" => $proposta["id"],
+                                "id_encomenda" => $idEncomenda,
+                                "id_cliente" => $proposta["number"],
+                                "id_user" => Auth::user()->id,
+                                "referencia" => $prop["reference"],
+                                "designacao" => $prop["description"],
+                                "price" => $prop["price"],
+                                "discount" => $prop["discount"],
+                                "discount2" => $prop["discount2"],
+                                "qtd" => $prop["quantity"],
+                                "iva" => $prop["tax"],
+                                "pvp" => $prop["pvp"],
+                                "model" => $prop["model"],
+                                "image_ref" => "https://storage.sanipower.pt/storage/produtos/".$prop["family_number"]."/".$prop["family_number"]."-".$prop["subfamily_number"]."-".$prop["product_number"].".jpg",
+                                "proposta_info" => $proposta["budget"],
+                                "awarded" =>  $status,
+                                "id_line" => $prop["id"],
+                            ]);
+                        }
                     }
                 }
             }

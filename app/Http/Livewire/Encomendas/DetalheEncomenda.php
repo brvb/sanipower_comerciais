@@ -899,8 +899,9 @@ class DetalheEncomenda extends Component
                 "discount3" => 0,
                 "total" => $totalItem,
                 "notes" => $comentario,
-                "visit_id" => $visitaCheck, // ou tenho de trazer da base de dados
-                "budgets_id" => $id_proposta,
+                "visit_id" => $visitaCheck,
+                "budgets_id" => $prod->id_line,
+                "awarded" => $prod->awarded,
             ];
         }
         // dd($arrayProdutos);
@@ -955,7 +956,6 @@ class DetalheEncomenda extends Component
             "payment_conditions" => $condicaoPagamento,
             "salesman_number" => Auth::user()->id_phc,
             "type" => "order",
-            // "awarded" => $parametroStatusAdjudicar,
             "lines" => array_values($arrayProdutos)
         ];
        
