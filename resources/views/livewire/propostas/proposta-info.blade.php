@@ -60,8 +60,8 @@
                                         Deve-se fechar a proposta após a Adjudicar?
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" wire:click="adjudicarProposta({{ json_encode($proposta) }},false)">Manter aberta</button>
-                                        <button type="button" class="btn btn-primary" wire:click="adjudicarProposta({{ json_encode($proposta) }},true)">Fecha proposta</button>
+                                        <button type="button" class="btn btn-secondary" wire:click="adjudicarProposta({{ json_encode($proposta) }},'false')">Manter aberta</button>
+                                        <button type="button" class="btn btn-primary" wire:click="adjudicarProposta({{ json_encode($proposta) }},'true')">Fecha proposta</button>
                                     </div>
                                 </div>
                             </div>
