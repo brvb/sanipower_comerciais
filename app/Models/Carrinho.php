@@ -31,6 +31,6 @@ class Carrinho extends Model
         'price',
         'proposta_info',
         'awarded',
-        'id_line'
+        'origin_id'
     ];
 }

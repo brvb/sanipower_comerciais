@@ -886,7 +886,6 @@ class DetalheEncomenda extends Component
             }else{
                 $id_proposta = $prod->id_proposta;
             }
-        
             $arrayProdutos[$count] = [
                 "id" => $count,
                 "reference" => $prod->referencia,
@@ -902,7 +901,7 @@ class DetalheEncomenda extends Component
                 "notes" => $comentario,
                 "visit_id" => $visitaCheck,
                 "budgets_id" =>  $id_proposta,
-                "id_line" => $prod->id_line,
+                "origin_id" => $prod->origin_id,
                 "awarded" => $prod->awarded
             ];
         }
