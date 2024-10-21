@@ -1142,13 +1142,7 @@ class DetalheEncomenda extends Component
         }
 
     }
-    public function redirectPage()
-    {
-        session()->flash('status', 'error');
-        session()->flash('message', 'Erro ao consultar as categorias! (erro : CP-404)');
-        
-        return redirect()->route('encomendas');
-    }
+  
     public function render()
     {
 
@@ -1399,12 +1393,14 @@ class DetalheEncomenda extends Component
         ->where('dh_fim', '>', now())
         ->get();
 
-        // $this->getCategories->category = null;
-        // if ($this->getCategories->category == null) {
-        //     $this->redirectPage();
-        // }
         
-        // dd($products);
+        // if ($this->getCategories->category == null) {
+        //     session()->flash('status', 'error');
+        //     session()->flash('message', 'Erro ao consultar as categorias! (erro : CP-404)');
+            
+        //     return view('pageErro');
+        // }
+
         return view('livewire.encomendas.detalhe-encomenda', [
             "products" => $products,
             "onkit" => $onkit,
@@ -1417,5 +1413,9 @@ class DetalheEncomenda extends Component
             "codEncomenda" => $this->codEncomenda,
             "campanhas" => $campanhas
         ]);
+        
+        
+        // dd($products);
+        
     }
 }
