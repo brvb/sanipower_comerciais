@@ -586,7 +586,7 @@ class Propostas extends Component
             session()->flash('status', 'error');
             session()->flash('message', 'Erro ao consultar as propostas! (erro : PT-401)');
 
-            return view('dashboard');
+            return view('pageErro');
         }
 
         return view('livewire.propostas.propostas',["propostas" => $this->propostas]);

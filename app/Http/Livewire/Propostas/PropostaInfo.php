@@ -150,7 +150,7 @@ class PropostaInfo extends Component
         $this->initProperties();
         $this->proposta = $proposta;
         $propostas = $this->clientesRepository->getPropostaID($proposta->id);
-       
+        // dd($propostas);
 
         if(property_exists($propostas, 'budgets') && isset($propostas->budgets[0])){
             Session::put('proposta',$propostas->budgets[0]);
@@ -275,11 +275,10 @@ public function adjudicarPropostaOpemModal($proposta)
     $this->dispatchBrowserEvent('open-modal-adjudicar-proposta', ["proposta" => $proposta]);
 }
 
-    public function adjudicarProposta($proposta, $status)
+    public function adjudicarProposta($proposta)
     {
-
+        // dd($proposta);
         $flag = false;
-
         foreach($this->selectedItemsAdjudicar as $item)
         {
             if($item == true)
@@ -344,7 +343,7 @@ public function adjudicarPropostaOpemModal($proposta)
 
         session(['OpenTabAdjudicarda' => "OpentabArtigos"]);
 
-        session(['parametroStatusAdjudicar' => $status]);
+        // session(['parametroStatusAdjudicar' => $status]);
 
         session(['rota' => "propostas.proposta"]);
         session(['parametro' => $proposta["id"]]);

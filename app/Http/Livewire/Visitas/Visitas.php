@@ -415,7 +415,7 @@ class Visitas extends Component
             session()->flash('status', 'error');
             session()->flash('message', 'Nao foi encontrado o cliente da visita. (erro : VT-401)');
 
-            return view('dashboard');
+            return view('pageErro');
         }
 
         $this->totalRecords = $this->visitas->total();

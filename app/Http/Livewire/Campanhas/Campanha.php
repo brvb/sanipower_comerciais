@@ -45,7 +45,7 @@ class Campanha extends Component
             session()->flash('status', 'error');
             session()->flash('message', 'Erro ao consultar as campanhas! (erro : CP-404)');
 
-            return view('dashboard');
+            return view('pageErro');
         }
         return view('livewire.Campanhas.campanhas', [
             "products" => $campanhas

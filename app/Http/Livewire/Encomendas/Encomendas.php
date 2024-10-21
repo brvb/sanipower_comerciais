@@ -527,7 +527,7 @@ class Encomendas extends Component
             session()->flash('status', 'error');
             session()->flash('message', 'Erro ao consultar as encomendas! (erro : EC-401)');
 
-            return view('dashboard');
+            return view('pageErro');
         }
       
         return view('livewire.encomendas.encomendas',["encomendas" => $this->encomendas]);
