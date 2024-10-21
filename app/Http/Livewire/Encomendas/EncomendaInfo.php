@@ -148,7 +148,7 @@ class EncomendaInfo extends Component
             session()->put('encomendaINFO', $this->encomenda);
         }
         
-      
+    
         $this->specificProduct = 0;
         $this->filter = false;
 

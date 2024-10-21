@@ -169,6 +169,8 @@ class DetalheEncomenda extends Component
     public function rechargeFamily($id)
     {
         $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
+
+        dd($arrayCliente);
         $this->detailsClientes = $arrayCliente["object"];
         $this->getCategories = $this->encomendasRepository->getCategorias();
         $this->getCategoriesAll = $this->encomendasRepository->getCategorias();
@@ -1140,7 +1142,13 @@ class DetalheEncomenda extends Component
         }
 
     }
-    
+    public function redirectPage()
+    {
+        session()->flash('status', 'error');
+        session()->flash('message', 'Erro ao consultar as categorias! (erro : CP-404)');
+        
+        return redirect()->route('encomendas');
+    }
     public function render()
     {
 
@@ -1390,6 +1398,12 @@ class DetalheEncomenda extends Component
         ->where('destaque', 1)
         ->where('dh_fim', '>', now())
         ->get();
+
+        // $this->getCategories->category = null;
+        // if ($this->getCategories->category == null) {
+        //     $this->redirectPage();
+        // }
+        
         // dd($products);
         return view('livewire.encomendas.detalhe-encomenda', [
             "products" => $products,

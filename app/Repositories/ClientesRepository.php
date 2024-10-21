@@ -260,7 +260,6 @@ class ClientesRepository implements ClientesInterface
         $response = curl_exec($curl);
         
         curl_close($curl);
-        
         $response_decoded = json_decode($response);
         if(isset($response_decoded->Message))
         {
@@ -749,7 +748,6 @@ class ClientesRepository implements ClientesInterface
 
             $itemsPaginate = new LengthAwarePaginator($currentItems, $response_decoded->total_pages,$perPage);
         }
-
     
         return [
             'paginator' => $itemsPaginate,

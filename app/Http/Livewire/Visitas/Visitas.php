@@ -410,7 +410,13 @@ class Visitas extends Component
         })
        ->orderBy('data_inicial','DESC')
        ->paginate($this->perPage);
-      
+
+        if ($this->visitas == null) {
+            session()->flash('status', 'error');
+            session()->flash('message', 'Nao foi encontrado o cliente da visita. (erro : VT-401)');
+
+            return view('dashboard');
+        }
 
         $this->totalRecords = $this->visitas->total();
         $this->pageChosen = $this->visitas->currentPage();

@@ -87,7 +87,6 @@ class EncomendasController extends Controller
 
     public function encomendasList()
     {
-        
         return view('encomendas.clientes');
     }
 }

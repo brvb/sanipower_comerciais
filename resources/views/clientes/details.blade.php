@@ -17,6 +17,8 @@
 
 @push('scripts_footer')
 
+
+
 <script>
 
         document.addEventListener('livewire:load', function() {
