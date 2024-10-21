@@ -736,7 +736,6 @@ class ClientesRepository implements ClientesInterface
 
             $itemsPaginate = new LengthAwarePaginator($currentItems, $response_decoded->total_pages,$perPage);
         }
-
     
         return [
             'paginator' => $itemsPaginate,

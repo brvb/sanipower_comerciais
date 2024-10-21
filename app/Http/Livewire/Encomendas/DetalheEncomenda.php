@@ -1399,10 +1399,10 @@ class DetalheEncomenda extends Component
         ->where('dh_fim', '>', now())
         ->get();
 
-        $this->getCategories->category = null;
-        if ($this->getCategories->category == null) {
-            $this->redirectPage();
-        }
+        // $this->getCategories->category = null;
+        // if ($this->getCategories->category == null) {
+        //     $this->redirectPage();
+        // }
         
         // dd($products);
         return view('livewire.encomendas.detalhe-encomenda', [
