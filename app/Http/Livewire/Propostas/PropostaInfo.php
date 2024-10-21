@@ -277,8 +277,6 @@ class PropostaInfo extends Component
 
     public function adjudicarProposta($proposta, $status)
     {
-      
-        // dd($proposta);
         $flag = false;
         foreach($this->selectedItemsAdjudicar as $item)
         {
@@ -316,41 +314,48 @@ class PropostaInfo extends Component
                 {
                     if($id == $prop["id"])
                     {
-                        $var = Carrinho::where("id_line",$prop["id"])->first();
-                        if($var){
-                            Carrinho::where('id_line', $prop["id"])->update([
-                                "awarded" => $status,
-                            ]);
-                        }else{
-                                Carrinho::create([
-                                "id_proposta" => $proposta["id"],
-                                "id_encomenda" => $idEncomenda,
-                                "id_cliente" => $proposta["number"],
-                                "id_user" => Auth::user()->id,
-                                "referencia" => $prop["reference"],
-                                "designacao" => $prop["description"],
-                                "price" => $prop["price"],
-                                "discount" => $prop["discount"],
-                                "discount2" => $prop["discount2"],
-                                "qtd" => $prop["quantity"],
-                                "iva" => $prop["tax"],
-                                "pvp" => $prop["pvp"],
-                                "model" => $prop["model"],
-                                "image_ref" => "https://storage.sanipower.pt/storage/produtos/".$prop["family_number"]."/".$prop["family_number"]."-".$prop["subfamily_number"]."-".$prop["product_number"].".jpg",
-                                "proposta_info" => $proposta["budget"],
-                                "awarded" =>  $status,
-                                "id_line" => $prop["id"],
-                            ]);
-                        }
+                        Carrinho::create([
+                            "id_proposta" => $proposta["id"],
+                            "id_encomenda" => $idEncomenda,
+                            "id_cliente" => $proposta["number"],
+                            "id_user" => Auth::user()->id,
+                            "referencia" => $prop["reference"],
+                            "designacao" => $prop["description"],
+                            "price" => $prop["price"],
+                            "discount" => $prop["discount"],
+                            "discount2" => $prop["discount2"],
+                            "qtd" => $prop["quantity"],
+                            "iva" => $prop["tax"],
+                            "pvp" => $prop["pvp"],
+                            "model" => $prop["model"],
+                            "image_ref" => "https://storage.sanipower.pt/storage/produtos/".$prop["family_number"]."/".$prop["family_number"]."-".$prop["subfamily_number"]."-".$prop["product_number"].".jpg",
+                            "proposta_info" => $proposta["budget"],
+                        ]);
                     }
                 }
             }
         }
-       
+        // $array = [
+        //     "id_proposta" => $proposta["id"],
+        //     "id_encomenda" => $idEncomenda,
+        //     "id_cliente" => $proposta["number"],
+        //     "id_user" => Auth::user()->id,
+        //     "referencia" => $prop["reference"],
+        //     "designacao" => $prop["description"],
+        //     "price" => $prop["price"],
+        //     "discount" => $prop["discount"],
+        //     "discount2" => $prop["discount2"],
+        //     "qtd" => $prop["quantity"],
+        //     "iva" => $prop["tax"],
+        //     "pvp" => $prop["pvp"],
+        //     "model" => $prop["model"],
+        //     "image_ref" => "https://storage.sanipower.pt/storage/produtos/".$prop["family_number"]."/".$prop["family_number"]."-".$prop["subfamily_number"]."-".$prop["product_number"].".jpg",
+        //     "proposta_info" => $proposta["budget"]
+        // ];
+        // dd($array);        
           
     
         $this->clientes = $this->clientesRepository->getListagemClienteAllFiltro(10,1,"",$proposta["number"],"","","","",0);
-
         session(['OpenTabAdjudicarda' => "OpentabArtigos"]);
 
         // session(['parametroStatusAdjudicar' => $status]);

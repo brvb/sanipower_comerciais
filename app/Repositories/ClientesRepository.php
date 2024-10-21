@@ -261,7 +261,13 @@ class ClientesRepository implements ClientesInterface
         
         curl_close($curl);
         $response_decoded = json_decode($response);
-        // dd($response_decoded);
+        if(isset($response_decoded->Message))
+        {
+        if($response_decoded->Message == "An error has occurred.")
+        {
+            $response_decoded = null;
+        }
+        }
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         if ($response_decoded != null && $response_decoded->success) {
             // Verifica se 'customers' é um array antes de usar array_slice
@@ -269,14 +275,20 @@ class ClientesRepository implements ClientesInterface
     
             $currentItems = array_slice($customers, $perPage * ($currentPage - 1), $perPage);
             $itemsPaginate = new LengthAwarePaginator($currentItems, $response_decoded->total_records, $perPage);
+
+            $arrayInfo = ["paginator" => $itemsPaginate,"nr_paginas" => $response_decoded->total_pages, "nr_registos" => $response_decoded->total_records];
+            return $arrayInfo;
         } else {
             // Caso a resposta não tenha sucesso ou seja nula, retorna um paginador vazio.
             $currentItems = [];
             $itemsPaginate = new LengthAwarePaginator($currentItems, 0, $perPage);
+
+            $arrayInfo = ["paginator" => $itemsPaginate,"nr_paginas" => 0, "nr_registos" => 0];
+            return $arrayInfo;
         }
 
-        $arrayInfo = ["paginator" => $itemsPaginate,"nr_paginas" => $response_decoded->total_pages, "nr_registos" => $response_decoded->total_records];
-        return $arrayInfo; 
+        // $arrayInfo = ["paginator" => $itemsPaginate,"nr_paginas" => $response_decoded->total_pages, "nr_registos" => $response_decoded->total_records];
+        // return $arrayInfo; 
     }
     public function getListagemClienteAllFiltro($perPage,$page,$nomeCliente,$numeroCliente,$zonaCliente,$telemovelCliente,$emailCliente,$nifCliente,$idPhcUser): LengthAwarePaginator
     {
@@ -723,7 +735,13 @@ class ClientesRepository implements ClientesInterface
         // dd(env('SANIPOWER_URL_DIGITAL').'/api/documents/orders?perPage='.$perPage.'&Page='.$page.'&customer_id='.$idCliente.'&Salesman_number='. Auth::user()->id_phc.$string, $response_decoded);
 
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
-
+        if(isset($response_decoded->Message))
+        {
+        if($response_decoded->Message == "An error has occurred.")
+        {
+            $response_decoded = null;
+        }
+        }
         if($response_decoded != null && $response_decoded->orders != null)
         {
             $currentItems = array_slice($response_decoded->orders, $perPage * ($currentPage - 1), $perPage);

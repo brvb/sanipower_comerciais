@@ -103,16 +103,23 @@ class Propostas extends Component
 
 
         if(session('verPropostaPaginator')){
+            $type = 0;
+
+            $propostasArray = $this->clientesRepository->getPropostasClienteFiltro($this->perPage,$this->pageChosen,$this->idCliente,$this->nomeCliente,$this->numeroCliente,$this->zonaCliente,$this->telemovelCliente,$this->emailCliente,$this->nifCliente,$this->estadoProposta,$type,$this->startDate,$this->endDate,$this->statusProsposta);
+            Session::put('verPropostaNomeCliente',$this->nomeCliente);
+            Session::put('verPropostaNumeroCliente',$this->numeroCliente);
+            Session::put('verPropostaZonaCliente',$this->zonaCliente);
+            Session::put('verPropostaTelemovelCliente',$this->telemovelCliente);
+            Session::put('verPropostaNifCliente',$this->nifCliente);
+
+            Session::put('verPropostaPaginator', $propostasArray["paginator"]);
+            Session::put('verPropostaNr_paginas', $propostasArray["nr_paginas"] + 1);
+            Session::put('verPropostaNr_registos', $propostasArray["nr_registos"]);
+
+
             $this->propostas = session('verPropostaPaginator');
-            if(session('verPropostaNr_paginas') == 0 || session('verPropostaNr_paginas')){
-                $this->numberMaxPages = session('verPropostaNr_paginas');
-            }
-            if(session('verPropostaNr_registos')){
-                $this->totalRecords = session('verPropostaNr_registos');
-            }
-            if(session('verPropostaPageChosen')){
-                $this->pageChosen = session('verPropostaPageChosen');
-            }
+            $this->numberMaxPages = session('verPropostaNr_paginas');
+            $this->totalRecords = session('verPropostaNr_registos');
         }else{
             $propostasArray = $this->clientesRepository->getPropostasCliente($this->perPage,$this->pageChosen, $this->idCliente);
             // $this->propostas = $this->clientesRepository->getPropostasCliente($this->perPage,$this->pageChosen, $this->idCliente);
