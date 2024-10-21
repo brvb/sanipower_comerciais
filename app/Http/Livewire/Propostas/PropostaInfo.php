@@ -163,14 +163,26 @@ class PropostaInfo extends Component
 
         $this->showLoaderPrincipal = true;
         foreach ($proposta->lines as $prod) {
-            // dd($prod);
+            
             if (is_object($prod)) {
-                // Se $prod for um objeto
+
                 $this->selectedItemsAdjudicar[$prod->id] = true;
+
+                if($prod->awarded == true)
+                {
+                    $this->selectedItemsAdjudicar[$prod->id] = false;
+                }
+
             } elseif (is_array($prod)) {
-                // Se $prod for um array
+
                 $this->selectedItemsAdjudicar[$prod['id']] = true;
+
+                if($prod->awarded == true)
+                {
+                    $this->selectedItemsAdjudicar[$prod['id']] = false;
+                }
             }
+            
         }
         
     }
@@ -314,9 +326,9 @@ class PropostaInfo extends Component
                 {
                     if($id == $prop["id"])
                     {
-                        $var = Carrinho::where("id_line",$prop["id"])->first();
+                        $var = Carrinho::where("origin_id",$prop["id"])->first();
                         if($var){
-                            Carrinho::where('id_line', $prop["id"])->update([
+                            Carrinho::where('origin_id', $prop["id"])->update([
                                 "awarded" => $status,
                             ]);
                         }else{
@@ -337,7 +349,7 @@ class PropostaInfo extends Component
                                 "image_ref" => "https://storage.sanipower.pt/storage/produtos/".$prop["family_number"]."/".$prop["family_number"]."-".$prop["subfamily_number"]."-".$prop["product_number"].".jpg",
                                 "proposta_info" => $proposta["budget"],
                                 "awarded" =>  $status,
-                                "id_line" => $prop["id"],
+                                "origin_id" => $prop["id"],
                             ]);
                         }
                     }
