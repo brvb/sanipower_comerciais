@@ -177,7 +177,7 @@ class PropostaInfo extends Component
 
                 $this->selectedItemsAdjudicar[$prod['id']] = true;
 
-                if($prod->awarded == true)
+                if($prod['awarded'] == true)
                 {
                     $this->selectedItemsAdjudicar[$prod['id']] = false;
                 }
