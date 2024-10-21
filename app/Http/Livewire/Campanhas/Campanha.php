@@ -40,6 +40,13 @@ class Campanha extends Component
         ->where('destaque', 1)
         ->where('dh_fim', '>', now())
         ->get();
+
+        if ($campanhas == null) {
+            session()->flash('status', 'error');
+            session()->flash('message', 'Erro ao consultar as campanhas! (erro : CP-404)');
+
+            return view('dashboard');
+        }
         return view('livewire.Campanhas.campanhas', [
             "products" => $campanhas
         ]);

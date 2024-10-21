@@ -260,7 +260,6 @@ class ClientesRepository implements ClientesInterface
         $response = curl_exec($curl);
         
         curl_close($curl);
-        
         $response_decoded = json_decode($response);
         // dd($response_decoded);
         $currentPage = LengthAwarePaginator::resolveCurrentPage();

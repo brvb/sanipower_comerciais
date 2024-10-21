@@ -555,6 +555,13 @@ class Propostas extends Component
         //     dD($enc);
         //     if($enc->id == $idProposta)
         //     {
+            
+        if ($proposta == null) {
+            session()->flash('status', 'error');
+            session()->flash('message', 'Nao foi encontrado os detalhes dessa proposta! (erro : EC-404)');
+
+            return redirect()->route('propostas');
+        }
         $json = json_encode($proposta);
         $object = json_decode($json, false);
 
@@ -575,6 +582,13 @@ class Propostas extends Component
         
     public function render()
     {
+        if ($this->propostas == null) {
+            session()->flash('status', 'error');
+            session()->flash('message', 'Erro ao consultar as propostas! (erro : PT-401)');
+
+            return view('dashboard');
+        }
+
         return view('livewire.propostas.propostas',["propostas" => $this->propostas]);
     }
 }

@@ -20,6 +20,20 @@
 
 @push('scripts_footer')
 
+    @if (session('status') && session('message'))
+        <script>
+            window.onload = function() {
+                let status = '{{ session('status') }}';
+                let message = '{{ session('message') }}';
+
+                if (status === 'success') {
+                    toastr.success(message);
+                } else if (status === 'error') {
+                    toastr.error(message);
+                }
+            };
+        </script>
+    @endif
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         document.addEventListener('livewire:load', function() {

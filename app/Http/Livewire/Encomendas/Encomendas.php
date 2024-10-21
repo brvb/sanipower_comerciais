@@ -483,12 +483,17 @@ class Encomendas extends Component
         // {
         //     if($enc->id == $idEncomenda)
         //     {
+        if ($encomenda == null) {
+            session()->flash('status', 'error');
+            session()->flash('message', 'Nao foi encontrado os detalhes dessa encomenda! (erro : EC-404)');
 
-  
+            return redirect()->route('encomendas');
+        }
+      
 
         $json = json_encode($encomenda);
         $object = json_decode($json, false);
-
+     
         // dd($object);
                 Session::put('rota','encomendas');
                 Session::put('encomenda', $object);
@@ -518,6 +523,13 @@ class Encomendas extends Component
         
     public function render()
     {
+        if ($this->encomendas == null) {
+            session()->flash('status', 'error');
+            session()->flash('message', 'Erro ao consultar as encomendas! (erro : EC-401)');
+
+            return view('dashboard');
+        }
+      
         return view('livewire.encomendas.encomendas',["encomendas" => $this->encomendas]);
     }
 }
