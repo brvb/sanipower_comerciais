@@ -143,7 +143,7 @@
 					<td valign="top" style = "border-bottom:none !important; border-top:none; !important">{{ $line['reference'] }}</td>
 					<td style = "text-align: right;" valign="top" style = "border-bottom:none !important; border-top:none; !important">{{ $line['description'] }}</td>
 					<td style = "text-align: right;" valign="top" style = "border-bottom:none !important; border-top:none; !important">{{ trim(number_format(floatval($line['quantity']), 0)) }}</td>
-					<td style = "text-align: right;" valign="top" style = "border-bottom:none !important; border-top:none; !important">{{ floatval($line['pvp']) }}</td>
+					<td style = "text-align: right;" valign="top" style = "border-bottom:none !important; border-top:none; !important">{{ floatval($line['pvp']) }}€</td>
 					<td style = "text-align: right;" valign="top" style = "border-bottom:none !important; border-top:none; !important">
 						@if($line['discount'] > 0)  
 							{{ number_format($line['discount'], 0) }} %
@@ -152,8 +152,8 @@
 							+ {{ number_format($line['discount2'], 0) }} %
 						@endif
 					</td>
-					<td style = "text-align: right;" valign="top" style = "border-bottom:none !important; border-top:none; !important">{{ floatval($line['price']) }}</td>
-					<td style = "text-align: right;" valign="top" style = "border-bottom:none !important; border-top:none; !important">{{ floatval($line['quantity']) * floatval($line['price']) }}</td>
+					<td style = "text-align: right;" valign="top" style = "border-bottom:none !important; border-top:none; !important">{{ floatval($line['price']) }}€</td>
+					<td style = "text-align: right;" valign="top" style = "border-bottom:none !important; border-top:none; !important">{{ floatval($line['quantity']) * floatval($line['price']) }}€</td>
 				</tr>
 				<?php
 					$total = isset($total) ? $total : 0;

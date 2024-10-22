@@ -343,8 +343,10 @@ class Tarefas extends Component
         $nameClient = $this->tarefasRepository->getDetalhesCliente(json_decode($this->clienteVisitaID));
 
         $this->clienteVisitaName = $nameClient->customers[0]->name;
+        
+        $noClient = $nameClient->customers[0]->no;
 
-        $response = $this->visitasRepository->addVisitaDatabase(json_decode($this->clienteVisitaID),$this->clienteVisitaName, preg_replace('/[a-zA-Z]/', '', $this->dataInicialVisita), preg_replace('/[a-zA-Z]/', '', $this->horaInicialVisita), preg_replace('/[a-zA-Z]/', '', $this->horaFinalVisita), $this->tipoVisitaEscolhidoVisita, $this->assuntoTextVisita);
+        $response = $this->visitasRepository->addVisitaDatabase($noClient, json_decode($this->clienteVisitaID),$this->clienteVisitaName, preg_replace('/[a-zA-Z]/', '', $this->dataInicialVisita), preg_replace('/[a-zA-Z]/', '', $this->horaInicialVisita), preg_replace('/[a-zA-Z]/', '', $this->horaFinalVisita), $this->tipoVisitaEscolhidoVisita, $this->assuntoTextVisita);
 
         $tenant = env('MICROSOFT_TENANT');
         $clientId = env('MICROSOFT_CLIENT_ID');

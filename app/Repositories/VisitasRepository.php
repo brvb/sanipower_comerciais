@@ -522,7 +522,7 @@ class VisitasRepository implements VisitasInterface
     }
 
 
-    public function addVisitaDatabase($clientID,$client, $dataInicial,$horaInicial, $horaFinal, $tipoVisitaEscolhido, $assuntoText): JsonResponse
+    public function addVisitaDatabase($noClient, $clientID,$client, $dataInicial,$horaInicial, $horaFinal, $tipoVisitaEscolhido, $assuntoText): JsonResponse
     {
         $addVisita = VisitasAgendadas::create([
             "id_tipo_visita" => $tipoVisitaEscolhido,
@@ -537,6 +537,13 @@ class VisitasRepository implements VisitasInterface
             "finalizado" => 0
         ]);
 
+        $visitaCreate = Visitas::create([
+            "id_visita_agendada" => $addVisita->id,
+            "numero_cliente" => $noClient,
+            "assunto" => $assuntoText,
+            "data" => date('Y-m-d'),
+            "user_id" => Auth::user()->id
+        ]);
 
         if ($addVisita) {
             // Inserção bem-sucedida
