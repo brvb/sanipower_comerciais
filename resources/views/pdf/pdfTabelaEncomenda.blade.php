@@ -1,145 +1,207 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Encomenda</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            font-size: 12px;
-            color: #333;
-        }
-        .container {
-            width: 90%;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #333;
-            padding-bottom: 10px;
-        }
-        .header img {
-            max-width: 150px;
-            margin-bottom: 10px;
-        }
-        .header h1 {
-            margin: 0;
-            font-size: 24px;
-        }
-        .header p {
-            margin: 5px 0;
-            font-size: 14px;
-        }
-        .details, .items, .totals {
-            width: 100%;
-            margin-top: 20px;
-            border-collapse: collapse;
-        }
-        .details th, .details td,
-        .items th, .items td,
-        .totals th, .totals td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        .details th, .items th, .totals th {
-            background-color: #f2f2f2;
-        }
-        .details th {
-            width: 20%;
-        }
-        .totals th {
-            width: 50%;
-        }
-        .totals {
-            margin-top: 40px;
-        }
-        .totals td {
-            text-align: right;
-        }
-    </style>
-</head>
+
 <body>
      @php
         $encomendaData = json_decode($encomenda, true);
+        // dd($encomendaData);
+        $base_url = 'http://sanipower.pt'
     @endphp
-    <div class="container">
-        <div class="header">
-            <img src="{{asset('logo/sanipower.png')}}" alt="Logo da Empresa">
-            <h1>Encomenda</h1>
-            <p>Empresa Sanipower, S.A.</p>
-            <p>Endereço:  R. de Nossa Sra. de Fátima 351, 4495-364 Beiriz</p>
-            <p>Telefone: (+351) 252 249 460</p>
-            <p>Email: geral@sanipower.pt</p>
-        </div>
-        <table class="details">
-            <tr>
-                <th>ID da Proposta</th>
-                <td>{{ $encomendaData['id'] }}</td>
-                <th>Data</th>
-                <td>{{ date('d/m/Y', strtotime($encomendaData['date'])) }}</td>
-            </tr>
-            <tr>
-                <th>Nome do Cliente</th>
-                <td>{{ $encomendaData['name'] }}</td>
-                <th>NIF</th>
-                <td>{{ $encomendaData['nif'] }}</td>
-            </tr>
-            <tr>
-                <th>Morada</th>
-                <td>{{ $encomendaData['address'] }}</td>
-                <th>Cidade</th>
-                <td>{{ $encomendaData['city'] }}</td>
-            </tr>
-            <tr>
-                <th>Localidade</th>
-                <td>{{ $encomendaData['zipcode'] }}</td>
-                <th>Zona</th>
-                <td>{{ $encomendaData['zone'] }}</td>
-            </tr>
-        </table>
-        <table class="items">
-            <thead>
-                <tr>
-                    {{-- <th>Img</th> --}}
-                    <th>Produto</th>
-                    <th>Descrição</th>
-                    <th>Quantidade</th>
-                    <th>Preço</th>
-                    <th>Desconto</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($encomendaData['lines'] as $line)
-                    <tr>
-                        {{-- <td>
-                            @if($line['product_number'] != "")
-                              @if(isset($line['image_ref']))
-                                <img style="width:45px;" src="{{ $line['image_ref'] }}" >
-                               @endif
-                            @endif    
-                            
-                        </td> --}}
-                        <td>{{ $line['id'] }}</td>
-                        <td>{{ $line['description'] }}</td>
-                        <td>{{ $line['quantity'] }}</td>
-                        <td>{{ number_format($line['price'], 2, ',', '.') }}</td>
-                        <td>{{ number_format($line['discount'], 2, ',', '.') }}%</td>
-                        <td>{{ number_format($line['total'], 2, ',', '.') }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-        <table class="totals">
-            <tr>
-                <th>Preço da encomenda</th>
-                <td>{{ number_format($encomendaData['total'], 2, ',', '.') }}</td>
-            </tr>
-        </table>
-    </div>
-</body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Encomenda</title>
+	<style>
+		 @font-face {
+        font-family: "DejaVuSans";
+        src: url("{{ asset('assets/fonts/DejaVuSans.ttf') }}") format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+    @font-face {
+        font-family: "DejaVuSans-Bold";
+        src: url("{{ asset('assets/fonts/DejaVuSans-Bold.ttf') }}") format('truetype');
+        font-weight: bold;
+        font-style: normal;
+    }           
+			body, html {
+			font-family: DejaVuSans!important;
+			font-size: 11px!important;
+		}
+		.tabela {
+		width: 96%; /* Garante que a tabela ocupe toda a largura disponível */
+		border-spacing: 0; /* Remove espaçamento entre as células da tabela */
+		border-collapse: collapse; /* Assegura que as bordas colapsem para parecer mais estreito */
+	}
+		.tabela tr {
+			border-bottom: solid 1px #000;
+		}
+	.tabela th, .tabela td {
+		padding: 2px; /* Mantém o espaçamento entre o conteúdo e as bordas */
+		}
+		.fonte {
+			font-family: "DejaVuSans-Bold"!important;
+			font-size: 12px;
+		}
+		.header {
+			text-align: center;
+		}
+		.right-align {
+			text-align: right;
+		}
+		.bold {
+			font-weight: bold;
+		}
+		footer{
+			position: fixed; 
+			bottom: 00px; 
+			left: 0px; 
+			right: 0px;
+			height: 40px; 
+
+			/** Extra personal styles **/
+			color: white;
+			text-align: center;
+			line-height: 20px;
+		}
+	</style>    
+	<link rel="stylesheet" href="{{asset('assets/vendors/bootstrap/bootstrap.min.css')}}">
+	</head>
+	<body>
+		<table style="width: 100%;">
+			<tr>
+				<td style="width: 400px;">
+					<img src="{{asset('logo/sanidigital.png')}}" alt="Logo">
+				</td>
+				<td class="header">
+					<table>
+						<tr>
+							<td class="fonte"><b> {{ $encomendaData['order'] }}</b></td>
+						</tr>
+						<tr>
+							<td>Data: {{ $encomendaData['date'] }}</td>
+						</tr>
+						<tr>
+							<td>2.ª Via</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+		<br>&nbsp;<br>
+		<table style="width: 19cm;">
+			<tr>
+				<td style="width: 150px;" class="fonte" valign="top"><b>Os seus dados</b></td>
+				<td>
+					{{ stripslashes($encomendaData['name']) }}<br>
+					{{ stripslashes($encomendaData['address']) }}<br>
+					{{ stripslashes($encomendaData['zipcode']) . ' ' . stripslashes($encomendaData['zone']) }}
+				</td>
+			</tr>
+		</table>
+		<br>
+		<table style="width: 18.5cm;" class="tabela">
+			<tr>
+				<td style="width: 150px; border-bottom: solid 1px #000000;" class="fonte"><strong>Vossa referência<strong></td>
+				<td style="border-bottom: solid 1px #000000;">{{ $encomendaData['id'] }}</td>
+			</tr>
+			<tr style="border-bottom: solid 1px #000000;">
+				<td style="width: 150px; border-bottom: solid 1px #000000;" class="fonte"><strong>Observações</strong></td>
+				<td style="border-bottom: solid 1px #000000;">{{ $encomendaData['obs'] }}</td>
+			</tr>
+			<tr>
+				<td style="border-bottom: solid 1px #000000;" class="fonte"><strong>Entrega</strong></td>
+				<td style="border-bottom: solid 1px #000000;">{{ $encomendaData['delivery'] }}</td>
+			</tr>
+			<tr>
+				<td style="border-bottom: solid 1px #000000;" class="fonte"><strong>Pagamento</strong></td>
+				<td style="border-bottom: solid 1px #000000;">{{ $encomendaData['payment_conditions'] }}</td>
+			</tr>
+		</table>
+		<br>&nbsp;<br>
+		<table class="tabela">
+			<thead>
+				<tr>
+					<th class="fonte" style="width: 10%; padding: 2px 0px;">Referência</th> <!-- Definir proporção ou valor fixo -->
+					<th class="fonte" style="width: 30%;">Produto</th>
+					<th class="fonte" style="width: 10%; text-align: center;">QTD</th>
+					<th class="fonte" style="width: 10%; text-align: center;">PVP</th>
+					<th class="fonte" style="width: 10%; text-align: center;">Desc.</th>
+					<th class="fonte" style="width: 15%; text-align: center;">Preço</th>
+					<th class="fonte" style="width: 15%; text-align: center;">Total</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+					$total = 0;
+					$total_iva = 0;
+					$conta_linhas = 0;
+				?>
+				@foreach($encomendaData['lines'] as $line)
+				<tr style = "border-bottom:none !important; border-top:none; !important">
+					<td valign="top" style = "border-bottom:none !important; border-top:none; !important">{{ $line['reference'] }}</td>
+					<td style = "text-align: right;" valign="top" style = "border-bottom:none !important; border-top:none; !important">{{ $line['description'] }}</td>
+					<td style = "text-align: right;" valign="top" style = "border-bottom:none !important; border-top:none; !important">{{ trim(number_format(floatval($line['quantity']), 0)) }}</td>
+					<td style = "text-align: right;" valign="top" style = "border-bottom:none !important; border-top:none; !important">{{ floatval($line['pvp']) }}</td>
+					<td style = "text-align: right;" valign="top" style = "border-bottom:none !important; border-top:none; !important">
+						@if($line['discount'] > 0)  
+							{{ number_format($line['discount'], 0) }} %
+						@endif
+						@if($line['discount2'] > 0)
+							+ {{ number_format($line['discount2'], 0) }} %
+						@endif
+					</td>
+					<td style = "text-align: right;" valign="top" style = "border-bottom:none !important; border-top:none; !important">{{ floatval($line['price']) }}</td>
+					<td style = "text-align: right;" valign="top" style = "border-bottom:none !important; border-top:none; !important">{{ floatval($line['quantity']) * floatval($line['price']) }}</td>
+				</tr>
+				<?php
+					$total = isset($total) ? $total : 0;
+					$total += floatval($line['quantity']) * floatval($line['price']);
+	
+					$tabela = $line['tax'];
+					$taxa_iva = $tabela / 100 + 1;
+	
+					$total_iva = isset($total_iva) ? $total_iva : 0;
+					$total_iva += floatval($line['quantity']) * floatval($line['price']) * $taxa_iva;
+	
+					$conta_linhas = isset($conta_linhas) ? $conta_linhas + 1 : 1;
+				?>
+				<tr style="border-bottom: solid 1px #000000; border-top:none !important;">
+					<td style="border-bottom: solid 1px #000000; border-top:none !important;">&nbsp;</td>
+					<td class = "fonte" style="border-bottom: solid 1px #000000; border-top:none !important;" colspan="6"><strong>Notas:</strong></td>
+				</tr>
+				@endforeach
+				
+				<tr style="background:#fff;" style = "border-bottom:none;">
+					<td style="border:none;">&nbsp;</td>
+					<td style="border:none;">&nbsp;</td>
+					<td style="border:none;">&nbsp;</td>
+					<td style="border:none;">&nbsp;</td>
+					<td class="text-right fonte" colspan="2" style = "border-bottom:none;"><strong>Total s/IVA</strong></td>
+					<td class="text-right fonte" ><strong>{{ $total }}</strong></td>
+				</tr>
+				<tr style="background:#fff;" style = "border-bottom:none; border-top:none;">
+					<td style="border:none;">&nbsp;</td>
+					<td style="border:none;">&nbsp;</td>
+					<td style="border:none;">&nbsp;</td>
+					<td style="border:none;">&nbsp;</td>
+					<td class="text-right fonte" colspan="2"><strong>Total c/IVA</strong></td>
+					<td class="text-right fonte" style = "border-bottom:none;"><strong>{{ $total_iva }}</strong></td>
+				</tr>
+			</tbody>
+		</table>
+	
+		<footer>
+			<table>
+				<tr style = "border-bottom:none; border-top:none;">
+					<td><img src="{{asset('logo/rodape.png')}}" height="50"></td>
+				</tr>
+			</table>
+            Copyright &copy; <?php echo date("Y");?> 
+        </footer>
+
+	</body>
 </html>
+	<?php /**PATH /home/usr2019/app/Standard//Carrinho_email/Views/Carrinho_email_pdf_2via.blade.php ENDPATH**/ ?>
+	
