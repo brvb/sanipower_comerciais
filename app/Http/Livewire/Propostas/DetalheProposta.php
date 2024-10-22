@@ -1192,12 +1192,10 @@ class DetalheProposta extends Component
                
                 $emailArray = explode("; ", $emailCliente["object"]->customers[0]->email);
 
-     
-                // tem que ativar quando for passar para a oficial
-                // foreach($emailArray as $i => $email)
-                // {
-                //     Mail::to($email)->send(new SendProposta($pdfContent));
-                // }
+                foreach($emailArray as $i => $email)
+                {
+                    Mail::to($email)->send(new SendProposta($pdfContent));
+                }
 
             }
           
