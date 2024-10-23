@@ -137,36 +137,58 @@
 					$total = 0;
 					$total_iva = 0;
 					$conta_linhas = 0;
+					$discount = 0;
+					$discount2 = 0;
+					$total_SIVA = 0;
 				?>
 				@foreach($encomendaData['lines'] as $line)
 				<tr style = "border-bottom:none !important; border-top:none; !important">
-					<td valign="top" style = "border-bottom:none !important; border-top:none; !important">{{ $line['reference'] }}</td>
-					<td style = "text-align: right;" valign="top" style = "border-bottom:none !important; border-top:none; !important">{{ $line['description'] }}</td>
-					<td style = "text-align: right;" valign="top" style = "border-bottom:none !important; border-top:none; !important">{{ trim(number_format(floatval($line['quantity']), 0)) }}</td>
-					<td style = "text-align: right;" valign="top" style = "border-bottom:none !important; border-top:none; !important">{{ floatval($line['pvp']) }}€</td>
-					<td style = "text-align: right;" valign="top" style = "border-bottom:none !important; border-top:none; !important">
+					<td valign="top">{{ $line['reference'] }}</td>
+					<td style = "text-align: left;" valign="top">{{ $line['description'] }}</td>
+					<td style = "text-align: center;" valign="top">{{ trim(number_format(floatval($line['quantity']), 0)) }}</td>
+					<td style = "text-align: center;" valign="top">{{ floatval($line['pvp']) }}€</td>
+					<td style = "text-align: center;" valign="top">
 						@if($line['discount'] > 0)  
-							{{ number_format($line['discount'], 0) }} %
+							{{ number_format($line['discount'], 0) }}%
 						@endif
 						@if($line['discount2'] > 0)
-							+ {{ number_format($line['discount2'], 0) }} %
+							+ {{ number_format($line['discount2'], 0) }}%
 						@endif
 					</td>
-					<td style = "text-align: right;" valign="top" style = "border-bottom:none !important; border-top:none; !important">{{ floatval($line['price']) }}€</td>
-					<td style = "text-align: right;" valign="top" style = "border-bottom:none !important; border-top:none; !important">{{ floatval($line['quantity']) * floatval($line['price']) }}€</td>
+					<?php
+					
+					$discount = $line['discount'];
+
+					$discount = $discount / 100;
+
+					$discount = $discount * floatval($line['price']);
+
+					$discount2 = $line['discount2'];
+
+					$discount2 = $discount2 / 100;
+
+					$discount2 = (floatval($line['price']) - $discount) * $discount2;
+
+					$desconto = $discount + $discount2;
+
+					$price = floatval($line['price']) - $desconto;
+
+					$total = isset($total) ? $total : 0;
+					$total = floatval($line['quantity']) * floatval($price);
+					
+					?>
+					<td style = "text-align: center;" valign="top">{{ floatval($line['price']) }}€</td>
+					<td style = "text-align: center;" valign="top">{{ $total }}€</td>
 				</tr>
 				<?php
-					$total = isset($total) ? $total : 0;
-					$total += floatval($line['quantity']) * floatval($line['price']);
-	
+					$total_SIVA += $total;
+
 					$tabela = $line['tax'];
 					$taxa_iva = $tabela / 100 + 1;
 	
 					$total_iva = isset($total_iva) ? $total_iva : 0;
-					$total_iva += floatval($line['quantity']) * floatval($line['price']) * $taxa_iva;
-	
-					$conta_linhas = isset($conta_linhas) ? $conta_linhas + 1 : 1;
-				?>
+					$total_iva = floatval($total_SIVA) * $taxa_iva;
+					?>
 				<tr style="border-bottom: solid 1px #000000; border-top:none !important;">
 					<td style="border-bottom: solid 1px #000000; border-top:none !important;">&nbsp;</td>
 					<td class = "fonte" style="border-bottom: solid 1px #000000; border-top:none !important;" colspan="6"><strong>Notas:</strong></td>
@@ -179,7 +201,7 @@
 					<td style="border:none;">&nbsp;</td>
 					<td style="border:none;">&nbsp;</td>
 					<td class="text-right fonte" colspan="2" style = "border-bottom:none;"><strong>Total s/IVA</strong></td>
-					<td class="text-right fonte" ><strong>{{ $total }}</strong></td>
+					<td class="text-right fonte" ><strong>{{ $total_SIVA }}€</strong></td>
 				</tr>
 				<tr style="background:#fff;" style = "border-bottom:none; border-top:none;">
 					<td style="border:none;">&nbsp;</td>
@@ -187,7 +209,7 @@
 					<td style="border:none;">&nbsp;</td>
 					<td style="border:none;">&nbsp;</td>
 					<td class="text-right fonte" colspan="2"><strong>Total c/IVA</strong></td>
-					<td class="text-right fonte" style = "border-bottom:none;"><strong>{{ $total_iva }}</strong></td>
+					<td class="text-right fonte" style = "border-bottom:none;"><strong>{{ $total_iva }}€</strong></td>
 				</tr>
 			</tbody>
 		</table>

@@ -765,7 +765,6 @@ class DetalheVisitas extends Component
 
         $dataPHC = date('Y-m-d')."T".date('H:i:s');
 
-        dd($visitaCreate);
 
         $getVisitaID = VisitasAgendadas::where('id',$this->idVisita)->first();
       
