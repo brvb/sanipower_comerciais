@@ -246,8 +246,9 @@ class Visitas extends Component
         $arrayCliente = $this->clientesRepository->getDetalhesCliente(json_decode($this->clienteVisitaID));
         $cliente = $arrayCliente["object"];
 
+        $noClient = $cliente->customers[0]->no;
 
-        $response = $this->visitasRepository->addVisitaDatabase($cliente->customers[0]->id, $cliente->customers[0]->name,preg_replace('/[a-zA-Z]/', '', $this->dataInicial), preg_replace('/[a-zA-Z]/', '', $this->horaInicial), preg_replace('/[a-zA-Z]/', '', $this->horaFinal), $this->tipoVisitaEscolhido, $this->assuntoText);
+        $response = $this->visitasRepository->addVisitaDatabase($noClient,$cliente->customers[0]->id, $cliente->customers[0]->name,preg_replace('/[a-zA-Z]/', '', $this->dataInicial), preg_replace('/[a-zA-Z]/', '', $this->horaInicial), preg_replace('/[a-zA-Z]/', '', $this->horaFinal), $this->tipoVisitaEscolhido, $this->assuntoText);
 
         $tenant = env('MICROSOFT_TENANT');
         $clientId = env('MICROSOFT_CLIENT_ID');
