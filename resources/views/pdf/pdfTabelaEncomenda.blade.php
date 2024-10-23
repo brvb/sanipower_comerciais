@@ -142,11 +142,15 @@
 					$total_SIVA = 0;
 				?>
 				@foreach($encomendaData['lines'] as $line)
+				@php
+					$pvp = floatval($line['pvp']);
+					$pvp_formatado = number_format($pvp, 2, '.', '');
+				@endphp
 				<tr style = "border-bottom:none !important; border-top:none; !important">
 					<td valign="top">{{ $line['reference'] }}</td>
 					<td style = "text-align: left;" valign="top">{{ $line['description'] }}</td>
 					<td style = "text-align: center;" valign="top">{{ trim(number_format(floatval($line['quantity']), 0)) }}</td>
-					<td style = "text-align: center;" valign="top">{{ floatval($line['pvp']) }}€</td>
+					<td style = "text-align: center;" valign="top">{{ floatval($pvp_formatado) }}€</td>
 					<td style = "text-align: center;" valign="top">
 						@if($line['discount'] > 0)  
 							{{ number_format($line['discount'], 0) }}%
@@ -156,7 +160,8 @@
 						@endif
 					</td>
 					<?php
-					
+					$line['price'] = number_format($line['price'], 2, '.', '');
+
 					$discount = $line['discount'];
 
 					$discount = $discount / 100;
@@ -174,8 +179,8 @@
 					$price = floatval($line['price']) - $desconto;
 
 					$total = isset($total) ? $total : 0;
-					$total = floatval($line['quantity']) * floatval($price);
-					
+					$total = floatval($line['quantity']) * floatval($price);	
+					// $total = number_format($total, 2, '.', '');				
 					?>
 					<td style = "text-align: center;" valign="top">{{ floatval($line['price']) }}€</td>
 					<td style = "text-align: center;" valign="top">{{ $total }}€</td>
@@ -188,6 +193,7 @@
 	
 					$total_iva = isset($total_iva) ? $total_iva : 0;
 					$total_iva = floatval($total_SIVA) * $taxa_iva;
+					$total_iva = number_format($total_iva, 2, '.', '');
 					?>
 				<tr style="border-bottom: solid 1px #000000; border-top:none !important;">
 					<td style="border-bottom: solid 1px #000000; border-top:none !important;">&nbsp;</td>
@@ -222,7 +228,6 @@
 			</table>
             Copyright &copy; <?php echo date("Y");?> 
         </footer>
-
 	</body>
 </html>
 	<?php /**PATH /home/usr2019/app/Standard//Carrinho_email/Views/Carrinho_email_pdf_2via.blade.php ENDPATH**/ ?>

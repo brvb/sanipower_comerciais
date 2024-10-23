@@ -10,6 +10,7 @@ use Livewire\Component;
 use App\Interfaces\ClientesInterface;
 use App\Repositories\ClientesRepository;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Session;
 
 
 class Clientes extends Component
@@ -76,6 +77,7 @@ class Clientes extends Component
             $this->numberMaxPages = $arrayClientes["nr_paginas"];
             $this->totalRecords = $arrayClientes["nr_registos"];
         }
+        Session::put('rota','clientes');
     }
     
     public function updatedNomeCliente()
@@ -287,6 +289,7 @@ class Clientes extends Component
     public function openDetailCliente($id)
     {
         session(['rota' => "clientes"]);
+        Session::put('rota','clientes');
         session(['parametro' => ""]);
 
         return redirect()->route('clientes.detail',["id" => $id]);

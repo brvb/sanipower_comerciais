@@ -108,6 +108,8 @@ class Visitas extends Component
             $this->agendarVisita($idAgendar,$infoCliente->customers[0]->name);
         }
 
+        Session::put('rota','visitas');
+
     }
 
 
