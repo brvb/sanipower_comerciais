@@ -19,7 +19,6 @@
         @foreach($tabela as $index => $item)
 
             <tr>
-                <td>{{  isset($item->Document) ? $item->Document : null }}</td>
                 <td>{{ $item->Document ?? null }}</td>
                 <td>{{ $item->Document_number ?? null }}</td>
                 <td>{{ $item->Date ?? null }}</td>
