@@ -852,7 +852,7 @@
                                                                 <i class="ti-package text-light dropdownIcon-toggle" style="margin:0;padding:0;"></i>
                                 
                                                                
-                                                                <ul class="dropdownIcon-menu" style="color:black;left:-191px!important;">
+                                                                <ul class="dropdownIcon-menu" style="color:black;left:-350px!important;">
                                                                     <li><i class="fa fa-play icon-play"></i></li>
                                                                     <li style="border-bottom: 1px solid;">
                                                                         <h6>Quantidade p/Caixa</h6>

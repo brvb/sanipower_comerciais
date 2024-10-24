@@ -60,7 +60,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-lg-4">
+                            {{-- <div class="col-lg-4">
                                 <label class="mt-2">Comentário</label>
                                 <div class="input-group">
                                     <select name="perPage" wire:model.lazy="estadoEncomenda" class="form-control">
@@ -69,9 +69,9 @@
                                         <option value="2">Sem comentário</option>
                                     </select>
                                 </div>
-                            </div>
+                            </div> --}}
                             
-                            <div class="col-lg-2">
+                            <div class="col-lg-4">
                                 <label class="mt-2">Data Inicial</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
@@ -81,7 +81,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-2">
+                            <div class="col-lg-4">
                                 <label class="mt-2">Data Final</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">

@@ -74,7 +74,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row mb-2">
-                        <div class="col-lg-6">
+                        {{-- <div class="col-lg-6">
                             <label class="mt-2">Estado Encomenda</label>
                             <div class="input-group">
                                 <select name="estadoEncomenda" wire:model.lazy="estadoEncomenda" class="form-control">
@@ -83,7 +83,7 @@
                                     <option value="2">Sem comentário</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="col-lg-6">
                             <label class="mt-2">Tipo da Encomenda</label>
                             <div class="input-group">

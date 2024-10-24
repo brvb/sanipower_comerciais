@@ -244,7 +244,7 @@
                     </div>
                 </div>
                         <br>
-                    <div class="row form-group mt-2">
+                    {{-- <div class="row form-group mt-2">
                         <div class="col-12 pr-0">
 
                             <div class="accordion" id="accordionExample"> 
@@ -254,14 +254,14 @@
                                         <h4 style="margin: 0;">Comentários</h4>
                                       {{-- <button class="btn btn-sm btn-primary text-left" style="margin-left: 10px;margin-right: 10px;" type="button"data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                             <i class="fas fa-info"></i>
-                                        </button> --}}
+                                        </button> 
                                
                                     </div>
                                     {{-- <button class="btn btn-block text-left pl-0" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                                         
-                                    </button> --}}
+                                    </button>
     
-                                    {{-- <div id="collapseTwo" class="collapse show"> --}}
+                                    {{-- <div id="collapseTwo" class="collapse show"> 
                                     <div>
                                         <div class="card-body">
                                             <div class="timeline-wrapper">
@@ -336,9 +336,9 @@
                             </div>
                         </div>
 
-                    </div>
+                    </div> 
                 </div>
-            </div>
+            </div>--}}
              </div>
             <div class="tab-pane fade {{ $tabDetalhesEncomendas }} m-3" id="tab6" style="border: none;">
            
