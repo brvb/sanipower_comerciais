@@ -182,13 +182,14 @@
 
                    $total = isset($total) ? $total : 0;
                    $total = floatval($line['quantity']) * floatval($price);	
-                   // $total = number_format($total, 2, '.', '');				
+                   $total = number_format($total, 2, '.', '');				
                    ?>
                    <td style = "text-align: center;" valign="top">{{ floatval($line['price']) }}€</td>
                    <td style = "text-align: center;" valign="top">{{ $total }}€</td>
                </tr>
                <?php
                    $total_SIVA += $total;
+                   $total_SIVA = number_format($total_SIVA, 2, '.', '');
 
                    $tabela = $line['tax'];
                    $taxa_iva = $tabela / 100 + 1;

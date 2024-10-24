@@ -140,11 +140,12 @@
 					$discount = 0;
 					$discount2 = 0;
 					$total_SIVA = 0;
+					$pr = 0;
 				?>
 				@foreach($encomendaData['lines'] as $line)
 				@php
 					$pvp = floatval($line['pvp']);
-					$pvp_formatado = number_format($pvp, 2, '.', '');
+					$pvp_formatado = number_format($pvp, 3, '.', '');
 				@endphp
 				<tr style = "border-bottom:none !important; border-top:none; !important">
 					<td valign="top">{{ $line['reference'] }}</td>
@@ -156,11 +157,12 @@
 							{{ number_format($line['discount'], 0) }}%
 						@endif
 						@if($line['discount2'] > 0)
-							+ {{ number_format($line['discount2'], 0) }}%
+						+{{ number_format($line['discount2'], 0) }}%
 						@endif
 					</td>
 					<?php
-					$line['price'] = number_format($line['price'], 2, '.', '');
+					$line['price'] = number_format($line['price'], 3, '.', '');
+
 
 					$discount = $line['discount'];
 
@@ -180,20 +182,22 @@
 
 					$total = isset($total) ? $total : 0;
 					$total = floatval($line['quantity']) * floatval($price);	
-					// $total = number_format($total, 2, '.', '');				
+					$total = number_format($total, 3, '.', '');				
 					?>
-					<td style = "text-align: center;" valign="top">{{ floatval($line['price']) }}€</td>
+					<td style = "text-align: center;" valign="top">{{ $line['price'], }}€</td>
 					<td style = "text-align: center;" valign="top">{{ $total }}€</td>
 				</tr>
 				<?php
 					$total_SIVA += $total;
+					$total_SIVA = number_format($total_SIVA, 3, '.', '');
+
 
 					$tabela = $line['tax'];
 					$taxa_iva = $tabela / 100 + 1;
-	
+					
 					$total_iva = isset($total_iva) ? $total_iva : 0;
 					$total_iva = floatval($total_SIVA) * $taxa_iva;
-					$total_iva = number_format($total_iva, 2, '.', '');
+					$total_iva = number_format($total_iva, 3, '.', '');
 					?>
 				<tr style="border-bottom: solid 1px #000000; border-top:none !important;">
 					<td style="border-bottom: solid 1px #000000; border-top:none !important;">&nbsp;</td>
