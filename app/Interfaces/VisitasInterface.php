@@ -37,7 +37,7 @@ interface VisitasInterface
     /** ADD VISITA */
 
     
-    public function addVisitaDatabase($clientID,$client,$dataInicial,$horaInicial, $horaFinal, $tipoVisitaEscolhido, $assuntoText): JsonResponse;
+    public function addVisitaDatabase($noClient, $clientID,$client,$dataInicial,$horaInicial, $horaFinal, $tipoVisitaEscolhido, $assuntoText): JsonResponse;
 
     public function addVisitaIniciarDatabase($noClient,$clientID,$client,$dataInicial,$horaInicial, $horaFinal, $tipoVisitaEscolhido, $assuntoText): JsonResponse;
 

@@ -17,19 +17,20 @@
     </thead>
     <tbody>
         @foreach($tabela as $index => $item)
+
             <tr>
-                <td>{{ $item->Document }}</td>
-                <td>{{ $item->Document_number }}</td>
-                <td>{{ $item->Date }}</td>
-                <td>{{ $item->Customer }}</td>
-                <td>{{ $item->Reference }}</td>
-                <td>{{ $item->Description }}</td>
-                <td>{{ $item->Total }}€</td>
-                <td>{{ $item->Quantity }}</td>
-                <td>{{ $item->Quantity_pending }}</td>
-                <td>{{ $item->Sufficient_stock }}</td>
-                <td>{{ $item->Total_stock }}</td>
-                <td>{{ $item->Stock_ordered }}</td>
+                <td>{{ $item->Document ?? null }}</td>
+                <td>{{ $item->Document_number ?? null }}</td>
+                <td>{{ $item->Date ?? null }}</td>
+                <td>{{ $item->Customer ?? null }}</td>
+                <td>{{ $item->Reference ?? null }}</td>
+                <td>{{ $item->Description ?? null }}</td>
+                <td>{{ $item->Total ?? null }}€</td>
+                <td>{{ $item->Quantity ?? null }}</td>
+                <td>{{ $item->Quantity_pending ?? null }}</td>
+                <td>{{ $item->Sufficient_stock ?? null }}</td>
+                <td>{{ $item->Total_stock ?? null }}</td>
+                <td>{{ $item->Stock_ordered ?? null }}</td>
             </tr>
         @endforeach
     </tbody>

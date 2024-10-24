@@ -95,6 +95,7 @@ class DetalheVisitas extends Component
             
             $visita = Visitas::where('id_visita_agendada',$idVisita)->first();
             $visitaAgendada = VisitasAgendadas::where('id', $idVisita)->first();
+            // dd($idVisita, $visita, $visitaAgendada);
             Session::put('idVisita', $visita->id);
             if(isset($visita->assunto))
             {
@@ -763,6 +764,7 @@ class DetalheVisitas extends Component
         }
 
         $dataPHC = date('Y-m-d')."T".date('H:i:s');
+
 
         $getVisitaID = VisitasAgendadas::where('id',$this->idVisita)->first();
       

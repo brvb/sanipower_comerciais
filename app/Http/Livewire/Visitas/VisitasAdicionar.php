@@ -331,7 +331,14 @@ class VisitasAdicionar extends Component
             return false;
         }
 
-        $response = $this->visitasRepository->addVisitaDatabase($clienteID,$ClienteVisitaTemp, preg_replace('/[a-zA-Z]/', '', $this->dataInicial), preg_replace('/[a-zA-Z]/', '', $this->horaInicial), preg_replace('/[a-zA-Z]/', '', $this->horaFinal), $this->tipoVisitaEscolhido, $this->assuntoText);
+        // dd($clienteVisitaID);
+
+        $arrayCliente = $this->clientesRepository->getDetalhesCliente(json_decode($clienteID));
+        $cliente = $arrayCliente["object"];
+
+        $noClient = $cliente->customers[0]->no;
+
+        $response = $this->visitasRepository->addVisitaDatabase($noClient,$clienteID,$ClienteVisitaTemp, preg_replace('/[a-zA-Z]/', '', $this->dataInicial), preg_replace('/[a-zA-Z]/', '', $this->horaInicial), preg_replace('/[a-zA-Z]/', '', $this->horaFinal), $this->tipoVisitaEscolhido, $this->assuntoText);
 
         $tenant = env('MICROSOFT_TENANT');
         $clientId = env('MICROSOFT_CLIENT_ID');

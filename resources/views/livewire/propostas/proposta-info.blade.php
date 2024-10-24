@@ -36,7 +36,6 @@
                             //$check = \App\Models\Carrinho::where('id_proposta',$proposta->id)->first();
                             $check = $proposta->awarded;
                         @endphp
-                        
                         @if($check == false)
                             @if($cliente[0])
                                 {{-- <a href="javascript:void(0);" wire:click="adjudicarProposta({{ json_encode($proposta) }})" class="btn btn-sm btn-success">
