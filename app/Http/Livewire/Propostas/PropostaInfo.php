@@ -463,6 +463,7 @@ class PropostaInfo extends Component
     {
         $rota = Session::get('rota');
         $parametro = Session::get('parametro');
+        // dd($rota, $parametro);
         
         if($rota == "propostas.proposta"){
             $rota = "propostas";

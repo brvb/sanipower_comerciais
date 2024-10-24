@@ -48,18 +48,13 @@
                        
                                 <select class="form-control" id="clienteVisitaID" wire:model.defer="clienteVisitaID" readonly disabled>
                                     @isset($clientes)
-                                  
                                         @foreach ($clientes as $clt)
-                                            @isset($cst)
+                                            @isset($clt)
                                                 @foreach($clt->customers as $cst)
-                                                        
                                                     <option value="{{ json_encode($cst->id) }}">{{ $cst->name }}</option>
-                                            
-
                                                 @endforeach
                                             @endisset
                                         @endforeach
-
                                     @endisset
                                 </select>
                             </div>

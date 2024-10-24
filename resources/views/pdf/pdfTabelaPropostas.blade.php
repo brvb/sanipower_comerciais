@@ -69,6 +69,7 @@
    <link rel="stylesheet" href="{{asset('assets/vendors/bootstrap/bootstrap.min.css')}}">
    </head>
    <body>
+    {{-- @dd($encomendaData); --}}
        <table style="width: 100%;">
            <tr>
                <td style="width: 400px;">
@@ -107,15 +108,15 @@
                <td style="border-bottom: solid 1px #000000;">{{ $encomendaData['id'] }}</td>
            </tr>
            <tr style="border-bottom: solid 1px #000000;">
-               <td style="width: 150px; border-bottom: solid 1px #000000;" class="fonte"><strong>Observações</strong></td>
+               <td style="width: 150px; border-bottom: solid 1px #000000;" class="fonte"><strong>Status</strong></td>
                <td></td>
-               {{-- <td style="border-bottom: solid 1px #000000;">{{ $encomendaData['comments'] }}</td> --}}
+               <td style="border-bottom: solid 1px #000000;">{{ $encomendaData['status'] }}</td>
            </tr>
-           <tr>
+           {{-- <tr>
                <td style="border-bottom: solid 1px #000000;" class="fonte"><strong>Entrega</strong></td>
                <td></td>
-               {{-- <td style="border-bottom: solid 1px #000000;">{{ $encomendaData['delivery'] }}</td> --}}
-           </tr>
+               <td style="border-bottom: solid 1px #000000;">{{ $encomendaData['delivery'] }}</td>
+           </tr> --}}
            <tr>
                <td style="border-bottom: solid 1px #000000;" class="fonte"><strong>Pagamento</strong></td>
                <td style="border-bottom: solid 1px #000000;">{{ $encomendaData['payment_conditions'] }}</td>
@@ -148,18 +149,16 @@
                    $pvp = floatval($line['pvp']);
                    $pvp_formatado = number_format($pvp, 2, '.', '');
                @endphp
-               <tr style = "border-bottom:none !important; border-top:none; !important">
+               <tr style="border-bottom: solid 1px #000000 !important; border-top:none; !important">
                    <td valign="top">{{ $line['reference'] }}</td>
                    <td style = "text-align: left;" valign="top">{{ $line['description'] }}</td>
                    <td style = "text-align: center;" valign="top">{{ trim(number_format(floatval($line['quantity']), 0)) }}</td>
                    <td style = "text-align: center;" valign="top">{{ floatval($pvp_formatado) }}€</td>
                    <td style = "text-align: center;" valign="top">
-                       @if($line['discount'] > 0)  
-                           {{ number_format($line['discount'], 0) }}%
-                       @endif
-                       @if($line['discount2'] > 0)
-                           + {{ number_format($line['discount2'], 0) }}%
-                       @endif
+                    {{ number_format($line['discount'], 0) }}%
+                    @if($line['discount2'] > 0)
+                    +{{ number_format($line['discount2'], 0) }}%
+                    @endif
                    </td>
                    <?php
                    $line['price'] = number_format($line['price'], 2, '.', '');
@@ -198,10 +197,10 @@
                    $total_iva = floatval($total_SIVA) * $taxa_iva;
                    $total_iva = number_format($total_iva, 2, '.', '');
                    ?>
-               <tr style="border-bottom: solid 1px #000000; border-top:none !important;">
+               {{-- <tr style="border-bottom: solid 1px #000000; border-top:none !important;">
                    <td style="border-bottom: solid 1px #000000; border-top:none !important;">&nbsp;</td>
                    <td class = "fonte" style="border-bottom: solid 1px #000000; border-top:none !important;" colspan="6"><strong>Notas:</strong></td>
-               </tr>
+               </tr> --}}
                @endforeach
                
                <tr style="background:#fff;" style = "border-bottom:none;">

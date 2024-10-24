@@ -70,7 +70,7 @@
                                         </select>
                                     </div>
                             </div>
-                            <div class="col-lg-2">
+                            <div class="col-lg-4">
                                 <label class="mt-2">Data Inicial</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
@@ -80,7 +80,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-2">
+                            <div class="col-lg-4">
                                 <label class="mt-2">Data Final</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
@@ -89,7 +89,7 @@
                                     <input type="date" class="form-control" placeholder="Data Final" wire:model.lazy="endDate">
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            {{-- <div class="col-lg-4">
                                 <label class="mt-2">Estádo da Proposta</label>
                                 <div class="input-group">
                                     <select name="perPage" class="form-control" wire:model.lazy="statusProsposta">
@@ -98,7 +98,7 @@
                                         <option value="2">Fechadas</option>
                                     </select>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
 
                         <div class="row ml-0 mr-0 mt-4 d-block">
