@@ -148,8 +148,7 @@
                     }
                     
                    // Supondo que valores.data_inicial seja uma string de data no formato "yyyy-mm-dd"
-                    let dataInicial = new Date(valores.data_inicial);
-
+                   let dataInicial = valores.data_inicial;
                     // Verifica se a data está no formato dd-mm-yyyy ou yyyy-mm-dd
                     if (/^\d{2}-\d{2}-\d{4}$/.test(dataInicial)) {
                         // Caso seja dd-mm-yyyy, transforma para yyyy-mm-dd

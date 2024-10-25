@@ -605,7 +605,7 @@
                             }
 
                             // Supondo que valores.data_inicial seja uma string de data no formato "yyyy-mm-dd"
-                            let dataInicial = new Date(valoresVisita.data_inicial);
+                            let dataInicial = valoresVisita.data_inicial;
                             
                             // Verifica se a data está no formato dd-mm-yyyy ou yyyy-mm-dd
                             if (/^\d{2}-\d{2}-\d{4}$/.test(dataInicial)) {
@@ -651,7 +651,7 @@
                         $.each(valores, function(indexTarefa, valoresTarefa) {
 
                             // Supondo que valores.data_inicial seja uma string de data no formato "yyyy-mm-dd"
-                            let dataInicial = new Date(valoresTarefa.data_inicial);
+                            let dataInicial = valoresTarefa.data_inicial;
 
                             // Verifica se a data está no formato dd-mm-yyyy ou yyyy-mm-dd
                             if (/^\d{2}-\d{2}-\d{4}$/.test(dataInicial)) {
