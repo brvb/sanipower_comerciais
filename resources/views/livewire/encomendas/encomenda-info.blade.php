@@ -244,7 +244,7 @@
                     </div>
                 </div>
                         <br>
-                    <div class="row form-group mt-2">
+                    {{-- <div class="row form-group mt-2">
                         <div class="col-12 pr-0">
 
                             <div class="accordion" id="accordionExample"> 
@@ -254,14 +254,14 @@
                                         <h4 style="margin: 0;">Comentários</h4>
                                       {{-- <button class="btn btn-sm btn-primary text-left" style="margin-left: 10px;margin-right: 10px;" type="button"data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                             <i class="fas fa-info"></i>
-                                        </button> --}}
+                                        </button> 
                                
                                     </div>
                                     {{-- <button class="btn btn-block text-left pl-0" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                                         
-                                    </button> --}}
+                                    </button>
     
-                                    {{-- <div id="collapseTwo" class="collapse show"> --}}
+                                    {{-- <div id="collapseTwo" class="collapse show"> 
                                     <div>
                                         <div class="card-body">
                                             <div class="timeline-wrapper">
@@ -336,9 +336,9 @@
                             </div>
                         </div>
 
-                    </div>
+                    </div> 
                 </div>
-            </div>
+            </div>--}}
              </div>
             <div class="tab-pane fade {{ $tabDetalhesEncomendas }} m-3" id="tab6" style="border: none;">
            
@@ -352,7 +352,7 @@
                         <table class="table table-hover init-datatable">
                             <thead class="thead-light">
                                 <tr>
-                                    <th style="width: 0;">Referência</th>
+                                    <th style="width: 5%;">Referência</th>
                                     <th class="d-none d-md-table-cell">Descrição</th>
                                     <th style="text-align: right;width: 0%;">Quantidade</th>
                                     <th style="text-align: right;width: 0%;">Preço</th>
@@ -372,10 +372,10 @@
                                             <br><small style="color:#1791ba">{{ $prod->origin }}</small>
                                             </td>
                                             <td style="text-align: right; white-space: nowrap;">{{ $prod->quantity }}</td>
-                                            <td class="d-none d-md-table-cell"  style="text-align: right; white-space: nowrap;">{{ number_format($prod->price, 2, ',', '.') }} €</td>
+                                            <td class="d-none d-md-table-cell"  style="text-align: right; white-space: nowrap;">{{ number_format($prod->price, 3, ',', '.') }} €</td>
                                             <td style=" text-align: right; white-space: nowrap;">{{ $prod->discount }}%@if ($prod->discount2 != "0" && $prod->discount2 != null)+{{ $prod->discount2 }}%@endif</td>
                                             <td style=" width: 0; text-align: right; white-space: nowrap;">{{ $prod->tax }}%</td>
-                                            <td style=" width: 10%; text-align: right; white-space: nowrap;">{{ number_format($prod->total, 2, ',', '.') }} €</td>
+                                            <td style=" width: 10%; text-align: right; white-space: nowrap;">{{ number_format($prod->total, 3, ',', '.') }} €</td>
                                     </tr>
 
                                     {{-- <tr data-href="#" style="border-top:1px solid #232b58!important; border-bottom:1px solid #232b58!important;">
@@ -413,7 +413,7 @@
                             <tbody>
                                 <tr style="border-bottom: 1px solid #232b58!important;">
                                     <td style="width: 100px; text-align: left;">Total</td>
-                                    <td style="width: 140px;" class="bold">{{ number_format($encomenda->total, 2, ',', '.') }} €</td>
+                                    <td style="width: 140px;" class="bold">{{ number_format($encomenda->total, 3, ',', '.') }} €</td>
                                 </tr>
                             </tbody>
                         </table>

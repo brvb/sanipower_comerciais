@@ -304,7 +304,21 @@ class DetalheEncomenda extends Component
         Carrinho::where('id_encomenda', $this->codEncomenda)->where("id_user", Auth::user()->id)->delete();
         ComentariosProdutos::where('id_encomenda', $this->codEncomenda)->where("id_user", Auth::user()->id)->delete();
 
-        return redirect()->route('encomendas');
+        $rota = Session::get('rota');
+        
+        $parametro = Session::get('parametro');
+
+        if($rota != "")
+        {
+            if($parametro != "")
+            {   
+                return redirect()->route($rota,$parametro);
+            }
+            return redirect()->route($rota);
+        }else
+        {
+            return redirect()->route('encomendas');
+        }
     }
 
     public function delete($itemId)

@@ -74,7 +74,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row mb-2">
-                        <div class="col-lg-6">
+                        {{-- <div class="col-lg-6">
                             <label class="mt-2">Estado Encomenda</label>
                             <div class="input-group">
                                 <select name="estadoEncomenda" wire:model.lazy="estadoEncomenda" class="form-control">
@@ -83,7 +83,7 @@
                                     <option value="2">Sem comentário</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="col-lg-6">
                             <label class="mt-2">Tipo da Encomenda</label>
                             <div class="input-group">
@@ -135,7 +135,7 @@
 
                                             <td>{{ date('Y-m-d', strtotime($detalhe->date)) }}</td>
                                             <td>{{ $detalhe->order }}</td>
-                                            <td>{{ $detalhe->total }}€</td>
+                                            <td>{{ number_format($detalhe->total, 3) }}€</td>
                                             <td>{{ $detalhe->status }}</td>
                                             <td>
                                                
@@ -261,10 +261,10 @@
                                                 <td>{{ $line->reference }}</td>
                                                 <td>{{ $line->description }}</td>
                                                 <td style="text-align:center">{{ $line->quantity }}</td>
-                                                <td style="text-align:center">{{ $line->price }} €</td>
+                                                <td style="text-align:center">{{ number_format($line->price, 3) }} €</td>
                                                 <td style="text-align:center">{{ $line->discount }}</td>
                                                 {{-- <td style="text-align:center">{{ $line->discount2 }}</td> --}}
-                                                <td style="text-align:center">{{ $line->total }} €</td>
+                                                <td style="text-align:center">{{ number_format($line->total, 3) }} €</td>
                                             </tr>
                                         @endforeach
                                     @endif

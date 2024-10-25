@@ -10,10 +10,7 @@
                     @isset($comerciais)
                     
                         @foreach ($comerciais as $com)
-
                             <option value="{{ $com->id }}">{{ $com->name }}</option>
-                
-
                         @endforeach
 
                     @endisset
@@ -48,18 +45,13 @@
                        
                                 <select class="form-control" id="clienteVisitaID" wire:model.defer="clienteVisitaID" readonly disabled>
                                     @isset($clientes)
-                                  
                                         @foreach ($clientes as $clt)
-                                            @isset($cst)
+                                            @isset($clt)
                                                 @foreach($clt->customers as $cst)
-                                                        
                                                     <option value="{{ json_encode($cst->id) }}">{{ $cst->name }}</option>
-                                            
-
                                                 @endforeach
                                             @endisset
                                         @endforeach
-
                                     @endisset
                                 </select>
                             </div>
@@ -154,14 +146,34 @@
                     } else {
                         colorState = "#e6e600";
                     }
-                   
+                    
+                   // Supondo que valores.data_inicial seja uma string de data no formato "yyyy-mm-dd"
+                   let dataInicial = valores.data_inicial;
+
+                    // Verifica se a data está no formato dd-mm-yyyy ou yyyy-mm-dd
+                    if (/^\d{2}-\d{2}-\d{4}$/.test(dataInicial)) {
+                        // Caso seja dd-mm-yyyy, transforma para yyyy-mm-dd
+                        let [dia, mes, ano] = dataInicial.split('-');
+                        valores.data_inicial = `${ano}-${mes}-${dia}`;
+                    } else if (/^\d{4}-\d{2}-\d{2}$/.test(dataInicial)) {
+                        // Caso já esteja no formato yyyy-mm-dd, mantém o valor
+                        valores.data_inicial = dataInicial;
+                    } else {
+                        console.error("Formato de data inválido");
+                    }
+
+                    // Formatação para dataFormatada no formato dd-mm-yyyy
+                    let [ano, mes, dia] = valores.data_inicial.split('-'); // Extrai diretamente da string formatada
+                    let dataFormatada = `${dia}-${mes}-${ano}`;
+
+                    
                     event.push({
                         title: valores.cliente,
                         start: valores.data_inicial+"T"+valores.hora_inicial,
                         end: valores.data_inicial+"T"+valores.hora_final,
                         backgroundColor: colorState,
                         assunto: valores.assunto_text,
-                        dataInicial: valores.data_inicial,
+                        dataInicial: dataFormatada,
                         horaInicial: valores.hora_inicial,
                         horaFinal: valores.hora_final,
                         corVisita: valores.tipovisita.cor,

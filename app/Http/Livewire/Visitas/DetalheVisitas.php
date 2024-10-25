@@ -86,7 +86,6 @@ class DetalheVisitas extends Component
 
     public function mount($cliente, $idVisita = null, $tst)
     {
-        
         $this->initProperties();
         $this->idCliente = $cliente;
 
@@ -97,6 +96,8 @@ class DetalheVisitas extends Component
             $visitaAgendada = VisitasAgendadas::where('id', $idVisita)->first();
             // dd($idVisita, $visita, $visitaAgendada);
             Session::put('idVisita', $visita->id);
+            Session::put('rota','visitas.info');
+            Session::put('parametro',$visita->id);
             if(isset($visita->assunto))
             {
                 if($visita->assunto == "")
@@ -242,7 +243,7 @@ class DetalheVisitas extends Component
         $this->detailsClientes = $arrayCliente["object"];
 
         $arrayAna = $this->clientesRepository->getListagemAnalisesCliente($this->perPage,$this->pageChosen,$this->idCliente);
-        dd($arrayAna);
+        // dd($arrayAna);
         $this->analysisClientes = $arrayAna["paginator"];
 
         $this->tabRelatorio = "";

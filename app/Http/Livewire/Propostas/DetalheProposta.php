@@ -279,7 +279,21 @@ class DetalheProposta extends Component
         Carrinho::where('id_proposta', $this->codEncomenda)->where("id_user", Auth::user()->id)->delete();
         ComentariosProdutos::where('id_proposta', $this->codEncomenda)->where("id_user", Auth::user()->id)->delete();
 
-        return redirect()->route('propostas');
+        $rota = Session::get('rota');
+        
+        $parametro = Session::get('parametro');
+
+        if($rota != "")
+        {
+            if($parametro != "")
+            {   
+                return redirect()->route($rota,$parametro);
+            }
+            return redirect()->route($rota);
+        }else
+        {
+            return redirect()->route('propostas');
+        }
     }
     public function delete($itemId)
     {

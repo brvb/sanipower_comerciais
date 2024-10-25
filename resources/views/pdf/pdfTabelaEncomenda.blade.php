@@ -67,6 +67,7 @@
 		}
 	</style>    
 	<link rel="stylesheet" href="{{asset('assets/vendors/bootstrap/bootstrap.min.css')}}">
+	{{-- @dd($encomendaData); --}}
 	</head>
 	<body>
 		<table style="width: 100%;">
@@ -201,7 +202,7 @@
 					?>
 				<tr style="border-bottom: solid 1px #000000; border-top:none !important;">
 					<td style="border-bottom: solid 1px #000000; border-top:none !important;">&nbsp;</td>
-					<td class = "fonte" style="border-bottom: solid 1px #000000; border-top:none !important;" colspan="6"><strong>Notas:</strong></td>
+					<td class = "fonte" style="border-bottom: solid 1px #000000; border-top:none !important;" colspan="6"><strong>Notas:</strong> {{ $line['origin'], }}</td>
 				</tr>
 				@endforeach
 				

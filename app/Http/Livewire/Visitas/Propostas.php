@@ -87,6 +87,7 @@ class Propostas extends Component
         $this->initProperties();
         $this->idCliente = $cliente;
         $this->idVisita = $visita;
+        // dd($this->idVisita);
         //$this->idCliente = "AJ19073058355,4450000-1";
 
         if(session('visitasPropostasComentario_encomendas')){
@@ -475,6 +476,9 @@ class Propostas extends Component
                     "data" => date('Y-m-d'),
                     "user_id" => Auth::user()->id
                 ]);
+                Session::put('rota','visitas.info');
+                Session::put('parametro',$agenda->id);
+
             }
             else 
             {
@@ -500,8 +504,10 @@ class Propostas extends Component
                     "data" => date('Y-m-d'),
                     "user_id" => Auth::user()->id
                 ]);
+                Session::put('rota','visitas.info');
+                Session::put('parametro',$getId->id);
             }
-           
+            // dd($this, $getId, $visitas);
            
             if(!empty($visitaCreate)) {
                 session()->flash('success', "Visita registada com sucesso");
@@ -529,18 +535,18 @@ class Propostas extends Component
     {
         $this->guardarVisita();
 
-        if($this->idVisita == 0)
-        {
+        // if($this->idVisita == 0)
+        // {
 
-            Session::put('rota','visitas.detail');
-            Session::put('parametro',$this->idCliente);
+        //     Session::put('rota','visitas.detail');
+        //     Session::put('parametro',$this->idCliente);
            
-        } else {
+        // } else {
 
-            Session::put('rota','visitas.info');
-            Session::put('parametro',$this->idVisita);
+        //     Session::put('rota','visitas.info');
+        //     Session::put('parametro',$this->idVisita);
            
-        }
+        // }
         
 
        

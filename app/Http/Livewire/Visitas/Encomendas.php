@@ -480,6 +480,9 @@ class Encomendas extends Component
                     "data" => date('Y-m-d'),
                     "user_id" => Auth::user()->id
                 ]);
+
+                Session::put('rota','visitas.info');
+                Session::put('parametro',$agenda->id);
             }
             else 
             {
@@ -505,6 +508,9 @@ class Encomendas extends Component
                     "data" => date('Y-m-d'),
                     "user_id" => Auth::user()->id
                 ]);
+
+                Session::put('rota','visitas.info');
+                Session::put('parametro',$getId->id);
             }
            
            
@@ -533,18 +539,19 @@ class Encomendas extends Component
     public function detalheEncomendaModal($encomenda)
     {
         $this->guardarVisita();
-        if($this->idVisita == 0)
-        {
+        
+        // if($this->idVisita == 0)
+        // {
 
-            Session::put('rota','visitas.detail');
-            Session::put('parametro',$this->idCliente);
+        //     Session::put('rota','visitas.detail');
+        //     Session::put('parametro',$this->idCliente);
            
-        } else {
+        // } else {
 
-            Session::put('rota','visitas.info');
-            Session::put('parametro',$this->idVisita);
+        //     Session::put('rota','visitas.info');
+        //     Session::put('parametro',$this->idVisita);
            
-        }
+        // }
 
         $encomendasArray = $this->clientesRepository->getEncomendasCliente($this->perPage,$this->pageChosen, $this->idCliente);
         

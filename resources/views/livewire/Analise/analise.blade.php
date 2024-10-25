@@ -25,7 +25,7 @@
                 <td>{{ $item->Customer ?? null }}</td>
                 <td>{{ $item->Reference ?? null }}</td>
                 <td>{{ $item->Description ?? null }}</td>
-                <td>{{ $item->Total ?? null }}€</td>
+                <td>{{ number_format($item->Total, 3) ?? null }}€</td>
                 <td>{{ $item->Quantity ?? null }}</td>
                 <td>{{ $item->Quantity_pending ?? null }}</td>
                 <td>{{ $item->Sufficient_stock ?? null }}</td>
