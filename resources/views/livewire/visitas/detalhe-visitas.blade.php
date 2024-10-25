@@ -243,7 +243,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text bg-carolina"><i class="ti-money text-light"></i></span>
                                         </div>
-                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->current_account}}" readonly>
+                                        <input type="text" class="form-control" value="{{ number_format($detalhesCliente->customers[0]->current_account,3)}}" readonly>
                                     </div>
                                 </div>
 
@@ -462,9 +462,9 @@
                                                             <tr>
                                                                 <td>{{ date('Y-m-d', strtotime($clt->date)) }}</td>
                                                                 <td>{{ $clt->document }}</td>
-                                                                <td>{{ $clt->net_total }}€</td>
-                                                                <td>{{ $clt->total_tax }}€</td>
-                                                                <td>{{ $clt->total }}€</td>
+                                                                <td>{{ number_format($clt->net_total,3) }}€</td>
+                                                                <td>{{ number_format($clt->total_tax,3) }}€</td>
+                                                                <td>{{ number_format($clt->total,3) }}€</td>
                                                             </tr>
                                                         @endforeach
                                                     @else

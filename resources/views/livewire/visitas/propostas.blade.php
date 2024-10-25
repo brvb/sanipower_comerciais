@@ -121,7 +121,7 @@
                                 <tr>
                                     <td>{{ date('Y-m-d', strtotime($detalhe->date)) }}</td>
                                     <td>{{ $detalhe->budget }}</td>
-                                    <td>{{ $detalhe->total }}€</td>
+                                    <td>{{ number_format($detalhe->total,3) }}€</td>
                                     <td>{{ $detalhe->status }}</td>
                                     <td>
                                         <button type="button" class="btn btn-primary" wire:click="detalhePropostaModal({{ json_encode($detalhe) }})">
@@ -242,10 +242,10 @@
                                             <td>{{ $line->reference }}</td>
                                             <td>{{ $line->description }}</td>
                                             <td style="text-align:center">{{ $line->quantity }}</td>
-                                            <td style="text-align:center">{{ $line->price }} €</td>
+                                            <td style="text-align:center">{{ number_format($line->price, 3) }} €</td>
                                             <td style="text-align:center">{{ $line->discount }}</td>
                                             {{-- <td style="text-align:center">{{ $line->discount2 }}</td> --}}
-                                            <td style="text-align:center">{{ $line->total }} €</td>
+                                            <td style="text-align:center">{{ number_format($line->total, 3) }} €</td>
                                         </tr>
                                     @endforeach
                                 @endif

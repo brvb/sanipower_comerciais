@@ -284,7 +284,7 @@
                                                 class="ti-money text-light"></i></span>
                                     </div>
                                     <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->current_account }}" readonly>
+                                        value="{{ number_format($detalhesCliente->customers[0]->current_account,3) }}" readonly>
                                 </div>
                             </div>
                         </div>
@@ -794,10 +794,10 @@
                                                                         <tr style="background-color:{{ $prod->color }}">
                                                                             <td>{{ $prod->referense }}</td>
                                                                             <td>{{ $prod->model }}</td>
-                                                                            <td>{{ $prod->pvp }}€</td>
+                                                                            <td>{{ number_format($prod->pvp,3) }}€</td>
                                                                             <td>{{ $prod->discount }}</td>
                                                                             {{-- <td>{{ $prod->discount2 }}</td> --}}
-                                                                            <td>{{ $prod->price }}€</td>
+                                                                            <td>{{ number_format($prod->price,3) }}€</td>
                                                                             <td>{{ $prod->quantity }}</td>
                                                                             <td style="text-align:center;font-size:large;">
                                                                                 @if ($prod->in_stock == true)
@@ -1073,13 +1073,13 @@
                                                     @endif
                                                 @endif
                                             </td> --}}
-                                            <td style="text-align: right; white-space: nowrap;">{{ number_format($prod->pvp, 2, ',', '.') }} €</td>
+                                            <td style="text-align: right; white-space: nowrap;">{{ number_format($prod->pvp, 3, ',', '.') }} €</td>
                                             <td class="d-none d-md-table-cell"  style="text-align: right; white-space: nowrap;">{{ $prod->discount }}%@if ($prod->discount2 != "0" && $prod->discount2 != null)+{{ $prod->discount2 }}%@endif</td>
-                                            <td style=" text-align: right; white-space: nowrap;">{{ number_format($prod->price, 2, ',', '.') }} €</td>
+                                            <td style=" text-align: right; white-space: nowrap;">{{ number_format($prod->price, 3, ',', '.') }} €</td>
                                             <td style=" text-align: right; white-space: nowrap;">{{ $prod->qtd }}</td>
                                             <td style=" text-align: right; white-space: nowrap;">{{ $prod->iva }} %</td>
                                             <td style=" text-align: right; width:5%"> <i class="fas fa-trash-alt text-primary" wire:click="deletar(`{{ $prod->referencia }}`,`{{ $prod->designacao }}`,`{{ $prod->model }}`,`{{ $prod->price }}`)"></i> </td>
-                                            <td style=" width: 10%; text-align: right; white-space: nowrap;">{{ number_format($totalItem, 2, ',', '.') }} €</td>
+                                            <td style=" width: 10%; text-align: right; white-space: nowrap;">{{ number_format($totalItem, 3, ',', '.') }} €</td>
                                         </tr>
                                     @endif
                                 {{-- @empty
@@ -1137,7 +1137,7 @@
                                 <td></td>
                                 <td></td>
                                 <td >Total s/IVA</td>
-                                <td style="width: 10%;white-space: nowrap;" class="bold">{{ number_format($ValorTotal, 2, ',', '.') }} €</td>
+                                <td style="width: 10%;white-space: nowrap;" class="bold">{{ number_format($ValorTotal, 3, ',', '.') }} €</td>
                             </tr>
                             <tr style="background:#d6d8db78;">
                                 <td></td>
@@ -1149,7 +1149,7 @@
                                 <td></td>
                                 <td></td>
                                 <td >Total c/IVA</td>
-                                <td style="width: 10%;white-space: nowrap;" class="bold">{{ number_format($ValorTotalComIva, 2, ',', '.') }} €</td>
+                                <td style="width: 10%;white-space: nowrap;" class="bold">{{ number_format($ValorTotalComIva, 3, ',', '.') }} €</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1302,10 +1302,10 @@
                                             <tr wire:key="product-{{ $i }}" style="background-color:{{ $prod->color }}" >
                                                 <td>{{ $prod->referense }}</td>
                                                 <td>{{ $prod->model }}</td>
-                                                <td>{{ $prod->pvp }}€</td>
+                                                <td>{{ number_format($prod->pvp, 3) }}€</td>
                                                 <td>{{ $prod->discount }}</td>
                                                 {{-- <td>{{ $prod->discount2 }}</td> --}}
-                                                <td>{{ $prod->price }}€</td>
+                                                <td>{{ number_format($prod->price, 3) }}€</td>
                                                 <td>{{ $prod->quantity }}</td>
                                                 <td style="text-align:center;font-size:large;">
                                                     @if ($prod->in_stock == true)
@@ -1478,7 +1478,7 @@
                                             <td style="border-bottom:1px solid #232b58!important; width:10%">{{ $item->referencia }}</td>
                                             <td style="border-bottom:1px solid #232b58!important; width:20%">{{ $item->designacao }}</td>
                                             <td style="border-bottom:1px solid #232b58!important; width:10%">{{ $item->qtd }}</td>
-                                            <td style="border-bottom:1px solid #232b58!important; width:10%">{{ number_format($item->price, 2, ',', '.') }} €</td>
+                                            <td style="border-bottom:1px solid #232b58!important; width:10%">{{ number_format($item->price, 3, ',', '.') }} €</td>
                                             <td style="border-bottom:1px solid #232b58!important; width:5%">
                                                 <strong>
                                                     <a href="javascript:void(0);" class="remover_produto btn btn-sm btn-primary" wire:click="delete({{ $item->id }})">X</a>

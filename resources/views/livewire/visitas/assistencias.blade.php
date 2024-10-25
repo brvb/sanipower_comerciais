@@ -107,7 +107,7 @@
                                     <td>{{ date('Y-m-d', strtotime($details->date))}}</td>
                                     <td>{{ $details->occurrence }}</td>
                                     <td>{{ $details->status }}</td>
-                                    <td>{{ $details->total }}€</td>
+                                    <td>{{ number_format($details->total,3) }}€</td>
                                     <td>
                                         <button type="button" class="btn btn-sm btn-primary" wire:click="detalheAssistencias({{ json_encode($details) }})">
                                             <i class="fas fa-info"></i>
@@ -158,9 +158,9 @@
                                         <td>{{ $prod['reference'] }}</td>
                                         <td>{{ $prod['description'] }}</td>
                                         <td>{{ $prod['quantity'] }}</td>
-                                        <td>{{ $prod['price'] }} €</td>
+                                        <td>{{ number_format($prod['price'], 3) }} €</td>
                                         <td>{{ $prod['discount'] }}</td>
-                                        <td>{{ $prod['total'] }} €</td>
+                                        <td>{{ number_format($prod['total'], 3) }} €</td>
                                     </tr>
                                 @endforeach
                             @else

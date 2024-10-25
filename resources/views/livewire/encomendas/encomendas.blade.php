@@ -230,7 +230,7 @@
                                         <td>{{ date('Y-m-d', strtotime($enc->date)) }}</td>
                                         <td>{{$enc->order}}</td>
                                         <td>{{$enc->name}}</td>
-                                        <td>{{$enc->total}}€</td>
+                                        <td>{{ number_format($enc->total,3) }}€</td>
                                         <td>{{$enc->status}}</td>
                                         <td>
                                         {{-- {{dd($enc)}} --}}
