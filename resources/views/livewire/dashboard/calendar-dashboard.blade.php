@@ -10,10 +10,7 @@
                     @isset($comerciais)
                     
                         @foreach ($comerciais as $com)
-
                             <option value="{{ $com->id }}">{{ $com->name }}</option>
-                
-
                         @endforeach
 
                     @endisset
@@ -149,14 +146,31 @@
                     } else {
                         colorState = "#e6e600";
                     }
+                    
                    // Supondo que valores.data_inicial seja uma string de data no formato "yyyy-mm-dd"
                     let dataInicial = new Date(valores.data_inicial);
 
-                    let dia = String(dataInicial.getDate()).padStart(2, '0');
-                    let mes = String(dataInicial.getMonth() + 1).padStart(2, '0'); // Os meses começam do 0 em JavaScript
-                    let ano = dataInicial.getFullYear();
+                    // Verifica se a data está no formato dd-mm-yyyy ou yyyy-mm-dd
+                    if (/^\d{2}-\d{2}-\d{4}$/.test(dataInicial)) {
+                        // Caso seja dd-mm-yyyy, transforma para yyyy-mm-dd
+                        let [dia, mes, ano] = dataInicial.split('-');
+                        valores.data_inicial = `${ano}-${mes}-${dia}`;
+                    } else if (/^\d{4}-\d{2}-\d{2}$/.test(dataInicial)) {
+                        // Caso já esteja no formato yyyy-mm-dd, mantém o valor
+                        valores.data_inicial = dataInicial;
+                    } else {
+                        console.error("Formato de data inválido");
+                    }
+                    
+                    let dataForm = new Date(valores.data_inicial);
 
-                    let dataFormatada = `${dia}/${mes}/${ano}`;
+                    let dia = String(dataForm.getDate()).padStart(2, '0');
+                    let mes = String(dataForm.getMonth() + 1).padStart(2, '0'); // Os meses começam do 0 em JavaScript
+                    let ano = dataForm.getFullYear();
+
+                    let dataFormatada = `${dia}-${mes}-${ano}`;
+
+                    
                     event.push({
                         title: valores.cliente,
                         start: valores.data_inicial+"T"+valores.hora_inicial,

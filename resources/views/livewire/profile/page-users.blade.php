@@ -154,7 +154,8 @@
                         <select id="local_funcionamento" class="form-control" wire:model.defer="local_funcionamento">
                             <option value="">Selecione o local</option>
                             <option value="comentarios_propostas">Comentários Propostas</option>
-                            <option value="comentarios_encomendas">Comentários Encomendas</option>
+                            <option value="nova_encomenda">Nova Encomenda</option>
+                            <option value="nova_propostas">Nova Proposta</option>
                         </select>
                         @error('local_funcionamento') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
