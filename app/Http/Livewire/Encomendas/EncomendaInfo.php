@@ -274,7 +274,8 @@ class EncomendaInfo extends Component
             {
                 if($this->emailSend[$i] == true)
                 {
-                    Mail::to($email)->send(new SendEncomenda($pdfContent));
+                    // dd(json_encode($encomenda));
+                    Mail::to($email)->send(new SendEncomenda($pdfContent, $encomenda));
                 }
             }
            

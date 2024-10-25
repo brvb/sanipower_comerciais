@@ -17,11 +17,13 @@ class SendEncomenda extends Mailable
      */
 
      protected $pdfContent;
+     public array $encomenda = [];
 
-    public function __construct($pdfContent)
-    {
+     public function __construct($pdfContent, $encomenda)
+     {
         $this->pdfContent = $pdfContent;
-    }
+        $this->encomenda = $encomenda; // Corrigido: atribuir diretamente à propriedade
+     }
 
     /**
      * Build the message.
@@ -34,6 +36,7 @@ class SendEncomenda extends Mailable
                 ->subject('Sanipower, S.A.')
                 ->attachData($this->pdfContent, 'Encomenda.pdf', [
                             'mime' => 'application/pdf',
+                            'encomenda' => $this->encomenda,
                         ]);
     }
 }

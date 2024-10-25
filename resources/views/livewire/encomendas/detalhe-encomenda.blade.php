@@ -955,7 +955,7 @@
                             <thead class="thead-light">
                                 <tr style="background:#d6d8db78;">
                                     {{-- <th style="width: 0;"></th> --}}
-                                    <th style="width: 0;">Referência</th>
+                                    <th style="width: 11%;">Referência</th>
                                     <th>Produto</th>
                                     <th style=" text-align: right;width: 0%;">PVP</th>
                                     <th style=" text-align: right;width: 0%;" class="d-none d-md-table-cell">Desc</th>
@@ -1380,7 +1380,7 @@
                                         {{-- {{dd($quickBuyProducts)}} --}}
                                         @foreach ($quickBuyProducts->product as $i => $prod)
                                             <tr wire:key="product-{{ $i }}" style="background-color:{{ $prod->color }}" >
-                                                <td>{{ $prod->referense }}</td>
+                                                <td style = 'width: 18%;'>{{ $prod->referense }}</td>
                                                 <td>{{ $prod->model }}</td>
                                                 <td>{{ number_format($prod->pvp, 3) }}€</td>
                                                 <td>{{ $prod->discount }}</td>
