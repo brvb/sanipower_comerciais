@@ -147,6 +147,13 @@ class PropostaInfo extends Component
 
     public function mount($proposta)
     {
+        if(session('tabDetail') != '')
+        {
+            $this->tabDetail = 'show active';
+            $this->tabDetalhesPropostas = '';
+        }
+        session()->put('tabDetail', '');
+        Session::put('tabDetail', '');
         $this->initProperties();
         $this->proposta = $proposta;
         $propostas = $this->clientesRepository->getPropostaID($proposta->id);
@@ -396,6 +403,8 @@ class PropostaInfo extends Component
 
         $this->tabDetail = "show active";
         $this->tabDetalhesPropostas = "";
+        session()->put('tabDetail', $this->tabDetail);
+        Session::put('tabDetail',$this->tabDetail);
 
         $this->dispatchBrowserEvent('openComentario');
     }
@@ -457,6 +466,9 @@ class PropostaInfo extends Component
 
         $this->comentarioEncomenda = "";
         $this->dispatchBrowserEvent('checkToaster', ["message" => $message, "status" => $status]);
+
+        // Dispatch um evento de reload após 3 segundos
+        $this->dispatchBrowserEvent('reloadPageAfterDelay');
     }
 
     public function goBack()
