@@ -149,14 +149,21 @@
                     } else {
                         colorState = "#e6e600";
                     }
-                   
+                   // Supondo que valores.data_inicial seja uma string de data no formato "yyyy-mm-dd"
+                    let dataInicial = new Date(valores.data_inicial);
+
+                    let dia = String(dataInicial.getDate()).padStart(2, '0');
+                    let mes = String(dataInicial.getMonth() + 1).padStart(2, '0'); // Os meses começam do 0 em JavaScript
+                    let ano = dataInicial.getFullYear();
+
+                    let dataFormatada = `${dia}/${mes}/${ano}`;
                     event.push({
                         title: valores.cliente,
                         start: valores.data_inicial+"T"+valores.hora_inicial,
                         end: valores.data_inicial+"T"+valores.hora_final,
                         backgroundColor: colorState,
                         assunto: valores.assunto_text,
-                        dataInicial: valores.data_inicial,
+                        dataInicial: dataFormatada,
                         horaInicial: valores.hora_inicial,
                         horaFinal: valores.hora_final,
                         corVisita: valores.tipovisita.cor,

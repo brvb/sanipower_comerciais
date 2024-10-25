@@ -604,6 +604,14 @@
                                 colorState = "#e6e600";
                             }
 
+                            // Supondo que valores.data_inicial seja uma string de data no formato "yyyy-mm-dd"
+                            let dataInicial = new Date(valoresVisita.data_inicial);
+
+                            let dia = String(dataInicial.getDate()).padStart(2, '0');
+                            let mes = String(dataInicial.getMonth() + 1).padStart(2, '0'); // Os meses começam do 0 em JavaScript
+                            let ano = dataInicial.getFullYear();
+
+                            let dataFormatada = `${dia}/${mes}/${ano}`;
 
                             eventTarefa.push({
                                 title: valoresVisita.cliente,
@@ -611,7 +619,7 @@
                                 end: valoresVisita.data_inicial + "T" + valoresVisita.hora_final,
                                 backgroundColor: colorState,
                                 assunto: valoresVisita.assunto_text,
-                                dataInicial: valoresVisita.data_inicial,
+                                dataInicial: dataFormatada,
                                 horaInicial: valoresVisita.hora_inicial,
                                 horaFinal: valoresVisita.hora_final,
                                 corVisita: valoresVisita.tipovisita.cor,
@@ -628,6 +636,15 @@
                     } else {
                         $.each(valores, function(indexTarefa, valoresTarefa) {
 
+                            // Supondo que valores.data_inicial seja uma string de data no formato "yyyy-mm-dd"
+                            let dataInicial = new Date(valoresTarefa.data_inicial);
+
+                            let dia = String(dataInicial.getDate()).padStart(2, '0');
+                            let mes = String(dataInicial.getMonth() + 1).padStart(2, '0'); // Os meses começam do 0 em JavaScript
+                            let ano = dataInicial.getFullYear();
+
+                            let dataFormatada = `${dia}/${mes}/${ano}`;
+
                             eventTarefa.push({
                                 title: valoresTarefa.cliente,
                                 start: valoresTarefa.data_inicial + "T" + valoresTarefa.hora_inicial,
@@ -635,7 +652,7 @@
                                 backgroundColor: "#FFFFFF00",
                                 assunto: valoresTarefa.assunto_text,
                                 descricao: valoresTarefa.descricao,
-                                dataInicial: valoresTarefa.data_inicial,
+                                dataInicial: dataFormatada,
                                 horaInicial: valoresTarefa.hora_inicial,
                                 horaFinal: valoresTarefa.hora_final,
                                 idTarefa: valoresTarefa.id,
