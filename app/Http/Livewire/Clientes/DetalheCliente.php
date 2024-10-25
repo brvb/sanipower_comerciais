@@ -65,6 +65,9 @@ class DetalheCliente extends Component
         $this->numberMaxPages = $arrayAna["nr_paginas"] + 1;
         $this->totalRecords = $arrayAna["nr_registos"];
 
+        Session::put('rota','clientes.detail');
+        Session::put('parametro',$this->idCliente);
+
         $rota = Session::get('rotaTab');
 
         if($rota == 'tabEncomendas')
