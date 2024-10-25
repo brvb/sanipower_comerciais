@@ -191,8 +191,6 @@ class Analysis extends Component
 
         session(['objectiveOBJ1' => $response_decoded->objective]);
         session(['salesOBJ1' => $response_decoded->sales]);
-        session(['objectiveOBJ1' => number_format(0, 3)]);
-        session(['salesOBJ1' => number_format(0, 3)]);
 
         return $this->dispatchBrowserEvent('callJavascriptFunction', [
             'function' => 'ObjetivoFat1',
