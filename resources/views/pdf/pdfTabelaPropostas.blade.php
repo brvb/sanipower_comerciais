@@ -1,236 +1,250 @@
-
-<body>
-    @php
-       $encomendaData = json_decode($proposta, true);
-    //    dd($encomendaData);
-       $base_url = 'http://sanipower.pt'
-   @endphp
+@php
+     $proposta = json_decode($proposta, true);
+    //  dd($proposta);
+    $total = 0;
+    $total_iva = 0;
+    $conta_linhas = 0;
+    $discount = 0;
+    $discount2 = 0;
+    $total_SIVA = 0;
+    $pr = 0;
+@endphp
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-   <title>Encomenda</title>
-   <style>
-        @font-face {
-       font-family: "DejaVuSans";
-       src: url("{{ asset('assets/fonts/DejaVuSans.ttf') }}") format('truetype');
-       font-weight: normal;
-       font-style: normal;
-   }
-   @font-face {
-       font-family: "DejaVuSans-Bold";
-       src: url("{{ asset('assets/fonts/DejaVuSans-Bold.ttf') }}") format('truetype');
-       font-weight: bold;
-       font-style: normal;
-   }           
-           body, html {
-           font-family: DejaVuSans!important;
-           font-size: 11px!important;
-       }
-       .tabela {
-       width: 96%; /* Garante que a tabela ocupe toda a largura disponível */
-       border-spacing: 0; /* Remove espaçamento entre as células da tabela */
-       border-collapse: collapse; /* Assegura que as bordas colapsem para parecer mais estreito */
-   }
-       .tabela tr {
-           border-bottom: solid 1px #000;
-       }
-   .tabela th, .tabela td {
-       padding: 2px; /* Mantém o espaçamento entre o conteúdo e as bordas */
-       }
-       .fonte {
-           font-family: "DejaVuSans-Bold"!important;
-           font-size: 12px;
-       }
-       .header {
-           text-align: center;
-       }
-       .right-align {
-           text-align: right;
-       }
-       .bold {
-           font-weight: bold;
-       }
-       footer{
-           position: fixed; 
-           bottom: 00px; 
-           left: 0px; 
-           right: 0px;
-           height: 40px; 
+    <meta charset="UTF-8">
+    <title>Proposta Digital</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 10px;
+            color: black;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            text-align: left;
+            padding: 20px;
+            background-color: white;
+        }
+        .header img {
+            height: 50px;
+        }
+        .container {
+            width: 100%;
+            margin: auto;
+            padding-top: 100px; /* Espaço para o header */
+        }
+        .info-section {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            margin-right: 10px;
+        }
+        .proposal-info {
+            text-align: left;
+        }
+        .client-info {
+            text-align: right;
+            margin-left: auto;
+            margin-bottom: 10px;
+        }
+        .client-info td, .proposal-info td {
+            padding: 2px 5px;
+        }
+        .table-products {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        .table-products th, .table-products td {
+            /* border-bottom: 1px solid black; */
+            padding: 8px;
+            text-align: center;
+        }
+        .table-products th {
+            /* background-color: #f2f2f2; */
+            font-weight: bold;
+        }
+        .table-products tfoot td {
+            font-weight: bold;
+            padding-top: 10px;
+            text-align: right;
+        }
+        .table-products tfoot td:last-child {
+            padding-right: 20px;
+        }
+        .details-section {
+            width: 100%;
+            margin-top: 20px;
+            font-size: 10px;
+        }
+        .details-section td {
+            padding: 5px 0;
+            vertical-align: top;
+            width: 25%;
+        }
+        .details-section td:first-child {
+            font-weight: bold;
+        }
+        .footer-logo {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            text-align: left;
+            margin-left: 20px;
+            margin-top: 20px;
+        }
+        .footer-logo img {
+            height: 50px;
+        }
+    </style>
+</head>
+<body>
 
-           /** Extra personal styles **/
-           color: white;
-           text-align: center;
-           line-height: 20px;
-       }
-   </style>    
-   <link rel="stylesheet" href="{{asset('assets/vendors/bootstrap/bootstrap.min.css')}}">
-   </head>
-   <body>
-    {{-- @dd($encomendaData); --}}
-       <table style="width: 100%;">
-           <tr>
-               <td style="width: 400px;">
-                   <img src="{{asset('logo/sanidigital.png')}}" alt="Logo">
-               </td>
-               <td class="header">
-                   <table>
-                       <tr>
-                           <td class="fonte"><b> {{ $encomendaData['budget'] }}</b></td>
-                       </tr>
-                       <tr>
-                           <td>Data: {{ $encomendaData['date'] }}</td>
-                       </tr>
-                       <tr>
-                           <td>2.ª Via</td>
-                       </tr>
-                   </table>
-               </td>
-           </tr>
-       </table>
-       <br>&nbsp;<br>
-       <table style="width: 19cm;">
-           <tr>
-               <td style="width: 150px;" class="fonte" valign="top"><b>Os seus dados</b></td>
-               <td>
-                   {{ stripslashes($encomendaData['name']) }}<br>
-                   {{ stripslashes($encomendaData['address']) }}<br>
-                   {{ stripslashes($encomendaData['zipcode']) . ' ' . stripslashes($encomendaData['zone']) }}
-               </td>
-           </tr>
-       </table>
-       <br>
-       <table style="width: 18.5cm;" class="tabela">
-           <tr>
-               <td style="width: 150px; border-bottom: solid 1px #000000;" class="fonte"><strong>Vossa referência<strong></td>
-               <td style="border-bottom: solid 1px #000000;">{{ $encomendaData['id'] }}</td>
-           </tr>
-           <tr style="border-bottom: solid 1px #000000;">
-               <td style="width: 150px; border-bottom: solid 1px #000000;" class="fonte"><strong>Status</strong></td>
-               <td></td>
-               <td style="border-bottom: solid 1px #000000;">{{ $encomendaData['status'] }}</td>
-           </tr>
-           {{-- <tr>
-               <td style="border-bottom: solid 1px #000000;" class="fonte"><strong>Entrega</strong></td>
-               <td></td>
-               <td style="border-bottom: solid 1px #000000;">{{ $encomendaData['delivery'] }}</td>
-           </tr> --}}
-           <tr>
-               <td style="border-bottom: solid 1px #000000;" class="fonte"><strong>Pagamento</strong></td>
-               <td style="border-bottom: solid 1px #000000;">{{ $encomendaData['payment_conditions'] }}</td>
-           </tr>
-       </table>
-       <br>&nbsp;<br>
-       <table class="tabela">
-           <thead>
-               <tr>
-                   <th class="fonte" style="width: 10%; padding: 2px 0px;">Referência</th> <!-- Definir proporção ou valor fixo -->
-                   <th class="fonte" style="width: 30%;">Produto</th>
-                   <th class="fonte" style="width: 10%; text-align: center;">QTD</th>
-                   <th class="fonte" style="width: 10%; text-align: center;">PVP</th>
-                   <th class="fonte" style="width: 10%; text-align: center;">Desc.</th>
-                   <th class="fonte" style="width: 15%; text-align: center;">Preço</th>
-                   <th class="fonte" style="width: 15%; text-align: center;">Total</th>
-               </tr>
-           </thead>
-           <tbody>
-               <?php
-                   $total = 0;
-                   $total_iva = 0;
-                   $conta_linhas = 0;
-                   $discount = 0;
-                   $discount2 = 0;
-                   $total_SIVA = 0;
-               ?>
-               @foreach($encomendaData['lines'] as $line)
-               @php
-                   $pvp = floatval($line['pvp']);
-                   $pvp_formatado = number_format($pvp, 2, '.', '');
-               @endphp
-               <tr style="border-bottom: solid 1px #000000 !important; border-top:none; !important">
-                   <td valign="top">{{ $line['reference'] }}</td>
-                   <td style = "text-align: left;" valign="top">{{ $line['description'] }}</td>
-                   <td style = "text-align: center;" valign="top">{{ trim(number_format(floatval($line['quantity']), 0)) }}</td>
-                   <td style = "text-align: center;" valign="top">{{ floatval($pvp_formatado) }}€</td>
-                   <td style = "text-align: center;" valign="top">
+    <!-- Header -->
+    <header class="header">
+        <img src="https://sanipower.pt/img/sanidigital.png" alt="Sanipower Logo">
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        
+        <!-- Client and Proposal Info -->
+        <div class="info-section">
+
+            <table class="client-info">
+                <tr><td><strong>Cliente:</strong> <?php echo $proposta['name']; ?></td></tr>
+                <tr><td><strong>Morada:</strong> <?php echo $proposta['address']; ?><br><?php echo $proposta['zipcode']; ?></td></tr>
+                <tr><td><strong>NIF:</strong> <?php echo $proposta['nif']; ?></td></tr>
+            </table>
+
+            <table class="proposal-info">
+                <tr>
+                    <td><strong>Proposta:</strong> <?php echo $proposta['budget']; ?></td>
+                    <td><strong>Data:</strong> <?php echo $proposta['date']; ?></td>
+                </tr>
+            </table>
+        </div>
+        <br>
+        <br>
+        <!-- Product Table -->
+        <table class="table-products">
+            <thead>
+                <tr style = "border-bottom: 1px solid black;">
+                    <th>Referência</th>
+                    <th>Produto</th>
+                    <th>QTT</th>
+                    <th>PVP</th>
+                    <th>DESC</th>
+                    <th>Preço</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($proposta['lines'] as $line)
+                @php
+					$pvp = floatval($line['pvp']);
+					$pvp_formatado = number_format($pvp, 3, '.', '');
+				@endphp
+                <tr style = "border-bottom: none !important; border-top: none !important;">
+                    <td>{{ $line['reference'] }}</td>
+                    <td>{{ $line['description'] }}</td>
+                    <td>{{ trim(number_format(floatval($line['quantity']), 0)) }}</td>
+                    <td>{{ floatval($pvp_formatado) }}€</td>
+                    <td>
                     {{ number_format($line['discount'], 0) }}%
                     @if($line['discount2'] > 0)
                     +{{ number_format($line['discount2'], 0) }}%
-                    @endif
-                   </td>
-                   <?php
-                   $line['price'] = number_format($line['price'], 2, '.', '');
+                    @endif</td>
+                    <?php
+					$line['price'] = number_format($line['price'], 3, '.', '');
 
-                   $discount = $line['discount'];
 
-                   $discount = $discount / 100;
+					$discount = $line['discount'];
 
-                   $discount = $discount * floatval($line['price']);
+					$discount = $discount / 100;
 
-                   $discount2 = $line['discount2'];
+					$discount = $discount * floatval($line['price']);
 
-                   $discount2 = $discount2 / 100;
+					$discount2 = $line['discount2'];
 
-                   $discount2 = (floatval($line['price']) - $discount) * $discount2;
+					$discount2 = $discount2 / 100;
 
-                   $desconto = $discount + $discount2;
+					$discount2 = (floatval($line['price']) - $discount) * $discount2;
 
-                   $price = floatval($line['price']) - $desconto;
+					$desconto = $discount + $discount2;
 
-                   $total = isset($total) ? $total : 0;
-                   $total = floatval($line['quantity']) * floatval($price);	
-                   $total = number_format($total, 2, '.', '');				
-                   ?>
-                   <td style = "text-align: center;" valign="top">{{ floatval($line['price']) }}€</td>
-                   <td style = "text-align: center;" valign="top">{{ $total }}€</td>
-               </tr>
-               <?php
-                   $total_SIVA += $total;
-                   $total_SIVA = number_format($total_SIVA, 2, '.', '');
+					$price = floatval($line['price']) - $desconto;
 
-                   $tabela = $line['tax'];
-                   $taxa_iva = $tabela / 100 + 1;
-   
-                   $total_iva = isset($total_iva) ? $total_iva : 0;
-                   $total_iva = floatval($total_SIVA) * $taxa_iva;
-                   $total_iva = number_format($total_iva, 2, '.', '');
-                   ?>
-               {{-- <tr style="border-bottom: solid 1px #000000; border-top:none !important;">
-                   <td style="border-bottom: solid 1px #000000; border-top:none !important;">&nbsp;</td>
-                   <td class = "fonte" style="border-bottom: solid 1px #000000; border-top:none !important;" colspan="6"><strong>Notas:</strong></td>
-               </tr> --}}
-               @endforeach
-               
-               <tr style="background:#fff;" style = "border-bottom:none;">
-                   <td style="border:none;">&nbsp;</td>
-                   <td style="border:none;">&nbsp;</td>
-                   <td style="border:none;">&nbsp;</td>
-                   <td style="border:none;">&nbsp;</td>
-                   <td class="text-right fonte" colspan="2" style = "border-bottom:none;"><strong>Total s/IVA</strong></td>
-                   <td class="text-right fonte" ><strong>{{ $total_SIVA }}€</strong></td>
-               </tr>
-               <tr style="background:#fff;" style = "border-bottom:none; border-top:none;">
-                   <td style="border:none;">&nbsp;</td>
-                   <td style="border:none;">&nbsp;</td>
-                   <td style="border:none;">&nbsp;</td>
-                   <td style="border:none;">&nbsp;</td>
-                   <td class="text-right fonte" colspan="2"><strong>Total c/IVA</strong></td>
-                   <td class="text-right fonte" style = "border-bottom:none;"><strong>{{ $total_iva }}€</strong></td>
-               </tr>
-           </tbody>
-       </table>
-   
-       <footer>
-           <table>
-               <tr style = "border-bottom:none; border-top:none;">
-                   <td><img src="{{asset('logo/rodape.png')}}" height="50"></td>
-               </tr>
-           </table>
-           Copyright &copy; <?php echo date("Y");?> 
-       </footer>
-   </body>
+					$total = isset($total) ? $total : 0;
+					$total = floatval($line['quantity']) * floatval($price);	
+					$total = number_format($total, 3, '.', '');				
+					?>
+                    <td>{{ $line['price'], }}€</td>
+                    <td>{{ $total }}€</td>
+                </tr>
+                <?php
+					$total_SIVA += $total;
+					$total_SIVA = number_format($total_SIVA, 3, '.', '');
+
+
+					$tabela = $line['tax'];
+					$taxa_iva = $tabela / 100 + 1;
+					
+					$total_iva = isset($total_iva) ? $total_iva : 0;
+					$total_iva = floatval($total_SIVA) * $taxa_iva;
+					$total_iva = number_format($total_iva, 3, '.', '');
+					?>
+                @endforeach
+            </tbody>
+            <tfoot>
+                <tr style = "border-top: 1px solid black; border-bottom: none !important;">
+                    <td colspan="6" style="text-align: right;">Total s/IVA</td>
+                    <td style="padding-right: 20px;">{{ $total_SIVA }}€<</td>
+                </tr>
+                <tr>
+                    <td colspan="6" style="text-align: right;">Total c/IVA</td>
+                    <td style="padding-right: 20px;">{{ $total_iva }}€</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <!-- Details Section -->
+        <table class="details-section">
+            <tr>
+                <td>Validade da Proposta:</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Tipo de pagamento:</td>
+                <td>{{ $proposta['payment_conditions'] }}</td>
+            </tr>
+            {{-- @foreach($proposta['comments'] as $comment)
+            <tr>
+                <td>Observações:</td>
+                <td>{{ $comment['comment'] }}</td>
+            </tr>
+            @endforeach --}}
+            <tr>
+                <td>Comercial:</td>
+                <td>{{ $proposta['email'] }}</td>
+            </tr>
+        </table>
+
+        <!-- Footer -->
+        <div class="footer-logo">
+            <img src="https://sanipower.pt/img/rodape.png" alt="Sanipower Logo">
+        </div>
+
+    </main>
+
+</body>
 </html>
-   <?php /**PATH /home/usr2019/app/Standard//Carrinho_email/Views/Carrinho_email_pdf_2via.blade.php ENDPATH**/ ?>
-   
+    

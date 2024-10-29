@@ -334,7 +334,7 @@ class Encomendas extends Component
     
         
         try {
-             Mail::to(Auth::user()->email)->send(new SendEncomenda($pdfContent));
+             Mail::to(Auth::user()->email)->send(new SendEncomenda($pdfContent, json_encode($encomenda)));
             $this->dispatchBrowserEvent('checkToaster', ["message" => "Email enviado!", "status" => "success"]);
         } catch (\Exception $e) {
             $this->dispatchBrowserEvent('checkToaster', ["message" => $e->getMessage(), "status" => "warning"]);

@@ -12,6 +12,8 @@ use App\Interfaces\ClientesInterface;
 use App\Interfaces\VisitasInterface;
 use App\Models\TiposVisitas;
 use Illuminate\Support\Facades\Session;
+use Dompdf\Dompdf;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class DetalheVisitas extends Component
 {
@@ -178,6 +180,20 @@ class DetalheVisitas extends Component
 
         $this->restartDetails();
 
+    }
+
+    public function gerarPdfVisita($visita)
+    {
+        // dd($visita);
+
+        if (!$visita) {
+            return redirect()->back()->with('error', 'Visita não encontrada.');
+        }
+
+        $pdf = PDF::loadView('pdf.pdfRelatorioVisita', ["visita" => json_encode($visita)]);
+        return response()->streamDownload(function() use ($pdf) {
+            echo $pdf->output();
+        }, 'pdfRelatorioVisita.pdf');
     }
 
     public function addSessionDetalhesRelatorio($pagerange){

@@ -352,7 +352,7 @@
                         <table class="table table-hover init-datatable">
                             <thead class="thead-light">
                                 <tr>
-                                    <th style="width: 5%;">Referência</th>
+                                    <th style="width: 11%;">Referência</th>
                                     <th class="d-none d-md-table-cell">Descrição</th>
                                     <th style="text-align: right;width: 0%;">Quantidade</th>
                                     <th style="text-align: right;width: 0%;">Preço</th>

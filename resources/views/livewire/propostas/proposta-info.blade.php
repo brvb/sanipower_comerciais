@@ -441,7 +441,7 @@
                                     @endif
 
 
-                                    <th style="width: 0;">Referência</th>
+                                    <th style="width: 11%;">Referência</th>
                                     <th class="d-none d-md-table-cell">Descrição</th>
                                     <th style="text-align: right;width: 0%;">Quantidade</th>
                                     <th style="text-align: right;width: 0%;">Preço</th>
