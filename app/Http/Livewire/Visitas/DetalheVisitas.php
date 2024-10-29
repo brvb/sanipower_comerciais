@@ -14,6 +14,9 @@ use App\Models\TiposVisitas;
 use Illuminate\Support\Facades\Session;
 use Dompdf\Dompdf;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Mail;
+use App\Models\GrupoEmail;
+use App\Mail\SendRelatorio;
 
 class DetalheVisitas extends Component
 {
@@ -52,6 +55,9 @@ class DetalheVisitas extends Component
     public string $comentario_propostas = "";
     public string $comentario_financeiro = "";
     public string $comentario_occorencias = "";
+
+    public $emailArray;
+    public $emailSend;
     
 
     public int $checkStatus;
@@ -784,11 +790,35 @@ class DetalheVisitas extends Component
 
 
         $getVisitaID = VisitasAgendadas::where('id',$this->idVisita)->first();
-      
+        
+        // dd($getVisitaID);
+
         $tipoVisita = TiposVisitas::where('id',$this->tipoVisitaSelect)->first();
 
         $sendPHC = $this->visitasRepository->sendVisitaToPhc($getVisitaID->id, $this->detailsClientes->customers[0]->id, $this->assunto, $this->relatorio, $tipoVisita->tipo,$this->pendentes, $this->comentario_encomendas, $this->comentario_propostas, $this->comentario_financeiro, $this->comentario_occorencias, $dataPHC);
 
+        $pdf = new Dompdf();
+        $pdf = PDF::loadView('pdf.pdfRelatorioVisita', ["visita" => json_encode($getVisitaID)]);
+    
+        $pdf->render();
+    
+        $pdfContent = $pdf->output();
+
+        $grupos = GrupoEmail::where('local_funcionamento', 'RelatorioVisita')->get();
+        // dd($grupos);
+        if(isset($grupos)){
+            $this->emailArray = [];
+            foreach ($grupos as $grupo) {
+                $emails = array_map('trim', explode(',', $grupo->emails));
+                
+                $this->emailArray = array_merge($this->emailArray, $emails);
+            }
+
+        foreach($this->emailArray as $i => $email)
+        {
+            // dd(json_encode($getVisitaID));
+            Mail::to($email)->send(new SendRelatorio($pdfContent, json_encode($getVisitaID)));
+        }
 
         $responseArray = $sendPHC->getData(true);
         
@@ -803,10 +833,8 @@ class DetalheVisitas extends Component
             return redirect()->route('visitas.info',["id" => $getVisitaID->id]);
         }
 
-      
-      
-
     }
+}
 
     public function openModalSaveVisita()
     {

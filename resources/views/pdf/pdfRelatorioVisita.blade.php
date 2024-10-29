@@ -1,7 +1,33 @@
 @php
+    use App\Models\User;
+
      $visita = json_decode($visita, true);
     //  dd($visita);
-@endphp
+        $Utilizador = User::where('id', $visita['user_id'])->get();
+    // dd($Utilizador);
+     $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/customers/GetCustomers?id='. $visita['client_id'],
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+    
+        curl_close($curl);
+
+        $response_decoded = json_decode($response);
+        $cliente = $response_decoded;
+        // dd($cliente, $visita);
+    @endphp
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -120,9 +146,11 @@
             <hr style = "width:100%;">
             <table class="client-info" style = "align-items: left;">
                 <tr><strong>Dados do Cliente</strong></td>
-                    <td colspan = 2></td><td><strong>Cliente:</strong> <?php echo $visita['cliente']; ?></td></tr>
-                <tr><td></td><td colspan = 2></td><td><strong>Morada:</strong> <?php echo $visita['cliente']; ?><br><?php echo $visita['cliente']; ?></td></tr>
-                <tr><td></td><td colspan = 2></td><td><strong>NIF:</strong> <?php echo $visita['cliente']; ?></td></tr>
+                    @foreach($cliente->customers as $client)
+                    <td colspan = 2></td><td><strong>Cliente:</strong> {{ $client->name }}</td></tr>
+                <tr><td></td><td colspan = 2></td><td><strong>Morada:</strong>{{ $client->address }}<br>{{ $client->zipcode }}</td></tr>
+                <tr><td></td><td colspan = 2></td><td><strong>NIF:</strong>{{ $client->nif }}</td></tr>
+                @endforeach
             </table>
         </div>
         <br>
@@ -135,7 +163,10 @@
             </tr>
             <tfoot>
                 <tr style = "border-top: 1px solid black; border-bottom: 1px solid black;">
-                    <td colspan="7" style="text-align: right;"><h3>Ricardo Couto</h3></td>
+                    <td colspan="7" style="text-align: right;"><h3>{{$Utilizador->first()->name }}</h3></td>
+                </tr>
+                <tr style = "border-top: 1px solid black; border-bottom: 1px solid black; width:100%; align-items: center;">
+                    <td colspan="6"><?php if ($visita['id_tipo_visita'] == 1) { echo '<img border=0 id="_x0000_i1031" src="https://com.sanipower.pt/assets/mobile/images/Telefone.png">'; } elseif ($visita['id_tipo_visita'] == 2) { echo '<img border=0 id="_x0000_i1031" src="https://com.sanipower.pt/assets/mobile/images/Email.png">'; } else { echo '<img border=0 id="_x0000_i1031" src="https://com.sanipower.pt/assets/mobile/images/Telefone.png">'; } ?></td>
                 </tr>
             </tfoot>
         </table>
