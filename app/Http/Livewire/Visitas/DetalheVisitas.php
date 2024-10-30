@@ -660,6 +660,7 @@ class DetalheVisitas extends Component
 
             if($visitas->count() > 0)
             {
+                // dd('AQUI 1');
                 $agenda = VisitasAgendadas::where('id',$this->idVisita)->update([
                     "finalizado" => "1",
                     "data_final" => date('Y-m-d'),
@@ -688,7 +689,7 @@ class DetalheVisitas extends Component
              
             } 
             else {
-
+                // dd('AQUI 2');
                 $agenda = VisitasAgendadas::create([
                     "client_id" => $this->detailsClientes->customers[0]->id,
                     "cliente" => $this->detailsClientes->customers[0]->name,
@@ -724,7 +725,7 @@ class DetalheVisitas extends Component
 
             if($this->idVisita == 0)
             {
-
+                // dd('AQUI 3');
                 $agenda = VisitasAgendadas::create([
                     "client_id" => $this->detailsClientes->customers[0]->id,
                     "cliente" => $this->detailsClientes->customers[0]->name,
@@ -754,9 +755,10 @@ class DetalheVisitas extends Component
                     "user_id" => Auth::user()->id
                 ]);
 
+                $this->idVisita = $agenda->id;
             }
             else {
-
+                // dd('AQUI 4');
                 $agenda = VisitasAgendadas::where('id',$this->idVisita)->update([
                     "finalizado" => "1",
                     "data_final" => date('Y-m-d'),
@@ -791,7 +793,7 @@ class DetalheVisitas extends Component
 
         $getVisitaID = VisitasAgendadas::where('id',$this->idVisita)->first();
         
-        // dd($getVisitaID);
+        // dd($this->idVisita);
 
         $tipoVisita = TiposVisitas::where('id',$this->tipoVisitaSelect)->first();
 
@@ -823,7 +825,6 @@ class DetalheVisitas extends Component
         $responseArray = $sendPHC->getData(true);
         
         if($responseArray["success"] == true){
-
             session()->flash('success', "Visita registada e finalizada com sucesso");
             return redirect()->route('visitas.info',["id" => $getVisitaID->id]);
         }
@@ -1046,7 +1047,6 @@ class DetalheVisitas extends Component
     }
     public function openProposta($idcliente, $idVisita)
     {
-
         $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
         $this->detailsClientes = $arrayCliente["object"];
 

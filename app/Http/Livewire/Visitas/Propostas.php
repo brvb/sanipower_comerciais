@@ -535,18 +535,16 @@ class Propostas extends Component
     {
         $this->guardarVisita();
 
-        // if($this->idVisita == 0)
-        // {
+        if($this->idVisita == 0)
+        {
 
-        //     Session::put('rota','visitas.detail');
-        //     Session::put('parametro',$this->idCliente);
            
-        // } else {
+        } else {
 
-        //     Session::put('rota','visitas.info');
-        //     Session::put('parametro',$this->idVisita);
+            Session::put('rota','visitas.info');
+            Session::put('parametro',$this->idVisita);
            
-        // }
+        }
         
 
        

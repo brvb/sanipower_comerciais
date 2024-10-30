@@ -140,7 +140,7 @@
                     <td><strong>Data da Visita:</strong> <?php echo $visita['data_final']; ?></td>
                 </tr>
                 <tr>
-                    <td><strong>Tipo de visita:</strong> <?php if ($visita['id_tipo_visita'] == 1) { echo 'Comercial'; } elseif ($visita['id_tipo_visita'] == 2) { echo 'Email'; } else { echo 'Telefone'; } ?></td>
+                    <td><strong>Tipo de visita:</strong> <?php if ($visita['id_tipo_visita'] == 2) { echo 'Comercial'; } elseif ($visita['id_tipo_visita'] == 1) { echo 'Email'; } else { echo 'Telefone'; } ?></td>
                 </tr>
             </table>
             <hr style = "width:100%;">
@@ -166,7 +166,7 @@
                     <td colspan="7" style="text-align: right;"><h3>{{$Utilizador->first()->name }}</h3></td>
                 </tr>
                 <tr style = "border-top: 1px solid black; border-bottom: 1px solid black; width:100%; align-items: center;">
-                    <td colspan="6"><?php if ($visita['id_tipo_visita'] == 1) { echo '<img border=0 id="_x0000_i1031" src="https://com.sanipower.pt/assets/mobile/images/Telefone.png">'; } elseif ($visita['id_tipo_visita'] == 2) { echo '<img border=0 id="_x0000_i1031" src="https://com.sanipower.pt/assets/mobile/images/Email.png">'; } else { echo '<img border=0 id="_x0000_i1031" src="https://com.sanipower.pt/assets/mobile/images/Telefone.png">'; } ?></td>
+                    <td colspan="6"><?php if ($visita['id_tipo_visita'] == 2) { echo '<img border=0 id="_x0000_i1031" src="https://com.sanipower.pt/assets/mobile/images/Presencial.png">'; } elseif ($visita['id_tipo_visita'] == 1) { echo '<img border=0 id="_x0000_i1031" src="https://com.sanipower.pt/assets/mobile/images/Email.png">'; } else { echo '<img border=0 id="_x0000_i1031" src="https://com.sanipower.pt/assets/mobile/images/Telefone.png">'; } ?></td>
                 </tr>
             </tfoot>
         </table>

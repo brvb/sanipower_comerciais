@@ -18,6 +18,13 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\Campanhas;
 
+use App\Models\GrupoEmail;
+use App\Mail\SendEncomenda;
+use Dompdf\Dompdf;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Mail;
+
+
 class DetalheEncomenda extends Component
 {
     use WithPagination;
@@ -116,6 +123,8 @@ class DetalheEncomenda extends Component
     public $produtosComment = [];
 
     /***** */
+    public $emailArray;
+    public $emailSend;
 
     public ?object $encomenda = NULL;
 
@@ -562,12 +571,6 @@ class DetalheEncomenda extends Component
                             $flag = 1;
                             break;
                         } else {
-
-                            if ($prod->in_stock == false) {
-                                $this->dispatchBrowserEvent('checkToaster', ["message" => "Não existe quantidades em stock", "status" => "error"]);
-                                $flag = 1;
-                                break;
-                            }
                             $productChosen = ["product" => $prod, "quantidade" => $prodRap];
                         }
                     }
@@ -644,12 +647,6 @@ class DetalheEncomenda extends Component
                             $flag = 1;
                             break;
                         } else {
-
-                            if ($prod->in_stock == false) {
-                                $this->dispatchBrowserEvent('checkToaster', ["message" => "Não existe quantidades em stock", "status" => "error"]);
-                                $flag = 1;
-                                break;
-                            }
                             $productChosen = ["product" => $prod, "quantidade" => $prodRap];
                         }
                     }
@@ -1005,6 +1002,43 @@ class DetalheEncomenda extends Component
             Carrinho::where('id_encomenda', $getEncomenda->id_encomenda)->delete();   
             $encomendasArray = $this->clientesRepository->getEncomendasClienteFiltro(10,1,$this->idCliente,$this->nomeCliente,$idCliente,$this->zonaCliente,$this->telemovelCliente,$this->emailCliente,$this->nifCliente,"0","0",$this->startDate,$this->endDate,$this->statusEncomenda);
             
+            // dd($encomendasArray);
+            foreach($encomendasArray["paginator"] as $encomenda){
+
+                    $encomenda = json_encode($encomenda);
+                    // dd($encomenda);
+            }
+
+            // dd($encomenda);
+
+            $pdf = new Dompdf();
+            $pdf = PDF::loadView('pdf.pdfTabelaEncomenda', ["encomenda" => $encomenda]);
+        
+            $pdf->render();
+        
+            $pdfContent = $pdf->output();
+        
+            $grupos = GrupoEmail::where('local_funcionamento', 'nova_encomenda')->get();
+                    if(isset($grupos)){
+                        $this->emailArray = [];
+
+                        foreach ($grupos as $grupo) {
+                            $emails = array_map('trim', explode(',', $grupo->emails));
+                    
+                            $this->emailArray = array_merge($this->emailArray, $emails);
+                        }
+                    
+                        // array_push($this->emailArray,Auth::user()->email); Esse é o email do utilizador atual
+                        $this->emailArray = array_unique($this->emailArray);
+                        
+                        foreach($this->emailArray as $i => $email)
+                        {
+                            Mail::to($email)->send(new SendEncomenda($pdfContent, json_decode($encomenda, true)));
+                        }
+
+                    }
+
+
             session(['parametroStatusAdjudicar' => null]);
 
             foreach($encomendasArray["paginator"] as $encomenda){

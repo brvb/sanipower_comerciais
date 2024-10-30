@@ -159,7 +159,7 @@
                                         <td style='border:none;border-bottom:solid black 1.0pt;padding:.75pt .75pt .75pt .75pt'>
                                             <p class="MsoNormal" style='line-height:10.5pt'><b><span style='font-size:5.5pt; font-family:Arial,sans-serif'>Vossa referência</span></b></p>
                                         </td>
-                                        <td style='border:none;border-bottom:solid black 1.0pt;padding:.75pt .75pt .75pt .75pt'><span style='font-size:5.5pt;font-family:Arial,sans-serif'><?php echo $encomenda['id']; ?></span></td>
+                                        <td style='border:none;border-bottom:solid black 1.0pt;padding:.75pt .75pt .75pt .75pt'><span style='font-size:5.5pt;font-family:Arial,sans-serif'><?php echo $encomenda['reference']; ?></span></td>
                                     </tr>
                                     
                                     <tr>

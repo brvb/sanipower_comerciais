@@ -6,7 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class SendRelatorio extends Mailable
+class SendAprovacao extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -17,14 +17,14 @@ class SendRelatorio extends Mailable
      */
 
      protected $pdfContent;
-     public array $visita = [];
+     public array $proposta = [];
 
-     public function __construct($pdfContent, $visita)
-     {
-        // dd(json_decode($visita));
+    public function __construct($pdfContent, $proposta)
+    {
+        // dd($proposta->budgets[0]);
         $this->pdfContent = $pdfContent;
-        $this->visita = json_decode($visita, true);
-     }
+        $this->proposta = (array) $proposta->budgets[0];
+    }
 
     /**
      * Build the message.
@@ -33,11 +33,11 @@ class SendRelatorio extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.relatorio')
+        return $this->view('mail.aprovacao')
                 ->subject('Sanipower, S.A.')
-                ->attachData($this->pdfContent, 'RelatorioVisita.pdf', [
+                ->attachData($this->pdfContent, 'Proposta.pdf', [
                             'mime' => 'application/pdf',
-                            'visita' => $this->visita,
+                            'proposta' => $this->proposta,
                         ]);
     }
 }

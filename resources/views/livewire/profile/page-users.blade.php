@@ -156,6 +156,7 @@
                             <option value="comentarios_propostas">Comentários Propostas</option>
                             <option value="nova_encomenda">Nova Encomenda</option>
                             <option value="nova_propostas">Nova Proposta</option>
+                            <option value="aprov_propostas">Aprovação da Proposta</option>
                             <option value="RelatorioVisita">Finalizar Visita</option>
                         </select>
                         @error('local_funcionamento') <span class="text-danger">{{ $message }}</span> @enderror

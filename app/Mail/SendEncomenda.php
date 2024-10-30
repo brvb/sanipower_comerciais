@@ -21,9 +21,10 @@ class SendEncomenda extends Mailable
 
      public function __construct($pdfContent, $encomenda)
      {
-        dd($encomenda);
+        // dd($encomenda);
         $this->pdfContent = $pdfContent;
         $this->encomenda = $encomenda; // Corrigido: atribuir diretamente à propriedade
+        // dd($this->encomenda);
      }
 
     /**

@@ -22,6 +22,10 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\Campanhas;
+use App\Models\GrupoEmail;
+use App\Mail\SendAprovacao;
+
+
 
 
 class DetalheProposta extends Component
@@ -113,6 +117,10 @@ class DetalheProposta extends Component
     public $transferenciaFinalizar;
 
     public $enviarCliente;
+
+    public $enviarAprovacao;
+    public $emailArray;
+    public $emailSend;
 
     public ?array $lojas = NULL;
 
@@ -1206,18 +1214,94 @@ class DetalheProposta extends Component
                
                 $emailArray = explode("; ", $emailCliente["object"]->customers[0]->email);
 
-     
+                $emailUsuarioLogado = Auth::user()->email;
+
                 // tem que ativar quando for passar para a oficial
-                // foreach($emailArray as $i => $email)
-                // {
-                //     Mail::to($email)->send(new SendProposta($pdfContent));
-                // }
+                foreach($emailArray as $i => $email)
+                {
+                    Mail::to($email)
+                        ->cc($emailUsuarioLogado)
+                        ->send(new SendProposta($pdfContent));
+                }
 
             }
           
             
         }
+
+        if($this->enviarAprovacao == true)
+        {
+
+            if ($response_decoded->success == true) {
+
+                $proposta = $this->clientesRepository->getPropostaID($response_decoded->id_document);
+
+
+                $pdf = new Dompdf();
+                $pdf = PDF::loadView('pdf.pdfTabelaPropostas', ["proposta" => json_encode($proposta->budgets[0])]);
+            
+                $pdf->render();
+            
+                $pdfContent = $pdf->output();
+                
+                if (property_exists($proposta, 'budgets') && isset($proposta->budgets[0])) {
+                    $grupos = GrupoEmail::where('local_funcionamento', 'aprov_propostas')->get();
+                    if(isset($grupos)){
+                        $this->emailArray = [];
+
+                        foreach ($grupos as $grupo) {
+                            $emails = array_map('trim', explode(',', $grupo->emails));
+                    
+                            $this->emailArray = array_merge($this->emailArray, $emails);
+                        }
+                    
+                        // array_push($this->emailArray,Auth::user()->email); Esse é o email do utilizador atual
+                        $this->emailArray = array_unique($this->emailArray);
+                        
+                        foreach($this->emailArray as $i => $email)
+                        {
+                            // dd($proposta);
+                            Mail::to($email)->send(new SendAprovacao($pdfContent, $proposta));
+                        }
+                    }
+                }
+            }
+          
+            
+        }
+
         if ($response_decoded->success == true) {
+
+            $proposta = $this->clientesRepository->getPropostaID($response_decoded->id_document);
+
+
+                $pdf = new Dompdf();
+                $pdf = PDF::loadView('pdf.pdfTabelaPropostas', ["proposta" => json_encode($proposta->budgets[0])]);
+            
+                $pdf->render();
+            
+                $pdfContent = $pdf->output();
+                
+                if (property_exists($proposta, 'budgets') && isset($proposta->budgets[0])) {
+                    $grupos = GrupoEmail::where('local_funcionamento', 'nova_propostas')->get();
+                    if(isset($grupos)){
+                        $this->emailArray = [];
+
+                        foreach ($grupos as $grupo) {
+                            $emails = array_map('trim', explode(',', $grupo->emails));
+                    
+                            $this->emailArray = array_merge($this->emailArray, $emails);
+                        }
+                    
+                        // array_push($this->emailArray,Auth::user()->email); Esse é o email do utilizador atual
+                        $this->emailArray = array_unique($this->emailArray);
+                        
+                        foreach($this->emailArray as $i => $email)
+                        {
+                            Mail::to($email)->send(new SendProposta($pdfContent));
+                        }
+                    }
+                }
            
             $getEncomenda = Carrinho::where('id_proposta','!=', "")->where('id_cliente',$idCliente)->first();
 
