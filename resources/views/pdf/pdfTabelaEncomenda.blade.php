@@ -105,7 +105,7 @@
 		<table style="width: 18.5cm;" class="tabela">
 			<tr>
 				<td style="width: 150px; border-bottom: solid 1px #000000;" class="fonte"><strong>Vossa referência<strong></td>
-				<td style="border-bottom: solid 1px #000000;">{{ $encomendaData['id'] }}</td>
+				<td style="border-bottom: solid 1px #000000;">{{ $encomendaData['reference'] }}</td>
 			</tr>
 			<tr style="border-bottom: solid 1px #000000;">
 				<td style="width: 150px; border-bottom: solid 1px #000000;" class="fonte"><strong>Observações</strong></td>

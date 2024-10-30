@@ -1227,6 +1227,18 @@
                         </div>   
                     </div>          
 
+                    <div class="col-xl-12 col-xs-12 mt-2">
+                        <div class="col-xl-12 col-xs-12">
+                            <div class="form-checkbox">
+                                <label>
+                                    <input type="checkbox" id="enviarCliente" class="enviarCliente" wire:model.defer="enviarAprovacao">
+                                    <span class="checkmark"><i class="fa fa-check pick"></i></span>
+                                    Enviar para Aprovação ?
+                                </label>
+                            </div>
+                        </div>   
+                    </div>          
+
                 </div>
  
                  <div class="row p-4">

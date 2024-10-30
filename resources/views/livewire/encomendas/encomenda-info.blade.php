@@ -224,7 +224,7 @@
                                 <div class="col-xl-6">
                                     <div class="form-group">
                                         <label>Vossa Referência</label>
-                                        <input type="text" class="form-control" value="" readonly>
+                                        <input type="text" class="form-control" value="{{ $encomenda->reference }}" readonly>
                                         <br>
                                         <label>Dados Logísticos</label>
                                         <input type="text" class="form-control" value="{{ $encomenda->store }}" readonly>

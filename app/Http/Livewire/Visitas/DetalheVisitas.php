@@ -14,6 +14,9 @@ use App\Models\TiposVisitas;
 use Illuminate\Support\Facades\Session;
 use Dompdf\Dompdf;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Mail;
+use App\Models\GrupoEmail;
+use App\Mail\SendRelatorio;
 
 class DetalheVisitas extends Component
 {
@@ -52,6 +55,9 @@ class DetalheVisitas extends Component
     public string $comentario_propostas = "";
     public string $comentario_financeiro = "";
     public string $comentario_occorencias = "";
+
+    public $emailArray;
+    public $emailSend;
     
 
     public int $checkStatus;
@@ -654,6 +660,7 @@ class DetalheVisitas extends Component
 
             if($visitas->count() > 0)
             {
+                // dd('AQUI 1');
                 $agenda = VisitasAgendadas::where('id',$this->idVisita)->update([
                     "finalizado" => "1",
                     "data_final" => date('Y-m-d'),
@@ -682,7 +689,7 @@ class DetalheVisitas extends Component
              
             } 
             else {
-
+                // dd('AQUI 2');
                 $agenda = VisitasAgendadas::create([
                     "client_id" => $this->detailsClientes->customers[0]->id,
                     "cliente" => $this->detailsClientes->customers[0]->name,
@@ -718,7 +725,7 @@ class DetalheVisitas extends Component
 
             if($this->idVisita == 0)
             {
-
+                // dd('AQUI 3');
                 $agenda = VisitasAgendadas::create([
                     "client_id" => $this->detailsClientes->customers[0]->id,
                     "cliente" => $this->detailsClientes->customers[0]->name,
@@ -748,9 +755,10 @@ class DetalheVisitas extends Component
                     "user_id" => Auth::user()->id
                 ]);
 
+                $this->idVisita = $agenda->id;
             }
             else {
-
+                // dd('AQUI 4');
                 $agenda = VisitasAgendadas::where('id',$this->idVisita)->update([
                     "finalizado" => "1",
                     "data_final" => date('Y-m-d'),
@@ -784,16 +792,39 @@ class DetalheVisitas extends Component
 
 
         $getVisitaID = VisitasAgendadas::where('id',$this->idVisita)->first();
-      
+        
+        // dd($this->idVisita);
+
         $tipoVisita = TiposVisitas::where('id',$this->tipoVisitaSelect)->first();
 
         $sendPHC = $this->visitasRepository->sendVisitaToPhc($getVisitaID->id, $this->detailsClientes->customers[0]->id, $this->assunto, $this->relatorio, $tipoVisita->tipo,$this->pendentes, $this->comentario_encomendas, $this->comentario_propostas, $this->comentario_financeiro, $this->comentario_occorencias, $dataPHC);
 
+        $pdf = new Dompdf();
+        $pdf = PDF::loadView('pdf.pdfRelatorioVisita', ["visita" => json_encode($getVisitaID)]);
+    
+        $pdf->render();
+    
+        $pdfContent = $pdf->output();
+
+        $grupos = GrupoEmail::where('local_funcionamento', 'RelatorioVisita')->get();
+        // dd($grupos);
+        if(isset($grupos)){
+            $this->emailArray = [];
+            foreach ($grupos as $grupo) {
+                $emails = array_map('trim', explode(',', $grupo->emails));
+                
+                $this->emailArray = array_merge($this->emailArray, $emails);
+            }
+
+        foreach($this->emailArray as $i => $email)
+        {
+            // dd(json_encode($getVisitaID));
+            Mail::to($email)->send(new SendRelatorio($pdfContent, json_encode($getVisitaID)));
+        }
 
         $responseArray = $sendPHC->getData(true);
         
         if($responseArray["success"] == true){
-
             session()->flash('success', "Visita registada e finalizada com sucesso");
             return redirect()->route('visitas.info',["id" => $getVisitaID->id]);
         }
@@ -803,10 +834,8 @@ class DetalheVisitas extends Component
             return redirect()->route('visitas.info',["id" => $getVisitaID->id]);
         }
 
-      
-      
-
     }
+}
 
     public function openModalSaveVisita()
     {
@@ -1018,7 +1047,6 @@ class DetalheVisitas extends Component
     }
     public function openProposta($idcliente, $idVisita)
     {
-
         $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
         $this->detailsClientes = $arrayCliente["object"];
 

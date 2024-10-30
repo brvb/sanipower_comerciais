@@ -6,7 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class SendEncomenda extends Mailable
+class SendAprovacao extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -17,15 +17,14 @@ class SendEncomenda extends Mailable
      */
 
      protected $pdfContent;
-     public array $encomenda = [];
+     public array $proposta = [];
 
-     public function __construct($pdfContent, $encomenda)
-     {
-        // dd($encomenda);
+    public function __construct($pdfContent, $proposta)
+    {
+        // dd($proposta->budgets[0]);
         $this->pdfContent = $pdfContent;
-        $this->encomenda = $encomenda; // Corrigido: atribuir diretamente à propriedade
-        // dd($this->encomenda);
-     }
+        $this->proposta = (array) $proposta->budgets[0];
+    }
 
     /**
      * Build the message.
@@ -34,11 +33,11 @@ class SendEncomenda extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.encomenda')
+        return $this->view('mail.aprovacao')
                 ->subject('Sanipower, S.A.')
-                ->attachData($this->pdfContent, 'Encomenda.pdf', [
+                ->attachData($this->pdfContent, 'Proposta.pdf', [
                             'mime' => 'application/pdf',
-                            'encomenda' => $this->encomenda,
+                            'proposta' => $this->proposta,
                         ]);
     }
 }
