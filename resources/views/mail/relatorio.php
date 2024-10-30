@@ -25,7 +25,29 @@ use App\Models\User;
 
         $response_decoded = json_decode($response);
         $cliente = $response_decoded;
-        // dd($cliente, $visita);
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/visit?visit_id='.$visita['id'],
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+    
+        curl_close($curl);
+
+        $response_decoded = json_decode($response);
+        // dd($response_decoded->documents);
+        $prop_enc = $response_decoded->documents ?? null;
 ?>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
 <html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns:m="http://schemas.microsoft.com/office/2004/12/omml" xmlns="http://www.w3.org/TR/REC-html40">
@@ -180,14 +202,20 @@ w\:* {behavior:url(#default#VML);}
                                         <p class=MsoNormal style='line-height:10.5pt'><span style='font-size:7.0pt;font-family:"Arial",sans-serif'><?php foreach($cliente->customers as $client) { echo $client->name; ?><br><?php echo $client->address; ?><br><?php echo $client->zipcode; ?><br>NIF: <?php echo $client->nif; } ?> <o:p></o:p></span></p>
                                     </td>
                                 </tr>
-                                <!-- <tr>
-                                    <td style='border:none;border-bottom:solid black 1.0pt;padding:.75pt .75pt .75pt .75pt'>
-                                        <p class=MsoNormal style='line-height:10.5pt'><b><span style='font-size:7.0pt;font-family:"Arial",sans-serif'>Encomenda<o:p></o:p></span></b></p>
+                                <?php 
+                                if($prop_enc != null){
+                                foreach($prop_enc as $item){
+                                    $firstWord = explode(' ', $item->budget)[0];
+                                    echo '
+                                 <tr>
+                                    <td style="border:none;border-bottom:solid black 1.0pt;padding:.75pt .75pt .75pt .75pt">
+                                        <p class=MsoNormal style="line-height:10.5pt"><b><span style="font-size:7.0pt;font-family:Arial,sans-serif">'.$firstWord.'<o:p></o:p></span></b></p>
                                     </td>
-                                    <td style='border:none;border-bottom:solid black 1.0pt;padding:.75pt .75pt .75pt .75pt'>
-                                        <p class=MsoNormal style='line-height:10.5pt'><span style='font-size:7.0pt;font-family:"Arial",sans-serif'>O cliente efetuou a encomenda n.º 11822/2024 no valor de 762,140&nbsp;€ nesta data.<o:p></o:p></span></p>
+                                    <td style="border:none;border-bottom:solid black 1.0pt;padding:.75pt .75pt .75pt .75pt">
+                                        <p class=MsoNormal style="line-height:10.5pt"><span style="font-size:7.0pt;font-family:Arial,sans-serif">O cliente efetuou a '.$item->budget.' no valor de '.$item->total.'€ nesta data.<o:p></o:p></span></p>
                                     </td>
-                                </tr> -->
+                                </tr> ';
+                                } }?>
                                 <tr>
                                     <td style='border:none;border-bottom:solid black 1.0pt;padding:.75pt .75pt .75pt .75pt'>
                                         <p class=MsoNormal style='line-height:10.5pt'><b><span style='font-size:7.0pt;font-family:"Arial",sans-serif'>Relatório final da visita<o:p></o:p></span></b></p>

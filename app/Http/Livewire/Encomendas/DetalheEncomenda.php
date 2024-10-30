@@ -125,6 +125,7 @@ class DetalheEncomenda extends Component
     /***** */
     public $emailArray;
     public $emailSend;
+    public $visitaCheck;
 
     public ?object $encomenda = NULL;
 
@@ -891,6 +892,7 @@ class DetalheEncomenda extends Component
             } 
             else {
                 $visitaCheck = $prod->id_visita;
+                $this->visitaCheck = $visitaCheck;
             }
             if($prod->id_proposta == null){
                 $id_proposta = "";
@@ -968,8 +970,11 @@ class DetalheEncomenda extends Component
             "payment_conditions" => $condicaoPagamento,
             "salesman_number" => Auth::user()->id_phc,
             "type" => "order",
+            "visit_id" => $this->visitaCheck,
             "lines" => array_values($arrayProdutos)
         ];
+
+        // dd($array);
 
         $curl = curl_init();
 
@@ -1001,13 +1006,10 @@ class DetalheEncomenda extends Component
             ComentariosProdutos::where('id_encomenda', $getEncomenda->id_encomenda)->delete();
             Carrinho::where('id_encomenda', $getEncomenda->id_encomenda)->delete();   
             $encomendasArray = $this->clientesRepository->getEncomendasClienteFiltro(10,1,$this->idCliente,$this->nomeCliente,$idCliente,$this->zonaCliente,$this->telemovelCliente,$this->emailCliente,$this->nifCliente,"0","0",$this->startDate,$this->endDate,$this->statusEncomenda);
-            
-            // dd($encomendasArray);
-            foreach($encomendasArray["paginator"] as $encomenda){
+            $encomenda = $this->clientesRepository->getEncomendaID($response_decoded->id_document);
 
-                    $encomenda = json_encode($encomenda);
-                    // dd($encomenda);
-            }
+            $encomenda = json_encode($encomenda->orders[0]);
+            // dd($encomenda);
 
             // dd($encomenda);
 

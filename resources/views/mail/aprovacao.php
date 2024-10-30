@@ -328,7 +328,31 @@
                                              <div align=center>
                                                 <table class=MsoNormalTable border=0 cellpadding=0>
                                                 <?php
+                                                $total = 0;
+                                                $total_SIVA = 0;
+                                                $total_iva = 0;
                                                 foreach ($proposta['lines'] as $line) {
+                                 
+                                                $discount = $line->discount;
+
+                                                $discount = $discount / 100;
+
+                                                $discount = $discount * floatval($line->price);
+
+                                                $discount2 = $line->discount2;
+
+                                                $discount2 = $discount2 / 100;
+
+                                                $discount2 = (floatval($line->price) - $discount) * $discount2;
+
+                                                $desconto = $discount + $discount2;
+
+                                                $price = floatval($line->price) - $desconto;
+
+                                                $total = isset($total) ? $total : 0;
+                                                $total = floatval($line->quantity) * floatval($price);	
+                                                $total = number_format($total, 3, '.', '');
+
                                                 echo '
                                                 <tr>
                                                     <td width="10%" style="width:10.0%;padding:.75pt .75pt .75pt .75pt">
@@ -374,7 +398,7 @@
                                                     <td width=70 style="width:52.5pt;padding:.75pt .75pt .75pt .75pt">
                                                         <p class=MsoNormal align=right style="text-align:right;line-height:16.5pt">
                                                             <span style="font-size:8.5pt;font-family:Arial,sans-serif">
-                                                               '.$line->price.'€
+                                                               '.$price.'€
                                                                 <o:p></o:p>
                                                             </span>
                                                         </p>
@@ -382,81 +406,25 @@
                                                     <td width="10%" style="width:10.0%;padding:.75pt .75pt .75pt .75pt">
                                                         <p class=MsoNormal align=right style="text-align:right;line-height:16.5pt">
                                                             <span style="font-size:8.5pt;font-family:Arial,sans-serif">
-                                                                '.$line->total.'€
+                                                                '.$total.'€
                                                                 <o:p></o:p>
                                                             </span>
                                                         </p>
                                                     </td>
                                                     </tr>';
+
+                                                    $total_SIVA += $total;
+                                                    $total_SIVA = number_format($total_SIVA, 3, '.', '');
+
+
+                                                    $tabela = $line->tax;
+                                                    $taxa_iva = $tabela / 100 + 1;
+                                                   
+                                                    $total_iva = isset($total_iva) ? $total_iva : 0;
+                                                    $total_iva = floatval($total_SIVA) * $taxa_iva;
+                                                    $total_iva = number_format($total_iva, 3, '.', '');
                                                 }
                                                     ?>
-                                                </table>
-                                             </div>
-                                             <p class=MsoNormal align=center style='text-align:center;line-height:16.5pt'>
-                                                <span style='font-size:8.5pt;font-family:"Arial",sans-serif;display:none'>
-                                                   <o:p>&nbsp;</o:p>
-                                                </span>
-                                             </p>
-                                             <div align=center>
-                                                <table class=MsoNormalTable border=0 cellpadding=0>
-                                                   <tr>
-                                                      <td width="10%" style='width:10.0%;padding:.75pt .75pt .75pt .75pt'>
-                                                         <p class=MsoNormal style='line-height:16.5pt'>
-                                                            <span style='font-size:8.5pt;font-family:"Arial",sans-serif'>
-                                                               5011600300
-                                                               <o:p></o:p>
-                                                            </span>
-                                                         </p>
-                                                      </td>
-                                                      <td style='padding:.75pt .75pt .75pt .75pt'>
-                                                         <p class=MsoNormal style='line-height:16.5pt'>
-                                                            <span style='font-size:8.5pt;font-family:"Arial",sans-serif'>
-                                                               Junção Latão S/C F/F 1&quot;
-                                                               <o:p></o:p>
-                                                            </span>
-                                                         </p>
-                                                      </td>
-                                                      <td width=50 style='width:37.5pt;padding:.75pt .75pt .75pt .75pt'>
-                                                         <p class=MsoNormal align=right style='text-align:right;line-height:16.5pt'>
-                                                            <span style='font-size:8.5pt;font-family:"Arial",sans-serif'>
-                                                               24
-                                                               <o:p></o:p>
-                                                            </span>
-                                                         </p>
-                                                      </td>
-                                                      <td width=70 style='width:52.5pt;padding:.75pt .75pt .75pt .75pt'>
-                                                         <p class=MsoNormal align=right style='text-align:right;line-height:16.5pt'>
-                                                            <span style='font-size:8.5pt;font-family:"Arial",sans-serif'>
-                                                               3.67
-                                                               <o:p></o:p>
-                                                            </span>
-                                                         </p>
-                                                      </td>
-                                                      <td width=75 style='width:56.25pt;padding:.75pt .75pt .75pt .75pt'>
-                                                         <p class=MsoNormal align=right style='text-align:right;line-height:16.5pt'>
-                                                            <span style='font-size:8.5pt;font-family:"Arial",sans-serif'>
-                                                               0
-                                                               <o:p></o:p>
-                                                            </span>
-                                                         </p>
-                                                      </td>
-                                                      <td width=70 style='width:52.5pt;padding:.75pt .75pt .75pt .75pt'>
-                                                         <p class=MsoNormal align=right style='text-align:right;line-height:16.5pt'>
-                                                            <span style='font-size:8.5pt;font-family:"Arial",sans-serif'>
-                                                               3.67
-                                                               <o:p></o:p>
-                                                            </span>
-                                                         </p>
-                                                      </td>
-                                                      <td width="10%" style='width:10.0%;padding:.75pt .75pt .75pt .75pt'>
-                                                         <p class=MsoNormal align=right style='text-align:right;line-height:16.5pt'>
-                                                            <span style='font-size:8.5pt;font-family:"Arial",sans-serif'>
-                                                               88,080&nbsp;€
-                                                               <o:p></o:p>
-                                                            </span>
-                                                         </p>
-                                                      </td>
-                                                   </tr>
                                                 </table>
                                              </div>
                                              <p class=MsoNormal align=center style='text-align:center;line-height:16.5pt'>
@@ -481,7 +449,7 @@
                                                          <p class=MsoNormal align=right style='text-align:right;line-height:16.5pt'>
                                                             <b>
                                                                <span style='font-size:10.5pt;font-family:"Arial",sans-serif'>
-                                                                  1&nbsp;922,880&nbsp;€
+                                                                  <?php echo $total_SIVA;?>
                                                                   <o:p></o:p>
                                                                </span>
                                                             </b>
@@ -503,7 +471,7 @@
                                                          <p class=MsoNormal align=right style='text-align:right;line-height:16.5pt'>
                                                             <b>
                                                                <span style='font-size:10.5pt;font-family:"Arial",sans-serif'>
-                                                                  2&nbsp;365,142&nbsp;€
+                                                               <?php echo $total_iva;?>
                                                                   <o:p></o:p>
                                                                </span>
                                                             </b>
@@ -523,7 +491,7 @@
                                           </div>
                                           <div align=center>
                                              <table class=MsoNormalTable border=0 cellpadding=0 width="100%" style='width:100.0%'>
-                                                <!--<tr>
+                                                <tr>
                                                    <td width=120 style='width:90.0pt;padding:.75pt .75pt .75pt .75pt'>
                                                       <p class=MsoNormal style='line-height:16.5pt'>
                                                          <span style='font-size:8.5pt;font-family:"Arial",sans-serif'>
@@ -535,13 +503,13 @@
                                                    <td style='padding:.75pt .75pt .75pt .75pt'>
                                                       <p class=MsoNormal style='line-height:16.5pt'>
                                                          <span style='font-size:8.5pt;font-family:"Arial",sans-serif'>
-                                                            VER MELHOR PREÇO P/ COMPRAR. VAI PEDIR PREÇO A SANITOP. 
+                                                         <?php echo $proposta['obs'];?> 
                                                             <o:p></o:p>
                                                          </span>
                                                       </p>
                                                    </td>
-                                                </tr>-->
-                                                <!--<tr>
+                                                </tr>
+                                                <tr>
                                                    <td width=120 style='width:90.0pt;padding:.75pt .75pt .75pt .75pt'>
                                                       <p class=MsoNormal style='line-height:16.5pt'>
                                                          <span style='font-size:8.5pt;font-family:"Arial",sans-serif'>
@@ -553,12 +521,12 @@
                                                    <td style='padding:.75pt .75pt .75pt .75pt'>
                                                       <p class=MsoNormal style='line-height:16.5pt'>
                                                          <span style='font-size:8.5pt;font-family:"Arial",sans-serif'>
-                                                            Este orçamento tem a validade de 8 dias 
+                                                         <?php echo $proposta['validity'];?> 
                                                             <o:p></o:p>
                                                          </span>
                                                       </p>
                                                    </td>
-                                                </tr>-->
+                                                </tr>
                                                 <tr>
                                                    <td width=120 style='width:90.0pt;padding:.75pt .75pt .75pt .75pt'>
                                                       <p class=MsoNormal style='line-height:16.5pt'>
