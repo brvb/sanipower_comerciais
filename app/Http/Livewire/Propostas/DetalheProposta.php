@@ -1202,22 +1202,21 @@ class DetalheProposta extends Component
 
                 $proposta = $this->clientesRepository->getPropostaID($response_decoded->id_document);
 
-
                 $pdf = new Dompdf();
                 $pdf = PDF::loadView('pdf.pdfTabelaPropostas', ["proposta" => json_encode($proposta->budgets[0])]);
-            
+
                 $pdf->render();
-            
+
                 $pdfContent = $pdf->output();
-            
+
                 $emailCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
-               
+
                 $emailArray = explode("; ", $emailCliente["object"]->customers[0]->email);
 
                 $emailUsuarioLogado = Auth::user()->email;
 
                 // tem que ativar quando for passar para a oficial
-                foreach($emailArray as $i => $email)
+               foreach($emailArray as $i => $email)
                 {
                     Mail::to($email)
                         ->cc($emailUsuarioLogado)
