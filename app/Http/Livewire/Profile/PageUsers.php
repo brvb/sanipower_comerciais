@@ -110,7 +110,13 @@ class PageUsers extends Component
             $this->dispatchBrowserEvent('close-modal');
 
             $this->dispatchBrowserEvent('checkToaster', ["message" => $message, "status" => $status]);
-        } else {
+        }elseif(empty($this->descricao))
+        {
+            $this->dispatchBrowserEvent('checkToaster', ["message" => "Tem que escrever uma descrição", "status" => "error"]);
+            return false;
+        
+        
+            }else {
             GrupoEmail::updateOrCreate(
                 ['id' => $this->grupoId],
                 [
