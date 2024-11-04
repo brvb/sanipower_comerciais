@@ -119,8 +119,9 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" data-dismiss="modal" wire:click="openVisita"><i class="ti-search"></i>Visualizar</button>
                 <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Fechar</button>
-                <button type="button" class="btn btn-outline-primary" id="addVisitaModalBtn" wire:click="editarVisita()">Editar</button>
+                <button type="button" class="btn btn-outline-primary" id="addVisitaModalBtn" wire:click="editarVisita()">Gravar</button>
             </div>
         </div>
     </div>

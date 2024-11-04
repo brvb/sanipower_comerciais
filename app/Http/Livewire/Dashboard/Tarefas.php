@@ -11,6 +11,7 @@ use App\Interfaces\VisitasInterface;
 use Illuminate\Support\Facades\Auth;
 use App\Interfaces\ClientesInterface;
 use Illuminate\Support\Facades\Session;
+use Carbon\Carbon;
 use App\Models\Tarefas as TarefasModels;
 
 class Tarefas extends Component
@@ -242,27 +243,51 @@ class Tarefas extends Component
         //dd('addVisita');
         $this->tipoVisita = TiposVisitas::all();
 
-
-
-        $collectionClientes = $this->tarefasRepository->getListagemCliente(10000);
-
-        if (isset($collectionClientes->customers)) {
-            $this->clientes = array_map(function ($cliente) {
-                return [
-                    'id' => $cliente->id,
-                    'name' => $cliente->name,
-                ];
-            }, $collectionClientes->customers);
-        }
-         
-        
-        if(isset($this->clientes[0]["id"]))
+        $IDCli = Session::get('IDCli');   
+        if($IDCli != '')
         {
-            $this->clienteVisitaID = json_encode($this->clientes[0]["id"]);
-        }
-        
+            $collectionClientes = $this->tarefasRepository->getDetalhesCliente(json_decode($IDCli));
 
-        $this->dispatchBrowserEvent('openVisitaModal');
+            if (isset($collectionClientes->customers)) {
+                $this->clientes = array_map(function ($cliente) {
+                    return [
+                        'id' => $cliente->id,
+                        'name' => $cliente->name,
+                    ];
+                }, $collectionClientes->customers);
+            }
+             
+            
+            if(isset($this->clientes[0]["id"]))
+            {
+                $this->clienteVisitaID = json_encode($this->clientes[0]["id"]);
+            }
+            
+    
+            $this->dispatchBrowserEvent('openVisitaModal');
+        }
+        else
+        {
+            $collectionClientes = $this->tarefasRepository->getListagemCliente(10000);
+
+            if (isset($collectionClientes->customers)) {
+                $this->clientes = array_map(function ($cliente) {
+                    return [
+                        'id' => $cliente->id,
+                        'name' => $cliente->name,
+                    ];
+                }, $collectionClientes->customers);
+            }
+             
+            
+            if(isset($this->clientes[0]["id"]))
+            {
+                $this->clienteVisitaID = json_encode($this->clientes[0]["id"]);
+            }
+            
+    
+            $this->dispatchBrowserEvent('openVisitaModal');
+        }
         
     }
     public function openVisita()
@@ -287,11 +312,25 @@ class Tarefas extends Component
     
         try {
            
+             // Função para verificar e converter a data para o formato 'Y-m-d' se necessário
+             function formatarData($data) {
+                // Checa se o formato é dd-mm-yyyy e converte para yyyy-mm-dd
+                if (preg_match("/^\d{2}-\d{2}-\d{4}$/", $data)) {
+                    return Carbon::createFromFormat('d-m-Y', $data)->format('Y-m-d');
+                }
+                // Se já estiver no formato yyyy-mm-dd, retorna como está
+                return $data;
+            }
+
+            // Aplica a função de verificação e formatação nas datas
+            $dataInicial = formatarData($this->dataInicialVisitaDireito);
+            // $dataFinal = formatarData($this->dataFinalVisitaDireito);
+
             $send = VisitasAgendadas::where('id', $this->visitaIDDireito)->update([
-                "data_inicial" => $this->dataInicialVisitaDireito,
+                "data_inicial" => $dataInicial,
                 "hora_inicial" => $this->horaInicialVisitaDireito,
                 "hora_final" => $this->horaFinalVisitaDireito,
-                "data_final" => $this->dataInicialVisitaDireito,
+                "data_final" => $dataInicial,
                 "id_tipo_visita" => $this->tipoVisitaEscolhidoDireito,
                 "assunto_text" => $this->assuntoTextVisitaDireito,
             ]);
@@ -328,12 +367,18 @@ class Tarefas extends Component
     {
         if($this->clienteVisitaID == "" || $this->dataInicialVisita == "" ||$this->horaInicialVisita == "" || $this->horaFinalVisita == "" || $this->tipoVisitaEscolhidoVisita == "" || $this->assuntoTextVisita == "" )
         {
+            Session::put('IDCli', $this->clienteVisitaID);
+            // Session::put('rota','dashboard');
+
             $this->dispatchBrowserEvent('sendToaster', ["message" => "Tem de preencher todos os campos", "status" => "error"]);
             return false;
         }
 
         if(strtotime($this->horaInicialVisita) > strtotime($this->horaFinalVisita))
         {
+            Session::put('IDCli', $this->clienteVisitaID);
+            // Session::put('rota','dashboard');
+
             $this->dispatchBrowserEvent('sendToaster', ["message" => "Hora final tem de ser superior á hora inicial", "status" => "error"]);
             return false;
         }
@@ -374,6 +419,8 @@ class Tarefas extends Component
         // $this->dispatchBrowserEvent('updateList');
         // $this->dispatchBrowserEvent('sendToaster', ["message" => $message, "status" => $status]);
 
+        Session::put('IDCli', '');
+
         session()->flash($status, $message);
         return redirect()->route('dashboard');
     }
@@ -382,12 +429,18 @@ class Tarefas extends Component
     {
         if($this->clienteVisitaID == "" || $this->dataInicialVisita == "" ||$this->horaInicialVisita == "" || $this->horaFinalVisita == "" || $this->tipoVisitaEscolhidoVisita == "" || $this->assuntoTextVisita == "" )
         {
+            Session::put('IDCli', $this->clienteVisitaID);
+            // Session::put('rota','dashboard');
+
             $this->dispatchBrowserEvent('sendToaster', ["message" => "Tem de preencher todos os campos", "status" => "error"]);
             return false;
         }
 
         if(strtotime($this->horaInicialVisita) > strtotime($this->horaFinalVisita))
         {
+            Session::put('IDCli', $this->clienteVisitaID);
+            // Session::put('rota','dashboard');
+
             $this->dispatchBrowserEvent('sendToaster', ["message" => "Hora final tem de ser superior á hora inicial", "status" => "error"]);
             return false;
         }
@@ -427,6 +480,8 @@ class Tarefas extends Component
 
         // $this->dispatchBrowserEvent('updateList');
         // $this->dispatchBrowserEvent('sendToaster', ["message" => $message, "status" => $status]);
+
+        Session::put('IDCli', '');
 
         session()->flash($status, $message);
         return redirect()->route('dashboard');

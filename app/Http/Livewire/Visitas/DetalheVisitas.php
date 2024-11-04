@@ -1219,6 +1219,10 @@ class DetalheVisitas extends Component
         session(['rota' => "visitas.info"]);
         session(['parametro' => $this->idVisita]);
 
+        Session::put('rota','visitas.info');
+        Session::put('parametro',$this->idVisita);
+           
+
         return redirect()->route('propostas.detail.visitas', [$idcliente, $idVisita]);
     }
     public function updatedComentarioEncomendas()
