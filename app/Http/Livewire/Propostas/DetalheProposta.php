@@ -1269,8 +1269,7 @@ class DetalheProposta extends Component
                         }
                     }
                 }
-            }
-          
+            }  
             
         }
 
@@ -1323,7 +1322,7 @@ class DetalheProposta extends Component
                     $json = json_encode($proposta);
                     $object = json_decode($json, false);
                     Session::put('proposta', $object);
-                    Session::put('rota','propostas');
+                    // Session::put('rota','propostas');
 
                     $this->dispatchBrowserEvent('checkToaster', ["message" => "Proposta finalizada com sucesso", "status" => "success"]);
                     return redirect()->route('propostas.proposta', ['idProposta' => $response_decoded->id_document]);

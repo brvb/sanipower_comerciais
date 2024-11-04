@@ -9,6 +9,9 @@ use App\Interfaces\VisitasInterface;
 use Illuminate\Support\Facades\Auth;
 use App\Interfaces\ClientesInterface;
 use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Session;
+
 
 class CalendarDashboard extends Component
 {
@@ -81,12 +84,25 @@ class CalendarDashboard extends Component
         }
     
         try {
-           
+           // Função para verificar e converter a data para o formato 'Y-m-d' se necessário
+            function formatarData($data) {
+                // Checa se o formato é dd-mm-yyyy e converte para yyyy-mm-dd
+                if (preg_match("/^\d{2}-\d{2}-\d{4}$/", $data)) {
+                    return Carbon::createFromFormat('d-m-Y', $data)->format('Y-m-d');
+                }
+                // Se já estiver no formato yyyy-mm-dd, retorna como está
+                return $data;
+            }
+
+            // Aplica a função de verificação e formatação nas datas
+            $dataInicial = formatarData($this->dataInicialVisita);
+            // $dataFinal = formatarData($this->dataFinalVisita);
+            
             $send = VisitasAgendadas::where('id', $this->visitaID)->update([
-                "data_inicial" => $this->dataInicialVisita,
+                "data_inicial" => $dataInicial,
                 "hora_inicial" => $this->horaInicialVisita,
                 "hora_final" => $this->horaFinalVisita,
-                "data_final" => $this->dataInicialVisita,
+                "data_final" => $dataInicial,
                 "id_tipo_visita" => $this->tipoVisitaEscolhido,
                 "assunto_text" => $this->assuntoTextVisita,
             ]);
@@ -113,6 +129,13 @@ class CalendarDashboard extends Component
 
         session()->flash($status, $message);
         return redirect()->route('dashboard');
+    }
+
+    public function openVisita()
+    {
+        Session::put('rota','dashboard');
+        Session::put('parametro',"");
+        return redirect()->route('visitas.info', $this->visitaID);
     }
 
     public function updatedUserSelected()

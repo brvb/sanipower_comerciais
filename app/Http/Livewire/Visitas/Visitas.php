@@ -412,6 +412,7 @@ class Visitas extends Component
             $query->where('user_id', Auth::user()->id);
         })
        ->orderBy('data_inicial','DESC')
+       ->orderByRaw("STR_TO_DATE(hora_inicial, '%H:%i') ASC")
        ->paginate($this->perPage);
 
         if ($this->visitas == null) {

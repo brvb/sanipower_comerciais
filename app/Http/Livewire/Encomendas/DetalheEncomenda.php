@@ -1053,7 +1053,7 @@ class DetalheEncomenda extends Component
 
                     $json = json_encode($encomenda);
                     $object = json_decode($json, false);
-                    Session::put('rota','encomendas');
+                    // Session::put('rota','encomendas');
                     Session::put('encomenda', $object);
 
                     $this->dispatchBrowserEvent('checkToaster', ["message" => "Encomenda finalizada com sucesso", "status" => "success"]);
