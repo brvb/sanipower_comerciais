@@ -220,18 +220,16 @@
         <table class="details-section">
             <tr>
                 <td>Validade da Proposta:</td>
-                <td></td>
+                <td>{{ $proposta['validity'] }}</td>
             </tr>
             <tr>
                 <td>Tipo de pagamento:</td>
                 <td>{{ $proposta['payment_conditions'] }}</td>
             </tr>
-            {{-- @foreach($proposta['comments'] as $comment)
             <tr>
                 <td>Observações:</td>
-                <td>{{ $comment['comment'] }}</td>
+                <td>{{ $proposta['obs'] }}</td>
             </tr>
-            @endforeach --}}
             <tr>
                 <td>Comercial:</td>
                 <td>{{ $proposta['email'] }}</td>

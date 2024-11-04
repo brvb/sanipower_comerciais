@@ -26,7 +26,31 @@
 
         $response_decoded = json_decode($response);
         $cliente = $response_decoded;
-        // dd($cliente, $visita);
+
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            // CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/visit?visit_id=233',
+            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/visit?visit_id='.$visita['id'],
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+    
+        curl_close($curl);
+
+        $response_decoded = json_decode($response);
+        // dd($response_decoded->documents);
+        $prop_enc = $response_decoded->documents ?? null;
     @endphp
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -157,6 +181,16 @@
         <br>
         <!-- Product Table -->
         <table class="table-products">
+            @if($prop_enc != null)
+            @foreach($prop_enc as $item)
+            @php $firstWord = explode(' ', $item->budget)[0];   @endphp
+            <tr style = "border-top: 1px solid black;">
+                <td style="text-align:left;"><strong>{{$firstWord}}</strong></td>
+                <td colspan="6" style="text-align:left; padding-left:0px !important;">O cliente efetuou a {{$item->budget}} no valor de {{$item->total}}€ nesta data</td>
+            </tr>
+            @endforeach
+            @endif
+
             <tr style = "border-top: 1px solid black;">
                 <td style="text-align:left;"><strong>Relatório Final da Visita</strong></td>
                 <td colspan="6" style="text-align:left; padding-left:0px !important;"><?php echo $visita['assunto_text']; ?></td>
@@ -166,7 +200,7 @@
                     <td colspan="7" style="text-align: right;"><h3>{{$Utilizador->first()->name }}</h3></td>
                 </tr>
                 <tr style = "border-top: 1px solid black; border-bottom: 1px solid black; width:100%; align-items: center;">
-                    <td colspan="6"><?php if ($visita['id_tipo_visita'] == 2) { echo '<img border=0 id="_x0000_i1031" src="https://com.sanipower.pt/assets/mobile/images/Presencial.png">'; } elseif ($visita['id_tipo_visita'] == 1) { echo '<img border=0 id="_x0000_i1031" src="https://com.sanipower.pt/assets/mobile/images/Email.png">'; } else { echo '<img border=0 id="_x0000_i1031" src="https://com.sanipower.pt/assets/mobile/images/Telefone.png">'; } ?></td>
+                    <td colspan="7"><?php if ($visita['id_tipo_visita'] == 2) { echo '<img border=0 id="_x0000_i1031" src="https://com.sanipower.pt/assets/mobile/images/Presencial.png">'; } elseif ($visita['id_tipo_visita'] == 1) { echo '<img border=0 id="_x0000_i1031" src="https://com.sanipower.pt/assets/mobile/images/Email.png">'; } else { echo '<img border=0 id="_x0000_i1031" src="https://com.sanipower.pt/assets/mobile/images/Telefone.png">'; } ?></td>
                 </tr>
             </tfoot>
         </table>

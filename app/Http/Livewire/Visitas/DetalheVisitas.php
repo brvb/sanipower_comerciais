@@ -799,12 +799,74 @@ class DetalheVisitas extends Component
 
         $sendPHC = $this->visitasRepository->sendVisitaToPhc($getVisitaID->id, $this->detailsClientes->customers[0]->id, $this->assunto, $this->relatorio, $tipoVisita->tipo,$this->pendentes, $this->comentario_encomendas, $this->comentario_propostas, $this->comentario_financeiro, $this->comentario_occorencias, $dataPHC);
 
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/visit?visit_id='.$getVisitaID->id,
+            // CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/visit?visit_id=233',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+    
+        curl_close($curl);
+
+        $response_decoded = json_decode($response);
+        $prop_enc = $response_decoded->documents ?? null;
+        // dd($prop_enc);
+        $pdfEncomendaContent = [];
+        $pdfPropostaContent = [];
+        if($prop_enc != null)
+        {
+            foreach($prop_enc as $item)
+            {
+                // dd($prop_enc);
+                $firstWord = explode(' ', $item->budget)[0];
+
+                if($firstWord == "Encomenda")
+                {
+                    $pdf = new Dompdf();
+                    $pdf = PDF::loadView('pdf.pdfTabelaEncomendaProp', ["encomenda" => json_encode($item)]);
+                
+                    $pdf->render();
+                
+                    // $pdfEncomendaContent[] = $pdf->output();
+                    $pdfEncomendaContent[] = ['content' => $pdf->output(), 'type' => 'Encomenda'];
+                } else
+                {
+                    $pdf = new Dompdf();
+                    $pdf = PDF::loadView('pdf.pdfTabelaPropostas', ["proposta" => json_encode($item)]);
+                
+                    $pdf->render();
+                
+                    // $pdfPropostaContent[] = $pdf->output();
+                    $pdfPropostaContent[] = ['content' => $pdf->output(), 'type' => 'Proposta'];
+                }
+
+            }
+
+        }
+
+
         $pdf = new Dompdf();
         $pdf = PDF::loadView('pdf.pdfRelatorioVisita', ["visita" => json_encode($getVisitaID)]);
     
         $pdf->render();
     
-        $pdfContent = $pdf->output();
+        // $pdfContent = $pdf->output();
+        $pdfContent = ['content' => $pdf->output(), 'type' => 'RelatorioVisita'];
+
+        // Primeiro, adicione o PDF único ao array
+        $pdfContents = array_merge([$pdfContent], $pdfEncomendaContent, $pdfPropostaContent); // Adiciona $pdfContent no início
+
 
         $grupos = GrupoEmail::where('local_funcionamento', 'RelatorioVisita')->get();
         // dd($grupos);
@@ -819,7 +881,7 @@ class DetalheVisitas extends Component
         foreach($this->emailArray as $i => $email)
         {
             // dd(json_encode($getVisitaID));
-            Mail::to($email)->send(new SendRelatorio($pdfContent, json_encode($getVisitaID)));
+            Mail::to($email)->send(new SendRelatorio($pdfContents, json_encode($getVisitaID)));
         }
 
         $responseArray = $sendPHC->getData(true);

@@ -238,8 +238,6 @@ class EncomendaInfo extends Component
     public function enviarEmail($encomenda)
     {
 
-        
-
         $emailArray = explode("; ", $encomenda["email"]);
 
         $this->emailArray = $emailArray;
@@ -258,7 +256,9 @@ class EncomendaInfo extends Component
             dd("Não há valor na variável \$encomenda");
             return redirect()->back()->with('error', 'Encomenda não encontrada.');
         }
-    
+        
+        // dd(json_encode($encomenda));
+
         $pdf = new Dompdf();
         $pdf = PDF::loadView('pdf.pdfTabelaEncomenda', ["encomenda" => json_encode($encomenda)]);
     
