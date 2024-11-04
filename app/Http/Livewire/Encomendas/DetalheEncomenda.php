@@ -718,14 +718,14 @@ class DetalheEncomenda extends Component
 
                 if ($i == $j) {
                     if ($prodRap != "0" && $prodRap != "") {
-                        if ($prod->in_stock == true) {
+                        // if ($prod->in_stock == true) {
                             $productChosen[$count] = [
                                 "product" => $prod,
                                 "quantidade" => $prodRap,
                             ];
                             $count++;
                         }
-                    }
+                    // }
                 }else if ($prodRap == "0") {
                     $this->dispatchBrowserEvent('checkToaster', ["message" => "Tem de selecionar uma quantidade", "status" => "error"]);
                     return false;
@@ -734,13 +734,13 @@ class DetalheEncomenda extends Component
             foreach ($this->produtosComment as $j => $prodComm) {
                 if ($i == $j) {
                     if ($prodComm != "0" && $prodComm != "") {
-                        if ($prod->in_stock == true) {
+                        // if ($prod->in_stock == true) {
                             $productChosenComment[$count] = [
                                 "product" => $prod,
                                 "comentario" => $prodComm,
                             ];
                             $count++;
-                        }
+                        // }
                     }else  if ($prodComm == "0") {
                         $this->dispatchBrowserEvent('checkToaster', ["message" => "Tem de selecionar uma quantidade", "status" => "error"]);
                         return false;
@@ -889,6 +889,7 @@ class DetalheEncomenda extends Component
             if($prod->id_visita == null)
             {
                 $visitaCheck = 0;
+                $this->visitaCheck =  0;
             } 
             else {
                 $visitaCheck = $prod->id_visita;
@@ -994,6 +995,8 @@ class DetalheEncomenda extends Component
         ));
 
         $response = curl_exec($curl);
+
+        // dd($response);T
 
         curl_close($curl);
 

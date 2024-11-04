@@ -121,6 +121,8 @@ class DetalheProposta extends Component
     public $enviarAprovacao;
     public $emailArray;
     public $emailSend;
+    public $visitaCheck;
+
 
     public ?array $lojas = NULL;
 
@@ -1067,9 +1069,11 @@ class DetalheProposta extends Component
             if($prod->id_visita == null)
             {
                 $visitaCheck = 0;
+                $this->visitaCheck =  0;
             } 
             else {
                 $visitaCheck = $prod->id_visita;
+                $this->visitaCheck = $visitaCheck;
             }
             // dd( $prod);
             $arrayProdutos[$count] = [
@@ -1169,9 +1173,10 @@ class DetalheProposta extends Component
             "salesman_number" => Auth::user()->id_phc,
             "type" => "budget",
             "validity" => $this->validadeProposta.'T'.date('H:i:s'),
+            "visit_id" => $this->visitaCheck,
             "lines" => array_values($arrayProdutos)
         ];
-        // dd($array);
+        // dd(json_encode($array));
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/budgets',

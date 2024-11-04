@@ -1,4 +1,3 @@
-
 <body>
     @php
        $encomendaData = json_decode($encomenda, true);

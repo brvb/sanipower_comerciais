@@ -801,8 +801,8 @@ class DetalheVisitas extends Component
 
         $curl = curl_init();
         curl_setopt_array($curl, array(
-            // CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/visit?visit_id='.$getVisitaID->id,
-            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/visit?visit_id=233',
+            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/visit?visit_id='.$getVisitaID->id,
+            // CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/visit?visit_id=233',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -828,6 +828,7 @@ class DetalheVisitas extends Component
         {
             foreach($prop_enc as $item)
             {
+                // dd($prop_enc);
                 $firstWord = explode(' ', $item->budget)[0];
 
                 if($firstWord == "Encomenda")
@@ -837,7 +838,8 @@ class DetalheVisitas extends Component
                 
                     $pdf->render();
                 
-                    $pdfEncomendaContent[] = $pdf->output();
+                    // $pdfEncomendaContent[] = $pdf->output();
+                    $pdfEncomendaContent[] = ['content' => $pdf->output(), 'type' => 'Encomenda'];
                 } else
                 {
                     $pdf = new Dompdf();
@@ -845,7 +847,8 @@ class DetalheVisitas extends Component
                 
                     $pdf->render();
                 
-                    $pdfPropostaContent[] = $pdf->output();
+                    // $pdfPropostaContent[] = $pdf->output();
+                    $pdfPropostaContent[] = ['content' => $pdf->output(), 'type' => 'Proposta'];
                 }
 
             }
@@ -858,7 +861,8 @@ class DetalheVisitas extends Component
     
         $pdf->render();
     
-        $pdfContent = $pdf->output();
+        // $pdfContent = $pdf->output();
+        $pdfContent = ['content' => $pdf->output(), 'type' => 'RelatorioVisita'];
 
         // Primeiro, adicione o PDF único ao array
         $pdfContents = array_merge([$pdfContent], $pdfEncomendaContent, $pdfPropostaContent); // Adiciona $pdfContent no início

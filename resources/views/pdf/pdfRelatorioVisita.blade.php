@@ -30,8 +30,8 @@
 
         $curl = curl_init();
         curl_setopt_array($curl, array(
-            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/visit?visit_id=233',
-            // CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/visit?visit_id='.$visita['id'],
+            // CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/visit?visit_id=233',
+            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/visit?visit_id='.$visita['id'],
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
