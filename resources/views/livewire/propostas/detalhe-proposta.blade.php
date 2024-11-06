@@ -863,10 +863,18 @@
                                                                                             </div>
                                                                                         </a>
                                                                                     </button>
+                                                                                    
                                                                                     <div class="dropdown">
+                                                                                        @if ($prod->color == '#41c6a0')
+                                                                                        <button class="btn btn-sm btn-outline-secondary" id="commentProductEncomenda{{$i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style = "Display:none;">
+                                                                                            <i class="ti-comment"></i>
+                                                                                        </button>
+                                                                                        <div style ="padding-right:20px; padding-left:20px;"></div>
+                                                                                        @else
                                                                                         <button class="btn btn-sm btn-outline-secondary" id="commentProductEncomenda{{$i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                                             <i class="ti-comment"></i>
                                                                                         </button>
+                                                                                        @endif
                                                                                         <div class="dropdown-menu" aria-labelledby="commentProductEncomenda{{$i}}" style="min-width: 200px; left: -235px; top: -13px;">
                                                                                             <li>
                                                                                                 <h6 class="modal-title" style="color:#212529; display: flex; justify-content: space-around; margin: 5px 0;">
@@ -879,6 +887,7 @@
                                                                                             </li>
                                                                                         </div>
                                                                                     </div>
+                                                                                    
                                                                                     <button wire:click="addProductQuickBuyProposta({{$i}},'{{ $produtoNameDetail }}',{{$detalhesCliente->customers[0]->no}},'{{$ref}}','{{$codEncomenda}}')" class="btn btn-sm btn-outline-secondary" id="addProductProposta{{$i}}" disabled>
                                                                                         <i class="ti-notepad text-light"></i>
                                                                                     </button>
@@ -1197,14 +1206,21 @@
                     </div>
  
                      <div class="col-xl-12 col-xs-12">
- 
                          <div class="form-group">
                              <div class="form-group">
-                                 <label>Observação</label>
+                                 <label>Observação Interna</label>
                                  <textarea type="text" class="form-control" cols="4" rows="6" style="resize: none;" wire:model.defer="observacaoFinalizar"></textarea>
                              </div>
                          </div>
                      </div>
+                     <div class="col-xl-12 col-xs-12">
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label>Observação para PDF</label>
+                                <textarea type="text" class="form-control" cols="4" rows="6" style="resize: none;" wire:model.defer="observacaoFinalizarPDF"></textarea>
+                            </div>
+                        </div>
+                    </div>
  
                   
                  </div>
@@ -1352,9 +1368,15 @@
                                                         <i class="ti-shopping-cart"></i>
                                                     </button>
                                                     <div class="dropdown">
+                                                    @if ($prod->color != '#41c6a0')
                                                         <button class="btn btn-sm btn-warning" id="commentProductEncomenda{{$i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                             <i class="ti-comment"></i>
                                                         </button>
+                                                    @else
+                                                    <button class="btn btn-sm btn-warning" id="commentProductEncomenda{{$i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style = "Display:none;">
+                                                        <i class="ti-comment"></i>
+                                                    </button>
+                                                    @endif
                                                         <div class="dropdown-menu" aria-labelledby="commentProductEncomenda{{$i}}" style="min-width: 200px; left: -235px; top: -13px;">
                                                             
                                                             <li>
@@ -1370,7 +1392,7 @@
                                                             </li>
                                                         </div>
                                                     </div>
-                                                </td>
+                                                </td> 
                                             </tr>
                                         @endforeach
                                     @endif

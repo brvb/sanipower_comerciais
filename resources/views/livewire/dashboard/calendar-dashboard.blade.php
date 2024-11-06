@@ -70,9 +70,9 @@
                         </div>
 
                         <div class="form-group row ml-0">
-                            <label>Hora Inícial</label>
+                            <label>Hora Inicial</label>
                             <div class="input-group">
-                                <input type="text" class="form-control horaInicialVisita" id="horaInicialVisita" wire:model.defer="horaInicialVisita">
+                                <input type="time" class="form-control horaInicialVisita" id="horaInicialVisita" value="09:00" wire:model.defer="horaInicialVisita" step="60">
                                 <div class="input-group-append timepicker-btn">
                                     <span class="input-group-text">
                                         <i class="ti-time"></i>
@@ -80,11 +80,11 @@
                                 </div>
                             </div>
                         </div>
-
+                        
                         <div class="form-group row ml-0">
                             <label>Hora Final</label>
                             <div class="input-group">
-                                <input type="text" class="form-control horaFinalVisita" id="horaFinalVisita" wire:model.defer="horaFinalVisita">
+                                <input type="time" class="form-control horaFinalVisita" id="horaFinalVisita" wire:model.defer="horaFinalVisita" step="60">
                                 <div class="input-group-append timepicker-btn">
                                     <span class="input-group-text">
                                         <i class="ti-time"></i>
@@ -122,11 +122,33 @@
                 <button type="button" class="btn btn-outline-dark" data-dismiss="modal" wire:click="openVisita"><i class="ti-search"></i>Visualizar</button>
                 <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Fechar</button>
                 <button type="button" class="btn btn-outline-primary" id="addVisitaModalBtn" wire:click="editarVisita()">Gravar</button>
+                <button type="button" class="btn btn-outline-danger" onclick="confirmDeletion1()">Eliminar</button>
             </div>
         </div>
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmDeletion1() {
+            Swal.fire({
+                title: 'Tem certeza?',
+                text: "Esta ação não poderá ser desfeita!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sim, eliminar!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Exibe o loader
+                    document.getElementById('loader').style.display = 'block';
+                    @this.call('EliminarAgendado');
+                }
+            });
+        }
+    </script>
 
      <script>
 

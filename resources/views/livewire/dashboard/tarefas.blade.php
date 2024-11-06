@@ -380,9 +380,9 @@
                             </div>
 
                             <div class="form-group row ml-0">
-                                <label>Hora Inícial</label>
+                                <label>Hora Inicial</label>
                                 <div class="input-group">
-                                <input type="text" class="form-control horaInicialVisita" id="horaInicialVisita" wire:model.defer="horaInicialVisita" value="09:00">
+                                    <input type="time" class="form-control horaInicialVisita" id="horaInicialVisita" wire:model.defer="horaInicialVisita" step="60">
                                     <div class="input-group-append timepicker-btn">
                                         <span class="input-group-text">
                                             <i class="ti-time"></i>
@@ -390,11 +390,11 @@
                                     </div>
                                 </div>
                             </div>
-
+                            
                             <div class="form-group row ml-0">
                                 <label>Hora Final</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control horaFinalVisita" id="horaFinalVisita" wire:model.defer="horaFinalVisita">
+                                    <input type="time" class="form-control horaFinalVisita" id="horaFinalVisita" wire:model.defer="horaFinalVisita" step="60">
                                     <div class="input-group-append timepicker-btn">
                                         <span class="input-group-text">
                                             <i class="ti-time"></i>
@@ -485,9 +485,9 @@
                             </div>
     
                             <div class="form-group row ml-0">
-                                <label>Hora Inícial</label>
+                                <label>Hora Inicial</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control horaInicialVisitaDireito" id="horaInicialVisitaDireito" value="09:00" wire:model.defer="horaInicialVisitaDireito">
+                                    <input type="time" class="form-control horaInicialVisitaDireito" id="horaInicialVisitaDireito" wire:model.defer="horaInicialVisitaDireito" step="60">
                                     <div class="input-group-append timepicker-btn">
                                         <span class="input-group-text">
                                             <i class="ti-time"></i>
@@ -495,11 +495,11 @@
                                     </div>
                                 </div>
                             </div>
-    
+                            
                             <div class="form-group row ml-0">
                                 <label>Hora Final</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control horaFinalVisitaDireito" id="horaFinalVisitaDireito" wire:model.defer="horaFinalVisitaDireito">
+                                    <input type="time" class="form-control horaFinalVisitaDireito" id="horaFinalVisitaDireito" wire:model.defer="horaFinalVisitaDireito" step="60">
                                     <div class="input-group-append timepicker-btn">
                                         <span class="input-group-text">
                                             <i class="ti-time"></i>
@@ -537,11 +537,33 @@
                     <button type="button" class="btn btn-outline-dark" data-dismiss="modal" wire:click="openVisita"><i class="ti-search"></i>Visualizar</button>
                     <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Fechar</button>
                     <button type="button" class="btn btn-outline-primary" id="addVisitaModalBtnEdita" wire:click="editarVisitaDireito">Gravar</button>
+                    <button type="button" class="btn btn-outline-danger" onclick="confirmDeletion()">Eliminar</button>
                 </div>
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmDeletion() {
+            Swal.fire({
+                title: 'Tem certeza?',
+                text: "Esta ação não poderá ser desfeita!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sim, eliminar!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Exibe o loader
+                    @this.call('EliminarAgendado');
+                    document.getElementById('loader').style.display = 'block';
 
+                }
+            });
+        }
+    </script>
 
     <!-- FIM MODAL -->
 
@@ -980,6 +1002,7 @@
                         @this.set('visitaIDDireito',info.event.extendedProps.visitaID,true);
                         @this.set('dataInicialVisitaDireito',info.event.extendedProps.dataInicial,true);
                         @this.set('horaInicialVisitaDireito',info.event.extendedProps.horaInicial,true);
+                        @this.set('horaInicialVisita',info.event.extendedProps.horaInicial,true);
                         @this.set('horaFinalVisitaDireito',info.event.extendedProps.horaFinal,true);
                         @this.set('tipoVisitaEscolhidoDireito',info.event.extendedProps.idTipoVisita,true);
                         @this.set('assuntoTextVisitaDireito',info.event.extendedProps.assunto,true);
@@ -988,6 +1011,7 @@
                         $('#clienteVisitaIDDireito').val(JSON.stringify(info.event.extendedProps.clientId));
                         $('#dataInicialVisitaDireito').val(info.event.extendedProps.dataInicial);
                         $('#horaInicialVisitaDireito').val(info.event.extendedProps.horaInicial);
+                        $('#horaInicialVisita').val(info.event.extendedProps.horaInicial);
                         $('#horaFinalVisitaDireito').val(info.event.extendedProps.horaFinal);
                         $('#assunto_textDireito').val(info.event.extendedProps.assunto);             
                         $('#tipovisitaselectDireito').val(info.event.extendedProps.idTipoVisita);
@@ -1082,6 +1106,10 @@
                 //$("#modalAddTarefa").modal();
                 //$("#modalAddTarefa").modal('show');
             }
+
+            if (e.detail.status == "errorElimine") {
+                toastr.warning(e.detail.message);
+            }
         });
         
         window.addEventListener('updateList', function(e) {
@@ -1139,30 +1167,39 @@
 
             });
 
-            @this.set('horaInicialVisita', '09:00', true);
+            // Garantir que o valor seja formatado corretamente
+            let horaInicial = info.event.extendedProps.horaInicial;
+            let formattedTime = moment(horaInicial, ["HH:mm"]).format("HH:mm");
+
+            // Defina o valor no Livewire e no input
+            @this.set('horaInicialVisita', formattedTime, true);
+            $('#horaInicialVisita').val(formattedTime);
+
+            @this.set('horaInicialVisita', '10:00', true);
             $('.horaInicialVisita').timepicker({
                 minuteStep: 5,
                 showSeconds: false,
                 showMeridian: false,
-                defaultTime: '09:00',
+                defaultTime: '10:00',
                 icons: {
                     up: 'ti-angle-up',
                     down: 'ti-angle-down'
                 }
             }).on('changeDate', function(e) {
 
-                var formattedDate = moment(e.date).format('HH:ii');
-
-                @this.set('horaInicialVisita', formattedDate, true);
+                let selectedTime = $(this).val();
+    
+                // Defina o valor no Livewire em formato HH:MM
+                @this.set('horaInicialVisita', selectedTime, true);
 
             });
 
-            @this.set('horaFinalVisita', '10:00', true);
+            @this.set('horaFinalVisita', '11:00', true);
             $('.horaFinalVisita').timepicker({
                 minuteStep: 5,
                 showSeconds: false,
                 showMeridian: false,
-                defaultTime: '10:00',
+                defaultTime: '11:00',
                 icons: {
                     up: 'ti-angle-up',
                     down: 'ti-angle-down'

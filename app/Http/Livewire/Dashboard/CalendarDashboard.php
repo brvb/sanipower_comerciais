@@ -11,6 +11,7 @@ use App\Interfaces\ClientesInterface;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
+use App\Models\Visitas;
 
 
 class CalendarDashboard extends Component
@@ -129,6 +130,38 @@ class CalendarDashboard extends Component
 
         session()->flash($status, $message);
         return redirect()->route('dashboard');
+    }
+
+    public function EliminarAgendado()
+    {
+        $visitaAgendada = VisitasAgendadas::where('id', $this->visitaID)->first();
+        // dd($visitaAgendada);
+        if($visitaAgendada['finalizado'] != 0 || $visitaAgendada['user_id'] != Auth::user()->id)
+        {
+            $this->dispatchBrowserEvent('sendToaster', ["message" => "Só pode eliminar visitas agendadas!", "status" => "error"]);
+            return false;
+        }
+        $visita = Visitas::where('id_visita_agendada', $this->visitaID)->first();
+        // dd($visita);
+        try {
+            $send = VisitasAgendadas::where('id', $this->visitaID)->delete();
+            $send1 = Visitas::where('id_visita_agendada', $this->visitaID)->delete();
+
+            if ($send && $send1) {
+                $message = "Visita Eliminada com sucesso";
+                $status = "success";
+            } else {
+                $message = "Nenhuma atualização foi feita!";
+                $status = "warning";
+            }
+        } catch (\Exception $e) {
+            $message = "Não foi possível eliminar a visita!";
+            $status = "warning";
+        }
+
+        session()->flash($status, $message);
+        return redirect()->route('dashboard');
+      
     }
 
     public function openVisita()

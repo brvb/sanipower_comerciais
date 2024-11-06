@@ -228,7 +228,7 @@
             </tr>
             <tr>
                 <td>Observações:</td>
-                <td>{{ $proposta['obs'] }}</td>
+                <td>{{ $proposta['obs_pdf'] }}</td>
             </tr>
             <tr>
                 <td>Comercial:</td>

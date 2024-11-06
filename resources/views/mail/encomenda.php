@@ -166,7 +166,7 @@
                                         <td valign="top" style='border:none;border-bottom:solid black 1.0pt;padding:.75pt .75pt .75pt .75pt'>
                                             <p class="MsoNormal" style='line-height:10.5pt'><b><span style='font-size:5.5pt;font-family:Arial,sans-serif'>Observações</span></b></p>
                                         </td>
-                                        <td style='border:none;border-bottom:solid black 1.0pt;padding:.75pt .75pt .75pt .75pt'><span style='font-size:5.5pt;font-family:Arial,sans-serif'><?php echo $encomenda['obs']; ?></span></td>
+                                        <td style='border:none;border-bottom:solid black 1.0pt;padding:.75pt .75pt .75pt .75pt'><span style='font-size:5.5pt;font-family:Arial,sans-serif'><?php echo $encomenda['obs_pdf']; ?></span></td>
                                     </tr>
                                     
                                     <tr>
@@ -273,7 +273,6 @@
                                     $total_iva = number_format($total_iva, 3, '.', '');
                                     } 
                                     
-                
                                     ?>                 
                                 <!-- Total s/IVA -->
                                 <tr>

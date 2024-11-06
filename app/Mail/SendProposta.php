@@ -15,12 +15,13 @@ class SendProposta extends Mailable
      *
      * @return void
      */
-
+     public $propName;
      protected $pdfContent;
 
-    public function __construct($pdfContent)
+    public function __construct($pdfContent, $propName)
     {
         $this->pdfContent = $pdfContent;
+        $this->propName = $propName;
     }
 
     /**
@@ -31,7 +32,7 @@ class SendProposta extends Mailable
     public function build()
     {
         return $this->view('mail.proposta')
-                ->subject('Sanipower, S.A.')
+                ->subject($this->propName.' Sanipower, S.A.')
                 ->attachData($this->pdfContent, 'Proposta.pdf', [
                             'mime' => 'application/pdf',
                         ]);

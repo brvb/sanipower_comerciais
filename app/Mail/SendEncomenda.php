@@ -35,7 +35,7 @@ class SendEncomenda extends Mailable
     public function build()
     {
         return $this->view('mail.encomenda')
-                ->subject('Sanipower, S.A.')
+                ->subject($this->encomenda['order'].' Sanipower, S.A.')
                 ->attachData($this->pdfContent, 'Encomenda.pdf', [
                             'mime' => 'application/pdf',
                             'encomenda' => $this->encomenda,

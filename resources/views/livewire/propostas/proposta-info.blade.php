@@ -142,7 +142,7 @@
                                     <div class="row">
 
                                         <div class="col-xl-4">
-
+                                            {{-- @dd($proposta) --}}
                                             <div class="form-group">
                                                 <label>Nome do Cliente</label>
                                                 <div class="input-group">
@@ -299,6 +299,42 @@
                         </div>
 
                     </div>
+                    <br>
+                     <!-- Additional Order Information Section -->
+                     <div class="card" style="margin-left: 18px; margin-right: 34px;">
+                        <div class="row">
+                           <div class="col-12" style="margin-left:10px; margin-top:10px;">
+                               <h5>Informações Adicionais</h5>
+                               <div class="row">
+                                   <div class="col-xl-6">
+                                       <div class="form-group">
+                                           <label>Vossa Referência</label>
+                                           <input type="text" class="form-control" value="{{ $proposta->reference }}" readonly>
+                                        </div>
+                                    </div>
+                                        <div class="col-xl-6">
+                                            <div class="form-group">
+                                           <label>Tipo de Pagamento</label>
+                                           <input type="text" class="form-control" value="{{ $proposta->payment_conditions }}" readonly>
+                                    </div>
+                                   </div>
+                                   <div class="col-xl-6">
+                                       <div class="form-group">
+                                           <label>Observação para PDF</label>
+                                           <textarea class="form-control" rows="6" style="resize: none;" readonly>{{ $proposta->obs_pdf }}</textarea>
+                                       </div>
+                                   </div>
+                                   <div class="col-xl-6">
+                                    <div class="form-group">
+                                        <label>Observação Interna</label>
+                                        <textarea class="form-control" rows="6" style="resize: none;" readonly>{{ $proposta->obs }}</textarea>
+                                    </div>
+                                </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                    <br>
 
 
                     <div class="row form-group mt-2">
@@ -508,7 +544,9 @@
                                                 </div>
                                             </td> --}}
                                             <td>{{ $prod->reference }}</td>
-                                            <td style="white-space: nowrap;">{{ $prod->description }}</td>
+                                            <td style="white-space: nowrap;">{{ $prod->description }}
+                                            <br><small style="color:#afba17">{{ $prod->notes }}</small>
+                                            </td>
                                             <td style="text-align: right; white-space: nowrap;">{{ $prod->quantity }}</td>
                                             <td class="d-none d-md-table-cell"  style="text-align: right; white-space: nowrap;">{{ number_format($prod->price, 3, ',', '.') }} €</td>
                                             <td style=" text-align: right; white-space: nowrap;">{{ $prod->discount }}%@if ($prod->discount2 != "0" && $prod->discount2 != null)+{{ $prod->discount2 }}%@endif</td>

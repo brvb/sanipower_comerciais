@@ -106,6 +106,7 @@ class DetalheProposta extends Component
     public $viaturaSanipower;
     public $levantamentoLoja;
     public $observacaoFinalizar = "";
+    public $observacaoFinalizarPDF = "";
     public $referenciaFinalizar = "";
     public $validadeProposta;
 
@@ -1169,6 +1170,7 @@ class DetalheProposta extends Component
             "total" => $valorTotalComIva,
             "reference" => $this->referenciaFinalizar,
             "comments" => $this->observacaoFinalizar,
+            "obs" => $this->observacaoFinalizarPDF,
             "payment_conditions" => "",
             "salesman_number" => Auth::user()->id_phc,
             "type" => "budget",
@@ -1206,7 +1208,7 @@ class DetalheProposta extends Component
             if ($response_decoded->success == true) {
 
                 $proposta = $this->clientesRepository->getPropostaID($response_decoded->id_document);
-
+                // dd($proposta->budgets[0]->budget);
                 $pdf = new Dompdf();
                 $pdf = PDF::loadView('pdf.pdfTabelaPropostas', ["proposta" => json_encode($proposta->budgets[0])]);
 
@@ -1225,7 +1227,7 @@ class DetalheProposta extends Component
                 {
                     Mail::to($email)
                         ->cc($emailUsuarioLogado)
-                        ->send(new SendProposta($pdfContent));
+                        ->send(new SendProposta($pdfContent, $proposta->budgets[0]->budget));
                 }
 
             }
@@ -1265,6 +1267,7 @@ class DetalheProposta extends Component
                         foreach($this->emailArray as $i => $email)
                         {
                             // dd($proposta);
+                            // $pdfContent = '';
                             Mail::to($email)->send(new SendAprovacao($pdfContent, $proposta));
                         }
                     }
@@ -1285,7 +1288,7 @@ class DetalheProposta extends Component
             
                 $pdfContent = $pdf->output();
                 
-                if (property_exists($proposta, 'budgets') && isset($proposta->budgets[0])) {
+                if (property_exists($proposta, 'budgets') && isset($proposta->budgets[0]) && $this->enviarAprovacao == false) {
                     $grupos = GrupoEmail::where('local_funcionamento', 'nova_propostas')->get();
                     if(isset($grupos)){
                         $this->emailArray = [];
@@ -1301,7 +1304,7 @@ class DetalheProposta extends Component
                         
                         foreach($this->emailArray as $i => $email)
                         {
-                            Mail::to($email)->send(new SendProposta($pdfContent));
+                            Mail::to($email)->send(new SendProposta($pdfContent, $proposta->budgets[0]->budget));
                         }
                     }
                 }
@@ -1333,6 +1336,7 @@ class DetalheProposta extends Component
             $this->dispatchBrowserEvent('checkToaster', ["message" => "Proposta finalizada com sucesso", "status" => "success"]);
         }
         else {
+            // dd($response_decoded);
             $this->tabDetail = "";
             $this->tabProdutos = "";
             $this->tabDetalhesPropostas = "";

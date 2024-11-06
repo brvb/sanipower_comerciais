@@ -104,6 +104,7 @@ class DetalheEncomenda extends Component
     public $viaturaSanipower = false;
     public $levantamentoLoja = false;
     public $observacaoFinalizar;
+    public $observacaoFinalizarPDF;
     public $referenciaFinalizar;
 
     public $lojaFinalizar = "";
@@ -966,6 +967,7 @@ class DetalheEncomenda extends Component
             "total" => number_format($valorTotalComIva, 2, '.', '.'),
             "reference" => $this->referenciaFinalizar,
             "comments" => $this->observacaoFinalizar,
+            "obs" => $this->observacaoFinalizarPDF,
             "delivery" => $resultLoja[0],
             "store" => $loja,
             "payment_conditions" => $condicaoPagamento,

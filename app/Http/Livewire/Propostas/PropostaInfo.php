@@ -199,9 +199,11 @@ class PropostaInfo extends Component
 
         $emailArray = explode("; ", $proposta["email"]);
 
-        $this->emailArray = $emailArray;
+        $this->emailArray = array_map(function($email) {
+            return $email . " - Cliente";
+        }, $emailArray);
 
-        array_push($this->emailArray,Auth::user()->email);
+        array_push($this->emailArray, Auth::user()->email . " - Utilizador");
         
         $this->dispatchBrowserEvent('chooseEmail');
     }
@@ -220,15 +222,17 @@ class PropostaInfo extends Component
         $pdf->render();
     
         $pdfContent = $pdf->output();
-    
    
         foreach($this->emailArray as $i => $email)
         {
+            // Separa o e-mail do restante usando " - " como delimitador
+            $emailParts = explode(" - ", $email);
+            $emailAddress = $emailParts[0]; // Pega apenas o e-mail
             if(isset($this->emailSend[$i]))
             {
                 if($this->emailSend[$i] == true)
                 {
-                    Mail::to($email)->send(new SendProposta($pdfContent));
+                    Mail::to($emailAddress)->send(new SendProposta($pdfContent, $proposta['budget']));
                 }
             }
            
@@ -387,10 +391,13 @@ class PropostaInfo extends Component
         session(['OpenTabAdjudicarda' => "OpentabArtigos"]);
 
         // session(['parametroStatusAdjudicar' => $status]);
-
+        $rota = Session::get('rota');
+        // dd($rota);
+        if($rota != 'visitas.info')
+        {
         session(['rota' => "propostas.proposta"]);
         session(['parametro' => $proposta["id"]]);
-        
+        }
         session()->flash("success", "Proposta adjudicada com sucesso");
         return redirect()->route('encomendas.detail',["id" => $this->clientes[0]->id]);
       

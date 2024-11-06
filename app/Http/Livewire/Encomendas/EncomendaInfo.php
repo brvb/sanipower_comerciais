@@ -240,9 +240,11 @@ class EncomendaInfo extends Component
 
         $emailArray = explode("; ", $encomenda["email"]);
 
-        $this->emailArray = $emailArray;
+        $this->emailArray = array_map(function($email) {
+            return $email . " - Cliente";
+        }, $emailArray);
 
-        array_push($this->emailArray,Auth::user()->email);
+        array_push($this->emailArray, Auth::user()->email . " - Utilizador");
         
         $this->dispatchBrowserEvent('chooseEmail');
 

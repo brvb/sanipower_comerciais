@@ -13,6 +13,7 @@ use App\Interfaces\ClientesInterface;
 use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
 use App\Models\Tarefas as TarefasModels;
+use App\Models\Visitas;
 
 class Tarefas extends Component
 {
@@ -247,7 +248,7 @@ class Tarefas extends Component
         if($IDCli != '')
         {
             $collectionClientes = $this->tarefasRepository->getDetalhesCliente(json_decode($IDCli));
-
+            // dd($collectionClientes);
             if (isset($collectionClientes->customers)) {
                 $this->clientes = array_map(function ($cliente) {
                     return [
@@ -268,6 +269,7 @@ class Tarefas extends Component
         }
         else
         {
+            // dd('AQUI');
             $collectionClientes = $this->tarefasRepository->getListagemCliente(10000);
 
             if (isset($collectionClientes->customers)) {
@@ -361,10 +363,49 @@ class Tarefas extends Component
       
     }
 
+    public function EliminarAgendado()
+    {
+        $visitaAgendada = VisitasAgendadas::where('id', $this->visitaIDDireito)->first();
+        // dd($visitaAgendada);
+        if($visitaAgendada['finalizado'] != 0)
+        {
+            $this->dispatchBrowserEvent('sendToaster', ["message" => "Só pode eliminar visitas agendadas!", "status" => "errorElimine"]);
+            return false;
+        }
+        if($visitaAgendada['user_id'] != Auth::user()->id)
+        {
+            $this->dispatchBrowserEvent('sendToaster', ["message" => "Apenas pode eliminar visitas que tenha agendado.", "status" => "errorElimine"]);
+            return false;
+        }
+        $visita = Visitas::where('id_visita_agendada', $this->visitaIDDireito)->first();
+        // dd($visita);
+        try {
+            $send = VisitasAgendadas::where('id', $this->visitaIDDireito)->delete();
+            $send1 = Visitas::where('id_visita_agendada', $this->visitaIDDireito)->delete();
+
+            if ($send && $send1) {
+                $message = "Visita Eliminada com sucesso";
+                $status = "success";
+            } else {
+                $message = "Nenhuma atualização foi feita!";
+                $status = "warning";
+            }
+        } catch (\Exception $e) {
+            $message = "Não foi possível eliminar a visita!";
+            $status = "warning";
+        }
+
+        $this->listagemTarefas = $this->visitasRepository->getListagemVisitasAndTarefas(Auth::user()->id);
+
+        session()->flash($status, $message);
+        return redirect()->route('dashboard');
+      
+    }
     
 
     public function agendaVisita()
     {
+        // dd($this->horaFinalVisita, $this->horaInicialVisita);
         if($this->clienteVisitaID == "" || $this->dataInicialVisita == "" ||$this->horaInicialVisita == "" || $this->horaFinalVisita == "" || $this->tipoVisitaEscolhidoVisita == "" || $this->assuntoTextVisita == "" )
         {
             Session::put('IDCli', $this->clienteVisitaID);
@@ -383,15 +424,27 @@ class Tarefas extends Component
             return false;
         }
 
-
-        $nameClient = $this->tarefasRepository->getDetalhesCliente(json_decode($this->clienteVisitaID));
+        $IDCli = Session::get('IDCli');   
+        if($IDCli != '')
+        {
+        $nameClient = $this->tarefasRepository->getDetalhesCliente(json_decode($IDCli));
 
         $this->clienteVisitaName = $nameClient->customers[0]->name;
         
         $noClient = $nameClient->customers[0]->no;
 
-        $response = $this->visitasRepository->addVisitaDatabase($noClient, json_decode($this->clienteVisitaID),$this->clienteVisitaName, preg_replace('/[a-zA-Z]/', '', $this->dataInicialVisita), preg_replace('/[a-zA-Z]/', '', $this->horaInicialVisita), preg_replace('/[a-zA-Z]/', '', $this->horaFinalVisita), $this->tipoVisitaEscolhidoVisita, $this->assuntoTextVisita);
+        $response = $this->visitasRepository->addVisitaDatabase($noClient, json_decode($IDCli),$this->clienteVisitaName, preg_replace('/[a-zA-Z]/', '', $this->dataInicialVisita), preg_replace('/[a-zA-Z]/', '', $this->horaInicialVisita), preg_replace('/[a-zA-Z]/', '', $this->horaFinalVisita), $this->tipoVisitaEscolhidoVisita, $this->assuntoTextVisita);
+        }
+        else
+        {
+            $nameClient = $this->tarefasRepository->getDetalhesCliente(json_decode($this->clienteVisitaID));
 
+            $this->clienteVisitaName = $nameClient->customers[0]->name;
+            
+            $noClient = $nameClient->customers[0]->no;
+    
+            $response = $this->visitasRepository->addVisitaDatabase($noClient, json_decode($this->clienteVisitaID),$this->clienteVisitaName, preg_replace('/[a-zA-Z]/', '', $this->dataInicialVisita), preg_replace('/[a-zA-Z]/', '', $this->horaInicialVisita), preg_replace('/[a-zA-Z]/', '', $this->horaFinalVisita), $this->tipoVisitaEscolhidoVisita, $this->assuntoTextVisita);
+        }
         $tenant = env('MICROSOFT_TENANT');
         $clientId = env('MICROSOFT_CLIENT_ID');
         $clientSecret = env('MICROSOFT_CLIENT_SECRET');
@@ -445,7 +498,19 @@ class Tarefas extends Component
             return false;
         }
 
+        $IDCli = Session::get('IDCli');   
+        if($IDCli != '')
+        {
+        $nameClient = $this->tarefasRepository->getDetalhesCliente(json_decode($IDCli));
 
+        $this->clienteVisitaName = $nameClient->customers[0]->name;
+        
+        $noClient = $nameClient->customers[0]->no;
+
+        $response = $this->visitasRepository->addVisitaIniciarDatabase($noClient,json_decode($IDCli),$this->clienteVisitaName, preg_replace('/[a-zA-Z]/', '', $this->dataInicialVisita), preg_replace('/[a-zA-Z]/', '', $this->horaInicialVisita), preg_replace('/[a-zA-Z]/', '', $this->horaFinalVisita), $this->tipoVisitaEscolhidoVisita, $this->assuntoTextVisita);
+        }
+        else
+        {
         $nameClient = $this->tarefasRepository->getDetalhesCliente(json_decode($this->clienteVisitaID));
 
         $this->clienteVisitaName = $nameClient->customers[0]->name;
@@ -453,7 +518,7 @@ class Tarefas extends Component
         $noClient = $nameClient->customers[0]->no;
 
         $response = $this->visitasRepository->addVisitaIniciarDatabase($noClient,json_decode($this->clienteVisitaID),$this->clienteVisitaName, preg_replace('/[a-zA-Z]/', '', $this->dataInicialVisita), preg_replace('/[a-zA-Z]/', '', $this->horaInicialVisita), preg_replace('/[a-zA-Z]/', '', $this->horaFinalVisita), $this->tipoVisitaEscolhidoVisita, $this->assuntoTextVisita);
-
+        }
         $tenant = env('MICROSOFT_TENANT');
         $clientId = env('MICROSOFT_CLIENT_ID');
         $clientSecret = env('MICROSOFT_CLIENT_SECRET');
