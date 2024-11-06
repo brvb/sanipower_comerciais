@@ -33,11 +33,7 @@ class SendAprovacao extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.aprovacao')
-                ->subject('Sanipower, S.A.')
-                ->attachData($this->pdfContent, 'Proposta.pdf', [
-                            'mime' => 'application/pdf',
-                            'proposta' => $this->proposta,
-                        ]);
+        return $this->view('mail.aprovacao', ['proposta' => $this->proposta])
+            ->subject('Aprovação da '.$this->proposta['budget'].', SaniPower SA.');
     }
 }

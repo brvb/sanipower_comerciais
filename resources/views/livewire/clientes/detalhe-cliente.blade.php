@@ -10,7 +10,7 @@
     <!-- FIM LOADING -->
 
     <!-- TABS  -->
-
+{{-- @dd($detalhesCliente->customers[0]) --}}
     <div class="row group-buttons group-buttons d-flex justify-content-end mr-0 mb-2">
         <div class="tools">
             <a href="{{ route('visitas.detail', $detalhesCliente->customers[0]->id ) }}" class="btn btn-sm btn-primary"><i class="ti-pin"></i> Criar Visita</a>
@@ -166,7 +166,7 @@
                                     <label>Contactos</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text bg-carolina"><i class="ti-email text-light"></i></span>
+                                            <span class="input-group-text bg-carolina"><i class="fas fa-phone text-light"></i></span>
                                         </div>
                                         <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->phone}}" readonly>
                                     </div>
@@ -251,6 +251,19 @@
                                             <span class="input-group-text bg-carolina"><i class="ti-credit-card text-light"></i></span>
                                         </div>
                                         <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->payment_conditions}}" readonly>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-xl-4">
+
+                                <div class="form-group">
+                                    <label>E-mail</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-carolina"><i class="ti-email text-light"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->email}}" readonly>
                                     </div>
                                 </div>
 
@@ -532,10 +545,5 @@
                 document.getElementById('loader').style.display = 'none';
             });
         });
-
-
-    
-       
-
 </script>
 </div>

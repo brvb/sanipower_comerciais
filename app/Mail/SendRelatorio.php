@@ -33,7 +33,7 @@ class SendRelatorio extends Mailable
     public function build()
     {
         $email = $this->view('mail.relatorio')
-                      ->subject('Sanipower, S.A.')
+                      ->subject(' Relatório de Visita Nº'.$this->visita['id'].' Sanipower, S.A.')
                       ->with(['visita' => $this->visita]); // Passa os dados da visita para a view
 
         // Itera sobre cada PDF e anexa com um nome único

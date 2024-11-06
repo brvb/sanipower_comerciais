@@ -503,7 +503,7 @@
                                                    <td style='padding:.75pt .75pt .75pt .75pt'>
                                                       <p class=MsoNormal style='line-height:16.5pt'>
                                                          <span style='font-size:8.5pt;font-family:"Arial",sans-serif'>
-                                                         <?php echo $proposta['obs'];?> 
+                                                         <?php echo $proposta['obs_pdf'];?> 
                                                             <o:p></o:p>
                                                          </span>
                                                       </p>

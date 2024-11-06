@@ -235,8 +235,11 @@
                                 </div>
                                 <div class="col-xl-6">
                                     <div class="form-group">
-                                        <label>Observação</label>
-                                        <textarea class="form-control" rows="9" style="resize: none;" readonly>{{ $encomenda->obs }}</textarea>
+                                        <label>Observação Interna</label>
+                                        <textarea class="form-control" rows="4" style="resize: none;" readonly>{{ $encomenda->obs }}</textarea>
+                                        <br>
+                                        <label>Observação para PDF</label>
+                                        <textarea class="form-control" rows="4" style="resize: none;" readonly>{{ $encomenda->obs_pdf }}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -369,7 +372,8 @@
                                             {{-- {{ dd($prod) }} --}}
                                             <td>{{ $prod->reference }}</td>
                                             <td style="white-space: nowrap;">{{ $prod->description }} 
-                                            <br><small style="color:#1791ba">{{ $prod->origin }}</small>
+                                            @if($prod->origin != null || $prod->origin !='')<br><small style="color:#1791ba">{{ $prod->origin }}</small>@endif
+                                            <br><small style="color:#afba17">{{ $prod->notes }}</small>
                                             </td>
                                             <td style="text-align: right; white-space: nowrap;">{{ $prod->quantity }}</td>
                                             <td class="d-none d-md-table-cell"  style="text-align: right; white-space: nowrap;">{{ number_format($prod->price, 3, ',', '.') }} €</td>
@@ -460,7 +464,7 @@
                                                         </div>
                                                     </td>
 
-                                                    <td>{{ $item }}</td>
+                                                    <td>{!! $item !!}</td>
                                                 </tr>
                                             @endforeach
                                     

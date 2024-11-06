@@ -108,7 +108,7 @@
            </tr>
            <tr style="border-bottom: solid 1px #000000;">
                <td style="width: 150px; border-bottom: solid 1px #000000;" class="fonte"><strong>Observações</strong></td>
-               <td style="border-bottom: solid 1px #000000;">{{ $encomendaData['obs'] }}</td>
+               <td style="border-bottom: solid 1px #000000;">{{ $encomendaData['obs_pdf'] }}</td>
            </tr>
            <tr>
                <td style="border-bottom: solid 1px #000000;" class="fonte"><strong>Entrega</strong></td>
