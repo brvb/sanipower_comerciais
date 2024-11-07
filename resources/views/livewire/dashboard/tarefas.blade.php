@@ -1148,7 +1148,7 @@
                 monthsShort: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
                 today: "Hoje",
                 clear: "Limpar",
-                format: "dd/mm/yyyy",
+                format: "yyyy-mm-dd",
                 titleFormat: "MM yyyy",
                 /* Leverages same syntax as 'format' */
                 weekStart: 0
@@ -1156,7 +1156,7 @@
 
 
             $('#dataInicialVisitar').datepicker({
-                format: 'dd/mm/yyyy',
+                format: 'yyyy-mm-dd',
                 language: 'pt-BR',
                 autoclose: true
             }).on('changeDate', function(e) {
