@@ -522,6 +522,8 @@ class DetalheProposta extends Component
         // dd('AQUI');
         session(['Camp' => 0]);
 
+        $this->searchProduct = "";
+        session(['searchProduct' => null]);
         session(['searchNameCategory' => ""]);
         session(['searchNameFamily' => ""]);
         session(['searchNameSubFamily' => ""]);
@@ -1536,14 +1538,19 @@ class DetalheProposta extends Component
 
         if (session('searchProduct') !== null) {
             $this->searchProduct = session('searchProduct');
-
             if ($this->searchProduct != "") {
                 $this->searchSubFamily = $this->PropostasRepository->getSubFamilySearch($this->searchProduct);
             }
 
         }
+        if ($this->searchProduct != "") {
+            // dd('AQUI 001');
+            $this->searchSubFamily = $this->PropostasRepository->getSubFamilySearch($this->searchProduct);
+            session(['Camp' => 1]);
+        }
 
         if (session('CampProds') !== null) {
+            // dd('AQUI 002');
             $this->searchProduct = session('CampProds');
 
             if ($this->searchProduct != "") {
