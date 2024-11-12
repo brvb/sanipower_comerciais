@@ -242,6 +242,13 @@ class Tarefas extends Component
     public function addVisita()
     {
         //dd('addVisita');
+        $this->clienteVisitaID = "" ;
+        $this->dataInicialVisita = "" ;
+        $this->horaInicialVisita = "" ;
+        $this->horaFinalVisita = "" ;
+        $this->tipoVisitaEscolhidoVisita = "" ;
+        $this->assuntoTextVisita = "" ;
+
         $this->tipoVisita = TiposVisitas::all();
 
         $IDCli = Session::get('IDCli');   
