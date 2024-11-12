@@ -371,11 +371,11 @@
                                 <label>Data</label>
                                 <div class="input-group date">
                                     <input type="text" id="dataInicialVisitar" class="form-control" wire:model.defer="dataInicialVisita">
-                                    <div class="input-group-append">
+                                    {{-- <div class="input-group-append">
                                         <span class="input-group-text">
                                             <i class="ti-calendar"></i>
                                         </span>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
 
@@ -383,11 +383,11 @@
                                 <label>Hora Inicial</label>
                                 <div class="input-group">
                                     <input type="time" class="form-control horaInicialVisita" id="horaInicialVisita" wire:model.defer="horaInicialVisita" step="60">
-                                    <div class="input-group-append timepicker-btn">
+                                    {{-- <div class="input-group-append timepicker-btn">
                                         <span class="input-group-text">
                                             <i class="ti-time"></i>
                                         </span>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                             
@@ -395,11 +395,11 @@
                                 <label>Hora Final</label>
                                 <div class="input-group">
                                     <input type="time" class="form-control horaFinalVisita" id="horaFinalVisita" wire:model.defer="horaFinalVisita" step="60">
-                                    <div class="input-group-append timepicker-btn">
+                                    {{-- <div class="input-group-append timepicker-btn">
                                         <span class="input-group-text">
                                             <i class="ti-time"></i>
                                         </span>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
 

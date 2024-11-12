@@ -484,6 +484,8 @@ class DetalheEncomenda extends Component
         // dd('AQUI');
         session(['Camp' => 0]);
 
+        $this->searchProduct = "";
+        session(['searchProduct' => null]);
         session(['searchNameCategory' => ""]);
         session(['searchNameFamily' => ""]);
         session(['searchNameSubFamily' => ""]);
@@ -1384,6 +1386,12 @@ class DetalheEncomenda extends Component
                     }
                 }
 
+                if ($this->searchProduct != "") {
+                    // dd('AQUI 001');
+                    $this->searchSubFamily = $this->encomendasRepository->getSubFamilySearch($this->searchProduct);
+                    session(['Camp' => 1]);
+                }
+                
                 if (session('CampProds') !== null) {
                     $this->searchProduct = session('CampProds');
 
