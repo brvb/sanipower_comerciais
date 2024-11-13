@@ -221,7 +221,47 @@ w\:* {behavior:url(#default#VML);}
                                         <p class=MsoNormal style='line-height:10.5pt'><b><span style='font-size:7.0pt;font-family:"Arial",sans-serif'>Relatório final da visita<o:p></o:p></span></b></p>
                                     </td>
                                     <td style='border:none;border-bottom:solid black 1.0pt;padding:.75pt .75pt .75pt .75pt'>
-                                        <p class=MsoNormal style='line-height:10.5pt'><span style='font-size:7.0pt;font-family:"Arial",sans-serif'><?php echo $visita['assunto_text']; ?><o:p></o:p></span></p>
+                                        <p class=MsoNormal style='line-height:10.5pt'><span style='font-size:7.0pt;font-family:"Arial",sans-serif'><?php echo $visitComment['relatorio']; ?><o:p></o:p></span></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='border:none;border-bottom:solid black 1.0pt;padding:.75pt .75pt .75pt .75pt'>
+                                        <p class=MsoNormal style='line-height:10.5pt'><b><span style='font-size:7.0pt;font-family:"Arial",sans-serif'>Pendentes para a próxima visita<o:p></o:p></span></b></p>
+                                    </td>
+                                    <td style='border:none;border-bottom:solid black 1.0pt;padding:.75pt .75pt .75pt .75pt'>
+                                        <p class=MsoNormal style='line-height:10.5pt'><span style='font-size:7.0pt;font-family:"Arial",sans-serif'><?php echo $visitComment['pendentes_proxima_visita']; ?><o:p></o:p></span></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='border:none;border-bottom:solid black 1.0pt;padding:.75pt .75pt .75pt .75pt'>
+                                        <p class=MsoNormal style='line-height:10.5pt'><b><span style='font-size:7.0pt;font-family:"Arial",sans-serif'>Comentário sobre encomendas<o:p></o:p></span></b></p>
+                                    </td>
+                                    <td style='border:none;border-bottom:solid black 1.0pt;padding:.75pt .75pt .75pt .75pt'>
+                                        <p class=MsoNormal style='line-height:10.5pt'><span style='font-size:7.0pt;font-family:"Arial",sans-serif'><?php echo $visitComment['comentario_encomendas']; ?><o:p></o:p></span></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='border:none;border-bottom:solid black 1.0pt;padding:.75pt .75pt .75pt .75pt'>
+                                        <p class=MsoNormal style='line-height:10.5pt'><b><span style='font-size:7.0pt;font-family:"Arial",sans-serif'>Comentário sobre propostas<o:p></o:p></span></b></p>
+                                    </td>
+                                    <td style='border:none;border-bottom:solid black 1.0pt;padding:.75pt .75pt .75pt .75pt'>
+                                        <p class=MsoNormal style='line-height:10.5pt'><span style='font-size:7.0pt;font-family:"Arial",sans-serif'><?php echo $visitComment['comentario_propostas']; ?><o:p></o:p></span></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='border:none;border-bottom:solid black 1.0pt;padding:.75pt .75pt .75pt .75pt'>
+                                        <p class=MsoNormal style='line-height:10.5pt'><b><span style='font-size:7.0pt;font-family:"Arial",sans-serif'>Comentário sobre financeiro<o:p></o:p></span></b></p>
+                                    </td>
+                                    <td style='border:none;border-bottom:solid black 1.0pt;padding:.75pt .75pt .75pt .75pt'>
+                                        <p class=MsoNormal style='line-height:10.5pt'><span style='font-size:7.0pt;font-family:"Arial",sans-serif'><?php echo $visitComment['comentario_financeiro']; ?><o:p></o:p></span></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='border:none;border-bottom:solid black 1.0pt;padding:.75pt .75pt .75pt .75pt'>
+                                        <p class=MsoNormal style='line-height:10.5pt'><b><span style='font-size:7.0pt;font-family:"Arial",sans-serif'>Comentário sobre ocorrências<o:p></o:p></span></b></p>
+                                    </td>
+                                    <td style='border:none;border-bottom:solid black 1.0pt;padding:.75pt .75pt .75pt .75pt'>
+                                        <p class=MsoNormal style='line-height:10.5pt'><span style='font-size:7.0pt;font-family:"Arial",sans-serif'><?php echo $visitComment['comentario_ocorrencias']; ?><o:p></o:p></span></p>
                                     </td>
                                 </tr>
                                 <tr>

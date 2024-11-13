@@ -2,6 +2,7 @@
     use App\Models\User;
 
      $visita = json_decode($visita, true);
+     $visitComment = json_decode($visitComment, true);
     //  dd($visita);
         $Utilizador = User::where('id', $visita['user_id'])->get();
     // dd($Utilizador);
@@ -193,8 +194,38 @@
 
             <tr style = "border-top: 1px solid black;">
                 <td style="text-align:left;"><strong>Relatório Final da Visita</strong></td>
-                <td colspan="6" style="text-align:left; padding-left:0px !important;"><?php echo $visita['assunto_text']; ?></td>
+                <td colspan="6" style="text-align:left; padding-left:0px !important;"><?php echo $visitComment['relatorio']; ?></td>
             </tr>
+            @if (is_array($visitComment) && isset($visitComment['pendentes_proxima_visita']))
+            <tr style = "border-top: 1px solid black;">
+                <td style="text-align:left;"><strong>Pendentes para a próxima visita</strong></td>
+                <td colspan="6" style="text-align:left; padding-left:0px !important;"><?php echo $visitComment['pendentes_proxima_visita']; ?></td>
+            </tr>
+            @endif
+            @if (is_array($visitComment) && isset($visitComment['comentario_encomendas']))
+            <tr style = "border-top: 1px solid black;">
+                <td style="text-align:left;"><strong>Comentário sobre encomendas</strong></td>
+                <td colspan="6" style="text-align:left; padding-left:0px !important;"><?php echo $visitComment['comentario_encomendas']; ?></td>
+            </tr>
+            @endif
+            @if (is_array($visitComment) && isset($visitComment['comentario_propostas']))
+            <tr style = "border-top: 1px solid black;">
+                <td style="text-align:left;"><strong>Comentário sobre propostas</strong></td>
+                <td colspan="6" style="text-align:left; padding-left:0px !important;"><?php echo $visitComment['comentario_propostas']; ?></td>
+            </tr>
+            @endif
+            @if (is_array($visitComment) && isset($visitComment['comentario_financeiro']))
+            <tr style = "border-top: 1px solid black;">
+                <td style="text-align:left;"><strong>Comentário sobre financeiro</strong></td>
+                <td colspan="6" style="text-align:left; padding-left:0px !important;"><?php echo $visitComment['comentario_financeiro']; ?></td>
+            </tr>
+            @endif
+            @if (is_array($visitComment) && isset($visitComment['comentario_ocorrencias']))
+            <tr style = "border-top: 1px solid black;">
+                <td style="text-align:left;"><strong>Comentário sobre ocorrências</strong></td>
+                <td colspan="6" style="text-align:left; padding-left:0px !important;"><?php echo $visitComment['comentario_ocorrencias']; ?></td>
+            </tr>
+            @endif
             <tfoot>
                 <tr style = "border-top: 1px solid black; border-bottom: 1px solid black;">
                     <td colspan="7" style="text-align: right;"><h3>{{$Utilizador->first()->name }}</h3></td>

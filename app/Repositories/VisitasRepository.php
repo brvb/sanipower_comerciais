@@ -801,7 +801,6 @@ class VisitasRepository implements VisitasInterface
 
         $response_decoded = json_decode($response);
 
-
         if ($response_decoded->success == true) {
             // Inserção bem-sucedida
             return response()->json([

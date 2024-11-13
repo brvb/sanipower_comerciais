@@ -538,7 +538,13 @@ class Encomendas extends Component
     }
     public function detalheEncomendaModal($encomenda)
     {
-        $this->guardarVisita();
+        $getId = VisitasAgendadas::where('id',$this->idVisita)->first();
+        // dd($getId);
+        if($getId->finalizado != 1)
+        {
+            $this->guardarVisita();
+
+        }
         
         if($this->idVisita == 0)
         {
