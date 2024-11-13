@@ -533,7 +533,14 @@ class Propostas extends Component
     }
     public function detalhePropostaModal($proposta)
     {
-        $this->guardarVisita();
+        // dd($this->idVisita);
+        $getId = VisitasAgendadas::where('id',$this->idVisita)->first();
+        // dd($getId);
+        if($getId->finalizado != 1)
+        {
+            $this->guardarVisita();
+
+        }
 
         if($this->idVisita == 0)
         {

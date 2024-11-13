@@ -12,6 +12,7 @@ class SendRelatorio extends Mailable
 
     protected array $pdfContents;  // Array de conteúdos de PDF
     public array $visita = [];
+    public array $visit = [];
 
     /**
      * Create a new message instance.
@@ -19,10 +20,12 @@ class SendRelatorio extends Mailable
      * @param array $pdfContents Array com conteúdos de PDFs
      * @param array $visita Dados da visita
      */
-    public function __construct(array $pdfContents, $visita)
+    public function __construct(array $pdfContents, $visita, $visit)
     {
         $this->pdfContents = $pdfContents;
         $this->visita = json_decode($visita, true);
+        $this->visit = json_decode($visit, true);
+        // dd($this->visita);
     }
 
     /**
@@ -32,9 +35,11 @@ class SendRelatorio extends Mailable
      */
     public function build()
     {
+        // dd($this->visita);
+
         $email = $this->view('mail.relatorio')
                       ->subject(' Relatório de Visita Nº'.$this->visita['id'].' Sanipower, S.A.')
-                      ->with(['visita' => $this->visita]); // Passa os dados da visita para a view
+                      ->with(['visita' => $this->visita, 'visitComment' => $this->visit]); // Passa os dados da visita para a view
 
         // Itera sobre cada PDF e anexa com um nome único
         foreach ($this->pdfContents as $index => $pdf) {

@@ -191,12 +191,13 @@ class DetalheVisitas extends Component
     public function gerarPdfVisita($visita)
     {
         // dd($visita);
-
+        $visit = Visitas::where('id_visita_agendada',$visita['id'])->first();
+        // dd($visit);
         if (!$visita) {
             return redirect()->back()->with('error', 'Visita não encontrada.');
         }
 
-        $pdf = PDF::loadView('pdf.pdfRelatorioVisita', ["visita" => json_encode($visita)]);
+        $pdf = PDF::loadView('pdf.pdfRelatorioVisita', ["visita" => json_encode($visita), "visitComment" => json_encode($visit)]);
         return response()->streamDownload(function() use ($pdf) {
             echo $pdf->output();
         }, 'pdfRelatorioVisita.pdf');
@@ -793,6 +794,8 @@ class DetalheVisitas extends Component
 
         $getVisitaID = VisitasAgendadas::where('id',$this->idVisita)->first();
         
+        $visit = Visitas::where('id_visita_agendada',$this->idVisita)->first();
+
         // dd($this->idVisita);
 
         $tipoVisita = TiposVisitas::where('id',$this->tipoVisitaSelect)->first();
@@ -820,6 +823,7 @@ class DetalheVisitas extends Component
         curl_close($curl);
 
         $response_decoded = json_decode($response);
+        // dd($response_decoded, $getVisitaID, $visit);
         $prop_enc = $response_decoded->documents ?? null;
         // dd($prop_enc);
         $pdfEncomendaContent = [];
@@ -857,7 +861,7 @@ class DetalheVisitas extends Component
 
 
         $pdf = new Dompdf();
-        $pdf = PDF::loadView('pdf.pdfRelatorioVisita', ["visita" => json_encode($getVisitaID)]);
+        $pdf = PDF::loadView('pdf.pdfRelatorioVisita', ["visita" => json_encode($getVisitaID), "visitComment" => json_encode($visit)]);
     
         $pdf->render();
     
@@ -881,7 +885,7 @@ class DetalheVisitas extends Component
         foreach($this->emailArray as $i => $email)
         {
             // dd(json_encode($getVisitaID));
-            Mail::to($email)->send(new SendRelatorio($pdfContents, json_encode($getVisitaID)));
+            Mail::to($email)->send(new SendRelatorio($pdfContents, json_encode($getVisitaID), json_encode($visit)));
         }
 
         $responseArray = $sendPHC->getData(true);
