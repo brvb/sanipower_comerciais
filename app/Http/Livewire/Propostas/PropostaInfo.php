@@ -222,7 +222,9 @@ class PropostaInfo extends Component
         $pdf->render();
     
         $pdfContent = $pdf->output();
-   
+        
+        // $this->emailArray[] = Auth::user()->email;
+
         foreach($this->emailArray as $i => $email)
         {
             // Separa o e-mail do restante usando " - " como delimitador
@@ -441,7 +443,9 @@ class PropostaInfo extends Component
                     
                             $this->emailArray = array_merge($this->emailArray, $emails);
                         }
-                    
+                        
+                        $this->emailArray[] = Auth::user()->email;
+
                         // array_push($this->emailArray,Auth::user()->email); Esse é o email do utilizador atual
                         $this->emailArray = array_unique($this->emailArray);
                         

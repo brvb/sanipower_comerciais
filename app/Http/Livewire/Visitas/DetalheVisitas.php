@@ -882,6 +882,8 @@ class DetalheVisitas extends Component
                 $this->emailArray = array_merge($this->emailArray, $emails);
             }
 
+            $this->emailArray[] = Auth::user()->email;
+
         foreach($this->emailArray as $i => $email)
         {
             // dd(json_encode($getVisitaID));

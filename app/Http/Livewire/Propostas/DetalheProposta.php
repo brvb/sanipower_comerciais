@@ -1262,7 +1262,9 @@ class DetalheProposta extends Component
                     
                             $this->emailArray = array_merge($this->emailArray, $emails);
                         }
-                    
+                        
+                        $this->emailArray[] = Auth::user()->email;
+
                         // array_push($this->emailArray,Auth::user()->email); Esse é o email do utilizador atual
                         $this->emailArray = array_unique($this->emailArray);
                         
@@ -1300,7 +1302,9 @@ class DetalheProposta extends Component
                     
                             $this->emailArray = array_merge($this->emailArray, $emails);
                         }
-                    
+                        
+                        $this->emailArray[] = Auth::user()->email;
+
                         // array_push($this->emailArray,Auth::user()->email); Esse é o email do utilizador atual
                         $this->emailArray = array_unique($this->emailArray);
                         
