@@ -1086,6 +1086,7 @@ class DetalheProposta extends Component
                 "quantity" => $prod->qtd,
                 "tax" => $prod->iva,
                 "tax_included" => false,
+                "pvp" => $prod->pvp,
                 "price" => $prod->price,
                 "discount1" => $prod->discount, // passar como inteiro 
                 "discount2" => $prod->discount2,
@@ -1262,7 +1263,9 @@ class DetalheProposta extends Component
                     
                             $this->emailArray = array_merge($this->emailArray, $emails);
                         }
-                    
+                        
+                        $this->emailArray[] = Auth::user()->email;
+
                         // array_push($this->emailArray,Auth::user()->email); Esse é o email do utilizador atual
                         $this->emailArray = array_unique($this->emailArray);
                         
@@ -1300,7 +1303,9 @@ class DetalheProposta extends Component
                     
                             $this->emailArray = array_merge($this->emailArray, $emails);
                         }
-                    
+                        
+                        $this->emailArray[] = Auth::user()->email;
+
                         // array_push($this->emailArray,Auth::user()->email); Esse é o email do utilizador atual
                         $this->emailArray = array_unique($this->emailArray);
                         
