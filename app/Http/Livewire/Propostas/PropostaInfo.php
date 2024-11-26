@@ -330,7 +330,7 @@ class PropostaInfo extends Component
             $idEncomenda = $proposta["id"];
         }
        
-       
+        $price = 0;
         foreach($this->selectedItemsAdjudicar as $id => $item)
         {
             if($item == true)
@@ -340,11 +340,14 @@ class PropostaInfo extends Component
                     if($id == $prop["id"])
                     {
                         $var = Carrinho::where("origin_id",$prop["id"])->first();
+                        // dd($var);
                         if($var){
                             Carrinho::where('origin_id', $prop["id"])->update([
                                 "awarded" => $status,
                             ]);
                         }else{
+                                // dd($prop);
+                                $price = $prop["total"] / $prop["quantity"];
                                 Carrinho::create([
                                 "id_proposta" => $proposta["id"],
                                 "id_encomenda" => $idEncomenda,
@@ -352,7 +355,7 @@ class PropostaInfo extends Component
                                 "id_user" => Auth::user()->id,
                                 "referencia" => $prop["reference"],
                                 "designacao" => $prop["description"],
-                                "price" => $prop["price"],
+                                "price" => $price,
                                 "discount" => $prop["discount"],
                                 "discount2" => $prop["discount2"],
                                 "qtd" => $prop["quantity"],

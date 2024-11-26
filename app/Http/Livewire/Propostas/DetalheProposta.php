@@ -1086,6 +1086,7 @@ class DetalheProposta extends Component
                 "quantity" => $prod->qtd,
                 "tax" => $prod->iva,
                 "tax_included" => false,
+                "pvp" => $prod->pvp,
                 "price" => $prod->price,
                 "discount1" => $prod->discount, // passar como inteiro 
                 "discount2" => $prod->discount2,
