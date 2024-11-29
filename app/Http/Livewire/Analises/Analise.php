@@ -52,7 +52,7 @@ class Analise extends Component
         $response_decoded = json_decode($response);
         $this->table = $response_decoded;
         // dd($response_decoded);
-        if($response_decoded->Message != null)
+        if(isset($response_decoded->Message))
         {
             // dd($response_decoded);
             $this->table = null;
