@@ -820,8 +820,8 @@ class DetalheEncomenda extends Component
     {
         $propertiesLoja = [
             'levantamentoLoja' => $this->levantamentoLoja,
-            'viaturaSanipower' => $this->viaturaSanipower,
-            'transportadora' => $this->transportadora,
+            'Entrega por viatura Sanipower' => $this->viaturaSanipower,
+            'Entrega por transportadora' => $this->transportadora,
             
         ];
         $propertiesPagamentos = [
