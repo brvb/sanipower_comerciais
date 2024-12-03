@@ -954,7 +954,6 @@
                 $ValorTotalComIva = 0;
             @endphp
                 <div class="row" style="align-items: center;">
-                   
                     @if($allkit)
                     <div class="col-md-12 p-0">
                     
@@ -1035,7 +1034,6 @@
                                         </tr>
                                     @endif
                                     @if($prod->inkit == 0)
-
                                         @php
                                             $totalItem = $prod->price * $prod->qtd;
                                             $totalItemComIva = $totalItem + ($totalItem * ($prod->iva / 100));

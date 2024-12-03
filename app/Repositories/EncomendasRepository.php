@@ -287,7 +287,7 @@ class EncomendasRepository implements EncomendasInterface
             $idencomenda = "";
             $idproposta = $codType;
         }
-
+        // dd($qtd);
         $addProduct = Carrinho::create([
             "id_encomenda" => $idencomenda,
             "id_proposta" => $idproposta,

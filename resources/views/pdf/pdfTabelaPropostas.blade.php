@@ -1,13 +1,8 @@
 @php
      $proposta = json_decode($proposta, true);
     //  dd($proposta);
-    $total = 0;
-    $total_iva = 0;
-    $conta_linhas = 0;
-    $discount = 0;
-    $discount2 = 0;
-    $total_SIVA = 0;
-    $pr = 0;
+    $total = $proposta['total'];
+    $total_iva = $total * 1.23;
 @endphp
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -164,50 +159,17 @@
                     +{{ number_format($line['discount2'], 0) }}%
                     @endif</td>
                     <?php
-					$line['price'] = number_format($line['price'], 3, '.', '');
-
-
-					$discount = $line['discount'];
-
-					$discount = $discount / 100;
-
-					$discount = $discount * floatval($line['price']);
-
-					$discount2 = $line['discount2'];
-
-					$discount2 = $discount2 / 100;
-
-					$discount2 = (floatval($line['price']) - $discount) * $discount2;
-
-					$desconto = $discount + $discount2;
-
-					$price = floatval($line['price']) - $desconto;
-
-					$total = isset($total) ? $total : 0;
-					$total = floatval($line['quantity']) * floatval($price);	
-					$total = number_format($total, 3, '.', '');				
+					$line['price'] = number_format($line['price'], 3, '.', '');			
 					?>
                     <td>{{ $line['price'], }}€</td>
-                    <td>{{ $total }}€</td>
+                    <td>{{ $line['total'] }}€</td>
                 </tr>
-                <?php
-					$total_SIVA += $total;
-					$total_SIVA = number_format($total_SIVA, 3, '.', '');
-
-
-					$tabela = $line['tax'];
-					$taxa_iva = $tabela / 100 + 1;
-					
-					$total_iva = isset($total_iva) ? $total_iva : 0;
-					$total_iva = floatval($total_SIVA) * $taxa_iva;
-					$total_iva = number_format($total_iva, 3, '.', '');
-					?>
                 @endforeach
             </tbody>
             <tfoot>
                 <tr style = "border-top: 1px solid black; border-bottom: none !important;">
                     <td colspan="6" style="text-align: right;">Total s/IVA</td>
-                    <td style="padding-right: 20px;">{{ $total_SIVA }}€<</td>
+                    <td style="padding-right: 20px;">{{ $total }}€<</td>
                 </tr>
                 <tr>
                     <td colspan="6" style="text-align: right;">Total c/IVA</td>

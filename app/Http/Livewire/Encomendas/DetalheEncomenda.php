@@ -155,6 +155,7 @@ class DetalheEncomenda extends Component
 
     public function mount($codvisita, $cliente, $codEncomenda)
     {
+        // dd($codvisita, $cliente, $codEncomenda);
         if(session('Camp1') != 1)
         {
             session(['Camp' => 0]);
@@ -1411,7 +1412,7 @@ class DetalheEncomenda extends Component
             ->where('id_encomenda', $this->codEncomenda)
             ->orderBy('inkit', 'desc')
             ->get();
-
+            // dd($this->detailsClientes->customers[0]->no, Auth::user()->id, $this->codEncomenda, $this->carrinhoCompras);
         $arrayCart = [];
         $onkit = 0;
         $allkit = 0;

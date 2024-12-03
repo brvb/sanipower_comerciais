@@ -328,30 +328,9 @@
                                              <div align=center>
                                                 <table class=MsoNormalTable border=0 cellpadding=0>
                                                 <?php
-                                                $total = 0;
-                                                $total_SIVA = 0;
-                                                $total_iva = 0;
+                                                $total = $proposta['total'];
+                                                $total_iva = $total * 1.23;
                                                 foreach ($proposta['lines'] as $line) {
-                                 
-                                                $discount = $line->discount;
-
-                                                $discount = $discount / 100;
-
-                                                $discount = $discount * floatval($line->price);
-
-                                                $discount2 = $line->discount2;
-
-                                                $discount2 = $discount2 / 100;
-
-                                                $discount2 = (floatval($line->price) - $discount) * $discount2;
-
-                                                $desconto = $discount + $discount2;
-
-                                                $price = floatval($line->price) - $desconto;
-
-                                                $total = isset($total) ? $total : 0;
-                                                $total = floatval($line->quantity) * floatval($price);	
-                                                $total = number_format($total, 3, '.', '');
 
                                                 echo '
                                                 <tr>
@@ -398,7 +377,7 @@
                                                     <td width=70 style="width:52.5pt;padding:.75pt .75pt .75pt .75pt">
                                                         <p class=MsoNormal align=right style="text-align:right;line-height:16.5pt">
                                                             <span style="font-size:8.5pt;font-family:Arial,sans-serif">
-                                                               '.$price.'€
+                                                               '.$line->price.'€
                                                                 <o:p></o:p>
                                                             </span>
                                                         </p>
@@ -406,23 +385,12 @@
                                                     <td width="10%" style="width:10.0%;padding:.75pt .75pt .75pt .75pt">
                                                         <p class=MsoNormal align=right style="text-align:right;line-height:16.5pt">
                                                             <span style="font-size:8.5pt;font-family:Arial,sans-serif">
-                                                                '.$total.'€
+                                                                '.$line->total.'€
                                                                 <o:p></o:p>
                                                             </span>
                                                         </p>
                                                     </td>
                                                     </tr>';
-
-                                                    $total_SIVA += $total;
-                                                    $total_SIVA = number_format($total_SIVA, 3, '.', '');
-
-
-                                                    $tabela = $line->tax;
-                                                    $taxa_iva = $tabela / 100 + 1;
-                                                   
-                                                    $total_iva = isset($total_iva) ? $total_iva : 0;
-                                                    $total_iva = floatval($total_SIVA) * $taxa_iva;
-                                                    $total_iva = number_format($total_iva, 3, '.', '');
                                                 }
                                                     ?>
                                                 </table>
@@ -449,7 +417,7 @@
                                                          <p class=MsoNormal align=right style='text-align:right;line-height:16.5pt'>
                                                             <b>
                                                                <span style='font-size:10.5pt;font-family:"Arial",sans-serif'>
-                                                                  <?php echo $total_SIVA;?>
+                                                                  <?php echo $total;?>
                                                                   <o:p></o:p>
                                                                </span>
                                                             </b>

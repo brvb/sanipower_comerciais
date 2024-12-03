@@ -340,14 +340,15 @@ class PropostaInfo extends Component
                     if($id == $prop["id"])
                     {
                         $var = Carrinho::where("origin_id",$prop["id"])->first();
-                        // dd($var);
                         if($var){
+                            dd($var);
                             Carrinho::where('origin_id', $prop["id"])->update([
                                 "awarded" => $status,
                             ]);
                         }else{
                                 // dd($prop);
                                 $price = $prop["total"] / $prop["quantity"];
+                                // dd($prop, $price);
                                 Carrinho::create([
                                 "id_proposta" => $proposta["id"],
                                 "id_encomenda" => $idEncomenda,
