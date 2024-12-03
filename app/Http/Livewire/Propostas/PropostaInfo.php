@@ -341,7 +341,7 @@ class PropostaInfo extends Component
                     {
                         $var = Carrinho::where("origin_id",$prop["id"])->first();
                         if($var){
-                            dd($var);
+                            // dd($var);
                             Carrinho::where('origin_id', $prop["id"])->update([
                                 "awarded" => $status,
                             ]);
