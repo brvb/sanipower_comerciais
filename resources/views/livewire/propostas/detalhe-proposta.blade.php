@@ -961,7 +961,7 @@
                             </thead>
                             <tbody>
                             @forelse ($arrayCart as $img => $prod)
-
+                                {{-- @dd($prod); --}}
                                 {{-- @forelse ($item as $prod)      --}}
 
                                     @if($prod->inkit == 1)

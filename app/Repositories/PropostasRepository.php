@@ -283,7 +283,7 @@ class PropostasRepository implements PropostasInterface
             $idencomenda = $codType;
             $idproposta = "";
         }
-        
+        // dd($qtd);
         $addProduct = Carrinho::create([
             "id_encomenda" => $idencomenda,
             "id_proposta" => $idproposta,
