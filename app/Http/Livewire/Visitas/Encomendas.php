@@ -540,12 +540,16 @@ class Encomendas extends Component
     {
         $getId = VisitasAgendadas::where('id',$this->idVisita)->first();
         // dd($getId);
-        if($getId->finalizado != 1)
+        if ($getId != null){
+            if($getId->finalizado != 1)
+            {
+                $this->guardarVisita();
+
+            }
+        }else
         {
             $this->guardarVisita();
-
         }
-        
         if($this->idVisita == 0)
         {
 
