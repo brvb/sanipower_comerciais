@@ -122,6 +122,7 @@ class DetalheEncomenda extends Component
     /** PARTE DA COMPRA */
     public $produtosRapida = [];
     public $produtosComment = [];
+    public $prodtQTD = [];
 
     /***** */
     public $emailArray;
@@ -549,9 +550,15 @@ class DetalheEncomenda extends Component
         $this->showLoaderPrincipal = true;
         $this->dispatchBrowserEvent('refreshComponentEncomenda2', ["id" => $this->getCategoriesAll->category[$idCategory - 1]->id]);
     }
-    public function addProductQuickBuyEncomenda($prodID, $nameProduct, $no, $ref, $codEncomenda)
+    public function addProductQuickBuyEncomenda($prodID, $nameProduct, $no, $ref, $codEncomenda,)
     {
         $quickBuyProducts = session('quickBuyProducts');
+        // dd($prodID, $nameProduct, $no, $ref, $codEncomenda, $this->produtosRapida, $this->prodtQTD, $this->codvisita, $this->idCliente);
+        if( $this->prodtQTD != null )
+        {
+            $this->produtosRapida[$prodID] = $this->prodtQTD[$prodID];
+            // dd($this->produtosRapida);
+        }
 
         $flag = 0;
         if(empty($this->produtosRapida[$prodID]))
@@ -564,7 +571,7 @@ class DetalheEncomenda extends Component
         $productChosen = [];
         $productChosenComment = [];
 
-
+        // dd($quickBuyProducts->product);
         foreach ($quickBuyProducts->product as $i => $prod) {
             if ($i == $prodID) {
                 foreach ($this->produtosRapida as $j => $prodRap) {
@@ -597,6 +604,23 @@ class DetalheEncomenda extends Component
         if ($flag == 1) {
             return false;
         }
+
+        if( $this->prodtQTD != null )
+        {
+            // dd($productChosen);
+            // dd('id_encomenda', $codEncomenda, 'referencia', $productChosen['product']->referense, 'designacao', $nameProduct, 'model', $productChosen['product']->model, 'price', $productChosen['product']->price);
+            $price = $productChosen['product']->price;
+            $formattedPrice = number_format($price, 2, '.', '');
+            
+            Carrinho::where('id_encomenda', $codEncomenda)
+                ->where('referencia', $productChosen['product']->referense)
+                ->where('designacao', $nameProduct)
+                ->where('model', $productChosen['product']->model)
+                ->where('price', $formattedPrice)
+                ->delete();
+                $this->prodtQTD = null;
+        }
+        // dd($this->codvisita, $this->idCliente, $productChosen, $nameProduct, $no, $ref, $codEncomenda,"encomenda");
 
         $response = $this->encomendasRepository->addProductToDatabase($this->codvisita, $this->idCliente, $productChosen, $nameProduct, $no, $ref, $codEncomenda,"encomenda");
 
