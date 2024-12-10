@@ -4,7 +4,7 @@
     <div class="row navigationLinks">
         <div class="col">
             <ol class="breadcrumb" style="padding-left: 25px;">
-                <li class="breadcrumb-item"><a href=""><i class="ti-user"></i> Cliente</a></li>
+                <li class="breadcrumb-item"><a href="{{route('clientes')}}"><i class="ti-user"></i> Cliente</a></li>
                 <li class="breadcrumb-item">Informação</li>
                 <li class="breadcrumb-item active">{{$nameCliente}}</li>
             </ol>

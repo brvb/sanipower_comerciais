@@ -5,8 +5,8 @@
     <div class="row navigationLinks">
         <div class="col">
             <ol class="breadcrumb" style="padding-left: 25px;">
-                <li class="breadcrumb-item"><a href=""><i class="ti-wallet"></i> Propostas</a></li>
-                <li class="breadcrumb-item"><a href=""> Clientes</a></li>
+                <li class="breadcrumb-item"><a href="{{route('propostas')}}"><i class="ti-wallet"></i> Propostas</a></li>
+                <li class="breadcrumb-item"> Clientes</li>
                 <li class="breadcrumb-item active">Listagem</li>
             </ol>
         </div>

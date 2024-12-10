@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col">
             <ol class="breadcrumb" style="padding-left: 25px;">
-                <li class="breadcrumb-item"><a href=""><i class="fa fa-chart-bar"></i> Analise</a></li>
+                <li class="breadcrumb-item"><a href="{{route('Analise')}}"><i class="fa fa-chart-bar"></i> Analise</a></li>
             </ol>
         </div>
     </div>
