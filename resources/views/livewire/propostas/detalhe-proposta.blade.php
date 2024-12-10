@@ -47,7 +47,27 @@
             /* Ajuste a cor de fundo conforme necessário */
         }
 
+        #scroll-col-9::-webkit-scrollbar{
+            height: 0.6rem;
+        }
+        #scroll-col-9::-webkit-scrollbar-thumb{
+            background-color: rgb(121, 121, 121);
+            border-radius: 0.1rem;
+        }
+        #scroll-col-9::-webkit-scrollbar{
+            width: 0.6rem;
+        }
 
+        #scroll-col-9::-webkit-scrollbar{
+            height: 0.6rem;
+        }
+        #scroll-col-9::-webkit-scrollbar-thumb{
+            background-color: rgb(121, 121, 121);
+            border-radius: 0.1rem;
+        }
+        #scroll-col-9::-webkit-scrollbar{
+            width: 0.6rem;
+        }
 </style>
     <!--  LOADING -->
     @if ($showLoaderPrincipal == true)
@@ -110,7 +130,7 @@
 
         </div>
 
-        <div class="card-body" id="scrollModalBody" style="overflow-y:auto;max-height:70vh;padding-right: 0.4rem;">
+        <div class="card-body" id="scrollModalBody" style="padding-right: 0.4rem;">
             <div class="tab-content">
 
                 <div class="tab-pane fade {{ $tabDetail }}" id="tab4">
@@ -611,7 +631,7 @@
                                             @endforeach
                                         <button class="accordion2" style="background-color: #ffcc00;" wire:click="ShowCampanhas">Campanhas</button>
                                         </div>
-                                        <div class="col-md-9">
+                                        <div class="col-md-9" id="scroll-col-9" style="overflow-y:auto;max-height:63vh;padding-right: 0;">
                                             <div class="row">
                                                 <div wire:loading wire:target="searchProduct">
                                                     <div id="filtroLoader" style="display: block;">

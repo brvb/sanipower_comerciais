@@ -12,9 +12,28 @@
             font-size: 10px;
         }
     }
+    #scroll-col-9::-webkit-scrollbar{
+        height: 0.6rem;
+    }
+    #scroll-col-9::-webkit-scrollbar-thumb{
+        background-color: rgb(121, 121, 121);
+        border-radius: 0.1rem;
+    }
+    #scroll-col-9::-webkit-scrollbar{
+        width: 0.6rem;
+    }
 
+    #scroll-col-9::-webkit-scrollbar{
+        height: 0.6rem;
+    }
+    #scroll-col-9::-webkit-scrollbar-thumb{
+        background-color: rgb(121, 121, 121);
+        border-radius: 0.1rem;
+    }
+    #scroll-col-9::-webkit-scrollbar{
+        width: 0.6rem;
+    }
    
-
 </style>
     <!--  LOADING -->
     @if ($showLoaderPrincipal == true)
@@ -76,7 +95,7 @@
 
         </div>
 
-        <div class="card-body" id="scrollModalBody" style="overflow-y:auto;max-height:70vh;padding-right: 0;">
+        <div class="card-body" id="scrollModalBody" style="padding-right: 0;">
             <div class="tab-content">
 
                 <div class="tab-pane fade {{ $tabDetail }}" id="tab4">
@@ -622,7 +641,7 @@
                                             </div> --}}
                                         </div>
                                         
-                                        <div class="col-md-9">
+                                        <div class="col-md-9" id="scroll-col-9" style="overflow-y:auto;max-height:63vh;padding-right: 0;">
                                             <div class="row">
 
                                                 <div wire:loading wire:target="searchProduct">
