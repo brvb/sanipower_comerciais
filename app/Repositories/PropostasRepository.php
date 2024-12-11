@@ -276,6 +276,13 @@ class PropostasRepository implements PropostasInterface
     }
     public function addProductToDatabase($codvisita,$idCliente,$qtd,$nameProduct,$no,$ref,$codType,$type): JsonResponse
     {
+
+        if (session('CampProds') !== null) {
+            $inCampanhas = 1;
+        }else{
+            $inCampanhas = 0;
+        }
+
         if($type == "proposta") {
             $idencomenda ="" ;
             $idproposta = $codType;
@@ -292,6 +299,7 @@ class PropostasRepository implements PropostasInterface
             "id_user" => Auth::user()->id,
             "referencia" => $qtd["product"]->referense,
             "designacao" => $nameProduct,
+            "in_campanhas" => $inCampanhas,
             "pvp" => $qtd["product"]->pvp,
             "discount" => $qtd["product"]->discount1,
             "discount2" => $qtd["product"]->discount2,

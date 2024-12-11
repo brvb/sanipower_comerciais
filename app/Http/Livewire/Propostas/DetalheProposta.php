@@ -231,8 +231,9 @@ class DetalheProposta extends Component
     }
     public function adicionarProduto($categoryNumber, $familyNumber, $subFamilyNumber, $productNumber, $customerNumber, $productName)
     {
+        
         $this->quickBuyProducts = $this->PropostasRepository->getProdutos($categoryNumber, $familyNumber, $subFamilyNumber, $productNumber, $customerNumber);
-
+        // dd($categoryNumber, $familyNumber, $subFamilyNumber, $productNumber, $customerNumber, $productName, $this->quickBuyProducts );
         $this->tabDetail = "";
         $this->tabProdutos = "show active";
         $this->tabDetalhesPropostas = "";
@@ -499,7 +500,6 @@ class DetalheProposta extends Component
             session()->forget('searchProduct');
 
         }
-
         $this->showLoaderPrincipal = false;
 
         $this->specificProduct = 0;
@@ -813,7 +813,6 @@ class DetalheProposta extends Component
         if ($flag == 1) {
             return false;
         }
-
         $response = $this->PropostasRepository->addProductToDatabase($this->codvisita, $this->idCliente, $productChosen, $nameProduct, $no, $ref, $codProposta, "proposta");
 
         $responseArray = $response->getData(true);
@@ -1682,7 +1681,7 @@ class DetalheProposta extends Component
 
             if ($this->searchProduct != "") {
                 $products = $this->encomendasRepository->getprodCamp($this->searchProduct);
-                // dd($products);
+             
                 $products = isset($products->product) ? collect($products->product) : collect([]);
                 
             }

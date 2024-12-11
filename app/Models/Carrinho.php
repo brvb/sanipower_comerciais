@@ -23,6 +23,7 @@ class Carrinho extends Model
         'discount',
         'discount2',
         'inkit',
+        'in_campanhas',
         'qtd',
         'image_ref',
         'model',
