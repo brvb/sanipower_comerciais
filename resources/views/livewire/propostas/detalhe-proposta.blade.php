@@ -68,6 +68,36 @@
         #scroll-col-9::-webkit-scrollbar{
             width: 0.6rem;
         }
+        .navbar2 {
+            height: auto;
+        }
+        #scroll-col-9 {
+            height: auto;
+            max-height: none; /* Evita restrições de altura */
+        }
+       
+        #navbar2::-webkit-scrollbar{
+            height: 0.6rem;
+        }
+        #navbar2::-webkit-scrollbar-thumb{
+            background-color: rgb(121, 121, 121);
+            border-radius: 0.1rem;
+        }
+        #navbar2::-webkit-scrollbar{
+            width: 0.6rem;
+        }
+
+        #navbar2::-webkit-scrollbar{
+            height: 0.6rem;
+        }
+        #navbar2::-webkit-scrollbar-thumb{
+            background-color: rgb(121, 121, 121);
+            border-radius: 0.1rem;
+        }
+        #navbar2::-webkit-scrollbar{
+            width: 0.6rem;
+        }
+
 </style>
     <!--  LOADING -->
     @if ($showLoaderPrincipal == true)
@@ -601,37 +631,39 @@
                                         </div>
                                     </div>
                                     <div class="row" style="justify-content: flex-end;">
-                                    <div class="navbar2 col-3 d-none d-md-block">
-                                            @php
-                                                $contaCat = 0;
-                                            @endphp
-                                            @foreach ($getCategoriesAll->category as $i => $category)
+                                        <div class="navbar2 col-3 d-none d-md-block" id="navbar2" style="overflow-y:auto;max-height: 67vh">
+                                            {{-- <span > --}}
                                                 @php
-                                                    $contaCat++;
+                                                    $contaCat = 0;
                                                 @endphp
-                                                @if (!empty($category->family))
-                                                    <button class="accordion2" style="background: #5f77921c;">{{ $category->id }} -
-                                                        {{ $category->name }}<span
-                                                            class="arrow"><i class="fa-regular fa-square-caret-down"></i></span></button>
-                                                    <div class="panel2">
-                                                        @foreach ($category->family as $family)
-                                                            <button class="accordion2" style="background-color: #1791ba26;">{{ $family->id }} -
-                                                                {{ $family->name }}<span
-                                                                    class="arrow"><i class="fa-regular fa-square-caret-down"></i></span></button>
-                                                            <div class="panel2">
-                                                                @foreach ($family->subfamily as $subfamily)
-                                                                    <a wire:click="searchSubFamily({{ $category->id }},{{ json_encode($family->id) }},{{ json_encode($subfamily->id) }})"
-                                                                        href="#">{{ $subfamily->id }} -
-                                                                        {{ $subfamily->name }}</a>
-                                                                @endforeach
-                                                            </div>
-                                                        @endforeach
-                                                    </div>
-                                                @endif
-                                            @endforeach
-                                        <button class="accordion2" style="background-color: #ffcc00;" wire:click="ShowCampanhas">Campanhas</button>
+                                                @foreach ($getCategoriesAll->category as $i => $category)
+                                                    @php
+                                                        $contaCat++;
+                                                    @endphp
+                                                    @if (!empty($category->family))
+                                                        <button class="accordion2" style="background: #5f77921c;">{{ $category->id }} -
+                                                            {{ $category->name }}<span
+                                                                class="arrow"><i class="fa-regular fa-square-caret-down"></i></span></button>
+                                                        <div class="panel2">
+                                                            @foreach ($category->family as $family)
+                                                                <button class="accordion2" style="background-color: #1791ba26;">{{ $family->id }} -
+                                                                    {{ $family->name }}<span
+                                                                        class="arrow"><i class="fa-regular fa-square-caret-down"></i></span></button>
+                                                                <div class="panel2">
+                                                                    @foreach ($family->subfamily as $subfamily)
+                                                                        <a wire:click="searchSubFamily({{ $category->id }},{{ json_encode($family->id) }},{{ json_encode($subfamily->id) }})"
+                                                                            href="#">{{ $subfamily->id }} -
+                                                                            {{ $subfamily->name }}</a>
+                                                                    @endforeach
+                                                                </div>
+                                                            @endforeach
+                                                        </div>
+                                                    @endif
+                                                @endforeach
+                                                <button class="accordion2" style="background-color: #ffcc00;" wire:click="ShowCampanhas">Campanhas</button>
+                                            {{-- <span> --}}
                                         </div>
-                                        <div class="col-md-9" id="scroll-col-9" style="overflow-y:auto;max-height:63vh;padding-right: 0;">
+                                        <div class="col-md-9" id="scroll-col-9" style="overflow-y:auto;padding-right: 0;max-height: 67vh">
                                             <div class="row">
                                                 <div wire:loading wire:target="searchProduct">
                                                     <div id="filtroLoader" style="display: block;">
@@ -685,6 +717,7 @@
                                                 @else
                                                 @if(session('CampProds') !== null)
                                                 @if($products->count())
+                                                
                                                     @foreach ($products as $prodt)
                                                         <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-3">
                                                             <div class="card card-decoration card-outline-primary border border-2">
@@ -699,6 +732,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </a>
+                                                                {{-- @dd($prodt); --}}
                                                                 <div class="card-body container-buttons" style="z-index:10;">
                                                                     <button class="btn btn-sm btn-primary"
                                                                             wire:click="adicionarProduto({{ json_encode($prodt->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subFamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})"> 
@@ -718,6 +752,7 @@
                                             @else
                                                  @if($products->count())
                                                     @foreach ($products as $prodt)
+                                                    
                                                         <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-3">
                                                             <div class="card card-decoration card-outline-primary border border-2">
                                                                 <a href="javascript:void(0)"
@@ -980,7 +1015,13 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            @php 
+                                $cont = 1;
+                            @endphp
                             @forelse ($arrayCart as $img => $prod)
+                                @php 
+                                    $cont++;
+                                @endphp
                                 {{-- @dd($prod); --}}
                                 {{-- @forelse ($item as $prod)      --}}
 
@@ -1105,7 +1146,21 @@
                                             <td style="text-align: right; white-space: nowrap;">{{ number_format($prod->pvp, 3, ',', '.') }} €</td>
                                             <td class="d-none d-md-table-cell"  style="text-align: right; white-space: nowrap;">{{ $prod->discount }}%@if ($prod->discount2 != "0" && $prod->discount2 != null)+{{ $prod->discount2 }}%@endif</td>
                                             <td style=" text-align: right; white-space: nowrap;">{{ number_format($prod->price, 3, ',', '.') }} €</td>
-                                            <td style=" text-align: right; white-space: nowrap;">{{ $prod->qtd }}</td>
+                                           
+                                            @if($prod->in_campanhas == 1)
+                                                <td style=" text-align: right; white-space: nowrap;">
+                                                    {{ $prod->qtd }}
+                                                </td>
+                                            @else
+                                                <td style=" text-align: right; white-space: nowrap;">
+                                                    <input type="text"
+                                                        style="width: 100%; text-align: right;"
+                                                        wire:model.defer="prodtQTD.{{ $cont }}"
+                                                        value="{{ $prod->qtd }}"
+                                                        placeholder="{{ $prod->qtd }}"
+                                                        wire:change="editProductQuickBuyProposta({{ $cont }}, '{{ $prod->designacao }}', {{ $detalhesCliente->customers[0]->no }}, '{{ $prod->image_ref }}', '{{ $codEncomenda }}','{{ $prod->price }}')" />
+                                                </td>
+                                            @endif
                                             <td style=" text-align: right; white-space: nowrap;">{{ $prod->iva }} %</td>
                                             <td style=" text-align: right; width:5%"> <i class="fas fa-trash-alt text-primary" wire:click="deletar(`{{ $prod->referencia }}`,`{{ $prod->designacao }}`,`{{ $prod->model }}`,`{{ $prod->price }}`)"></i> </td>
                                             <td style=" width: 10%; text-align: right; white-space: nowrap;">{{ number_format($totalItem, 3, ',', '.') }} €</td>
@@ -1565,8 +1620,52 @@
 
 <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="crossorigin="anonymous"></script>
 
-
 <script>
+
+    {{-- function adjustScrollHeight() {
+        const navbar = document.getElementById('navbar2');
+        const scrollCol = document.getElementById('scroll-col-9');
+
+        navbar.offsetHeight; 
+        const navbarHeight = navbar.offsetHeight;
+
+        const maxViewportHeight = window.innerHeight * 0.63;
+
+ 
+        if (navbarHeight > maxViewportHeight) {
+            scrollCol.style.removeProperty('max-height');
+            scrollCol.style.removeProperty('height');
+
+            scrollCol.style.setProperty('max-height', `${navbarHeight}px`, 'important');
+            scrollCol.style.setProperty('height', 'auto');
+        } else {
+            scrollCol.style.removeProperty('max-height');
+            scrollCol.style.removeProperty('height');
+
+            scrollCol.style.setProperty('max-height', '63vh', 'important');
+        }
+    }
+
+    function adjustScrollHeightWithDelay(delay = 0200) { 
+        setTimeout(() => {
+            requestAnimationFrame(() => adjustScrollHeight());
+        }, delay);
+    }
+
+    window.addEventListener('resize', () => adjustScrollHeightWithDelay(2000));
+    window.addEventListener('load', () => adjustScrollHeightWithDelay(2000));
+
+    const navbar = document.getElementById('navbar2');
+    const observer = new MutationObserver(() => {
+        adjustScrollHeightWithDelay(0500); 
+    });
+
+    observer.observe(navbar, { attributes: true, childList: true, subtree: true });
+
+    adjustScrollHeightWithDelay(1500); --}}
+
+
+
 
     document.addEventListener("DOMContentLoaded", function() {
         function closeAllDropdowns() {

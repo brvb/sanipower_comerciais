@@ -161,7 +161,7 @@
                     <?php
 					$line['price'] = number_format($line['price'], 3, '.', '');			
 					?>
-                    <td>{{ $line['price'], }}€</td>
+                    <td>{{ $line['price'] }}€</td>
                     <td>{{ $line['total'] }}€</td>
                 </tr>
                 @endforeach
