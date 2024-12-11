@@ -33,6 +33,35 @@
     #scroll-col-9::-webkit-scrollbar{
         width: 0.6rem;
     }
+
+    .navbar2 {
+            height: auto;
+    }
+    #navbar2 {
+        height: auto;
+        max-height: none; /* Evita restrições de altura */
+    }
+      #navbar2::-webkit-scrollbar{
+        height: 0.6rem;
+    }
+    #navbar2::-webkit-scrollbar-thumb{
+        background-color: rgb(121, 121, 121);
+        border-radius: 0.1rem;
+    }
+    #navbar2::-webkit-scrollbar{
+        width: 0.6rem;
+    }
+
+    #navbar2::-webkit-scrollbar{
+        height: 0.6rem;
+    }
+    #navbar2::-webkit-scrollbar-thumb{
+        background-color: rgb(121, 121, 121);
+        border-radius: 0.1rem;
+    }
+    #navbar2::-webkit-scrollbar{
+        width: 0.6rem;
+    }
    
 </style>
     <!--  LOADING -->
@@ -603,45 +632,48 @@
                                         </div>
                                     </div>
                                     <div class="row" style="justify-content: flex-end;">
-                                        <div class="navbar2 col-3 d-none d-md-block">
-                                            @php
-                                                $contaCat = 0;
-                                            @endphp
-                                            @foreach ($getCategoriesAll->category as $i => $category)
+                                        <div class="navbar2 col-3 d-none d-md-block" id="navbar2" style="overflow-y:auto;max-height: 67vh">
+                                            {{-- <span id="navbar2"> --}}
                                                 @php
-                                                    $contaCat++;
+                                                    $contaCat = 0;
                                                 @endphp
-                                                @if (!empty($category->family))
-                                                    <button class="accordion2" style="background: #5f77921c;">{{ $category->id }} -
-                                                        {{ $category->name }}<span class="arrow"><i class="fa-regular fa-square-caret-down"></i></span></button>
-                                                    <div class="panel2">
-                                                        @foreach ($category->family as $family)
-                                                            <button class="accordion2" style="background-color: #1791ba26;">{{ $family->id }} -
-                                                                {{ $family->name }}<span class="arrow"><i class="fa-regular fa-square-caret-down"></i></span></button>
-                                                            <div class="panel2">
-                                                                @foreach ($family->subfamily as $subfamily)
-                                                                    <a wire:click="searchSubFamily({{ $category->id }},{{ json_encode($family->id) }},{{ json_encode($subfamily->id) }})"
-                                                                        href="#">{{ $subfamily->id }} -
-                                                                        {{ $subfamily->name }}</a>
-                                                                @endforeach
-                                                            </div>
-                                                        @endforeach
-                                                    </div>
-                                                @endif
-                                            @endforeach
-                                        
-                                            <!-- Aqui você pode adicionar um item manual para campanhas -->
-                                            {{-- <button class="accordion2" style="background-color: #ffcc00;" wire:click="ShowCampanhas">Campanhas<span class="arrow"><i class="fa-regular fa-square-caret-down"></i></span></button> --}}
-                                            <button class="accordion2" style="background-color: #ffcc00;" wire:click="ShowCampanhas">Campanhas</button>
-                                            {{-- <div class="panel2">
-                                                <!-- Aqui você pode adicionar o conteúdo de campanhas -->
-                                                @foreach ($campanhas as $campanha)
-                                                    <a wire:click="searchCampanha({{ $campanha->bostamp }})" href="#"> {{ $campanha->titulo }}</a>
+                                                @foreach ($getCategoriesAll->category as $i => $category)
+                                                    @php
+                                                        $contaCat++;
+                                                    @endphp
+                                                    @if (!empty($category->family))
+                                                        <button class="accordion2" style="background: #5f77921c;">{{ $category->id }} -
+                                                            {{ $category->name }}<span class="arrow"><i class="fa-regular fa-square-caret-down"></i></span></button>
+                                                        <div class="panel2">
+                                                            @foreach ($category->family as $family)
+                                                                <button class="accordion2" style="background-color: #1791ba26;">{{ $family->id }} -
+                                                                    {{ $family->name }}<span class="arrow"><i class="fa-regular fa-square-caret-down"></i></span></button>
+                                                                <div class="panel2">
+                                                                    @foreach ($family->subfamily as $subfamily)
+                                                                        <a wire:click="searchSubFamily({{ $category->id }},{{ json_encode($family->id) }},{{ json_encode($subfamily->id) }})"
+                                                                            href="#">{{ $subfamily->id }} -
+                                                                            {{ $subfamily->name }}</a>
+                                                                    @endforeach
+                                                                </div>
+                                                            @endforeach
+                                                        </div>
+                                                    @endif
                                                 @endforeach
-                                            </div> --}}
+                                            
+                                                <!-- Aqui você pode adicionar um item manual para campanhas -->
+                                                {{-- <button class="accordion2" style="background-color: #ffcc00;" wire:click="ShowCampanhas">Campanhas<span class="arrow"><i class="fa-regular fa-square-caret-down"></i></span></button> --}}
+                                                <button class="accordion2" style="background-color: #ffcc00;" wire:click="ShowCampanhas">Campanhas</button>
+                                                {{-- <div class="panel2">
+                                                    <!-- Aqui você pode adicionar o conteúdo de campanhas -->
+                                                    @foreach ($campanhas as $campanha)
+                                                        <a wire:click="searchCampanha({{ $campanha->bostamp }})" href="#"> {{ $campanha->titulo }}</a>
+                                                    @endforeach
+                                                </div> --}}
+                                            {{-- <span> --}}
+
                                         </div>
                                         
-                                        <div class="col-md-9" id="scroll-col-9" style="overflow-y:auto;max-height:63vh;padding-right: 0;">
+                                        <div class="col-md-9" id="scroll-col-9" style="overflow-y:auto;padding-right: 0;max-height: 67vh">
                                             <div class="row">
 
                                                 <div wire:loading wire:target="searchProduct">
@@ -992,10 +1024,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @php $cont = 0;
-                                @endphp
+                            @php 
+                                $cont = 1;
+                            @endphp
                             @forelse ($arrayCart as $img => $prod)
-                            @php $cont++;
+                                @php 
+                                    $cont++;
                                 @endphp
                                 @if($prod->inkit == 1)
 
@@ -1110,12 +1144,12 @@
                                             <td class="d-none d-md-table-cell"  style="text-align: right; white-space: nowrap;">{{ $prod->discount }}%@if ($prod->discount2 != "0" && $prod->discount2 != null)+{{ $prod->discount2 }}%@endif</td>
                                             <td style=" text-align: right; white-space: nowrap;">{{ number_format($prod->price, 3, ',', '.') }} €</td>
                                             <td style="text-align: right; white-space: nowrap;">
-                                            <input type="text" 
-                                                    style="width: 100%; text-align: right;" 
+                                                <input type="text" 
+                                                    style="width: 100%; text-align: right;"
                                                     wire:model.defer="prodtQTD.{{ $cont }}"
                                                     value="{{ $prod->qtd }}"
-                                                    placeholder="{{ $prod->qtd }}" 
-                                                    wire:change="addProductQuickBuyEncomenda({{ $cont }}, '{{ $prod->designacao }}', {{ $detalhesCliente->customers[0]->no }}, '{{ $prod->image_ref }}', '{{ $codEncomenda }}')" />
+                                                    placeholder="{{ $prod->qtd }}"
+                                                    wire:change="editProductQuickBuyEncomenda({{ $cont }},{{ $prod->referencia }}, '{{ $prod->designacao }}', {{ $detalhesCliente->customers[0]->no }}, '{{ $prod->image_ref }}', '{{ $codEncomenda }}','{{ $prod->price }}')" />
                                             </td>
                                             <td style=" text-align: right; white-space: nowrap;">{{ $prod->iva }} %</td>
                                             <td style=" text-align: right; width:5%"> <i class="fas fa-trash-alt text-primary" wire:click="deletar(`{{ $prod->referencia }}`,`{{ $prod->designacao }}`,`{{ $prod->model }}`,`{{ $prod->price }}`)"></i> </td>
@@ -1629,6 +1663,52 @@
     {{-- <script src="//unpkg.com/alpinejs" defer></script> --}}
 <script>
     
+    {{-- function adjustScrollHeight() {
+        const navbar = document.getElementById('navbar2');
+        const scrollCol = document.getElementById('scroll-col-9');
+
+        navbar.offsetHeight;
+
+        const navbarHeight = navbar.offsetHeight;
+
+        const maxViewportHeight = window.innerHeight * 0.63;
+
+        console.log("Altura da Navbar:", navbarHeight);
+        console.log("Limite Máximo (63vh):", maxViewportHeight);
+
+        if (navbarHeight > maxViewportHeight) {
+
+            scrollCol.style.removeProperty('max-height');
+            scrollCol.style.removeProperty('height');
+
+            scrollCol.style.setProperty('max-height', `${navbarHeight}px`, 'important');
+            scrollCol.style.setProperty('height', 'auto');
+        } else {
+            scrollCol.style.removeProperty('max-height');
+            scrollCol.style.removeProperty('height');
+
+            scrollCol.style.setProperty('max-height', '63vh', 'important');
+        }
+    }
+
+    function adjustScrollHeightWithDelay(delay = 0200) {
+        setTimeout(() => {
+            requestAnimationFrame(() => adjustScrollHeight());
+        }, delay);
+    }
+
+    window.addEventListener('resize', () => adjustScrollHeightWithDelay(2000));
+    window.addEventListener('load', () => adjustScrollHeightWithDelay(2000));
+
+    const navbar = document.getElementById('navbar2');
+    const observer = new MutationObserver(() => {
+        adjustScrollHeightWithDelay(0500); 
+    });
+
+    observer.observe(navbar, { attributes: true, childList: true, subtree: true });
+
+    adjustScrollHeightWithDelay(1500); --}}
+
    
         // jQuery(document).on("click",".toggle",function() {
         

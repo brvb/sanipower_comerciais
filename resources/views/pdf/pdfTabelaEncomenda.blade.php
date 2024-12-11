@@ -185,7 +185,7 @@
 					$total = floatval($line['quantity']) * floatval($price);	
 					$total = number_format($total, 3, '.', '');				
 					?>
-					<td style = "text-align: center;" valign="top">{{ $line['price'], }}€</td>
+					<td style = "text-align: center;" valign="top">{{ $line['price'] }}€</td>
 					<td style = "text-align: center;" valign="top">{{ $total }}€</td>
 				</tr>
 				<?php

@@ -123,6 +123,7 @@ class DetalheProposta extends Component
     public $emailArray;
     public $emailSend;
     public $visitaCheck;
+    public $prodtQTD = [];
 
 
     public ?array $lojas = NULL;
@@ -635,7 +636,128 @@ class DetalheProposta extends Component
 
         $this->dispatchBrowserEvent('checkToaster', ["message" => $message, "status" => $status]);
     }
+    public function editProductQuickBuyProposta($prodID, $nameProduct, $no, $ref, $codEncomenda, $price)
+    {
+        $quickBuyProducts = session('quickBuyProducts');
+        // dd($prodID, $nameProduct, $no, $ref, $codEncomenda, $this->produtosRapida, $this->prodtQTD, $this->codvisita, $this->idCliente,$price);
+        if( $this->prodtQTD != null )
+        {
+            $this->produtosRapida[$prodID] = $this->prodtQTD[$prodID];
+            // dd($this->produtosRapida);
+        }
 
+        $flag = 0;
+        if(empty($this->produtosRapida[$prodID]))
+        {
+            $this->produtosRapida = [];
+            $this->dispatchBrowserEvent('checkToaster', ["message" => "Tem de selecionar uma quantidade", "status" => "error"]);
+            return false;
+        }
+        
+        $productChosen = [];
+        $productChosenComment = [];
+        // dd($prodID, $nameProduct, $no, $ref, $codEncomenda, $this->produtosRapida, $this->prodtQTD, $this->codvisita, $this->idCliente);
+
+        // dd($quickBuyProducts->product);
+        foreach ($quickBuyProducts->product as $i => $prod) {
+            if ($i == $prodID) {
+                foreach ($this->produtosRapida as $j => $prodRap) {
+
+                    if ($i == $j) {
+
+                        if ($prodRap == "0" || $prodRap == "") {
+                            $this->dispatchBrowserEvent('checkToaster', ["message" => "Tem de selecionar uma quantidade", "status" => "error"]);
+                            $flag = 1;
+                            break;
+                        } else {
+                            $productChosen = ["product" => $prod, "quantidade" => $prodRap];
+                        }
+                    }
+                }
+                if($this->produtosComment){
+                    foreach ($this->produtosComment as $j => $prodComm) {
+                        if ($i == $j) {
+                            $productChosenComment = ["comentario" => $prodComm];
+                        }
+                    }
+                }
+            }
+
+            if ($flag == 1) {
+                break;
+            }
+
+        }
+        if ($flag == 1) {
+            return false;
+        }
+
+        if( $this->prodtQTD != null )
+        {
+            // dd($productChosen);
+            // dd('id_encomenda', $codEncomenda, 'referencia', $productChosen['product']->referense, 'designacao', $nameProduct, 'model', $productChosen['product']->model, 'price', $productChosen['product']->price);
+            // $price = $productChosen['product']->price;
+        
+            $itemAtualizado = Carrinho::updateOrCreate(
+            [
+                'id_proposta' => $codEncomenda,
+                'referencia' => $productChosen['product']->referense,
+                'model' => $productChosen['product']->model,
+                'price' => $price,
+            ],
+            [
+                'qtd' => $this->produtosRapida[$prodID],
+            ]
+            );
+
+            // Remover itens duplicados, exceto o que foi atualizado
+            Carrinho::where('id_proposta', $codEncomenda)
+            ->where('referencia', $productChosen['product']->referense)
+            ->where('model', $productChosen['product']->model)
+            ->where('price', $price)
+            ->where('id', '!=', $itemAtualizado->id)
+            ->delete();
+
+            // Resetar a quantidade local (se necessário)
+            $this->prodtQTD = null;
+          
+        }
+               
+        $this->tabDetail = "";
+        $this->tabProdutos = "";
+        $this->tabDetalhesPropostas = "show active";
+        $this->tabFinalizar = "";
+        $this->tabDetalhesCampanhas = "";
+        // dd($this->codvisita, $this->idCliente, $productChosen, $nameProduct, $no, $ref, $codEncomenda,"encomenda");
+
+        // $response = $this->encomendasRepository->addProductToDatabase($this->codvisita, $this->idCliente, $productChosen, $nameProduct, $no, $ref, $codEncomenda,"encomenda");
+
+        // $responseArray = $response->getData(true);
+
+        
+
+        // if ($responseArray["success"] == true) {
+    
+        //     if($this->produtosComment){
+        //         $response = $this->encomendasRepository->addCommentToDatabase($responseArray["data"]["id"],$this->idCliente, $productChosen, $nameProduct, $no, $ref, $codEncomenda,"encomenda", $productChosenComment["comentario"]);
+        //         $this->produtosComment = [];
+        //     }
+
+        //     if($responseArray["encomenda"] != "") {
+        //         $message = "Produto adicionado á encomenda!";
+        //     } else {
+        //         $message = "Produto adicionado á proposta!";
+        //     }
+        //     $status = "success";
+        // } else {
+        //     $message = "Não foi possivel adicionar o produto!";
+        //     $status = "error";
+        // }
+        // $this->produtosRapida = [];
+        // $this->produtosComment = [];
+        
+        // $this->dispatchBrowserEvent('checkToaster', ["message" => $message, "status" => $status]);
+    }
     public function addProductQuickBuyProposta($prodID, $nameProduct, $no, $ref, $codProposta)
     {
         $quickBuyProducts = session('quickBuyProducts');
