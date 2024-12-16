@@ -541,6 +541,7 @@ class Propostas extends Component
             {
                 $this->guardarVisita();
 
+                
             }
         }else
         {

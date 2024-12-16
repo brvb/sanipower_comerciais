@@ -886,7 +886,7 @@ class DetalheVisitas extends Component
 
         foreach($this->emailArray as $i => $email)
         {
-            // dd(json_encode($getVisitaID));
+            // dd($getVisitaID, $visit);
             Mail::to($email)->send(new SendRelatorio($pdfContents, json_encode($getVisitaID), json_encode($visit)));
         }
 
