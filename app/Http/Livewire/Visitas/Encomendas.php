@@ -545,6 +545,7 @@ class Encomendas extends Component
             {
                 $this->guardarVisita();
 
+                
             }
         }else
         {
