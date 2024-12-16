@@ -9,7 +9,7 @@
         </div>
     </div>
 
-    
+    {{-- vinicius aqui --}}
     @livewire('analises.analise')
  
 @endsection
