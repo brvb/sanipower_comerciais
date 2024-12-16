@@ -9,7 +9,7 @@
         </div>
     </div>
 
-    {{-- vinicius aqui --}}
+    {{-- nao tem aqui nada para vc --}}
     @livewire('analises.analise')
  
 @endsection
