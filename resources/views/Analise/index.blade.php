@@ -9,7 +9,6 @@
         </div>
     </div>
 
-    {{-- nao tem aqui nada para vc --}}
     @livewire('analises.analise')
  
 @endsection
