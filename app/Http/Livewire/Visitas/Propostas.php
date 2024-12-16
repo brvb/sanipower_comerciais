@@ -535,7 +535,7 @@ class Propostas extends Component
     {
         // dd($this->idVisita);
         $getId = VisitasAgendadas::where('id',$this->idVisita)->first();
-        // dd($getId);
+    
         if ($getId != null){
             if($getId->finalizado != 1)
             {
@@ -601,7 +601,7 @@ class Propostas extends Component
 
         foreach($proposta["lines"] as $prop)
         {
-           
+        //    dd($prop);
             Carrinho::create([
                 "id_proposta" => "",
                 "id_encomenda" => $proposta["id"],

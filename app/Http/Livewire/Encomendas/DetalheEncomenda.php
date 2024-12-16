@@ -749,7 +749,7 @@ class DetalheEncomenda extends Component
         if ($flag == 1) {
             return false;
         }
-
+        // dd($productChosen);
         $response = $this->encomendasRepository->addProductToDatabase($this->codvisita, $this->idCliente, $productChosen, $nameProduct, $no, $ref, $codEncomenda,"encomenda");
 
         $responseArray = $response->getData(true);
@@ -1568,6 +1568,7 @@ class DetalheEncomenda extends Component
         $arrayCart = [];
         $onkit = 0;
         $allkit = 0;
+        // dd( $this->carrinhoCompras);
         $this->quantidadeLines = 0;
 
         if($this->carrinhoCompras->count() > 0) {
@@ -1619,7 +1620,7 @@ class DetalheEncomenda extends Component
             
         //     return view('pageErro');
         // }
-
+        // dd($products);
         return view('livewire.encomendas.detalhe-encomenda', [
             "products" => $products,
             "onkit" => $onkit,
