@@ -1148,14 +1148,20 @@
                                                     {{ $prod->qtd }}
                                                 </td>
                                             @else
-                                                <td style="text-align: right; white-space: nowrap;">
-                                                    <input type="text" 
-                                                        style="width: 100%; text-align: right;"
-                                                        wire:model.defer="prodtQTD.{{ $cont }}"
-                                                        value="{{ $prod->qtd }}"
-                                                        placeholder="{{ $prod->qtd }}"
-                                                        wire:change="editProductQuickBuyEncomenda({{ $cont }},{{ $prod->referencia }}, '{{ $prod->designacao }}', {{ $detalhesCliente->customers[0]->no }}, '{{ $prod->image_ref }}', '{{ $codEncomenda }}','{{ $prod->price }}')" />
-                                                </td>
+                                                @if($prod->id_proposta != "")
+                                                    <td style="text-align: right; white-space: nowrap;">
+                                                        {{ $prod->qtd }}
+                                                    </td>
+                                                @else
+                                                    <td style="text-align: right; white-space: nowrap;">
+                                                        <input type="text" 
+                                                            style="width: 100%; text-align: right;"
+                                                            wire:model.defer="prodtQTD.{{ $cont }}"
+                                                            value="{{ $prod->qtd }}"
+                                                            placeholder="{{ $prod->qtd }}"
+                                                            wire:change="editProductQuickBuyEncomenda({{ $cont }},{{ $prod->referencia }}, '{{ $prod->designacao }}', {{ $detalhesCliente->customers[0]->no }}, '{{ $prod->image_ref }}', '{{ $codEncomenda }}','{{ $prod->price }}')" />
+                                                    </td>
+                                                @endif
                                             @endif
 
                                             <td style=" text-align: right; white-space: nowrap;">{{ $prod->iva }} %</td>

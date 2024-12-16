@@ -337,6 +337,7 @@ class PropostaInfo extends Component
             {
                 foreach($proposta["lines"] as $prop)
                 {
+                    // dd($prop);
                     if($id == $prop["id"])
                     {
                         $var = Carrinho::where("origin_id",$prop["id"])->first();
