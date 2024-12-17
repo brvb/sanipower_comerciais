@@ -67,7 +67,8 @@ class Analise extends Component
             session()->flash('message', 'Erro ao consultar as Analises! (erro : AN-404)');
 
             return view('pageErro');
-        }
+        }else{
          return view('livewire.Analise.analise', ['tabela' => $this->table]);
+         }
     }
 }

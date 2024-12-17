@@ -71,11 +71,11 @@
         </div>
     </div>
 
-    @livewire('dashboard.analysis')
+    {{-- @livewire('dashboard.analysis') --}}
 @endsection
 
 @push('scripts_footer')
-    <script src="{{asset('assets/scripts/pages/dashboard1.js')}}"></script>
+    {{-- <script src="{{asset('assets/scripts/pages/dashboard1.js')}}"></script> --}}
     <script src="{{asset('assets/scripts/pages/fm_control.js')}}"></script>
     <script src="{{asset('assets/scripts/pages/cp_datetime.js')}}"></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js'></script>
