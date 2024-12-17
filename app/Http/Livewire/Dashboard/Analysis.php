@@ -65,7 +65,13 @@ class Analysis extends Component
 
     public function FlushAll()
         {
-            dd('AQUI');
+            // dd('AQUI');
+
+            $this->updateDateproductSalesChart();
+            $this->updateDateObjetivoFat1();
+            $this->updateDateObjetivoFat2();
+            $this->updateDateObjetivoFat3();
+
             $this->dispatchBrowserEvent('callJavascriptFunction', [
                 'function' => 'productSalesChart',
                 'objectiveProd' => session('objectiveProd') ?? 0,
@@ -111,34 +117,11 @@ class Analysis extends Component
         {
             session(['objectiveProd' => 0]);
             session(['salesProd' => 0]);
-
-            return $this->dispatchBrowserEvent('callJavascriptFunction', [
-                'function' => 'productSalesChart',
-                'objectiveProd' => session('objectiveProd') ?? 0,
-                'salesProd' => session('salesProd') ?? 0,
-                'objectiveOBJ1' => session('objectiveOBJ1') ?? 0,
-                'salesOBJ1' => session('salesOBJ1') ?? 0,
-                'objectiveOBJ2' => session('objectiveOBJ2') ?? 0,
-                'salesOBJ2' => session('salesOBJ2') ?? 0,
-                'objectiveOBJ3' => session('objectiveOBJ3') ?? 0,
-                'salesOBJ3' => session('salesOBJ3') ?? 0    
-            ]);
-
+            return;
         }
         session(['objectiveProd' => $response_decoded->objective]);
         session(['salesProd' => $response_decoded->sales]);
-
-        return $this->dispatchBrowserEvent('callJavascriptFunction', [
-            'function' => 'productSalesChart',
-            'objectiveProd' => session('objectiveProd') ?? 0,
-            'salesProd' => session('salesProd') ?? 0,
-            'objectiveOBJ1' => session('objectiveOBJ1') ?? 0,
-            'salesOBJ1' => session('salesOBJ1') ?? 0,
-            'objectiveOBJ2' => session('objectiveOBJ2') ?? 0,
-            'salesOBJ2' => session('salesOBJ2') ?? 0,
-            'objectiveOBJ3' => session('objectiveOBJ3') ?? 0,
-            'salesOBJ3' => session('salesOBJ3') ?? 0    
-        ]);
+        return;
 
     }
 
@@ -149,7 +132,7 @@ class Analysis extends Component
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/analytics/objectives?Salesman_number=59&year='.$this->Year1.'&month='.$this->Month1,
+            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/analytics/objectives?Salesman_number=59&year='.$this->Year.'&month='.$this->Month,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -172,35 +155,12 @@ class Analysis extends Component
         {
             session(['objectiveOBJ1' => 0]);
             session(['salesOBJ1' => 0]);
-
-            return $this->dispatchBrowserEvent('callJavascriptFunction', [
-                'function' => 'ObjetivoFat1',
-                'objectiveProd' => session('objectiveProd') ?? 0,
-                'salesProd' => session('salesProd') ?? 0,
-                'objectiveOBJ1' => session('objectiveOBJ1') ?? 0,
-                'salesOBJ1' => session('salesOBJ1') ?? 0,
-                'objectiveOBJ2' => session('objectiveOBJ2') ?? 0,
-                'salesOBJ2' => session('salesOBJ2') ?? 0,
-                'objectiveOBJ3' => session('objectiveOBJ3') ?? 0,
-                'salesOBJ3' => session('salesOBJ3') ?? 0    
-            ]);
+            return;
         }
 
         session(['objectiveOBJ1' => $response_decoded->objective]);
         session(['salesOBJ1' => $response_decoded->sales]);
-
-        return $this->dispatchBrowserEvent('callJavascriptFunction', [
-            'function' => 'ObjetivoFat1',
-            'objectiveProd' => session('objectiveProd') ?? 0,
-            'salesProd' => session('salesProd') ?? 0,
-            'objectiveOBJ1' => session('objectiveOBJ1') ?? 0, 
-            'salesOBJ1' => session('salesOBJ1') ?? 0,
-            'objectiveOBJ2' => session('objectiveOBJ2') ?? 0,
-            'salesOBJ2' => session('salesOBJ2') ?? 0,
-            'objectiveOBJ3' => session('objectiveOBJ3') ?? 0,
-            'salesOBJ3' => session('salesOBJ3') ?? 0    
-        ]);
-
+        return;
     }
 
     public function updateDateObjetivoFat2()
@@ -210,7 +170,7 @@ class Analysis extends Component
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/analytics/top500_objectives?Salesman_number=59&year='.$this->Year2.'&month='.$this->Month2,
+            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/analytics/top500_objectives?Salesman_number=59&year='.$this->Year.'&month='.$this->Month,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -233,35 +193,12 @@ class Analysis extends Component
         {
             session(['objectiveOBJ2' => 0]);
             session(['salesOBJ2' => 0]);
-
-            return $this->dispatchBrowserEvent('callJavascriptFunction', [
-                'function' => 'ObjetivoFat2',
-                'objectiveProd' => session('objectiveProd') ?? 0,
-                'salesProd' => session('salesProd') ?? 0,
-                'objectiveOBJ1' => session('objectiveOBJ1') ?? 0,
-                'salesOBJ1' => session('salesOBJ1') ?? 0,
-                'objectiveOBJ2' => session('objectiveOBJ2') ?? 0,
-                'salesOBJ2' => session('salesOBJ2') ?? 0,
-                'objectiveOBJ3' => session('objectiveOBJ3') ?? 0,
-                'salesOBJ3' => session('salesOBJ3') ?? 0    
-            ]);
+            return;
         }
 
         session(['objectiveOBJ2' => $response_decoded->objective]);
         session(['salesOBJ2' => $response_decoded->sales]);
-
-        return $this->dispatchBrowserEvent('callJavascriptFunction', [
-            'function' => 'ObjetivoFat2',
-            'objectiveProd' => session('objectiveProd') ?? 0,
-            'salesProd' => session('salesProd') ?? 0,
-            'objectiveOBJ1' => session('objectiveOBJ1') ?? 0,
-            'salesOBJ1' => session('salesOBJ1') ?? 0,
-            'objectiveOBJ2' => session('objectiveOBJ2') ?? 0,
-            'salesOBJ2' => session('salesOBJ2') ?? 0,
-            'objectiveOBJ3' => session('objectiveOBJ3') ?? 0,
-            'salesOBJ3' => session('salesOBJ3') ?? 0    
-        ]);
-
+        return;
     }
 
     public function updateDateObjetivoFat3()
@@ -271,7 +208,7 @@ class Analysis extends Component
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/analytics/margin_objectives?Salesman_number=59&year='.$this->Year3.'&month='.$this->Month3,
+            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/analytics/margin_objectives?Salesman_number=59&year='.$this->Year.'&month='.$this->Month,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -294,35 +231,12 @@ class Analysis extends Component
         {
             session(['objectiveOBJ3' => 0]);
             session(['salesOBJ3' => 0]);
-
-            return $this->dispatchBrowserEvent('callJavascriptFunction', [
-                'function' => 'ObjetivoFat3',
-                'objectiveProd' => session('objectiveProd') ?? 0,
-                'salesProd' => session('salesProd') ?? 0,
-                'objectiveOBJ1' => session('objectiveOBJ1') ?? 0,
-                'salesOBJ1' => session('salesOBJ1') ?? 0,
-                'objectiveOBJ2' => session('objectiveOBJ2') ?? 0,
-                'salesOBJ2' => session('salesOBJ2') ?? 0,
-                'objectiveOBJ3' => session('objectiveOBJ3') ?? 0, 
-                'salesOBJ3' => session('salesOBJ3') ?? 0    
-            ]);
+            return;
         }
 
         session(['objectiveOBJ3' => $response_decoded->objective]);
         session(['salesOBJ3' => $response_decoded->sales]);
-
-        return $this->dispatchBrowserEvent('callJavascriptFunction', [
-            'function' => 'ObjetivoFat3',
-            'objectiveProd' => session('objectiveProd') ?? 0,
-            'salesProd' => session('salesProd') ?? 0,
-            'objectiveOBJ1' => session('objectiveOBJ1') ?? 0,
-            'salesOBJ1' => session('salesOBJ1') ?? 0,
-            'objectiveOBJ2' => session('objectiveOBJ2') ?? 0,
-            'salesOBJ2' => session('salesOBJ2') ?? 0,
-            'objectiveOBJ3' => session('objectiveOBJ3') ?? 0,
-            'salesOBJ3' => session('salesOBJ3') ?? 0    
-        ]);
-
+        return;
     }
 
     public function render()

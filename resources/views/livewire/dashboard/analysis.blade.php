@@ -1,22 +1,28 @@
 <div>
 <div>
 <div class="row" style="margin-left: 10px;">
+<div class="card-body" style = "align-items: center">
+    <center>
+    <label for="monthInput">Mês:</label>
+    <input type="number" id="monthInput" min="1" max="12" value="" wire:model.defer="Month" oninput = "validateInputs('monthInput')" />
+    
+    <label for="yearInput">Ano:</label>
+    <input type="number" id="yearInput" min="2000" value="" wire:model.defer="Year" oninput = "validateInputs('yearInput')" />
+
+    <button class="btn btn-sm btn-primary" wire:click="FlushAll()" id="updateButton90"> 
+        <i class="ti-reload"></i><span> Atualizar</span>
+    </button>
+    <br>
+</center>
+</div>
+</div>
+<div class="row" style="margin-left: 10px;">
     @if ($this->show90dias == true)
     <div class="col-lg-6 col-md-12 col-sm-12">
         <div class="card mb-3">
             <div class="card-body">
-                <label for="monthInput">Mês:</label>
-                <input type="number" id="monthInput90" min="1" max="12" value="" wire:model.defer="Month" oninput = "validateInputs(90)" />
-                
-                <label for="yearInput">Ano:</label>
-                <input type="number" id="yearInput90" min="2000" value="" wire:model.defer="Year" oninput = "validateInputs(90)" />
-
-                <button class="btn btn-sm btn-primary" wire:click="updateDateproductSalesChart()" id="updateButton90"> 
-                    <i class="ti-reload"></i><span> Atualizar</span>
-                </button>
-                <br>
-            <div id="product-sales-chart"></div>
-        </div>
+                <div id="product-sales-chart"></div>
+            </div>
         </div>
     </div>
     @endif
@@ -24,18 +30,8 @@
     <div class="col-lg-6 col-md-12 col-sm-12">
         <div class="card mb-3">
             <div class="card-body">
-                <label for="monthInput">Mês:</label>
-                <input type="number" id="monthInputObjFat" min="1" max="12" value="" wire:model.defer="Month1" oninput = "validateInputs('ObjFat')" />
-                
-                <label for="yearInput">Ano:</label>
-                <input type="number" id="yearInputObjFat" min="2000" value="" wire:model.defer="Year1" oninput = "validateInputs('ObjFat')" />
-
-                <button class="btn btn-sm btn-primary" wire:click="updateDateObjetivoFat1()" id="updateButtonObjFat"> 
-                    <i class="ti-reload"></i><span> Atualizar</span>
-                </button>
-                <br>
-            <div id="expenses-chart1"></div>
-        </div>
+                <div id="expenses-chart1"></div>
+            </div>
         </div>
     </div>
     @endif  
@@ -48,18 +44,8 @@
      <div class="col-lg-6 col-md-12 col-sm-12">
         <div class="card mb-3">
             <div class="card-body">
-                <label for="monthInput">Mês:</label>
-                <input type="number" id="monthInputTop500" min="1" max="12" value="" wire:model.defer="Month2" oninput = "validateInputs('Top500')" />
-                
-                <label for="yearInput">Ano:</label>
-                <input type="number" id="yearInputTop500" min="2000" value="" wire:model.defer="Year2" oninput = "validateInputs('Top500')" />
-
-                <button class="btn btn-sm btn-primary" wire:click="updateDateObjetivoFat2()" id="updateButtonTop500"> 
-                    <i class="ti-reload"></i><span> Atualizar</span>
-                </button>
-                <br>
-            <div id="expenses-chart2"></div>
-        </div>
+                <div id="expenses-chart2"></div>
+            </div>
         </div>
     </div>
     @endif
@@ -68,18 +54,8 @@
     <div class="col-lg-6 col-md-12 col-sm-12">
         <div class="card mb-3">
             <div class="card-body">
-                <label for="monthInput">Mês:</label>
-                <input type="number" id="monthInputObjMargin" min="1" max="12" value="" wire:model.defer="Month3" oninput = "validateInputs('ObjMargin')" />
-                
-                <label for="yearInput">Ano:</label>
-                <input type="number" id="yearInputObjMargin" min="2000" value="" wire:model.defer="Year3" oninput = "validateInputs('ObjMargin')" />
-
-                <button class="btn btn-sm btn-primary" wire:click="updateDateObjetivoFat3()" id="updateButtonObjMargin"> 
-                    <i class="ti-reload"></i><span> Atualizar</span>
-                </button>
-                <br>
-            <div id="expenses-chart3"></div>
-        </div>
+                <div id="expenses-chart3"></div>
+            </div>
         </div>
     </div> 
     @endif
