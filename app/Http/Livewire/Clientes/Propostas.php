@@ -310,7 +310,7 @@ class Propostas extends Component
 
         foreach($proposta["lines"] as $prop)
         {
-           
+          
             Carrinho::create([
                 "id_proposta" => "",
                 "id_encomenda" => $proposta["id"],

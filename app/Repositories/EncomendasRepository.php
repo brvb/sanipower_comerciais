@@ -280,7 +280,7 @@ class EncomendasRepository implements EncomendasInterface
 
     public function addProductToDatabase($codvisita,$idCliente,$qtd,$nameProduct,$no,$ref,$codType,$type): JsonResponse
     {   
-        if (session('CampProds') !== null) {
+        if ($qtd["product"]->color == "#cc7c3a") {
             $inCampanhas = 1;
         }else{
             $inCampanhas = 0;

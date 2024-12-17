@@ -636,7 +636,7 @@ class DetalheProposta extends Component
 
         $this->dispatchBrowserEvent('checkToaster', ["message" => $message, "status" => $status]);
     }
-    public function editProductQuickBuyProposta($prodID, $nameProduct, $no, $ref, $codEncomenda, $price)
+    public function editProductQuickBuyProposta($prodID, $referense, $nameProduct, $no, $ref, $codEncomenda, $price)
     {
         $quickBuyProducts = session('quickBuyProducts');
         // dd($prodID, $nameProduct, $no, $ref, $codEncomenda, $this->produtosRapida, $this->prodtQTD, $this->codvisita, $this->idCliente,$price);
@@ -697,26 +697,66 @@ class DetalheProposta extends Component
             // dd($productChosen);
             // dd('id_encomenda', $codEncomenda, 'referencia', $productChosen['product']->referense, 'designacao', $nameProduct, 'model', $productChosen['product']->model, 'price', $productChosen['product']->price);
             // $price = $productChosen['product']->price;
-        
+            $itensSemProposta = Carrinho::where('id_proposta', $codEncomenda)
+                ->where('referencia', $referense)
+                ->where('price', $price)
+                ->where('designacao', $nameProduct)
+                ->where('id_proposta', '')
+                ->get();
+            if ($itensSemProposta->count() > 1) {
+                // Inicializa a variável para consolidar os dados
+                $quantidadeTotal = 0;
+                $primeiroItem = null;
+            
+                foreach ($itensSemProposta as $index => $item) {
+                    if ($index === 0) {
+                        // O primeiro item será usado como base para consolidar os dados
+                        $primeiroItem = $item;
+                    } else {
+                        // Somar a quantidade dos demais itens
+                        $quantidadeTotal += $item->qtd;
+            
+                        // Remover o item extra
+                        $item->delete();
+                    }
+                }
+            
+                // Atualiza o primeiro item com a quantidade total consolidada
+                if ($primeiroItem) {
+                    $primeiroItem->qtd += $quantidadeTotal;
+                    $primeiroItem->save();
+                }
+            }
             $itemAtualizado = Carrinho::updateOrCreate(
             [
                 'id_proposta' => $codEncomenda,
-                'referencia' => $productChosen['product']->referense,
-                'model' => $productChosen['product']->model,
+                'referencia' => $referense,
+                'designacao' => $nameProduct,
                 'price' => $price,
             ],
             [
                 'qtd' => $this->produtosRapida[$prodID],
             ]
             );
+            // $itemAtualizado = Carrinho::updateOrCreate(
+            // [
+            //     'id_proposta' => $codEncomenda,
+            //     'referencia' => $productChosen['product']->referense,
+            //     'model' => $productChosen['product']->model,
+            //     'price' => $price,
+            // ],
+            // [
+            //     'qtd' => $this->produtosRapida[$prodID],
+            // ]
+            // );
 
-            // Remover itens duplicados, exceto o que foi atualizado
-            Carrinho::where('id_proposta', $codEncomenda)
-            ->where('referencia', $productChosen['product']->referense)
-            ->where('model', $productChosen['product']->model)
-            ->where('price', $price)
-            ->where('id', '!=', $itemAtualizado->id)
-            ->delete();
+            // // Remover itens duplicados, exceto o que foi atualizado
+            // Carrinho::where('id_proposta', $codEncomenda)
+            // ->where('referencia', $productChosen['product']->referense)
+            // ->where('model', $productChosen['product']->model)
+            // ->where('price', $price)
+            // ->where('id', '!=', $itemAtualizado->id)
+            // ->delete();
 
             // Resetar a quantidade local (se necessário)
             $this->prodtQTD = null;

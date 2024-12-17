@@ -1158,7 +1158,7 @@
                                                         wire:model.defer="prodtQTD.{{ $cont }}"
                                                         value="{{ $prod->qtd }}"
                                                         placeholder="{{ $prod->qtd }}"
-                                                        wire:change="editProductQuickBuyProposta({{ $cont }}, '{{ $prod->designacao }}', {{ $detalhesCliente->customers[0]->no }}, '{{ $prod->image_ref }}', '{{ $codEncomenda }}','{{ $prod->price }}')" />
+                                                        wire:change="editProductQuickBuyProposta({{ $cont }},{{ $prod->referencia }}, '{{ $prod->designacao }}', {{ $detalhesCliente->customers[0]->no }}, '{{ $prod->image_ref }}', '{{ $codEncomenda }}','{{ $prod->price }}')" />
                                                 </td>
                                             @endif
                                             <td style=" text-align: right; white-space: nowrap;">{{ $prod->iva }} %</td>
