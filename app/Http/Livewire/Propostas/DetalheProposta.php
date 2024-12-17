@@ -119,6 +119,8 @@ class DetalheProposta extends Component
 
     public $enviarCliente;
 
+    public $enviarClienteBool = false;
+
     public $enviarAprovacao;
     public $emailArray;
     public $emailSend;
@@ -1193,12 +1195,48 @@ class DetalheProposta extends Component
 
         
         }
+    }
 
-
+    public function enviarEmail()
+    { 
+        $EmailForeach = $this->emailArray;
+        $this->emailArray = [];
+        foreach($EmailForeach as $i => $email)
+        {
+            $emailParts = explode(" - ", $email);
+            $emailAddress = $emailParts[0];
+            if(isset($this->emailSend[$i]))
+            {
+                if($this->emailSend[$i] == true)
+                {
+                    // Mail::to($emailAddress)->send(new SendProposta($pdfContent, $proposta['budget']));
+                    array_push($this->emailArray, $emailAddress);
+                }
+            }
+        }
+        $this->enviarClienteBool = true;
+        $this->enviarCliente = false;
+        $this->finalizarproposta();
+        // dd($this->emailArray);
     }
 
     public function finalizarproposta()
     {
+        if($this->enviarCliente == true)
+        {
+            $emailCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
+            $this->emailArray = explode("; ", $emailCliente["object"]->customers[0]->email);
+            $this->emailArray = array_map(function($email) {
+                return $email . " - Cliente";
+            }, $this->emailArray);
+    
+            array_push($this->emailArray, Auth::user()->email . " - Utilizador");
+            
+            // dd($emailArray);
+    
+    
+            $this->dispatchBrowserEvent('chooseEmail');
+        } else{
         $count = 0;
         $valorTotal = 0;
         $valorTotalComIva = 0;
@@ -1366,7 +1404,7 @@ class DetalheProposta extends Component
         $response_decoded = json_decode($response);
         // dd($response_decoded);
 
-        if($this->enviarCliente == true)
+        if($this->enviarClienteBool == true)
         {
 
             if ($response_decoded->success == true) {
@@ -1382,7 +1420,9 @@ class DetalheProposta extends Component
 
                 $emailCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
 
-                $emailArray = explode("; ", $emailCliente["object"]->customers[0]->email);
+                // $emailArray = explode("; ", $emailCliente["object"]->customers[0]->email);
+
+                $emailArray = $this->emailArray;
 
                 $emailUsuarioLogado = Auth::user()->email;
 
@@ -1513,6 +1553,7 @@ class DetalheProposta extends Component
             $this->dispatchBrowserEvent('checkToaster', ["message" => "A proposta não foi finalizada", "status" => "error"]);
         }
         return false;
+        }
     }
 
     public function render()

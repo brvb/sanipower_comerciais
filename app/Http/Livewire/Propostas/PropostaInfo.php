@@ -195,8 +195,6 @@ class PropostaInfo extends Component
     }
     public function enviarEmail($proposta)
     {
-  
-
         $emailArray = explode("; ", $proposta["email"]);
 
         $this->emailArray = array_map(function($email) {

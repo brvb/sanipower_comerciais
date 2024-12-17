@@ -1349,6 +1349,64 @@
                 </p>
 
             </div>
+            <script>
+                window.addEventListener('chooseEmail', function(e) {
+                        $("#emailCheckBox").prop('checked', false);
+                        $("#modalProposta").modal();
+
+                    });
+            </script>
+<div class="modal fade" id="modalProposta" tabindex="-1" role="dialog" aria-labelledby="modalProposta" aria-hidden="true" >
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary"><i class="ti-archive"></i> Envio de Email</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="table-responsive" style="overflow-x:none!important;">
+                            <table class="table table-bordered table-hover">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Check</th>
+                                        <th>Email</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if($emailArray != null)
+                                       
+                                        @foreach ($emailArray as $i => $item)
+                                            <tr>
+                                                <td>
+                                                    <div class="form-checkbox">
+                                                        <label>
+                                                            <input type="checkbox" id="emailCheckBox" wire:model.defer="emailSend.{{$i}}">
+                                                            <span class="checkmark"><i class="fa fa-check pick"></i></span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+
+                                                <td>{{ $item }}</td>
+                                            </tr>
+                                        @endforeach
+                                
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#tab6" id="enviarEmailClientes" wire:click="enviarEmail()" data-toggle="tab" class="nav-link btn btn-outline-primary">Enviar Email</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <!-- Modal adicionar compra rapida -->
