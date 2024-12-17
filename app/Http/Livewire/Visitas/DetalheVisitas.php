@@ -608,14 +608,68 @@ class DetalheVisitas extends Component
 
     public function finalizarVisita()
     {
-        $callGuard = $this->guardarVisita();
-
+        if(session('visitasPropostasComentario_encomendas')){
+            $this->comentario_encomendas = session('visitasPropostasComentario_encomendas');
+        }
+        if( session('visitasPropostasComentario_propostas')){
+            $this->comentario_propostas = session('visitasPropostasComentario_propostas');
+        }
+        if(session('visitasPropostasComentario_financeiro')){
+            $this->comentario_financeiro = session('visitasPropostasComentario_financeiro');
+        }
+        if(session('visitasPropostasComentario_occorencias')){
+            $this->comentario_occorencias = session('visitasPropostasComentario_occorencias');
+        }
+        if(session('visitasPropostasAnexos')){
+            $this->anexos = session('visitasPropostasAnexos');
+            // dd($this->anexos);
+        }
         $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
 
         $this->detailsClientes = $arrayCliente["object"];
 
         $visitas = Visitas::where('id_visita_agendada',$this->idVisita)->first();
 
+        $updatedPaths = [];
+        foreach ($this->anexos as $file) {
+
+            if(isset($file['path'])){
+            
+                $path = $file['path'];
+
+                $newPath = str_replace('temp/', 'anexos/', $path);
+        
+                // Verifica se o arquivo existe no local temporário antes de movê-lo
+                if (\Storage::disk('public')->exists($path)) {
+                    \Storage::disk('public')->move($path, $newPath);
+        
+                    // Atualizar os caminhos com o novo local
+                    $updatedPaths[] = [
+                        'path' => $newPath,
+                        'original_name' => $file['original_name'],
+                    ];
+                }
+            }else{
+                $newPath = str_replace('temp/', 'anexos/', $file);
+
+                $filename = ltrim($file, 'temp/');
+
+                $updatedPaths[] = [
+                    'path' => $newPath,
+                    'original_name' => $filename,
+                ];
+            }
+        }
+        Session::put('visitasPropostasAnexos', $updatedPaths);
+
+
+        $this->anexos = session('visitasPropostasAnexos');
+        
+        $originalNames = [];
+        foreach ($this->anexos as $anexo) {
+            $originalNames[] = $anexo["path"];
+        }
+        
         if($visitas != null)
         {
 
@@ -637,7 +691,7 @@ class DetalheVisitas extends Component
                     "numero_cliente" => $this->detailsClientes->customers[0]->no,
                     "assunto" => $this->assunto,
                     "relatorio" => $this->relatorio,
-                    // "anexos" => json_encode($originalNames),
+                    "anexos" => json_encode($originalNames),
                     "pendentes_proxima_visita" => $this->pendentes,
                     "comentario_encomendas" => $this->comentario_encomendas,
                     "comentario_propostas" => $this->comentario_propostas,
@@ -670,7 +724,7 @@ class DetalheVisitas extends Component
                     "numero_cliente" => $this->detailsClientes->customers[0]->no,
                     "assunto" => $this->assunto,
                     "relatorio" => $this->relatorio,
-                    // "anexos" => json_encode($originalNames),
+                    "anexos" => json_encode($originalNames),
                     "pendentes_proxima_visita" => $this->pendentes,
                     "comentario_encomendas" => $this->comentario_encomendas,
                     "comentario_propostas" => $this->comentario_propostas,
@@ -706,7 +760,7 @@ class DetalheVisitas extends Component
                     "numero_cliente" => $this->detailsClientes->customers[0]->no,
                     "assunto" => $this->assunto,
                     "relatorio" => $this->relatorio,
-                    // "anexos" => json_encode($originalNames),
+                    "anexos" => json_encode($originalNames),
                     "pendentes_proxima_visita" => $this->pendentes,
                     "comentario_encomendas" => $this->comentario_encomendas,
                     "comentario_propostas" => $this->comentario_propostas,
@@ -715,9 +769,9 @@ class DetalheVisitas extends Component
                     "data" => date('Y-m-d'),
                     "user_id" => Auth::user()->id
                 ]);
-
                 $this->idVisita = $agenda->id;
             }
+
             else {
                 // dd('AQUI 4');
                 $agenda = VisitasAgendadas::where('id',$this->idVisita)->update([
@@ -735,7 +789,7 @@ class DetalheVisitas extends Component
                     "numero_cliente" => $this->detailsClientes->customers[0]->no,
                     "assunto" => $this->assunto,
                     "relatorio" => $this->relatorio,
-                    // "anexos" => json_encode($originalNames),
+                    "anexos" => json_encode($originalNames),
                     "pendentes_proxima_visita" => $this->pendentes,
                     "comentario_encomendas" => $this->comentario_encomendas,
                     "comentario_propostas" => $this->comentario_propostas,
@@ -744,9 +798,7 @@ class DetalheVisitas extends Component
                     "data" => date('Y-m-d'),
                     "user_id" => Auth::user()->id
                 ]);
-
             }
-
         }
 
         $dataPHC = date('Y-m-d')."T".date('H:i:s');
@@ -1090,9 +1142,11 @@ class DetalheVisitas extends Component
 
                 $newPath = str_replace('temp/', 'anexos/', $path);
         
+                // Verifica se o arquivo existe no local temporário antes de movê-lo
                 if (\Storage::disk('public')->exists($path)) {
                     \Storage::disk('public')->move($path, $newPath);
         
+                    // Atualizar os caminhos com o novo local
                     $updatedPaths[] = [
                         'path' => $newPath,
                         'original_name' => $file['original_name'],
