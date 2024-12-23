@@ -396,7 +396,7 @@
                             <div class="col" wire:key="select-field-model-version-{{ $iteration }}">
 
                                 <div>
-
+                                    @if($isMobile)
                                     @php
                                         $contaCat = 0;
                                     @endphp
@@ -553,6 +553,7 @@
                                             </div>
                                         </div>
                                     @endforeach
+                                    @endif
                                     <div class="sidebarProd d-md-none d-block" id="sidebarProd" wire:ignore>
                                         <label for="checkbox" style="width: 100%;">
                                             <div class="input-group input-group-config-Goback input-config-produtos"
@@ -605,10 +606,9 @@
                                                     <button id="toggleNavbar" class="btn btn-sm btn-primary mb-2 k">
                                                         <i id="toggleIcon" class="fa-solid"></i>
                                                     </button>
-                                                    &nbsp;<h4>Categorias</h4>
+                                                    &nbsp;<h4 style="margin: 0px;">Categorias</h4>
                                                 </div>
                                             </div>
-
                                             {{-- <div id="dataTables_wrapper" class="dataTables_wrapper container mt-2"
                                                 style="margin-left:0px;padding-left:0px;margin-bottom:10px;">
                                                 <div class="dataTables_length left" id="dataTables_length">
@@ -698,7 +698,7 @@
                                         </div>
                                  
                                     <div id="scroll-col-9" class="col-md-9" style="overflow-y:auto;padding-right: 0;padding-left: 0;max-height: 67vh">
-                                      
+
                                         @if ($specificProduct == 0)
                                             <div class="row">
                                                 {{-- <div wire:loading wire:target="searchProduct">
@@ -1709,7 +1709,15 @@
 <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="crossorigin="anonymous"></script>
     {{-- <script src="//unpkg.com/alpinejs" defer></script> --}}
 <script>
-    
+    document.addEventListener('livewire:load', function () {
+        const screenWidth = window.innerWidth;
+        const isMobile = screenWidth <= 720;
+
+        console.log("setIsMobile", isMobile);
+        Livewire.emit('setIsMobile', isMobile);
+    });
+
+
     document.addEventListener('DOMContentLoaded', function () {
         const scrollCol = document.getElementById('scroll-col-9');
         const navbar = document.getElementById('navbar2');

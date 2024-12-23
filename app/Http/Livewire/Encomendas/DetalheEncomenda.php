@@ -72,6 +72,7 @@ class DetalheEncomenda extends Component
     public string $idFamilyRecuar = "";
     public string $idCategoryRecuar = "";
     public $iteration = 0;
+    public $isMobile = false;
 
     public ?string $searchProduct = "";
     public ?string $actualCategory = "";
@@ -134,7 +135,7 @@ class DetalheEncomenda extends Component
 
     public int $perPage = 10;
 
-    protected $listeners = ['toggleNavbarState' => 'toggleNavbarState',"callInputGroup","rechargeFamily" => "rechargeFamily", "cleanModal" => "cleanModal" ,'campoAlterado' =>'campoAlterado', 'addProductCommentEncomenda'=>'addProductCommentEncomenda'];
+    protected $listeners = ['toggleNavbarState' => 'toggleNavbarState',"callInputGroup","rechargeFamily" => "rechargeFamily", "cleanModal" => "cleanModal" ,'campoAlterado' =>'campoAlterado', 'addProductCommentEncomenda'=>'addProductCommentEncomenda','setIsMobile'];
 
     public function boot(ClientesInterface $clientesRepository, EncomendasInterface $encomendasRepository, PropostasInterface $propostasRepository)
     {
@@ -180,6 +181,10 @@ class DetalheEncomenda extends Component
         }
 
         $this->showLoaderPrincipal = true;
+    }
+    public function setIsMobile($isMobile)
+    {
+        $this->isMobile = $isMobile;
     }
     public function rechargeFamily($id)
     {
