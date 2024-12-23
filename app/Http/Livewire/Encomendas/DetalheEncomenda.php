@@ -25,6 +25,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Mail;
 
 
+
 class DetalheEncomenda extends Component
 {
     use WithPagination;
@@ -129,11 +130,11 @@ class DetalheEncomenda extends Component
     public $visitaCheck;
     public $prodtQTD = [];
 
-
     public ?object $encomenda = NULL;
 
     public int $perPage = 10;
-    protected $listeners = ["callInputGroup","rechargeFamily" => "rechargeFamily", "cleanModal" => "cleanModal" ,'campoAlterado' =>'campoAlterado', 'addProductCommentEncomenda'=>'addProductCommentEncomenda'];
+
+    protected $listeners = ['toggleNavbarState' => 'toggleNavbarState',"callInputGroup","rechargeFamily" => "rechargeFamily", "cleanModal" => "cleanModal" ,'campoAlterado' =>'campoAlterado', 'addProductCommentEncomenda'=>'addProductCommentEncomenda'];
 
     public function boot(ClientesInterface $clientesRepository, EncomendasInterface $encomendasRepository, PropostasInterface $propostasRepository)
     {

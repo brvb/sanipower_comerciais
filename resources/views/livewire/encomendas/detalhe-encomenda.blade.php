@@ -72,15 +72,22 @@
     #navbar2::-webkit-scrollbar{
         width: 0.6rem;
     }
-   
+    .navbar-hidden{
+        display: none !important;
+    }
+
+    .navbar-hidden #scroll-col-9 {
+        width: 100%;
+    }
+
 </style>
     <!--  LOADING -->
-    @if ($showLoaderPrincipal == true)
+    {{-- @if ($showLoaderPrincipal == true)
         <div id="loader" style="display: none;">
             <div class="loader" role="status">
             </div>
         </div>
-    @endif
+    @endif --}}
 
     <!-- FIM LOADING -->
 
@@ -419,8 +426,6 @@
                                             <h2>{{ $cat->name }}</h2>
                                             
                                             <div class="row">
-                                            
-
                                             @foreach ($cat->family as $family)
                                             @if ($familyInfo == true)
                                                 @if ($idFamilyInfo == $family->id)
@@ -548,7 +553,7 @@
                                             </div>
                                         </div>
                                     @endforeach
-                                    <div class="sidebarProd" id="sidebarProd" wire:ignore>
+                                    <div class="sidebarProd d-md-none d-block" id="sidebarProd" wire:ignore>
                                         <label for="checkbox" style="width: 100%;">
                                             <div class="input-group input-group-config-Goback input-config-produtos"
                                                 id="checkboxSidbar" style="padding: 0;">
@@ -569,14 +574,14 @@
                                                 <div class="input-group d-flex input-group-config justify-content-between"
                                                     id="input{{ $conta }}"
                                                     @if ($category->name == 'Sistemas') style="background-color: #42c69f;"
-                                            @elseif($category->name == 'Água') style="background-color: #0179b5;"
-                                            @elseif($category->name == 'Conforto') style="background-color: #cd3d3c;"
-                                            @elseif($category->name == 'Solar') style="background-color: #cc7d3b;"
-                                            @elseif($category->name == 'Ar Condicionado') style="background-color: #9fa2a2;"
-                                            @elseif($category->name == 'Ventilação') style="background-color: #141b62;"
-                                            @elseif($category->name == 'Marcas') style="background-color: #5c2a5d;"
-                                            @elseif($category->name == 'Piscinas') style="background-color: #01cbdf;"
-                                            @elseif($category->name == 'Marcas') style="background-color: #5c2a5d;" @endif>
+                                                        @elseif($category->name == 'Água') style="background-color: #0179b5;"
+                                                        @elseif($category->name == 'Conforto') style="background-color: #cd3d3c;"
+                                                        @elseif($category->name == 'Solar') style="background-color: #cc7d3b;"
+                                                        @elseif($category->name == 'Ar Condicionado') style="background-color: #9fa2a2;"
+                                                        @elseif($category->name == 'Ventilação') style="background-color: #141b62;"
+                                                        @elseif($category->name == 'Marcas') style="background-color: #5c2a5d;"
+                                                        @elseif($category->name == 'Piscinas') style="background-color: #01cbdf;"
+                                                        @elseif($category->name == 'Marcas') style="background-color: #5c2a5d;" @endif>
                                                     <p>{{ $category->name }}</p>
                                                     <label></label>
                                                 </div>
@@ -584,15 +589,26 @@
                                         @endforeach
                                     </div>
                                     <div class="row justify-content-between">
-                                        <div class="col-md-3 col-4">
-                                            <div class="input-group" id="checkboxSidbar">
-                                                <input id="checkbox" type="checkbox">
-                                                <label class="toggle" for="checkbox">
-                                                    <div id="bar1" class="bars"></div>
-                                                    <div id="bar2" class="bars"></div>
-                                                    <div id="bar3" class="bars"></div>
-                                                </label> &nbsp;<h4>Categorias</h4>
+                                        <div class="col-md-3">
+                                            <div class="d-md-none d-block">
+                                                <div class="input-group" id="checkboxSidbar">
+                                                    <input id="checkbox" type="checkbox">
+                                                    <label class="toggle" for="checkbox">
+                                                        <div id="bar1" class="bars"></div>
+                                                        <div id="bar2" class="bars"></div>
+                                                        <div id="bar3" class="bars"></div>
+                                                    </label> &nbsp;<h4>Categorias</h4>
+                                                </div>
                                             </div>
+                                            <div class="d-none d-md-block">
+                                                <div class="input-group">
+                                                    <button id="toggleNavbar" class="btn btn-sm btn-primary mb-2 k">
+                                                        <i id="toggleIcon" class="fa-solid"></i>
+                                                    </button>
+                                                    &nbsp;<h4>Categorias</h4>
+                                                </div>
+                                            </div>
+
                                             {{-- <div id="dataTables_wrapper" class="dataTables_wrapper container mt-2"
                                                 style="margin-left:0px;padding-left:0px;margin-bottom:10px;">
                                                 <div class="dataTables_length left" id="dataTables_length">
@@ -641,8 +657,7 @@
                                         </div>
                                     </div>
                                     <div class="row" style="justify-content: flex-end;">
-                                        <div class="navbar2 col-3 d-none d-md-block" id="navbar2" style="overflow-y:auto;max-height: 67vh">
-                                            {{-- <span id="navbar2"> --}}
+                                            <div id="navbar2" class="navbar2 col-3 d-none d-md-block" style="overflow-y:auto;max-height: 67vh">                                            {{-- <span id="navbar2"> --}}
                                                 @php
                                                     $contaCat = 0;
                                                 @endphp
@@ -681,9 +696,9 @@
                                             {{-- <span> --}}
 
                                         </div>
-                                        
-                                        <div class="col-md-9" id="scroll-col-9" style="overflow-y:auto;padding-right: 0;padding-left: 0;max-height: 67vh">
-                                            {{-- aqui --}}
+                                 
+                                    <div id="scroll-col-9" class="col-md-9" style="overflow-y:auto;padding-right: 0;padding-left: 0;max-height: 67vh">
+                                      
                                         @if ($specificProduct == 0)
                                             <div class="row">
                                                 {{-- <div wire:loading wire:target="searchProduct">
@@ -1686,11 +1701,67 @@
 </div>
 
 <!-- FIM TABS  -->
-
+<style>
+    .hidden-navbar {
+        display: none !important;
+    }
+</style>
 <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="crossorigin="anonymous"></script>
     {{-- <script src="//unpkg.com/alpinejs" defer></script> --}}
 <script>
     
+    document.addEventListener('DOMContentLoaded', function () {
+        const scrollCol = document.getElementById('scroll-col-9');
+        const navbar = document.getElementById('navbar2');
+        const toggleButton = document.getElementById('toggleNavbar');
+        const toggleIcon = document.getElementById('toggleIcon');
+
+        function getCookie(name) {
+            const cookies = document.cookie.split('; ');
+            const cookie = cookies.find(row => row.startsWith(name + '='));
+            return cookie ? cookie.split('=')[1] : null;
+        }
+
+        function updateNavbarState() {
+            const navbarHidden = getCookie('navbar_hidden') === 'true';
+
+            if (navbarHidden) {
+                scrollCol.classList.remove('col-md-9');
+                scrollCol.classList.add('col-12');
+                navbar.classList.add('navbar-hidden');
+                toggleIcon.classList.remove('fa-arrow-left');
+                toggleIcon.classList.add('fa-arrow-right');
+            } else {
+                navbar.classList.remove('navbar-hidden');
+                scrollCol.classList.remove('col-12');
+                scrollCol.classList.add('col-md-9');
+                toggleIcon.classList.remove('fa-arrow-right');
+                toggleIcon.classList.add('fa-arrow-left');
+            }
+        }
+
+        updateNavbarState();
+
+        toggleButton.addEventListener('click', function () {
+            const isHidden = scrollCol.classList.toggle('col-12');
+            scrollCol.classList.toggle('col-md-9', !isHidden);
+            navbar.classList.toggle('navbar-hidden', isHidden);
+            toggleIcon.classList.toggle('fa-arrow-right', isHidden);
+            toggleIcon.classList.toggle('fa-arrow-left', !isHidden);
+
+            document.cookie = `navbar_hidden=${isHidden}; path=/; max-age=86400;`;
+            
+        });
+
+        window.updateNavbarState = updateNavbarState;
+    });
+    document.addEventListener('livewire:load', function () {
+        updateNavbarState();
+    });
+
+    document.addEventListener('livewire:update', function () {
+        updateNavbarState();
+    });
     {{-- function adjustScrollHeight() {
         const navbar = document.getElementById('navbar2');
         const scrollCol = document.getElementById('scroll-col-9');
@@ -1798,13 +1869,13 @@
                 const quantidadeMinima = parseInt(input.getAttribute('data-qtd'));
 
                 if (!isNaN(quantidadeInserida) && quantidadeInserida < quantidadeMinima) {
-                         const comentarioArea = document.querySelector(`textarea[id="addTextosEncomenda${input.getAttribute('id')}"]`);
-                        if (!comentarioArea || comentarioArea.value.trim() === '') {
-                            allCommentsProvided = false; 
-                        } else{allCommentsProvided = true;  }
-                        if (backgroundColor === 'rgb(65, 198, 160)') {
-                            allCommentsProvided = false;
-                        }
+                    const comentarioArea = document.querySelector(`textarea[id="addTextosEncomenda${input.getAttribute('id')}"]`);
+                    if (!comentarioArea || comentarioArea.value.trim() === '') {
+                        allCommentsProvided = false; 
+                    } else{allCommentsProvided = true;  }
+                    if (backgroundColor === 'rgb(65, 198, 160)') {
+                        allCommentsProvided = false;
+                    }
                 }
             });
 
@@ -1881,7 +1952,6 @@
         });
     }
 
-    // vinicius
     const checkbox = document.getElementById('checkbox');
     const sidebar = document.getElementById('sidebarProd');
 
@@ -1899,7 +1969,6 @@
     document.addEventListener('DOMContentLoaded', function () {
         var accordions2 = document.getElementsByClassName("accordion2");
 
-        // Add click event listener to each accordion button
         for (var i = 0; i < accordions2.length; i++) {
             accordions2[i].addEventListener("click", function() {
                 // Toggle active class to button
