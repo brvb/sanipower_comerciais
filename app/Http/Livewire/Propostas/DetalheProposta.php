@@ -126,7 +126,7 @@ class DetalheProposta extends Component
     public $emailSend;
     public $visitaCheck;
     public $prodtQTD = [];
-
+    public $isMobile = false;
 
     public ?array $lojas = NULL;
 
@@ -143,7 +143,7 @@ class DetalheProposta extends Component
     public $kitCheck;
 
     public int $perPage = 10;
-    protected $listeners = ["rechargeFamily" => "rechargeFamily", "cleanModal" => "cleanModal"];
+    protected $listeners = ["rechargeFamily" => "rechargeFamily", "cleanModal" => "cleanModal",'setIsMobile'];
 
     public function boot(ClientesInterface $clientesRepository, EncomendasInterface $encomendasRepository, PropostasInterface $PropostasRepository)
     {
@@ -186,7 +186,10 @@ class DetalheProposta extends Component
 
         $this->showLoaderPrincipal = true;
     }
-
+    public function setIsMobile($isMobile)
+    {
+        $this->isMobile = $isMobile;
+    }
     public function rechargeFamily($id)
     {
         $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);

@@ -748,9 +748,9 @@
                                                      {{-- <div class="d-flex justify-content-center">
                                                          {{ $products->links('vendor.pagination.livewire-bootstrap') }}
                                                      </div> --}}
-                                                @else
-                                                    <p>Sem Campanhas para exibir.</p>
-                                                @endif 
+                                                    @else
+                                                        <p>Sem Campanhas para exibir.</p>
+                                                    @endif 
                                                 @else
                                                     @if(session('CampProds') !== null)
                                                         @if($products->count())
@@ -1713,7 +1713,6 @@
         const screenWidth = window.innerWidth;
         const isMobile = screenWidth <= 720;
 
-        console.log("setIsMobile", isMobile);
         Livewire.emit('setIsMobile', isMobile);
     });
 
