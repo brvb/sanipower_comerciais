@@ -13,6 +13,16 @@
             font-size: 10px;
         }
     }
+     .table-bordered td {
+        font-size: 12px;
+        padding: 9px 0px;
+        text-align: center;
+    }
+    .table-bordered th {
+        font-size: 12px;
+        text-align: center;
+        padding: 9px 0px;
+    }
 
         /*  DATEPICKER */
 
@@ -97,16 +107,22 @@
         #navbar2::-webkit-scrollbar{
             width: 0.6rem;
         }
+        .navbar-hidden{
+            display: none !important;
+        }
 
+        .navbar-hidden #scroll-col-9 {
+            width: 100%;
+        }
 </style>
     <!--  LOADING -->
-    @if ($showLoaderPrincipal == true)
+    {{-- @if ($showLoaderPrincipal == true)
         <div id="loader" style="display: none;">
             <div class="loader" role="status">
 
             </div>
         </div>
-    @endif
+    @endif --}}
 
     <!-- FIM LOADING -->
 
@@ -402,11 +418,12 @@
                     </p>
                 </div>
                 <div class="tab-pane fade {{ $tabProdutos }}" id="tab5">
-                    @if ($specificProduct == 0)
+                   
                         <div class="row tab-encomenda-produto">
                             <div class="col" wire:key="select-field-model-version-{{ $iteration }}">
                                 <div>
 
+                                    @if($isMobile)
                                     @php
                                         $contaCat = 0;
                                     @endphp
@@ -537,6 +554,8 @@
                                             </div>
                                         </div>
                                     @endforeach
+                                    @endif
+
                                     <div class="sidebarProd" id="sidebarProd" wire:ignore>
                                         <label for="checkbox" style="width: 100%;">
                                             <div class="input-group input-group-config-Goback input-config-produtos"
@@ -574,14 +593,24 @@
                                         @endforeach
                                     </div>
                                     <div class="row justify-content-between">
-                                        <div class="col-md-3 col-4">
-                                            <div class="input-group" id="checkboxSidbar">
-                                                <input id="checkbox" type="checkbox">
-                                                <label class="toggle" for="checkbox">
-                                                    <div id="bar1" class="bars"></div>
-                                                    <div id="bar2" class="bars"></div>
-                                                    <div id="bar3" class="bars"></div>
-                                                </label> &nbsp;<h4>Categorias</h4>
+                                        <div class="col-md-3">
+                                            <div class="d-md-none d-block">
+                                                <div class="input-group" id="checkboxSidbar">
+                                                    <input id="checkbox" type="checkbox">
+                                                    <label class="toggle" for="checkbox">
+                                                        <div id="bar1" class="bars"></div>
+                                                        <div id="bar2" class="bars"></div>
+                                                        <div id="bar3" class="bars"></div>
+                                                    </label> &nbsp;<h4>Categorias</h4>
+                                                </div>
+                                            </div>
+                                            <div class="d-none d-md-block">
+                                                <div class="input-group">
+                                                    <button id="toggleNavbar" class="btn btn-sm btn-primary mb-2 k">
+                                                        <i id="toggleIcon" class="fa-solid"></i>
+                                                    </button>
+                                                    &nbsp;<h4 style="margin: 0px;">Categorias</h4>
+                                                </div>
                                             </div>
                                             {{-- <div id="dataTables_wrapper" class="dataTables_wrapper container mt-2"
                                                 style="margin-left:0px;padding-left:0px;margin-bottom:10px;">
@@ -631,7 +660,7 @@
                                         </div>
                                     </div>
                                     <div class="row" style="justify-content: flex-end;">
-                                        <div class="navbar2 col-3 d-none d-md-block" id="navbar2" style="overflow-y:auto;max-height: 67vh">
+                                        <div id="navbar2" class="navbar2 col-3 d-none d-md-block"  style="overflow-y:auto;max-height: 67vh">
                                             {{-- <span > --}}
                                                 @php
                                                     $contaCat = 0;
@@ -663,329 +692,332 @@
                                                 <button class="accordion2" style="background-color: #ffcc00;" wire:click="ShowCampanhas">Campanhas</button>
                                             {{-- <span> --}}
                                         </div>
-                                        <div class="col-md-9" id="scroll-col-9" style="overflow-y:auto;padding-right: 0;max-height: 67vh">
-                                            <div class="row">
-                                                <div wire:loading wire:target="searchProduct">
-                                                    <div id="filtroLoader" style="display: block;">
-                                                        <div class="filtroLoader" role="status">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div wire:loading wire:target="adicionarProduto">
-                                                    <div id="filtroLoader" style="display: block;">
-                                                        <div class="filtroLoader" role="status">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div wire:loading wire:target="openDetailProduto">
-                                                    <div id="filtroLoader" style="display: block;">
-                                                        <div class="filtroLoader" role="status">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                @if (session('Camp') == 0)
-                                                    @if($campanhas->count())
-                                                         @foreach ($campanhas as $cam)
-                                                         <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-3">
-                                                            <div class="card card-decoration card-outline-primary border border-2">
-                                                                     {{-- <a href="javascript:void(0)"
-                                                                     wire:click="openDetailProduto({{ json_encode($cam->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subfamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})"
-                                                                     style="pointer-events: auto"> --}}
-                                                                         <div class="mb-1">
-                                                                             <img src="https://storage.sanipower.pt/storage/{{ $cam->capa }}"
-                                                                                 class="card-img-top" alt="...">
-                                                                             <div class="body-decoration">
-                                                                                 <h5 class="title-description">{{ $cam->titulo }}</h5>
-                                                                             </div>
-                                                                         </div>
-                                                                     </a>
-                                                                     <div class="card-body container-buttons" style="z-index:10;">
-                                                                         <button class="btn btn-sm btn-primary" wire:click="GetprodCamp('{{ $cam->bostamp }}')">
-                                                                             <i class="ti-shopping-cart"></i><span> Ver Produtos </span>
-                                                                         </button>
-                                                                     </div>
-                                                                 </div>
-                                                             </div>
-                                                         @endforeach
-                                                     <!-- Links de paginação -->
-                                                     {{-- <div class="d-flex justify-content-center">
-                                                         {{ $products->links('vendor.pagination.livewire-bootstrap') }}
-                                                     </div> --}}
-                                                 @else
-                                                     <p>Sem Campanhas para exibir.</p>
-                                                 @endif 
-                                                @else
-                                                @if(session('CampProds') !== null)
-                                                @if($products->count())
-                                                
-                                                    @foreach ($products as $prodt)
-                                                        <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-3">
-                                                            <div class="card card-decoration card-outline-primary border border-2">
-                                                                <a href="javascript:void(0)"
-                                                                wire:click="openDetailProduto({{ json_encode($prodt->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subFamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})"
-                                                                style="pointer-events: auto">
-                                                                    <div class="mb-1">
-                                                                        <img src="https://storage.sanipower.pt/storage/produtos/{{ $prodt->family_number }}/{{ $prodt->family_number }}-{{ $prodt->subFamily_number }}-{{ $prodt->product_number }}.jpg"
-                                                                            class="card-img-top" alt="...">
-                                                                        <div class="body-decoration">
-                                                                            <h5 class="title-description">{{ $prodt->product_name }}</h5>
-                                                                        </div>
-                                                                    </div>
-                                                                </a>
-                                                                {{-- @dd($prodt); --}}
-                                                                <div class="card-body container-buttons" style="z-index:10;">
-                                                                    <button class="btn btn-sm btn-primary"
-                                                                            wire:click="adicionarProduto({{ json_encode($prodt->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subFamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})"> 
-                                                                        <i class="ti-shopping-cart"></i><span> Compra rápida</span>
-                                                                    </button>
-                                                                </div>
+                                        <div class="col-md-9" id="scroll-col-9" style="overflow-y:auto;padding-right: 0;padding-left: 0;max-height: 67vh">
+                                            @if ($specificProduct == 0)
+                                                <div class="row">
+                                                    {{-- <div wire:loading wire:target="searchProduct">
+                                                        <div id="filtroLoader" style="display: block;">
+                                                            <div class="filtroLoader" role="status">
                                                             </div>
                                                         </div>
-                                                    @endforeach
-                                                    <!-- Links de paginação -->
-                                                    {{-- <div class="d-flex justify-content-center">
-                                                        {{ $products->links('vendor.pagination.livewire-bootstrap') }}
+                                                    </div>
+                                                    <div wire:loading wire:target="adicionarProduto">
+                                                        <div id="filtroLoader" style="display: block;">
+                                                            <div class="filtroLoader" role="status">
+                                                            </div>
+                                                        </div>
                                                     </div> --}}
-                                                @else
-                                                    <p>Sem produtos para exibir.</p>
-                                                @endif
-                                            @else
-                                                 @if($products->count())
-                                                    @foreach ($products as $prodt)
-                                                    
-                                                        <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-3">
-                                                            <div class="card card-decoration card-outline-primary border border-2">
-                                                                <a href="javascript:void(0)"
-                                                                    wire:click="openDetailProduto({{ json_encode($prodt->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subfamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})"
-                                                                    style="pointer-events: auto">
-                                                                    <div class="mb-1">
-                                                                        <img src="https://storage.sanipower.pt/storage/produtos/{{ $prodt->family_number }}/{{ $prodt->family_number }}-{{ $prodt->subfamily_number }}-{{ $prodt->product_number }}.jpg"
-                                                                            class="card-img-top" alt="...">
-                                                                        <div class="body-decoration">
-                                                                            <h5 class="title-description">{{ $prodt->product_name }}</h5>
+                                                    <div wire:loading wire:target="openDetailProduto">
+                                                        <div id="filtroLoader" style="display: block;">
+                                                            <div class="filtroLoader" role="status">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @if (session('Camp') == 0)
+                                                        @if($campanhas->count())
+                                                            @foreach ($campanhas as $cam)
+                                                            <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-3">
+                                                                <div class="card card-decoration card-outline-primary border border-2">
+                                                                        {{-- <a href="javascript:void(0)"
+                                                                        wire:click="openDetailProduto({{ json_encode($cam->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subfamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})"
+                                                                        style="pointer-events: auto"> --}}
+                                                                            <div class="mb-1">
+                                                                                <img src="https://storage.sanipower.pt/storage/{{ $cam->capa }}"
+                                                                                    class="card-img-top" alt="...">
+                                                                                <div class="body-decoration">
+                                                                                    <h5 class="title-description">{{ $cam->titulo }}</h5>
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                        <div class="card-body container-buttons" style="z-index:10;">
+                                                                            <button class="btn btn-sm btn-primary" wire:click="GetprodCamp('{{ $cam->bostamp }}')">
+                                                                                <i class="ti-shopping-cart"></i><span> Ver Produtos </span>
+                                                                            </button>
                                                                         </div>
                                                                     </div>
-                                                                </a>
-                                                                <div class="card-body container-buttons" style="z-index:10;">
-                                                                    <button class="btn btn-sm btn-primary"
-                                                                            wire:click="adicionarProduto({{ json_encode($prodt->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subfamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})">
-                                                                        <i class="ti-shopping-cart"></i><span> Compra rápida</span>
-                                                                    </button>
+                                                                </div>
+                                                            @endforeach
+                                                        <!-- Links de paginação -->
+                                                        {{-- <div class="d-flex justify-content-center">
+                                                            {{ $products->links('vendor.pagination.livewire-bootstrap') }}
+                                                        </div> --}}
+                                                    @else
+                                                        <p>Sem Campanhas para exibir.</p>
+                                                    @endif 
+                                                @else
+                                                    @if(session('CampProds') !== null)
+                                                        @if($products->count())
+                                                        
+                                                            @foreach ($products as $prodt)
+                                                                <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-3">
+                                                                    <div class="card card-decoration card-outline-primary border border-2">
+                                                                        <a href="javascript:void(0)"
+                                                                        wire:click="openDetailProduto({{ json_encode($prodt->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subFamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})"
+                                                                        style="pointer-events: auto">
+                                                                            <div class="mb-1">
+                                                                                <img src="https://storage.sanipower.pt/storage/produtos/{{ $prodt->family_number }}/{{ $prodt->family_number }}-{{ $prodt->subFamily_number }}-{{ $prodt->product_number }}.jpg"
+                                                                                    class="card-img-top" alt="...">
+                                                                                <div class="body-decoration">
+                                                                                    <h5 class="title-description">{{ $prodt->product_name }}</h5>
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                        {{-- @dd($prodt); --}}
+                                                                        <div class="card-body container-buttons" style="z-index:10;">
+                                                                            <button class="btn btn-sm btn-primary"
+                                                                                    wire:click="adicionarProduto({{ json_encode($prodt->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subFamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})"> 
+                                                                                <i class="ti-shopping-cart"></i><span> Compra rápida</span>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            @endforeach
+                                                            <!-- Links de paginação -->
+                                                            {{-- <div class="d-flex justify-content-center">
+                                                                {{ $products->links('vendor.pagination.livewire-bootstrap') }}
+                                                            </div> --}}
+                                                        @else
+                                                            <p>Sem produtos para exibir.</p>
+                                                        @endif
+                                                    @else
+                                                        @if($products->count())
+                                                            @foreach ($products as $prodt)
+                                                            
+                                                                <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-3">
+                                                                    <div class="card card-decoration card-outline-primary border border-2">
+                                                                        <a href="javascript:void(0)"
+                                                                            wire:click="openDetailProduto({{ json_encode($prodt->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subfamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})"
+                                                                            style="pointer-events: auto">
+                                                                            <div class="mb-1">
+                                                                                <img src="https://storage.sanipower.pt/storage/produtos/{{ $prodt->family_number }}/{{ $prodt->family_number }}-{{ $prodt->subfamily_number }}-{{ $prodt->product_number }}.jpg"
+                                                                                    class="card-img-top" alt="...">
+                                                                                <div class="body-decoration">
+                                                                                    <h5 class="title-description">{{ $prodt->product_name }}</h5>
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                        <div class="card-body container-buttons" style="z-index:10;">
+                                                                            <button class="btn btn-sm btn-primary"
+                                                                                    wire:click="adicionarProduto({{ json_encode($prodt->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subfamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})">
+                                                                                <i class="ti-shopping-cart"></i><span> Compra rápida</span>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            @endforeach
+                                                            <!-- Links de paginação -->
+                                                            <div class="d-flex justify-content-center">
+                                                                {{ $products->links('vendor.pagination.livewire-bootstrap') }}
+                                                            </div>
+                                                        @else
+                                                            <p>Sem produtos para exibir.</p>
+                                                        @endif
+                                                    @endif
+                                                @endif
+                                        {{-- aqui --}}
+                                            @else
+                                                <div class="tab-encomenda-produto">
+                                                    <div class="row mb-2 border-bottom">
+                                                        <a href="javascript:void(0)" wire:click="recuarLista" class="mb-3 ml-4"><i
+                                                            class="ti-angle-left"></i> Atrás</a>
+                                                    </div>
+                                                    @php
+                                                        $detailProduto = session('detailProduto');
+                                                        $produtoNameDetail = session('productNameDetail');
+                                                        $family = session('family');
+                                                        $subFamily = session('subFamily');
+                                                        $productNumber = session('productNumber');
+                                                    @endphp
+                                                    <div class="container-fluid container-detalhes-produto" style="padding-right: 0;">
+                                                        <div class="row">
+                                                            <div class="col-12 d-flex flex-wrap row" style="padding-right: 0 !important;">
+                                                                <div class="d-none d-xxl-block col-xxl-2">
+                                                                    <img src="https://storage.sanipower.pt/storage/produtos/{{ $family }}/{{ $family }}-{{ $subFamily }}-{{ $productNumber }}.jpg" width="100%">
+                                                                </div>
+
+                                                                @php
+                                                                    $ref = "https://storage.sanipower.pt/storage/produtos/$family/$family-$subFamily-$productNumber.jpg";
+                                                                @endphp
+                                                                <div class="col-12 col-xxl-10" style="padding-right: 0 !important;">
+                                                                    <div class="row">
+                                                                        <div class="col-12 mb-2">
+                                                                            <div class="row">
+                                                                                <div class="col-12 d-flex align-items-center pl-2 row">
+                                                                                    <div class="col-lg-2 col-md-3 col-sm-4 col-6 d-xl-none">
+                                                                                        <img src="https://storage.sanipower.pt/storage/produtos/{{ $family }}/{{ $family }}-{{ $subFamily }}-{{ $productNumber }}.jpg" width="100%">
+                                                                                    </div>
+                                                                                    <div class="col">
+                                                                                        <h3 id="detailNameProduct">{{ $produtoNameDetail }}</h3>
+                                                                                    </div>
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="table-responsive" style="overflow-x:auto;">
+                                                                            <table class="table table-bordered table-hover" style="min-width: 580px;">
+                                                                                <thead class="thead-light">
+                                                                                    <tr>
+                                                                                        <th style="width: 15%;">Referência</th>
+                                                                                        <th style="width: 10%;">Modelo</th>
+                                                                                        <th style="width: 10%;">PVP</th>
+                                                                                        <th style="width: 10%;">Desconto</th>
+                                                                                        {{-- <th>Desconto 2</th> --}}
+                                                                                        <th style="width: 10%;">Preço</th>
+                                                                                        <th style="width: 10%;">Mín.</th>
+                                                                                        <th style="width: 10%;">Stock</th>
+                                                                                        <th style="width: 80px;">Qtd.</th>
+                                                                                        <th class="width: 13%;">Ações</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    @if (!empty($detailProduto) || isset($quickBuyProducts->product))
+                                                                                        @foreach ($detailProduto->product as $i => $prod)
+                                                                                            <tr style="background-color:{{ $prod->color }}">
+                                                                                                <td>{{ $prod->referense }}</td>
+                                                                                                <td>{{ $prod->model }}</td>
+                                                                                                <td>{{ number_format($prod->pvp,3) }}€</td>
+                                                                                                <td>{{ $prod->discount }}</td>
+                                                                                                {{-- <td>{{ $prod->discount2 }}</td> --}}
+                                                                                                <td>{{ number_format($prod->price,3) }}€</td>
+                                                                                                <td>{{ $prod->quantity }}</td>
+                                                                                                <td style="text-align:center;font-size:large;">
+                                                                                                    @if ($prod->in_stock == true)
+                                                                                                        <a class="popover-test" data-toggle="tooltip" data-placement="top" title="Clique para ver os valores">
+                                                                                                            <div class="dropdownIcon">
+                                                                                                                <i class="ti-check text-lg text-forest dropdownIcon-toggle"></i>
+                                                                                                                <ul class="dropdownIcon-menu">
+                                                                                                                    <li><i class="fa fa-play icon-play"></i></li>
+                                                                                                                    <li style="border-bottom: 1px solid;">
+                                                                                                                        <h5 style = "text-align: left; margin:2px; font-weight: 600;">Stocks em loja</h5>
+                                                                                                                    </li>
+                                                                                                                    @foreach ($prod->stocks as $stock)
+                                                                                                                    <li style = "padding:5px; display: flex; justify-content: space-between; border-bottom: 1px solid #000;">
+                                                                                                                        <span>{{ $stock->warehouse_description }}</span>
+                                                                                                                            <span>{{ $stock->qtt }}</span>
+                                                                                                                        </li>
+                                                                                                                    @endforeach
+                                                                                                                </ul>
+                                                                                                            </div>
+                                                                                                        </a>
+                                                                                                    @else
+                                                                                                        <a href="javascript:;" role="button" class="popover-test" data-toggle="popover" aria-describedby="popover817393">
+                                                                                                            <i class="ti-close text-lg text-chili"></i>
+                                                                                                        </a>
+                                                                                                    @endif
+                                                                                                </td>
+                                                                                                <td><input type="number" class="form-control produto-quantidade" id="{{$i}}" data-qtd="{{ $prod->quantity }}" data-i="{{$i}}" wire:model.defer="produtosRapida.{{$i}}"></td>
+                                                                                                <td class="text-center">
+                                                                                                    <div class="d-flex justify-content-around">
+                                                                                                        <button class="btn btn-sm btn-outline-secondary">
+                                                                            
+                                                                                                            <a class="popover-test" data-toggle="tooltip" data-placement="top" title="Clique para ver os valores">
+                                                                                                                <div class="dropdownIcon">
+                                                                                                                    <i class="ti-package text-light dropdownIcon-toggle" style="margin:0;padding:0;"></i>
+                                                                                    
+                                                                                                                
+                                                                                                                    <ul class="dropdownIcon-menu" style="color:black;left:-350px!important;">
+                                                                                                                        <li><i class="fa fa-play icon-play"></i></li>
+                                                                                                                        <li style="border-bottom: 1px solid;">
+                                                                                                                            <h6>Quantidade p/Caixa</h6>
+                                                                                                                        </li>
+                                                                                                                    
+                                                                                                                        <li>
+                                                                                                                            <div class="row">
+                                                                                                                            
+                                                                                                                                <div class="col-4">
+                                                                                                                                    <img src="https://www.sanipower.pt/img/cx-pequena.svg" alt="Caixa Pequena">
+                                                                                                                                    {{$prod->quantity_box->small}}
+                                                                                                                                </div>
+                                                                                                                                <div class="col-4">
+                                                                                                                                    <img src="https://www.sanipower.pt/img/cx-grande.svg" alt="Caixa Grande" >
+                                                                                                                                    {{$prod->quantity_box->big}}
+                                                                                                                                </div>
+                                                                                                                                <div class="col-4">
+                                                                                                                                    <img src="https://www.sanipower.pt/img/palete.svg" alt="Palete"  >
+                                                                                                                                    {{$prod->quantity_box->pallet}}
+                                                                                                                                </div>
+                                                                                                                            
+                                                                                                                            </div>
+                                                                                                                        </li>  
+                                                                                                                    
+                                                                                                                    </ul>
+                                                                                                                </div>
+                                                                                                            </a>
+                                                                                                        </button>
+                                                                                                        
+                                                                                                        <div class="dropdown">
+                                                                                                            @if ($prod->color == '#41c6a0')
+                                                                                                            <button class="btn btn-sm btn-outline-secondary" id="commentProductEncomenda{{$i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style = "Display:none;">
+                                                                                                                <i class="ti-comment"></i>
+                                                                                                            </button>
+                                                                                                            <div style ="padding-right:20px; padding-left:20px;"></div>
+                                                                                                            @else
+                                                                                                            <button class="btn btn-sm btn-outline-secondary" id="commentProductEncomenda{{$i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                                                <i class="ti-comment"></i>
+                                                                                                            </button>
+                                                                                                            @endif
+                                                                                                            <div class="dropdown-menu" aria-labelledby="commentProductEncomenda{{$i}}" style="min-width: 200px; left: -235px; top: -13px;">
+                                                                                                                <li>
+                                                                                                                    <h6 class="modal-title" style="color:#212529; display: flex; justify-content: space-around; margin: 5px 0;">
+                                                                                                                        <span>Comentário</span>
+                                                                                                                        <button class="btn btn-sm btn-success" id="addCommentEncomenda{{$i}}" disabled>
+                                                                                                                            <i class="ti-check"></i>
+                                                                                                                        </button>
+                                                                                                                    </h6>
+                                                                                                                    <textarea type="text" class="form-control {{ $prod->color }}" id="addTextosEncomenda{{$i}}" cols="7" rows="4" style="resize: none;" wire:model.defer="produtosComment.{{$i}}"></textarea>
+                                                                                                                </li>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        
+                                                                                                        <button wire:click="addProductQuickBuyProposta({{$i}},'{{ $produtoNameDetail }}',{{$detalhesCliente->customers[0]->no}},'{{$ref}}','{{$codEncomenda}}')" class="btn btn-sm btn-outline-secondary" id="addProductProposta{{$i}}" disabled>
+                                                                                                            <i class="ti-notepad text-light"></i>
+                                                                                                        </button>
+                                                                                                        {{-- <button wire:click="addProductQuickBuyEncomenda({{$i}},'{{ $produtoNameDetail }}',{{$detalhesCliente->customers[0]->no}},'{{$ref}}','{{$codEncomenda}}')" class="btn btn-sm btn-outline-secondary" id="addProductEncomenda{{$i}}" disabled>
+                                                                                                            <i class="ti-shopping-cart text-light"></i>
+                                                                                                        </button> --}}
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        @endforeach
+                                                                                    @endif
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                        <div style="display: flex;justify-content: space-between;width: 100%;">
+                                                                            <div class="container-buttons-produtos">
+                                                                                <div>
+                                                                                    <button class="btn btn-md btn-primary"><i class="ti-file"></i> Ficha do Produto</button>
+                                                                                </div>
+                                                                        
+                                                                                <div>
+                                                                                    <button class="btn btn-md btn-primary"><i class="ti-info"></i> Descrição Produto</button>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <button class="btn btn-md btn-primary"><i class="ti-file"></i> Manuais Certificados</button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="container-buttons-produtos">
+                                                                                <div>
+                                                                                    <button class="btn btn-md btn-primary" wire:click="CleanAll"><i class="ti-close"></i> Limpar Seleção</button>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <button class="btn btn-md btn-success" id="addAllButton" wire:click="addAll('{{$produtoNameDetail}}',{{$detalhesCliente->customers[0]->no}}, '{{ $ref }}','{{$codEncomenda}}')" disabled><i class="ti-shopping-cart"></i> Adicionar Todos </button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    @endforeach
-                                                    <!-- Links de paginação -->
-                                                    <div class="d-flex justify-content-center">
-                                                        {{ $products->links('vendor.pagination.livewire-bootstrap') }}
                                                     </div>
-                                                @else
-                                                    <p>Sem produtos para exibir.</p>
-                                                @endif
-                                                @endif
-                                                @endif                                                   
+                                            @endif
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        @else
-                            <div class="tab-encomenda-produto">
-                                <div class="row mb-2 border-bottom">
-                                    <a href="javascript:void(0)" wire:click="recuarLista" class="mb-3 ml-4"><i
-                                        class="ti-angle-left"></i> Atrás</a>
-                                </div>
-                                @php
-                                    $detailProduto = session('detailProduto');
-                                    $produtoNameDetail = session('productNameDetail');
-                                    $family = session('family');
-                                    $subFamily = session('subFamily');
-                                    $productNumber = session('productNumber');
-                                @endphp
-                                <div class="container-fluid container-detalhes-produto">
-                                    <div class="row">
-                                        <div class="col-12 d-flex flex-wrap row" style="padding-right: 0 !important;">
-                                            <div class="d-none d-xl-block col-xl-2">
-                                                <img src="https://storage.sanipower.pt/storage/produtos/{{ $family }}/{{ $family }}-{{ $subFamily }}-{{ $productNumber }}.jpg" width="100%">
-                                            </div>
-
-                                            @php
-                                                $ref = "https://storage.sanipower.pt/storage/produtos/$family/$family-$subFamily-$productNumber.jpg";
-                                            @endphp
-                                            <div class="col-12 col-xl-10" style="padding-right: 0 !important;">
-                                                <div class="row">
-                                                    <div class="col-12 mb-2">
-                                                        <div class="row">
-                                                            <div class="col-12 d-flex align-items-center pl-2 row">
-                                                                <div class="col-lg-2 col-md-3 col-sm-4 col-6 d-xl-none">
-                                                                    <img src="https://storage.sanipower.pt/storage/produtos/{{ $family }}/{{ $family }}-{{ $subFamily }}-{{ $productNumber }}.jpg" width="100%">
-                                                                </div>
-                                                                <div class="col">
-                                                                    <h3 id="detailNameProduct">{{ $produtoNameDetail }}</h3>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="table-responsive" style="overflow-x:auto;">
-                                                        <table class="table table-bordered table-hover" style="min-width: 995px;">
-                                                            <thead class="thead-light">
-                                                                <tr>
-                                                                    <th>Referência</th>
-                                                                    <th>Modelo</th>
-                                                                    <th>PVP (UNI)</th>
-                                                                    <th>Desconto</th>
-                                                                    {{-- <th>Desconto 2</th> --}}
-                                                                    <th>Preço (UNI)</th>
-                                                                    <th>Qtd mínima</th>
-                                                                    <th>Stock</th>
-                                                                    <th style="width: 150px;">Quantidade</th>
-                                                                    <th class="text-center">Ações</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                @if (!empty($detailProduto) || isset($quickBuyProducts->product))
-                                                                    @foreach ($detailProduto->product as $i => $prod)
-                                                                        <tr style="background-color:{{ $prod->color }}">
-                                                                            <td>{{ $prod->referense }}</td>
-                                                                            <td>{{ $prod->model }}</td>
-                                                                            <td>{{ number_format($prod->pvp,3) }}€</td>
-                                                                            <td>{{ $prod->discount }}</td>
-                                                                            {{-- <td>{{ $prod->discount2 }}</td> --}}
-                                                                            <td>{{ number_format($prod->price,3) }}€</td>
-                                                                            <td>{{ $prod->quantity }}</td>
-                                                                            <td style="text-align:center;font-size:large;">
-                                                                                @if ($prod->in_stock == true)
-                                                                                    <a class="popover-test" data-toggle="tooltip" data-placement="top" title="Clique para ver os valores">
-                                                                                        <div class="dropdownIcon">
-                                                                                            <i class="ti-check text-lg text-forest dropdownIcon-toggle"></i>
-                                                                                            <ul class="dropdownIcon-menu">
-                                                                                                <li><i class="fa fa-play icon-play"></i></li>
-                                                                                                <li style="border-bottom: 1px solid;">
-                                                                                                     <h5 style = "text-align: left; margin:2px; font-weight: 600;">Stocks em loja</h5>
-                                                                                                </li>
-                                                                                                @foreach ($prod->stocks as $stock)
-                                                                                                   <li style = "padding:5px; display: flex; justify-content: space-between; border-bottom: 1px solid #000;">
-                                                                                                    <span>{{ $stock->warehouse_description }}</span>
-                                                                                                        <span>{{ $stock->qtt }}</span>
-                                                                                                    </li>
-                                                                                                @endforeach
-                                                                                            </ul>
-                                                                                        </div>
-                                                                                    </a>
-                                                                                @else
-                                                                                    <a href="javascript:;" role="button" class="popover-test" data-toggle="popover" aria-describedby="popover817393">
-                                                                                        <i class="ti-close text-lg text-chili"></i>
-                                                                                    </a>
-                                                                                @endif
-                                                                            </td>
-                                                                            <td><input type="number" class="form-control produto-quantidade" id="{{$i}}" data-qtd="{{ $prod->quantity }}" data-i="{{$i}}" wire:model.defer="produtosRapida.{{$i}}"></td>
-                                                                            <td class="text-center">
-                                                                                <div class="d-flex justify-content-around">
-                                                                                    <button class="btn btn-sm btn-outline-secondary">
-                                                        
-                                                                                        <a class="popover-test" data-toggle="tooltip" data-placement="top" title="Clique para ver os valores">
-                                                                                            <div class="dropdownIcon">
-                                                                                                <i class="ti-package text-light dropdownIcon-toggle" style="margin:0;padding:0;"></i>
-                                                                
-                                                                                               
-                                                                                                <ul class="dropdownIcon-menu" style="color:black;left:-350px!important;">
-                                                                                                    <li><i class="fa fa-play icon-play"></i></li>
-                                                                                                    <li style="border-bottom: 1px solid;">
-                                                                                                        <h6>Quantidade p/Caixa</h6>
-                                                                                                    </li>
-                                                                                                  
-                                                                                                     <li>
-                                                                                                        <div class="row">
-                                                                                                         
-                                                                                                            <div class="col-4">
-                                                                                                                <img src="https://www.sanipower.pt/img/cx-pequena.svg" alt="Caixa Pequena">
-                                                                                                                {{$prod->quantity_box->small}}
-                                                                                                            </div>
-                                                                                                            <div class="col-4">
-                                                                                                                <img src="https://www.sanipower.pt/img/cx-grande.svg" alt="Caixa Grande" >
-                                                                                                                {{$prod->quantity_box->big}}
-                                                                                                            </div>
-                                                                                                            <div class="col-4">
-                                                                                                                <img src="https://www.sanipower.pt/img/palete.svg" alt="Palete"  >
-                                                                                                                {{$prod->quantity_box->pallet}}
-                                                                                                            </div>
-                                                                                                         
-                                                                                                        </div>
-                                                                                                    </li>  
-                                                                                                   
-                                                                                                </ul>
-                                                                                            </div>
-                                                                                        </a>
-                                                                                    </button>
-                                                                                    
-                                                                                    <div class="dropdown">
-                                                                                        @if ($prod->color == '#41c6a0')
-                                                                                        <button class="btn btn-sm btn-outline-secondary" id="commentProductEncomenda{{$i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style = "Display:none;">
-                                                                                            <i class="ti-comment"></i>
-                                                                                        </button>
-                                                                                        <div style ="padding-right:20px; padding-left:20px;"></div>
-                                                                                        @else
-                                                                                        <button class="btn btn-sm btn-outline-secondary" id="commentProductEncomenda{{$i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                                            <i class="ti-comment"></i>
-                                                                                        </button>
-                                                                                        @endif
-                                                                                        <div class="dropdown-menu" aria-labelledby="commentProductEncomenda{{$i}}" style="min-width: 200px; left: -235px; top: -13px;">
-                                                                                            <li>
-                                                                                                <h6 class="modal-title" style="color:#212529; display: flex; justify-content: space-around; margin: 5px 0;">
-                                                                                                    <span>Comentário</span>
-                                                                                                    <button class="btn btn-sm btn-success" id="addCommentEncomenda{{$i}}" disabled>
-                                                                                                        <i class="ti-check"></i>
-                                                                                                    </button>
-                                                                                                </h6>
-                                                                                                <textarea type="text" class="form-control {{ $prod->color }}" id="addTextosEncomenda{{$i}}" cols="7" rows="4" style="resize: none;" wire:model.defer="produtosComment.{{$i}}"></textarea>
-                                                                                            </li>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    
-                                                                                    <button wire:click="addProductQuickBuyProposta({{$i}},'{{ $produtoNameDetail }}',{{$detalhesCliente->customers[0]->no}},'{{$ref}}','{{$codEncomenda}}')" class="btn btn-sm btn-outline-secondary" id="addProductProposta{{$i}}" disabled>
-                                                                                        <i class="ti-notepad text-light"></i>
-                                                                                    </button>
-                                                                                    {{-- <button wire:click="addProductQuickBuyEncomenda({{$i}},'{{ $produtoNameDetail }}',{{$detalhesCliente->customers[0]->no}},'{{$ref}}','{{$codEncomenda}}')" class="btn btn-sm btn-outline-secondary" id="addProductEncomenda{{$i}}" disabled>
-                                                                                        <i class="ti-shopping-cart text-light"></i>
-                                                                                    </button> --}}
-                                                                                </div>
-                                                                            </td>
-                                                                        </tr>
-                                                                    @endforeach
-                                                                @endif
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                    <div style="display: flex;justify-content: space-between;width: 100%;">
-                                                        <div class="container-buttons-produtos">
-                                                            <div>
-                                                                <button class="btn btn-md btn-primary"><i class="ti-file"></i> Ficha do Produto</button>
-                                                            </div>
-                                                       
-                                                            <div>
-                                                                <button class="btn btn-md btn-primary"><i class="ti-info"></i> Descrição Produto</button>
-                                                            </div>
-                                                            <div>
-                                                                <button class="btn btn-md btn-primary"><i class="ti-file"></i> Manuais Certificados</button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="container-buttons-produtos">
-                                                            <div>
-                                                                <button class="btn btn-md btn-primary" wire:click="CleanAll"><i class="ti-close"></i> Limpar Seleção</button>
-                                                            </div>
-                                                            <div>
-                                                                <button class="btn btn-md btn-success" id="addAllButton" wire:click="addAll('{{$produtoNameDetail}}',{{$detalhesCliente->customers[0]->no}}, '{{ $ref }}','{{$codEncomenda}}')" disabled><i class="ti-shopping-cart"></i> Adicionar Todos </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                    @endif
+                    {{-- aqui --}}
                 </div>
             </div>
             <div class="tab-pane fade {{ $tabDetalhesPropostas }} m-3" id="tab6" style="border: none;min-width: 800px;">
@@ -1679,7 +1711,64 @@
 <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="crossorigin="anonymous"></script>
 
 <script>
+    document.addEventListener('livewire:load', function () {
+        const screenWidth = window.innerWidth;
+        const isMobile = screenWidth <= 720;
 
+        Livewire.emit('setIsMobile', isMobile);
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        const scrollCol = document.getElementById('scroll-col-9');
+        const navbar = document.getElementById('navbar2');
+        const toggleButton = document.getElementById('toggleNavbar');
+        const toggleIcon = document.getElementById('toggleIcon');
+
+        function getCookie(name) {
+            const cookies = document.cookie.split('; ');
+            const cookie = cookies.find(row => row.startsWith(name + '='));
+            return cookie ? cookie.split('=')[1] : null;
+        }
+
+        function updateNavbarState() {
+            const navbarHidden = getCookie('navbar_hidden') === 'true';
+
+            if (navbarHidden) {
+                scrollCol.classList.remove('col-md-9');
+                scrollCol.classList.add('col-12');
+                navbar.classList.add('navbar-hidden');
+                toggleIcon.classList.remove('fa-arrow-left');
+                toggleIcon.classList.add('fa-arrow-right');
+            } else {
+                navbar.classList.remove('navbar-hidden');
+                scrollCol.classList.remove('col-12');
+                scrollCol.classList.add('col-md-9');
+                toggleIcon.classList.remove('fa-arrow-right');
+                toggleIcon.classList.add('fa-arrow-left');
+            }
+        }
+
+        updateNavbarState();
+
+        toggleButton.addEventListener('click', function () {
+            const isHidden = scrollCol.classList.toggle('col-12');
+            scrollCol.classList.toggle('col-md-9', !isHidden);
+            navbar.classList.toggle('navbar-hidden', isHidden);
+            toggleIcon.classList.toggle('fa-arrow-right', isHidden);
+            toggleIcon.classList.toggle('fa-arrow-left', !isHidden);
+
+            document.cookie = `navbar_hidden=${isHidden}; path=/; max-age=86400;`;
+            
+        });
+
+        window.updateNavbarState = updateNavbarState;
+    });
+    document.addEventListener('livewire:load', function () {
+        updateNavbarState();
+    });
+
+    document.addEventListener('livewire:update', function () {
+        updateNavbarState();
+    });
     {{-- function adjustScrollHeight() {
         const navbar = document.getElementById('navbar2');
         const scrollCol = document.getElementById('scroll-col-9');

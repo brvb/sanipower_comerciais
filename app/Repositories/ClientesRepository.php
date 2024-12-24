@@ -471,16 +471,12 @@ class ClientesRepository implements ClientesInterface
 
         $response_decoded = json_decode($response);
         if (isset($response_decoded->Message) && $response_decoded->Message === 'An error has occurred.') {
-            return  [
-                "object" => null,
-                "nr_paginas" =>null, 
-                "nr_registos" => null
-            ];
+          
         } else {
             return 
             [
                 "object" => $response_decoded,
-                "nr_paginas" => $response_decoded->total_pages, 
+                "nr_paginas" => $response_decoded->total_pages,
                 "nr_registos" => $response_decoded->total_records
             ];
         }
