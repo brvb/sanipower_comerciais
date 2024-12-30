@@ -456,11 +456,11 @@
                                             @if ($familyInfo == true)
                                                 @if ($idFamilyInfo == $family->id)
                                                     <div class="col-12">
-                                                        {{-- <div class="row mb-2">
+                                                        <div class="row mb-2">
                                                             <a href="javascript:void(0)" wire:click="resetFilter({{ $contaCat }})" class="mb-3 ml-4">
                                                                 <i class="ti-angle-left"></i> Atrás
                                                             </a>
-                                                        </div> --}}
+                                                        </div>
                                                         <div class="row">
                                                             @foreach ($family->subfamily as $subfamily)
 
@@ -833,10 +833,10 @@
                                         {{-- aqui --}}
                                             @else
                                                 <div class="tab-encomenda-produto">
-                                                    <div class="row mb-2 border-bottom">
+                                                    {{-- <div class="row mb-2 border-bottom">
                                                         <a href="javascript:void(0)" wire:click="recuarLista" class="mb-3 ml-4"><i
                                                             class="ti-angle-left"></i> Atrás</a>
-                                                    </div>
+                                                    </div> --}}
                                                     @php
                                                         $detailProduto = session('detailProduto');
                                                         $produtoNameDetail = session('productNameDetail');
