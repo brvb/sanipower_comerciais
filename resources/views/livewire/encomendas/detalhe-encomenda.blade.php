@@ -643,22 +643,19 @@
                                                 @if($searchNameSubFamily)
                                                     <li class="breadcrumb-item active">
                                                         @if($specificProduct)
-                                                            <a href="#" 
+                                                            <a href="#"
                                                             onclick="
                                                                 this.style.pointerEvents = 'none'; 
-                                                                this.style.opacity = '0.5'; 
-                                                                setTimeout(() => {
-                                                                    @this.call('recuarLista');
-                                                                }, 50);">
+                                                                this.style.opacity = '0.5';
+                                                                @this.call('recuarLista');">
                                                                 {{$searchNameSubFamily}}
                                                             </a>
                                                         @else
-                                                            <a href="#">
-                                                                {{$searchNameSubFamily}}
-                                                            </a>
+                                                            <a href="#">{{$searchNameSubFamily}}</a>
                                                         @endif
                                                     </li>
                                                 @endif
+
 
 
                                             </ol>
