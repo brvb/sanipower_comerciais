@@ -23,12 +23,12 @@ class Analise extends Component
 
     use WithPagination;
 
-    public $page = 1; // Propriedade para a paginação do Livewire
+    public $page = 1;
 
 
     public function mount()
     {
-        $id = Auth::user()->id;
+        $id = Auth::user()->id_phc;
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/analytics/pending?Salesman_number='.$id ,

@@ -8,6 +8,8 @@ use Livewire\WithPagination;
 use App\Interfaces\ClientesInterface;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
+
 
 class Encomendas extends Component
 {
@@ -32,6 +34,7 @@ class Encomendas extends Component
     public $startDate = '';
     public $endDate = '';
     public int $statusEncomenda = 1;
+    public $Analise;
 
 
     
@@ -113,6 +116,34 @@ class Encomendas extends Component
             $this->encomendas = session('verEncoemendaPaginator');
             $this->numberMaxPages = session('verEncoemendaNr_paginas');
             $this->totalRecords = session('verEncoemendaNr_registos');
+        }
+
+        $id = Auth::user()->id_phc;
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/analytics/pending?Salesman_number='.$id ,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+
+        $response_decoded = json_decode($response);
+        $this->Analise = $response_decoded;
+
+        if(isset($response_decoded->Message))
+        {
+            $this->Analise = null;
         }
     }
     
@@ -530,6 +561,6 @@ class Encomendas extends Component
             return view('pageErro');
         }
       
-        return view('livewire.encomendas.encomendas',["encomendas" => $this->encomendas]);
+        return view('livewire.encomendas.encomendas',["encomendas" => $this->encomendas, "analise" => $this->Analise]);
     }
 }

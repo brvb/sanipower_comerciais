@@ -35,7 +35,7 @@ class Analysis extends Component
     public $INICIO;
 
     public function mount()
-    {       
+    {    
         $preferences = DashboardPreference::where('Id_user', Auth::id())->first();
             if ($preferences) {
                 $this->show90dias = $preferences->days90 == 1 ? true : false;
@@ -94,7 +94,7 @@ class Analysis extends Component
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/analytics/90days_objectives?Salesman_number=59&year='.$this->Year.'&month='.$this->Month,
+            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/analytics/90days_objectives?Salesman_number='.Auth::user()->id_phc.'&year='.$this->Year.'&month='.$this->Month,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -132,7 +132,7 @@ class Analysis extends Component
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/analytics/objectives?Salesman_number=59&year='.$this->Year.'&month='.$this->Month,
+            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/analytics/objectives?Salesman_number='.Auth::user()->id_phc.'&year='.$this->Year.'&month='.$this->Month,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -170,7 +170,7 @@ class Analysis extends Component
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/analytics/top500_objectives?Salesman_number=59&year='.$this->Year.'&month='.$this->Month,
+            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/analytics/top500_objectives?Salesman_number='.Auth::user()->id_phc.'&year='.$this->Year.'&month='.$this->Month,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -208,7 +208,7 @@ class Analysis extends Component
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/analytics/margin_objectives?Salesman_number=59&year='.$this->Year.'&month='.$this->Month,
+            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/analytics/margin_objectives?Salesman_number='.Auth::user()->id_phc.'&year='.$this->Year.'&month='.$this->Month,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
