@@ -230,6 +230,7 @@ class DetalheEncomenda extends Component
 
     public function recuarLista()
     {
+        $this->specificProduct = 0;
         return redirect()->route('encomendas.detail', ['id' => $this->idCliente]);
     }
     public function adicionarProduto($categoryNumber, $familyNumber, $subFamilyNumber, $productNumber, $customerNumber, $productName)

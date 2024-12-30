@@ -640,7 +640,27 @@
                                             <ol class="breadcrumb d-flex" style="border-bottom:none;">
                                                 @if($searchNameCategory)<li class="breadcrumb-item"><a href="">{{$searchNameCategory}}</a></li>@endif
                                                 @if($searchNameFamily)<li class="breadcrumb-item"> {{$searchNameFamily}}</li>@endif
-                                                @if($searchNameSubFamily)<li class="breadcrumb-item active">{{$searchNameSubFamily}}</li>@endif
+                                                @if($searchNameSubFamily)
+                                                    <li class="breadcrumb-item active">
+                                                        @if($specificProduct)
+                                                            <a href="#" 
+                                                            onclick="
+                                                                this.style.pointerEvents = 'none'; 
+                                                                this.style.opacity = '0.5'; 
+                                                                setTimeout(() => {
+                                                                    @this.call('recuarLista');
+                                                                }, 50);">
+                                                                {{$searchNameSubFamily}}
+                                                            </a>
+                                                        @else
+                                                            <a href="#">
+                                                                {{$searchNameSubFamily}}
+                                                            </a>
+                                                        @endif
+                                                    </li>
+                                                @endif
+
+
                                             </ol>
                                         </div>
                                         <div class="col-6 col-md">
@@ -814,7 +834,7 @@
                                                                 </div>
                                                             @endforeach
                                                             <!-- Links de paginação -->
-                                                            <div class="d-flex justify-content-center">
+                                                            <div class="d-flex justify-content-center" style="margin-left: 15px;">
                                                                 {{ $products->links('vendor.pagination.livewire-bootstrap') }}
                                                             </div>
                                                         @else
@@ -825,10 +845,10 @@
                                                 </div>
                                             @else
                                                 <div class="tab-encomenda-produto">
-                                                    <div class="row mb-2 border-bottom">
+                                                    {{-- <div class="row mb-2 border-bottom">
                                                         <a href="javascript:void(0)" wire:click="recuarLista" class="mb-3 ml-4"><i
                                                             class="ti-angle-left"></i> Atrás</a>
-                                                    </div>
+                                                    </div> --}}
                                                     @php
 
                                                         $detailProduto = session('detailProduto');
@@ -1357,7 +1377,9 @@
                          <select class="form-control" id="selectBox" wire:model.defer="lojaFinalizar" style="display:none;">
                             @foreach ($lojas as $loja )
                               @foreach ($loja->stores as $store )
-                                <option value="{{json_encode($store->name)}}">{{$store->name}}</option>
+                                @if($store->name)
+                                    <option value="{{json_encode($store->name)}}">{{$store->name}}</option>
+                                @endif
                               @endforeach
                             @endforeach
                          </select>
