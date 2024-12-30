@@ -814,7 +814,7 @@
                                                                 </div>
                                                             @endforeach
                                                             <!-- Links de paginação -->
-                                                            <div class="d-flex justify-content-center">
+                                                            <div class="d-flex justify-content-center" style="margin-left: 15px;">
                                                                 {{ $products->links('vendor.pagination.livewire-bootstrap') }}
                                                             </div>
                                                         @else
