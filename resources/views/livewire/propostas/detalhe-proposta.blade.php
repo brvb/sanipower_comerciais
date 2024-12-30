@@ -456,11 +456,11 @@
                                             @if ($familyInfo == true)
                                                 @if ($idFamilyInfo == $family->id)
                                                     <div class="col-12">
-                                                        <div class="row mb-2">
+                                                        {{-- <div class="row mb-2">
                                                             <a href="javascript:void(0)" wire:click="resetFilter({{ $contaCat }})" class="mb-3 ml-4">
                                                                 <i class="ti-angle-left"></i> Atrás
                                                             </a>
-                                                        </div>
+                                                        </div> --}}
                                                         <div class="row">
                                                             @foreach ($family->subfamily as $subfamily)
 
@@ -643,7 +643,23 @@
                                             <ol class="breadcrumb d-flex" style="border-bottom:none;">
                                                 @if($searchNameCategory)<li class="breadcrumb-item"><a href="">{{$searchNameCategory}}</a></li>@endif
                                                 @if($searchNameFamily)<li class="breadcrumb-item"> {{$searchNameFamily}}</li>@endif
-                                                @if($searchNameSubFamily)<li class="breadcrumb-item active">{{$searchNameSubFamily}}</li>@endif
+                                               
+
+                                                @if($searchNameSubFamily)
+                                                    <li class="breadcrumb-item active">
+                                                        @if($specificProduct)
+                                                            <a href="#"
+                                                            onclick="
+                                                                this.style.pointerEvents = 'none'; 
+                                                                this.style.opacity = '0.5';
+                                                                @this.call('recuarLista');">
+                                                                {{$searchNameSubFamily}}
+                                                            </a>
+                                                        @else
+                                                            <a href="#">{{$searchNameSubFamily}}</a>
+                                                        @endif
+                                                    </li>
+                                                @endif
                                             </ol>
                                         </div>
                                         <div class="col-6 col-md">
