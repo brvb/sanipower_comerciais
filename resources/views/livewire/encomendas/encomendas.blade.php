@@ -287,9 +287,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- {{dd($encomendas )}} --}}
                                     @foreach ($analise as $index => $item)
-    
+                                        @php
+                                            if (is_array($item)) {
+                                                $item = (object) $item;
+                                            }
+                                        @endphp
+
                                         <tr>
                                             <td>{{ $item->Document ?? null }}</td>
                                             <td>{{ $item->Document_number ?? null }}</td>
