@@ -859,7 +859,7 @@
                                                                         <div class="col-12 mb-2">
                                                                             <div class="row">
                                                                                 <div class="col-12 d-flex align-items-center pl-2 row">
-                                                                                    <div class="col-lg-2 col-md-3 col-sm-4 col-6 d-xl-none">
+                                                                                    <div class="col-lg-2 col-md-3 col-sm-4 col-6 d-xxl-none">
                                                                                         <img src="https://storage.sanipower.pt/storage/produtos/{{ $family }}/{{ $family }}-{{ $subFamily }}-{{ $productNumber }}.jpg" width="100%">
                                                                                     </div>
                                                                                     <div class="col">
