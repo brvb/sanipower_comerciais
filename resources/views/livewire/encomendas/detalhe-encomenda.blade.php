@@ -82,12 +82,12 @@
 
 </style>
     <!--  LOADING -->
-    {{-- @if ($showLoaderPrincipal == true)
+    @if ($showLoaderPrincipal == true)
         <div id="loader" style="display: none;">
             <div class="loader" role="status">
             </div>
         </div>
-    @endif --}}
+    @endif
 
     <!-- FIM LOADING -->
 
@@ -644,10 +644,15 @@
                                                     <li class="breadcrumb-item active">
                                                         @if($specificProduct)
                                                             <a href="#"
+                                                            id="recuar-lista-link"
                                                             onclick="
-                                                                this.style.pointerEvents = 'none'; 
-                                                                this.style.opacity = '0.5';
-                                                                @this.call('recuarLista');">
+                                                                if (!this.getAttribute('data-clicked')) {
+                                                                    this.setAttribute('data-clicked', 'true');
+                                                                    this.style.pointerEvents = 'none'; 
+                                                                    this.style.opacity = '0.5';
+                                                                    @this.call('recuarLista');
+                                                                }
+                                                            ">
                                                                 {{$searchNameSubFamily}}
                                                             </a>
                                                         @else
@@ -655,6 +660,8 @@
                                                         @endif
                                                     </li>
                                                 @endif
+
+
 
 
 
@@ -1369,17 +1376,20 @@
                  <div class="col-xl-6 col-xs-6 mt-2">
 
                      <div class="col-xl-12 col-xs-12">
-                         <label id="selectLabel" style="display:none;">Selecione loja</label>
+                        <label id="selectLabel" style="display:none;">Selecione loja</label>
   
-                         <select class="form-control" id="selectBox" wire:model.defer="lojaFinalizar" style="display:none;">
-                            @foreach ($lojas as $loja )
-                              @foreach ($loja->stores as $store )
-                                @if($store->name)
-                                    <option value="{{json_encode($store->name)}}">{{$store->name}}</option>
-                                @endif
-                              @endforeach
-                            @endforeach
-                         </select>
+                        <select class="form-control" id="selectBox" wire:model.defer="lojaFinalizar" style="display:none;">
+                        @foreach ($lojas as $loja)
+                            @if (!is_null($loja) && property_exists($loja, 'stores') && $loja->stores)
+                                @foreach ($loja->stores as $store)
+                                    @if (!is_null($store) && property_exists($store, 'name') && $store->name)
+                                        <option value="{{ json_encode($store->name) }}">{{ $store->name }}</option>
+                                    @endif
+                                @endforeach
+                            @endif
+                        @endforeach
+
+                        </select>
                      </div>
                
 

@@ -159,7 +159,6 @@ class DetalheEncomenda extends Component
 
     public function mount($codvisita, $cliente, $codEncomenda)
     {
-        // dd($codvisita, $cliente, $codEncomenda);
         if(session('Camp1') != 1)
         {
             session(['Camp' => 0]);
@@ -179,7 +178,6 @@ class DetalheEncomenda extends Component
             $this->tabFinalizar = "";
             Session::forget('OpenTabAdjudicarda');
         }
-
         $this->showLoaderPrincipal = true;
     }
     public function setIsMobile($isMobile)
@@ -1615,6 +1613,10 @@ class DetalheEncomenda extends Component
         }
 
         $this->lojas = $this->encomendasRepository->getLojas();
+      
+        if($this->lojas[0] == null){
+            // return redirect()->route('encomendas.detail', ['id' => $this->idCliente]);
+        }
         $campanhas = Campanhas::where('ativa', 1)
         ->where('destaque', 1)
         ->where('dh_fim', '>', now())

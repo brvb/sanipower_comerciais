@@ -116,13 +116,13 @@
         }
 </style>
     <!--  LOADING -->
-    {{-- @if ($showLoaderPrincipal == true)
+    @if ($showLoaderPrincipal == true)
         <div id="loader" style="display: none;">
             <div class="loader" role="status">
 
             </div>
         </div>
-    @endif --}}
+    @endif
 
     <!-- FIM LOADING -->
 
