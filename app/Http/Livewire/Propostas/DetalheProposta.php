@@ -233,7 +233,7 @@ class DetalheProposta extends Component
     public function recuarLista()
     {
         $this->specificProduct = 0;
-        return redirect()->route('propostas.detail', ['id' => $this->idCliente]);
+        // return redirect()->route('propostas.detail', ['id' => $this->idCliente]);
     }
     public function adicionarProduto($categoryNumber, $familyNumber, $subFamilyNumber, $productNumber, $customerNumber, $productName)
     {
