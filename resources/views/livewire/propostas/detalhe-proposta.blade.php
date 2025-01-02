@@ -1390,10 +1390,6 @@
                          <a class="btn btn-primary fundo_azul w-100" style="color:white;" wire:click="finalizarproposta"><i class="las la-angle-right"></i> Finalizar Proposta</a>
                      </div>
                  </div>
-                    
-
-
-
                 </p>
 
             </div>
@@ -1455,7 +1451,6 @@
         </div>
     </div>
 </div>
-
 
 <!-- Modal adicionar compra rapida -->
 <div class="modal fade" id="modalProdutos" tabindex="-1" role="dialog" aria-labelledby="modalProdutos" aria-hidden="true">

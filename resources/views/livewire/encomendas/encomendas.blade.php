@@ -252,9 +252,74 @@
                 </div>
             </div>
         </div>
-
     </div>
 
+        <!-- TABELA  -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card mb-3">
+                    <div class="card-header d-block">
+                        <div class="row">
+                            <div class="col-12 col-sm-4">
+                                <div class="caption uppercase">
+                                    <i class="ti-user"></i> Pendentes
+                                </div>
+                            </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover init-datatable" id="tabela-cliente">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Documento</th>
+                                        <th>Doc. Nº</th>
+                                        <th>Data</th>
+                                        <th>Cliente</th>
+                                        <th>Referência</th>
+                                        <th>Descrição</th>
+                                        <th>Total</th>
+                                        <th>Quant.</th>
+                                        <th>Quant. pendente</th>
+                                        <th>Stock suficiente</th>
+                                        <th>Stock total</th>
+                                        <th>Stock enc.</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($analise as $index => $item)
+                                        @php
+                                            if (is_array($item)) {
+                                                $item = (object) $item;
+                                            }
+                                        @endphp
+
+                                        <tr>
+                                            <td>{{ $item->Document ?? null }}</td>
+                                            <td>{{ $item->Document_number ?? null }}</td>
+                                            <td>{{ $item->Date ?? null }}</td>
+                                            <td>{{ $item->Customer ?? null }}</td>
+                                            <td>{{ $item->Reference ?? null }}</td>
+                                            <td>{{ $item->Description ?? null }}</td>
+                                            <td>{{ number_format($item->Total, 3) ?? null }}€</td>
+                                            <td>{{ $item->Quantity ?? null }}</td>
+                                            <td>{{ $item->Quantity_pending ?? null }}</td>
+                                            <td>{{ $item->Sufficient_stock ?? null }}</td>
+                                            <td>{{ $item->Total_stock ?? null }}</td>
+                                            <td>{{ $item->Stock_ordered ?? null }}</td>
+                                        </tr>                              
+    
+                                    @endforeach
+    
+                                </tbody>
+                            </table>
+                        </div>
+                        {{-- {{ $encomendas->links() }} --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- FIM TABELA  -->
     <script>
 
