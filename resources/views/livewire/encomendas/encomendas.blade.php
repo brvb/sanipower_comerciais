@@ -257,8 +257,8 @@
         <!-- TABELA  -->
 
         <div class="row">
-            <div class="col-lg-12">
-                <div class="card mb-3">
+            <div class="col"  style="width: 90px;">
+                <div class="card mb-3"style="margin-left: 19px;">
                     <div class="card-header d-block">
                         <div class="row">
                             <div class="col-12 col-sm-4">
