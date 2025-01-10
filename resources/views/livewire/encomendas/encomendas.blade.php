@@ -257,8 +257,8 @@
         <!-- TABELA  -->
 
         <div class="row">
-            <div class="col-lg-12">
-                <div class="card mb-3">
+            <div class="col" style="width: 90px;">
+                <div class="card mb-3" style="margin-left: 19px;">
                     <div class="card-header d-block">
                         <div class="row">
                             <div class="col-12 col-sm-4">
@@ -266,9 +266,11 @@
                                     <i class="ti-user"></i> Pendentes
                                 </div>
                             </div>
+                        </div>
                     </div>
+
                     <div class="card-body">
-                        <div class="table-responsive">
+                        <div class="table-responsive" style="overflow-x:auto;">
                             <table class="table table-bordered table-hover init-datatable" id="tabela-cliente">
                                 <thead class="thead-light">
                                     <tr>
@@ -308,13 +310,11 @@
                                             <td>{{ $item->Total_stock ?? null }}</td>
                                             <td>{{ $item->Stock_ordered ?? null }}</td>
                                         </tr>                              
-    
                                     @endforeach
     
                                 </tbody>
                             </table>
                         </div>
-                        {{-- {{ $encomendas->links() }} --}}
                     </div>
                 </div>
             </div>
