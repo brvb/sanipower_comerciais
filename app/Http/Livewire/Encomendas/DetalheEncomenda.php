@@ -162,13 +162,22 @@ class DetalheEncomenda extends Component
         if(session('Camp1') != 1)
         {
             session(['Camp' => 0]);
+            $this->searchProduct = "";
+            session(['searchProduct' => null]);
+            session(['searchNameCategory' => ""]);
+            session(['searchNameFamily' => ""]);
+            session(['searchNameSubFamily' => ""]);
+            session(['Category' => null]);
+            session(['Family' => null]);
+            $this->specificProduct = 0;
+            session(['specificProduct' => $this->specificProduct]);
         }
         $this->initProperties();
         $this->idCliente = $cliente;
         $this->codEncomenda = $codEncomenda;
         $this->codvisita = $codvisita;
 
-        $this->specificProduct = 0;
+        // $this->specificProduct = 0;
         $this->filter = false;
 
         if(session('OpenTabAdjudicarda') == "OpentabArtigos"){
@@ -201,6 +210,7 @@ class DetalheEncomenda extends Component
     public function openDetailProduto($idCategory, $idFamily, $idSubFamily, $productNumber, $idCustomer, $productName)
     {
         $this->specificProduct = 1;
+        session(['specificProduct' => $this->specificProduct]);
 
         $this->tabDetail = "";
         $this->tabProdutos = "show active";
@@ -228,6 +238,7 @@ class DetalheEncomenda extends Component
 
     public function recuarLista()
     {
+        // dd('aqui');
         $this->specificProduct = 0;
         return redirect()->route('encomendas.detail', ['id' => $this->idCliente]);
     }
@@ -392,7 +403,7 @@ class DetalheEncomenda extends Component
 
         $this->searchProduct = "";
         //unset($_SESSION['searchProduct']);
-        session()->forget('searchProduct');
+        // session()->forget('searchProduct');
 
         $this->filter = true;
         $this->familyInfo = true;
@@ -410,10 +421,13 @@ class DetalheEncomenda extends Component
 
     public function searchSubFamily($idCategory, $idFamily, $idSubFamily)
     {
+        // dd($idCategory, $idFamily, $idSubFamily);
         session(['Camp' => 1]);
         session(['Camp1' => 1]);
         session(['CampProds' => null]);
         $this->searchProduct = "";
+        session(['Category' => null]);
+        session(['Family' => null]);
         session(['searchProduct' => $this->searchProduct]);
 
 
@@ -433,10 +447,11 @@ class DetalheEncomenda extends Component
 
             if ($idCtgry->id == $idCategory) {
                 session(['searchNameCategory' => $idCtgry->name]);
-
+                session(['CatID' => $idCategory]);
                 foreach ($idCtgry->family as $idFmly) {
                     if ($idFmly->id === $idFamily) {
                         session(['searchNameFamily' => $idFmly->name]);
+                        session(['FamilyID' => $idFamily]);
 
                         foreach ($idFmly->subfamily as $idSubFmly) {
                             if ($idSubFmly->id === $idSubFamily) {
@@ -470,6 +485,7 @@ class DetalheEncomenda extends Component
         $this->showLoaderPrincipal = true;
 
         $this->specificProduct = 0;
+        session(['specificProduct' => $this->specificProduct]);
 
         $this->iteration++;
         return redirect()->route('encomendas.detail', ['id' => $this->idCliente]);
@@ -497,13 +513,85 @@ class DetalheEncomenda extends Component
         session(['searchNameCategory' => ""]);
         session(['searchNameFamily' => ""]);
         session(['searchNameSubFamily' => ""]);
+        $this->specificProduct = 0;
+        session(['specificProduct' => $this->specificProduct]);
+        session(['Category' => null]);
+        session(['Family' => null]);
+        // session(['searchProduct' => null]);
 
         // $sessions = session()->all();
-    
+        // $this->dispatchBrowserEvent('refreshAllComponent');
         // Exibe todas as sessões
         // dd($sessions); // Isso irá parar a execução e mostrar as sessões
     }
 
+    public function ShowFamily($id)
+    {
+        // dd($id);
+         session(['Category' => $id]);
+         $this->getCategories = $this->encomendasRepository->getCategorias();
+         foreach ($this->getCategories->category as $index => $idCtgry) {
+
+            if ($idCtgry->id == $id) {
+                session(['searchNameCategory' => $idCtgry->name]);
+            }
+        }
+         session(['CatID' => $id]);
+         $this->searchProduct = "";
+         session(['searchProduct' => null]);
+         session(['searchNameFamily' => ""]);
+         session(['searchNameSubFamily' => ""]);
+         $this->specificProduct = 0;
+         session(['specificProduct' => $this->specificProduct]);
+         session(['Camp' => 1]);
+         session(['Camp1' => 1]);
+         session(['CampProds' => null]);
+         session(['Family' => null]);
+         session(['searchProduct' => null]);
+ 
+         // $sessions = session()->all();
+     
+         // Exibe todas as sessões
+         // dd($sessions); // Isso irá parar a execução e mostrar as sessões
+    }
+
+    public function ShowSubFamily($id, $idCat)
+    {
+        $this->getCategories = $this->encomendasRepository->getCategorias();
+        // dd($this->getCategories);
+        foreach ($this->getCategories->category as $index => $idCtgry) {
+
+            if ($idCtgry->id == $idCat) {
+                session(['searchNameCategory' => $idCtgry->name]);
+            }
+            foreach ($idCtgry->family as $idFmly) {
+                if ($idFmly->id === $id) {
+                    session(['searchNameFamily' => $idFmly->name]);
+                }
+            }
+
+        }
+
+        //  dd($id, $idCat);
+         session(['Family' => $id]);
+         session(['CatID' => $idCat]);
+         session(['FamilyID' => $id]);
+         session(['Category' => null]);
+         $this->searchProduct = "";
+         session(['searchProduct' => null]);
+         session(['searchNameSubFamily' => ""]);
+         $this->specificProduct = 0;
+         session(['specificProduct' => $this->specificProduct]);
+         session(['Camp' => 1]);
+         session(['Camp1' => 1]);
+         session(['CampProds' => null]);
+         session(['searchProduct' => null]);
+ 
+         $sessions = session()->all();
+     
+         // Exibe todas as sessões
+        //  dd($sessions); // Isso irá parar a execução e mostrar as sessões
+    }
     public function updatedSearchProduct()
     {
 
@@ -515,10 +603,16 @@ class DetalheEncomenda extends Component
         if ($this->searchProduct != "") {
             $this->searchSubFamily = $this->encomendasRepository->getSubFamilySearch($this->searchProduct);
             session(['searchSubFamily' => $this->searchSubFamily]);
+            // dd($this->searchProduct , $this->searchSubFamily);
 
             session(['searchProduct' => $this->searchProduct]);
-
+            $this->specificProduct = 0;
+            session(['specificProduct' => $this->specificProduct]);
             session(['CampProds' => null]);
+            session(['Category' => null]);
+            session(['Family' => null]);
+            session(['Camp' => 1]);
+            session(['Camp1' => 1]);
         } else {
             $this->searchSubFamily = $this->encomendasRepository->getSubFamily($this->actualCategory, $this->actualFamily, $this->actualSubFamily);
             session(['searchSubFamily' => $this->searchSubFamily]);
@@ -532,7 +626,8 @@ class DetalheEncomenda extends Component
         $this->specificProduct = 0;
         $this->iteration++;
 
-        $this->dispatchBrowserEvent('refreshAllComponent');
+        // $this->dispatchBrowserEvent('refreshAllComponent');
+        return redirect()->route('encomendas.detail', ['id' => $this->idCliente]);
 
     }
 
@@ -1457,7 +1552,7 @@ class DetalheEncomenda extends Component
                     }
                 }
                 
-                session(['searchNameCategory' => "Pesquisa"]);
+                // session(['searchNameCategory' => "Pesquisa"]);
     
                 session(['searchNameFamily' => "$this->searchProduct"]);
     
@@ -1544,6 +1639,9 @@ class DetalheEncomenda extends Component
 
                     if ($this->searchProduct != "") {
                         $this->searchSubFamily = $this->encomendasRepository->getSubFamilySearch($this->searchProduct);
+                        session(['Camp' => 1]);
+                        session(['Category' => null]);
+                        session(['Family' => null]);
                     }
                 }
 
@@ -1551,6 +1649,8 @@ class DetalheEncomenda extends Component
                     // dd('AQUI 001');
                     $this->searchSubFamily = $this->encomendasRepository->getSubFamilySearch($this->searchProduct);
                     session(['Camp' => 1]);
+                    session(['Category' => null]);
+                    session(['Family' => null]);
                 }
                 
                 if (session('CampProds') !== null) {
@@ -1622,7 +1722,19 @@ class DetalheEncomenda extends Component
         ->where('dh_fim', '>', now())
         ->get();
 
-        
+
+        if(session('Camp1') != 1 || session('Camp') == 0)
+        {
+            session(['Camp' => 0]);
+            $this->searchProduct = "";
+            session(['searchProduct' => null]);
+            session(['searchNameCategory' => ""]);
+            session(['searchNameFamily' => ""]);
+            session(['searchNameSubFamily' => ""]);
+            session(['Category' => null]);
+            session(['Family' => null]);
+        }
+        $this->searchProduct = "";
         // if ($this->getCategories->category == null) {
         //     session()->flash('status', 'error');
         //     session()->flash('message', 'Erro ao consultar as categorias! (erro : CP-404)');
@@ -1630,6 +1742,8 @@ class DetalheEncomenda extends Component
         //     return view('pageErro');
         // }
         // dd($products);
+        // dd($this->getCategoriesAll);
+        $this->getCategoriesAll = $this->encomendasRepository->getCategorias();
         return view('livewire.encomendas.detalhe-encomenda', [
             "products" => $products,
             "onkit" => $onkit,
