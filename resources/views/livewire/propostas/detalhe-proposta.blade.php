@@ -555,7 +555,6 @@
                                         </div>
                                     @endforeach
                                     @endif
-
                                     <div class="sidebarProd" id="sidebarProd" wire:ignore>
                                         <label for="checkbox" style="width: 100%;">
                                             <div class="input-group input-group-config-Goback input-config-produtos"
@@ -639,27 +638,34 @@
                                                 $searchNameCategory = session('searchNameCategory');
                                                 $searchNameFamily = session('searchNameFamily');
                                                 $searchNameSubFamily = session('searchNameSubFamily');
+                                                $searchProduct = session('searchProduct');
+                                                $specificProductS = session('specificProduct');
                                             @endphp
+                                            {{-- @dd($searchNameSubFamily); --}}
                                             <ol class="breadcrumb d-flex" style="border-bottom:none;">
-                                                @if($searchNameCategory)<li class="breadcrumb-item"><a href="">{{$searchNameCategory}}</a></li>@endif
-                                                @if($searchNameFamily)<li class="breadcrumb-item"> {{$searchNameFamily}}</li>@endif
-                                               
-
-                                                @if($searchNameSubFamily)
+                                                @if($searchProduct == "")  @if($searchNameCategory)<li class="breadcrumb-item"><a style="color:#1791ba;" wire:click = "ShowFamily({{ session('CatID') }})">{{$searchNameCategory}}</a></li>@endif
+                                                @if($searchNameFamily)<li class="breadcrumb-item"> <a style="color:#1791ba;" wire:click = "ShowSubFamily('{{ session('FamilyID') }}', '{{ session('CatID') }}')">{{$searchNameFamily}}</a></li>@endif @else <li class="breadcrumb-item active"><a style="color:#1791ba;" wire:click = "recuarLista">{{$searchProduct}}</a></li> @endif
+                                                {{-- @if($searchNameSubFamily) --}}
                                                     <li class="breadcrumb-item active">
-                                                        @if($specificProduct)
+                                                        @if($specificProductS == 1)
+                                                        {{-- @dd('AQUI'); --}}
                                                             <a href="#"
+                                                            id="recuar-lista-link"
                                                             onclick="
-                                                                this.style.pointerEvents = 'none'; 
-                                                                this.style.opacity = '0.5';
-                                                                @this.call('recuarLista');">
-                                                                {{$searchNameSubFamily}}
+                                                                if (!this.getAttribute('data-clicked')) {
+                                                                    this.setAttribute('data-clicked', 'true');
+                                                                    this.style.pointerEvents = 'none'; 
+                                                                    this.style.opacity = '0.5';
+                                                                    @this.call('recuarLista');
+                                                                }
+                                                            ">
+                                                                @if($searchProduct != "")  @else {{$searchNameSubFamily}} @endif
                                                             </a>
                                                         @else
                                                             <a href="#">{{$searchNameSubFamily}}</a>
                                                         @endif
                                                     </li>
-                                                @endif
+                                                {{-- @endif --}}
                                             </ol>
                                         </div>
                                         <div class="col-6 col-md">
@@ -686,14 +692,12 @@
                                                         $contaCat++;
                                                     @endphp
                                                     @if (!empty($category->family))
-                                                        <button class="accordion2" style="background: #5f77921c;">{{ $category->id }} -
-                                                            {{ $category->name }}<span
-                                                                class="arrow"><i class="fa-regular fa-square-caret-down"></i></span></button>
+                                                        <button class="accordion2" style="background: #5f77921c;"><a style = "color:black; text-decoration: underline;" wire:click = "ShowFamily({{ $category->id }})">{{ $category->id }} -
+                                                            {{ $category->name }}</a><span class="arrow"><i class="fa-regular fa-square-caret-down"></i></span></button>
                                                         <div class="panel2">
                                                             @foreach ($category->family as $family)
-                                                                <button class="accordion2" style="background-color: #1791ba26;">{{ $family->id }} -
-                                                                    {{ $family->name }}<span
-                                                                        class="arrow"><i class="fa-regular fa-square-caret-down"></i></span></button>
+                                                                <button class="accordion2" style="background-color: #1791ba26;"><a style = "color:black; text-decoration: underline;" wire:click = "ShowSubFamily('{{ $family->id }}', '{{ $category->id }}')">{{ $family->id }} -
+                                                                    {{ $family->name }}</a><span class="arrow"><i class="fa-regular fa-square-caret-down"></i></span></button>
                                                                 <div class="panel2">
                                                                     @foreach ($family->subfamily as $subfamily)
                                                                         <a wire:click="searchSubFamily({{ $category->id }},{{ json_encode($family->id) }},{{ json_encode($subfamily->id) }})"
@@ -729,6 +733,84 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    @if (session('Category') != null)
+                                                        @php
+                                                            $valueCat = session('Category') - 1;
+                                                        @endphp
+                                                        {{-- @dd($getCategories->category[$valueCat]); --}}
+                                                            @foreach ($getCategories->category[$valueCat]->family as $family)
+                                                            <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-3">
+                                                                <div class="card card-decoration card-outline-primary border border-2">
+                                                                    @php
+                                                                    $familyId = $family->id;
+                                                                    $familyIdSemHifen = str_replace('-', '', $familyId);
+                                                                    $editado = str_pad($familyIdSemHifen, 4, '0', STR_PAD_LEFT);
+                                                                    $valueCatEnv = $valueCat + 1;
+                                                                @endphp
+                                                                        {{-- <a href="javascript:void(0)"
+                                                                        wire:click="openDetailProduto({{ json_encode($cam->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subfamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})"
+                                                                        style="pointer-events: auto"> --}}
+                                                                            <div class="mb-1">
+                                                                                <img src="https://storage.sanipower.pt/storage/subfamilias/{{ $editado }}.jpg"
+                                                                                    class="card-img-top" alt="...">
+                                                                                <div class="body-decoration">
+                                                                                    <h5 class="title-description">{{ $family->name }}</h5>
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                        <div class="card-body container-buttons" style="z-index:10;">
+                                                                            <button class="btn btn-sm btn-primary" wire:click="ShowSubFamily('{{ $family->id }}', '{{ $valueCatEnv }}')">
+                                                                                <i class="ti-shopping-cart"></i><span> Ver SubFamilias </span>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            @endforeach
+                                                        <!-- Links de paginação -->
+                                                        {{-- <div class="d-flex justify-content-center">
+                                                            {{ $products->links('vendor.pagination.livewire-bootstrap') }}
+                                                        </div> --}}
+                                                    @else
+                                                    @if (session('Family') != null && session('CatID') != null)
+                                                        @php
+                                                            $valueCat = session('CatID') - 1;
+                                                            $valueFam = session('Family');
+                                                            $valueCatEnv = session('CatID');
+                                                            // dd($valueCat, $valueFam);
+                                                        @endphp
+                                                        {{-- @dd($getCategories->category[$valueCat]); --}}
+                                                            @foreach ($getCategories->category[$valueCat]->family as $family)
+                                                            @if ($family->id == $valueFam)
+                                                            {{-- @dd($family); --}}
+                                                            @foreach ($family->subfamily as $subfamily)
+                                                            <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-3">
+                                                                <div class="card card-decoration card-outline-primary border border-2">
+                                                                        {{-- <a href="javascript:void(0)"
+                                                                        wire:click="openDetailProduto({{ json_encode($cam->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subfamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})"
+                                                                        style="pointer-events: auto"> --}}
+                                                                            <div class="mb-1">
+                                                                                <img src="https://storage.sanipower.pt/storage/subfamilias/{{ $family->id }}/{{ $subfamily->id }}.jpg"
+                                                                                    class="card-img-top" alt="...">
+                                                                                <div class="body-decoration">
+                                                                                    <h5 class="title-description">{{ $subfamily->name }}</h5>
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                        <div class="card-body container-buttons" style="z-index:10;">
+                                                                            <button class="btn btn-sm btn-primary" wire:click="searchSubFamily({{ $valueCatEnv }},{{ json_encode($valueFam) }},{{ json_encode($subfamily->id) }})">
+                                                                                <i class="ti-shopping-cart"></i><span> Ver Produtos </span>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            @endforeach
+                                                            @endif
+                                                            @endforeach
+                                                        <!-- Links de paginação -->
+                                                        {{-- <div class="d-flex justify-content-center">
+                                                            {{ $products->links('vendor.pagination.livewire-bootstrap') }}
+                                                        </div> --}}
+                                                    @else
                                                     @if (session('Camp') == 0)
                                                         @if($campanhas->count())
                                                             @foreach ($campanhas as $cam)
@@ -758,7 +840,9 @@
                                                             {{ $products->links('vendor.pagination.livewire-bootstrap') }}
                                                         </div> --}}
                                                     @else
+                                                    <div>
                                                         <p>Sem Campanhas para exibir.</p>
+                                                    </div>
                                                     @endif 
                                                 @else
                                                     @if(session('CampProds') !== null)
@@ -830,6 +914,8 @@
                                                         @endif
                                                     @endif
                                                 @endif
+                                            @endif
+                                            @endif
                                         {{-- aqui --}}
                                             @else
                                                 <div class="tab-encomenda-produto">
