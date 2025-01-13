@@ -401,7 +401,7 @@
                                     @php
                                         $contaCat = 0;
                                     @endphp
-                                    @foreach ($getCategories->category as $i => $cat)
+                                    @foreach ($getCategoriesAll->category as $i => $cat)
                                         @php
                                             $contaCat++;
                                         @endphp
@@ -748,7 +748,7 @@
                                                         $valueCat = session('Category') - 1;
                                                     @endphp
                                                     {{-- @dd($getCategories->category[$valueCat]); --}}
-                                                        @foreach ($getCategories->category[$valueCat]->family as $family)
+                                                        @foreach ($getCategoriesAll->category[$valueCat]->family as $family)
                                                         <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-3">
                                                             <div class="card card-decoration card-outline-primary border border-2">
                                                                 @php
@@ -789,7 +789,7 @@
                                                         // dd($valueCat, $valueFam);
                                                     @endphp
                                                     {{-- @dd($getCategories->category[$valueCat]); --}}
-                                                        @foreach ($getCategories->category[$valueCat]->family as $family)
+                                                        @foreach ($getCategoriesAll->category[$valueCat]->family as $family)
                                                         @if ($family->id == $valueFam)
                                                         {{-- @dd($family); --}}
                                                         @foreach ($family->subfamily as $subfamily)

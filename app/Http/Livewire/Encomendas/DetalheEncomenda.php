@@ -199,7 +199,7 @@ class DetalheEncomenda extends Component
 
         dd($arrayCliente);
         $this->detailsClientes = $arrayCliente["object"];
-        $this->getCategories = $this->encomendasRepository->getCategorias();
+        // $this->getCategories = $this->encomendasRepository->getCategorias();
         $this->getCategoriesAll = $this->encomendasRepository->getCategorias();
 
         $this->searchProduct = "";
@@ -309,7 +309,7 @@ class DetalheEncomenda extends Component
 
         $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
         $this->detailsClientes = $arrayCliente["object"];
-        $this->getCategories = $this->encomendasRepository->getCategorias();
+        // $this->getCategories = $this->encomendasRepository->getCategorias();
         $this->getCategoriesAll = $this->encomendasRepository->getCategorias();
 
         // Disparar evento para o navegador
@@ -391,7 +391,7 @@ class DetalheEncomenda extends Component
     {
         $this->getCategoriesAll = $this->encomendasRepository->getCategorias();
 
-        $this->getCategories = $this->encomendasRepository->getCategoriasSearched($this->getCategoriesAll->category[$idCategory - 1]->id, $idFamily);
+        $this->getCategoriesAll = $this->encomendasRepository->getCategoriasSearched($this->getCategoriesAll->category[$idCategory - 1]->id, $idFamily);
         $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
         $this->detailsClientes = $arrayCliente["object"];
 
@@ -433,8 +433,8 @@ class DetalheEncomenda extends Component
 
         // $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
         // $this->detailsClientes = $arrayCliente["object"];
-        $this->getCategories = $this->encomendasRepository->getCategorias();
-        // $this->getCategoriesAll = $this->encomendasRepository->getCategorias();
+        // $this->getCategories = $this->encomendasRepository->getCategorias();
+        $this->getCategoriesAll = $this->encomendasRepository->getCategorias();
         $this->searchSubFamily = $this->encomendasRepository->getSubFamily($idCategory, $idFamily, $idSubFamily);
 
         $this->actualCategory = $idCategory;
@@ -443,7 +443,7 @@ class DetalheEncomenda extends Component
 
         session(['searchSubFamily' => $this->searchSubFamily]);
         // dd($this->getCategories->category[]);
-        foreach ($this->getCategories->category as $index => $idCtgry) {
+        foreach ($this->getCategoriesAll->category as $index => $idCtgry) {
 
             if ($idCtgry->id == $idCategory) {
                 session(['searchNameCategory' => $idCtgry->name]);
@@ -529,8 +529,8 @@ class DetalheEncomenda extends Component
     {
         // dd($id);
          session(['Category' => $id]);
-         $this->getCategories = $this->encomendasRepository->getCategorias();
-         foreach ($this->getCategories->category as $index => $idCtgry) {
+         $this->getCategoriesAll = $this->encomendasRepository->getCategorias();
+         foreach ($this->getCategoriesAll->category as $index => $idCtgry) {
 
             if ($idCtgry->id == $id) {
                 session(['searchNameCategory' => $idCtgry->name]);
@@ -557,9 +557,9 @@ class DetalheEncomenda extends Component
 
     public function ShowSubFamily($id, $idCat)
     {
-        $this->getCategories = $this->encomendasRepository->getCategorias();
+        $this->getCategoriesAll = $this->encomendasRepository->getCategorias();
         // dd($this->getCategories);
-        foreach ($this->getCategories->category as $index => $idCtgry) {
+        foreach ($this->getCategoriesAll->category as $index => $idCtgry) {
 
             if ($idCtgry->id == $idCat) {
                 session(['searchNameCategory' => $idCtgry->name]);
@@ -595,7 +595,7 @@ class DetalheEncomenda extends Component
     public function updatedSearchProduct()
     {
 
-        $this->getCategories = $this->encomendasRepository->getCategorias();
+        // $this->getCategories = $this->encomendasRepository->getCategorias();
         $this->getCategoriesAll = $this->encomendasRepository->getCategorias();
         $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
         $this->detailsClientes = $arrayCliente["object"];
@@ -633,7 +633,7 @@ class DetalheEncomenda extends Component
 
     public function resetFilterEncomenda($idCategory)
     {
-        $this->getCategories = $this->encomendasRepository->getCategorias();
+        // $this->getCategories = $this->encomendasRepository->getCategorias();
         $this->getCategoriesAll = $this->encomendasRepository->getCategorias();
         $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
         $this->detailsClientes = $arrayCliente["object"];
@@ -1476,7 +1476,7 @@ class DetalheEncomenda extends Component
         $this->detailsClientes = $arrayCliente["object"];
 
 
-        $this->getCategories = $this->encomendasRepository->getCategorias();
+        // $this->getCategories = $this->encomendasRepository->getCategorias();
         
         $this->getCategoriesAll = $this->encomendasRepository->getCategorias();
 
@@ -1600,7 +1600,7 @@ class DetalheEncomenda extends Component
         } else {
             // $this->getCategories = $this->encomendasRepository->getCategorias();
 
-            $firstCategories = $this->getCategories->category[0];
+            $firstCategories = $this->getCategoriesAll->category[0];
             session(['searchNameCategory' => $firstCategories->name]);
 
             $firstFamily = $firstCategories->family[0];
@@ -1749,7 +1749,7 @@ class DetalheEncomenda extends Component
             "onkit" => $onkit,
             "allkit" => $allkit,
             "detalhesCliente" => $this->detailsClientes,
-            "getCategories" => $this->getCategories,
+            // "getCategories" => $this->getCategories,
             "getCategoriesAll" => $this->getCategoriesAll,
             "searchSubFamily" => $this->searchSubFamily,
             "arrayCart" => $arrayCart,
