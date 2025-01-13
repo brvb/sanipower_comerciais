@@ -203,7 +203,7 @@ class DetalheProposta extends Component
     {
         $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
         $this->detailsClientes = $arrayCliente["object"];
-        $this->getCategories = $this->PropostasRepository->getCategorias();
+        // $this->getCategories = $this->PropostasRepository->getCategorias();
         $this->getCategoriesAll = $this->PropostasRepository->getCategorias();
 
         $this->searchProduct = "";
@@ -284,7 +284,7 @@ class DetalheProposta extends Component
 
         $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
         $this->detailsClientes = $arrayCliente["object"];
-        $this->getCategories = $this->PropostasRepository->getCategorias();
+        // $this->getCategories = $this->PropostasRepository->getCategorias();
         $this->getCategoriesAll = $this->PropostasRepository->getCategorias();
 
         // Disparar evento para o navegador
@@ -364,7 +364,7 @@ class DetalheProposta extends Component
     {
         $this->getCategoriesAll = $this->PropostasRepository->getCategorias();
 
-        $this->getCategories = $this->PropostasRepository->getCategoriasSearched($this->getCategoriesAll->category[$idCategory - 1]->id, $idFamily);
+        // $this->getCategories = $this->PropostasRepository->getCategoriasSearched($this->getCategoriesAll->category[$idCategory - 1]->id, $idFamily);
         $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
         $this->detailsClientes = $arrayCliente["object"];
 
@@ -433,7 +433,7 @@ class DetalheProposta extends Component
 
         $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
         $this->detailsClientes = $arrayCliente["object"];
-        $this->getCategories = $this->PropostasRepository->getCategorias();
+        // $this->getCategories = $this->PropostasRepository->getCategorias();
         $this->getCategoriesAll = $this->PropostasRepository->getCategorias();
         $this->searchSubFamily = $this->PropostasRepository->getSubFamily($idCategory, $idFamily, $idSubFamily);
 
@@ -443,7 +443,7 @@ class DetalheProposta extends Component
 
         session(['searchSubFamily' => $this->searchSubFamily]);
         // dd($this->getCategories->category[]);
-        foreach ($this->getCategories->category as $index => $idCtgry) {
+        foreach ($this->getCategoriesAll->category as $index => $idCtgry) {
 
             if ($idCtgry->id == $idCategory) {
                 session(['searchNameCategory' => $idCtgry->name]);
@@ -499,7 +499,7 @@ class DetalheProposta extends Component
     public function updatedSearchProduct()
     {
 
-        $this->getCategories = $this->PropostasRepository->getCategorias();
+        $this->getCategoriesAll = $this->PropostasRepository->getCategorias();
         $this->getCategoriesAll = $this->PropostasRepository->getCategorias();
         $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
         $this->detailsClientes = $arrayCliente["object"];
@@ -571,8 +571,8 @@ class DetalheProposta extends Component
     {
         // dd($id);
          session(['Category' => $id]);
-         $this->getCategories = $this->PropostasRepository->getCategorias();
-         foreach ($this->getCategories->category as $index => $idCtgry) {
+         $this->getCategoriesAll = $this->PropostasRepository->getCategorias();
+         foreach ($this->getCategoriesAll->category as $index => $idCtgry) {
 
             if ($idCtgry->id == $id) {
                 session(['searchNameCategory' => $idCtgry->name]);
@@ -599,9 +599,9 @@ class DetalheProposta extends Component
 
     public function ShowSubFamily($id, $idCat)
     {
-        $this->getCategories = $this->PropostasRepository->getCategorias();
+        $this->getCategoriesAll = $this->PropostasRepository->getCategorias();
         // dd($this->getCategories);
-        foreach ($this->getCategories->category as $index => $idCtgry) {
+        foreach ($this->getCategoriesAll->category as $index => $idCtgry) {
 
             if ($idCtgry->id == $idCat) {
                 session(['searchNameCategory' => $idCtgry->name]);
@@ -637,7 +637,7 @@ class DetalheProposta extends Component
 
     public function resetFilter($idCategory)
     {
-        $this->getCategories = $this->PropostasRepository->getCategorias();
+        // $this->getCategories = $this->PropostasRepository->getCategorias();
         $this->getCategoriesAll = $this->PropostasRepository->getCategorias();
         $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
         $this->detailsClientes = $arrayCliente["object"];
@@ -1669,7 +1669,7 @@ class DetalheProposta extends Component
         $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
         $this->detailsClientes = $arrayCliente["object"];
 
-        $this->getCategories = $this->PropostasRepository->getCategorias();
+        // $this->getCategories = $this->PropostasRepository->getCategorias();
         $this->getCategoriesAll = $this->PropostasRepository->getCategorias();
         // session()->forget('searchSubFamily');
      
@@ -1799,7 +1799,7 @@ class DetalheProposta extends Component
             // $this->searchSubFamily = $this->PropostasRepository->getSubFamily($this->actualCategory, $this->actualFamily, $this->actualSubFamily);
         } else {
             // $this->getCategories = $this->PropostasRepository->getCategorias();
-            $firstCategories = $this->getCategories->category[0];
+            $firstCategories = $this->getCategoriesAll->category[0];
             session(['searchNameCategory' => $firstCategories->name]);
 
             $firstFamily = $firstCategories->family[0];
@@ -1932,7 +1932,7 @@ class DetalheProposta extends Component
         }
         $this->searchProduct = "";
 
-        $this->getCategories = $this->PropostasRepository->getCategorias();
+        // $this->getCategories = $this->PropostasRepository->getCategorias();
 
         $this->getCategoriesAll = $this->PropostasRepository->getCategorias();
         // dd($this->getCategoriesAll, $this->getCategories);
@@ -1941,7 +1941,7 @@ class DetalheProposta extends Component
             "onkit" => $onkit,
             "allkit" => $allkit,
             "detalhesCliente" => $this->detailsClientes,
-            "getCategories" => $this->getCategories,
+            // "getCategories" => $this->getCategories,
             "getCategoriesAll" => $this->getCategoriesAll,
             "searchSubFamily" => $this->searchSubFamily,
             "arrayCart" => $arrayCart,
