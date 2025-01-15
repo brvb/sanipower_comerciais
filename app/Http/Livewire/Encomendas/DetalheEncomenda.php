@@ -1254,12 +1254,12 @@ class DetalheEncomenda extends Component
 
         $response = curl_exec($curl);
 
-        // dd($response);T
+        // dd($response);
 
         curl_close($curl);
 
         $response_decoded = json_decode($response);
-
+        dd($response_decoded, env('SANIPOWER_URL_DIGITAL').'/api/documents/orders', json_encode($array), $array);
         if ($response_decoded->success == true) {
             $getEncomenda = Carrinho::where('id_encomenda','!=', "")->where('id_cliente',$idCliente)->first();
 
@@ -1281,27 +1281,48 @@ class DetalheEncomenda extends Component
         
             $pdfContent = $pdf->output();
         
-            $grupos = GrupoEmail::where('local_funcionamento', 'nova_encomenda')->get();
-                    if(isset($grupos)){
-                        $this->emailArray = [];
+            // $grupos = GrupoEmail::where('local_funcionamento', 'nova_encomenda')->get();
+            //         if(isset($grupos)){
+            //             $this->emailArray = [];
 
-                        foreach ($grupos as $grupo) {
-                            $emails = array_map('trim', explode(',', $grupo->emails));
+            //             foreach ($grupos as $grupo) {
+            //                 $emails = array_map('trim', explode(',', $grupo->emails));
                     
-                            $this->emailArray = array_merge($this->emailArray, $emails);
-                        }
+            //                 $this->emailArray = array_merge($this->emailArray, $emails);
+            //             }
                         
-                        $this->emailArray[] = Auth::user()->email;
+            //             $this->emailArray[] = Auth::user()->email;
 
-                        // array_push($this->emailArray,Auth::user()->email); Esse é o email do utilizador atual
-                        $this->emailArray = array_unique($this->emailArray);
+            //             // array_push($this->emailArray,Auth::user()->email); Esse é o email do utilizador atual
+            //             $this->emailArray = array_unique($this->emailArray);
                         
-                        foreach($this->emailArray as $i => $email)
-                        {
-                            Mail::to($email)->send(new SendEncomenda($pdfContent, json_decode($encomenda, true)));
-                        }
+            //             foreach($this->emailArray as $i => $email)
+            //             {
+            //                 Mail::to($email)->send(new SendEncomenda($pdfContent, json_decode($encomenda, true)));
+            //             }
 
-                    }
+            //         }
+
+            $grupos = GrupoEmail::where('local_funcionamento', 'nova_encomenda')->get();
+
+            if (isset($grupos)) {
+                $this->emailArray = [];
+
+                foreach ($grupos as $grupo) {
+                    $emails = array_map('trim', explode(',', $grupo->emails));
+                    $this->emailArray = array_merge($this->emailArray, $emails);
+                }
+
+                // $this->emailArray[] = Auth::user()->email;
+
+                $this->emailArray = array_unique($this->emailArray);
+
+                if (!empty($this->emailArray)) {
+                    Mail::to(Auth::user()->email)
+                        ->bcc($this->emailArray)
+                        ->send(new SendEncomenda($pdfContent, json_decode($encomenda, true)));
+                }
+            }
 
 
             session(['parametroStatusAdjudicar' => null]);
@@ -1551,7 +1572,6 @@ class DetalheEncomenda extends Component
                         }
                     }
                 }
-                
                 // session(['searchNameCategory' => "Pesquisa"]);
     
                 session(['searchNameFamily' => "$this->searchProduct"]);
@@ -1648,6 +1668,7 @@ class DetalheEncomenda extends Component
                 if ($this->searchProduct != "") {
                     // dd('AQUI 001');
                     $this->searchSubFamily = $this->encomendasRepository->getSubFamilySearch($this->searchProduct);
+                    // dd($this->searchSubFamily);
                     session(['Camp' => 1]);
                     session(['Category' => null]);
                     session(['Family' => null]);
@@ -1741,7 +1762,7 @@ class DetalheEncomenda extends Component
             
         //     return view('pageErro');
         // }
-        // dd($products);
+        // dd($products,$onkit,$allkit,$this->detailsClientes,$this->getCategoriesAll,$this->searchSubFamily,$arrayCart,$this->codEncomenda,$campanhas);
         // dd($this->getCategoriesAll);
         $this->getCategoriesAll = $this->encomendasRepository->getCategorias();
         return view('livewire.encomendas.detalhe-encomenda', [

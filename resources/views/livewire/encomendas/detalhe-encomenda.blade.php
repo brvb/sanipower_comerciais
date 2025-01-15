@@ -965,7 +965,7 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="table-responsive" style="overflow-x:auto;">
-                                                                            <table class="table table-bordered table-hover" style="min-width: 580px;">
+                                                                            <table class="table table-bordered table-hover" style="min-width: 580px; min-height: 270px;">
                                                                                 <thead class="thead-light">
                                                                                     <tr>
                                                                                         <th style="width: 15%;">Referência</th>
@@ -983,7 +983,6 @@
                                                                                 <tbody>
                                                                                 
                                                                                     @if (!empty($detailProduto) || isset($detailProduto->product))
-                                                                                
                                                                                         @foreach ($detailProduto->product as $i => $prod)
                                                                                             <tr style="background-color:{{ $prod->color }}">
                                                                                                 <td>{{ $prod->referense }}</td>
@@ -992,12 +991,12 @@
                                                                                                 <td>{{ $prod->discount }}</td>
                                                                                                 <td>{{ number_format($prod->price, 3) }}€</td>
                                                                                                 <td>{{ $prod->quantity }}</td>
-                                                                                                <td style="text-align:center;font-size:large;">
+                                                                                                <td style="text-align:center;font-size:large;position:relative;">
                                                                                                     @if ($prod->in_stock == true)
                                                                                                         <a class="popover-test" data-toggle="tooltip" data-placement="top" title="Clique para ver os valores">
                                                                                                             <div class="dropdownIcon">
                                                                                                                 <i class="ti-check text-lg text-forest dropdownIcon-toggle"></i>
-                                                                                                                <ul class="dropdownIcon-menu">
+                                                                                                                <ul class="dropdownIcon-menu" style="position:absolute; z-index:999999;">
                                                                                                                     <li><i class="fa fa-play icon-play"></i></li>
                                                                                                                     <li style="border-bottom: 1px solid;">
                                                                                                                         <h5 style = "text-align: left; margin:2px; font-weight: 600;">Stocks em loja</h5>
@@ -1583,7 +1582,7 @@
             <div class="modal-body" id="scrollModal" style="overflow-y: auto;max-height:500px;">
                 <div class="card mb-3">
                     <div class="card-body">
-                        <div class="table-responsive" style="overflow-x:none!important;">
+                        <div class="table-responsive" style="overflow-x:none!important; min-height: 250px;">
                             <table class="table table-bordered table-hover">
                                 <thead class="thead-light">
                                     <tr>

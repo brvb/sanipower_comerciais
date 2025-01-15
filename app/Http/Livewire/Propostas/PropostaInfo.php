@@ -223,21 +223,43 @@ class PropostaInfo extends Component
         
         // $this->emailArray[] = Auth::user()->email;
 
-        foreach($this->emailArray as $i => $email)
-        {
-            // Separa o e-mail do restante usando " - " como delimitador
-            $emailParts = explode(" - ", $email);
-            $emailAddress = $emailParts[0]; // Pega apenas o e-mail
-            if(isset($this->emailSend[$i]))
-            {
-                if($this->emailSend[$i] == true)
-                {
-                    Mail::to($emailAddress)->send(new SendProposta($pdfContent, $proposta['budget']));
-                }
-            }
+        // foreach($this->emailArray as $i => $email)
+        // {
+        //     // Separa o e-mail do restante usando " - " como delimitador
+        //     $emailParts = explode(" - ", $email);
+        //     $emailAddress = $emailParts[0]; // Pega apenas o e-mail
+        //     if(isset($this->emailSend[$i]))
+        //     {
+        //         if($this->emailSend[$i] == true)
+        //         {
+        //             Mail::to($emailAddress)->send(new SendProposta($pdfContent, $proposta['budget']));
+        //         }
+        //     }
            
+        // }
+
+        // $this->emailArray = [];
+
+
+        $bccEmails = [];
+        foreach ($this->emailArray as $i => $email) {
+            $emailParts = explode(" - ", $email);
+            $emailAddress = trim($emailParts[0]);
+
+            if (isset($this->emailSend[$i]) && $this->emailSend[$i] == true) {
+                $bccEmails[] = $emailAddress;
+            }
         }
 
+        $bccEmails = array_unique($bccEmails);
+
+        if (!empty($bccEmails)) {
+            Mail::to(Auth::user()->email)
+                ->bcc($bccEmails)
+                ->send(new SendProposta($pdfContent, $proposta['budget']));
+        }
+
+        // Limpa o array após o envio
         $this->emailArray = [];
 
         $this->dispatchBrowserEvent('checkToaster', ["message" => "Email enviado!", "status" => "success"]);
@@ -436,28 +458,51 @@ class PropostaInfo extends Component
             if ($responseArray["success"] == true) {
                 $message = "Comentário adicionado com sucesso!";
                 $status = "success";
+                // if (property_exists($propostas, 'budgets') && isset($propostas->budgets[0])) {
+                //     $grupos = GrupoEmail::where('local_funcionamento', 'comentarios_propostas')->get();
+                //     if(isset($grupos)){
+                //         $this->emailArray = [];
+
+                //         foreach ($grupos as $grupo) {
+                //             $emails = array_map('trim', explode(',', $grupo->emails));
+                    
+                //             $this->emailArray = array_merge($this->emailArray, $emails);
+                //         }
+                        
+                //         $this->emailArray[] = Auth::user()->email;
+
+                //         // array_push($this->emailArray,Auth::user()->email); Esse é o email do utilizador atual
+                //         $this->emailArray = array_unique($this->emailArray);
+                        
+                //         foreach($this->emailArray as $i => $email)
+                //         {
+                //             Mail::to($email)->send(new SendComentario($propostas, $this->comentarioEncomenda));
+                //         }
+                //     }
+                // }
                 if (property_exists($propostas, 'budgets') && isset($propostas->budgets[0])) {
                     $grupos = GrupoEmail::where('local_funcionamento', 'comentarios_propostas')->get();
-                    if(isset($grupos)){
+                
+                    if (isset($grupos)) {
                         $this->emailArray = [];
-
+                
                         foreach ($grupos as $grupo) {
                             $emails = array_map('trim', explode(',', $grupo->emails));
-                    
                             $this->emailArray = array_merge($this->emailArray, $emails);
                         }
-                        
-                        $this->emailArray[] = Auth::user()->email;
-
-                        // array_push($this->emailArray,Auth::user()->email); Esse é o email do utilizador atual
+                
+                        // $this->emailArray[] = Auth::user()->email;
+                
                         $this->emailArray = array_unique($this->emailArray);
-                        
-                        foreach($this->emailArray as $i => $email)
-                        {
-                            Mail::to($email)->send(new SendComentario($propostas, $this->comentarioEncomenda));
+                
+                        if (!empty($this->emailArray)) {
+                            Mail::to(Auth::user()->email)
+                                ->bcc($this->emailArray)
+                                ->send(new SendComentario($propostas, $this->comentarioEncomenda));
                         }
                     }
                 }
+                
             } else {
                 $message = "Não foi possível adicionar o comentário!";
                 $status = "error";

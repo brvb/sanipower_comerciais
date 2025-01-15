@@ -956,7 +956,7 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="table-responsive" style="overflow-x:auto;">
-                                                                            <table class="table table-bordered table-hover" style="min-width: 580px;">
+                                                                            <table class="table table-bordered table-hover" style="min-width: 580px; min-height: 270px;">
                                                                                 <thead class="thead-light">
                                                                                     <tr>
                                                                                         <th style="width: 15%;">Referência</th>
@@ -1569,7 +1569,7 @@
             <div class="modal-body" id="scrollModal" style="overflow-y: auto;max-height:500px;">
                 <div class="card mb-3">
                     <div class="card-body">
-                        <div class="table-responsive" style="overflow-x:none!important;">
+                        <div class="table-responsive" style="overflow-x:none!important; min-height: 250px;">
                             <table class="table table-bordered table-hover">
                                 <thead class="thead-light">
                                     <tr>

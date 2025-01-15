@@ -270,19 +270,38 @@ class EncomendaInfo extends Component
     
         
    
-        foreach($this->emailArray as $i => $email)
-        {
-            $emailParts = explode(" - ", $email);
-            $emailAddress = $emailParts[0];
-            if(isset($this->emailSend[$i]))
-            {
-                if($this->emailSend[$i] == true)
-                {
-                    // dd(json_encode($encomenda));
-                    Mail::to($emailAddress)->send(new SendEncomenda($pdfContent, $encomenda));
-                }
-            }
+        // foreach($this->emailArray as $i => $email)
+        // {
+        //     $emailParts = explode(" - ", $email);
+        //     $emailAddress = $emailParts[0];
+        //     if(isset($this->emailSend[$i]))
+        //     {
+        //         if($this->emailSend[$i] == true)
+        //         {
+        //             // dd(json_encode($encomenda));
+        //             Mail::to($emailAddress)->send(new SendEncomenda($pdfContent, $encomenda));
+        //         }
+        //     }
            
+        // }
+
+        $this->emailArray = array_map(function ($email) {
+            $emailParts = explode(" - ", $email);
+            return trim($emailParts[0]);
+        }, $this->emailArray);
+        
+        $bccEmails = [];
+        foreach ($this->emailArray as $i => $emailAddress) {
+            if (isset($this->emailSend[$i]) && $this->emailSend[$i] == true) {
+                $bccEmails[] = $emailAddress;
+            }
+        }
+        
+        if (!empty($bccEmails)) {
+
+            Mail::to(Auth::user()->email)
+                ->bcc($bccEmails)
+                ->send(new SendEncomenda($pdfContent, $encomenda));
         }
 
         $this->emailArray = [];
