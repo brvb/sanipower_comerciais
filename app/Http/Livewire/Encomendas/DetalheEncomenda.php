@@ -1259,7 +1259,7 @@ class DetalheEncomenda extends Component
         curl_close($curl);
 
         $response_decoded = json_decode($response);
-        dd($response_decoded, env('SANIPOWER_URL_DIGITAL').'/api/documents/orders', json_encode($array), $array);
+        // dd($response_decoded, env('SANIPOWER_URL_DIGITAL').'/api/documents/orders', json_encode($array), $array);
         if ($response_decoded->success == true) {
             $getEncomenda = Carrinho::where('id_encomenda','!=', "")->where('id_cliente',$idCliente)->first();
 
