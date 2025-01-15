@@ -177,6 +177,8 @@ class EncomendasRepository implements EncomendasInterface
 
         $response_decoded = json_decode($response);
 
+        // dd(env('SANIPOWER_URL_DIGITAL').'/api/products/products?category_number='.$idCategory.'&family_number='.$idFamily.'&subfamily_number='.$idSubFamily.'&product_number='.$productNumber.'&customer_number='.$idCustomer.'&img=false', $response_decoded);
+
         // if (isset($response_decoded->product) && is_array($response_decoded->product)) {
         //     $filtered_products = array_filter($response_decoded->product, function($prod) {
         //         return $prod->quantity != "0";

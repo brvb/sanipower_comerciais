@@ -894,13 +894,19 @@ class DetalheVisitas extends Component
                 $this->emailArray = array_merge($this->emailArray, $emails);
             }
 
-            $this->emailArray[] = Auth::user()->email;
+            // $this->emailArray[] = Auth::user()->email;
 
-        foreach($this->emailArray as $i => $email)
-        {
-            // dd($getVisitaID, $visit);
-            Mail::to($email)->send(new SendRelatorio($pdfContents, json_encode($getVisitaID), json_encode($visit)));
-        }
+            $this->emailArray = array_unique($this->emailArray);
+
+        // foreach($this->emailArray as $i => $email)
+        // {
+        //     // dd($getVisitaID, $visit);
+        //     Mail::to($email)->send(new SendRelatorio($pdfContents, json_encode($getVisitaID), json_encode($visit)));
+        // }
+
+        Mail::to(Auth::user()->email) // Pode ser um destinatário fixo ou um genérico
+        ->bcc($this->emailArray) // Adiciona todos os e-mails como BCC
+        ->send(new SendRelatorio($pdfContents, json_encode($getVisitaID), json_encode($visit)));
 
         $responseArray = $sendPHC->getData(true);
         

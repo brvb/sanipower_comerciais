@@ -1525,12 +1525,12 @@ class DetalheProposta extends Component
                 $emailUsuarioLogado = Auth::user()->email;
 
                 // tem que ativar quando for passar para a oficial
-               foreach($emailArray as $i => $email)
-                {
-                    Mail::to($email)
-                        ->cc($emailUsuarioLogado)
-                        ->send(new SendProposta($pdfContent, $proposta->budgets[0]->budget));
-                }
+            //    foreach($emailArray as $i => $email)
+            //     {
+            //         Mail::to($email)
+            //             ->cc($emailUsuarioLogado)
+            //             ->send(new SendProposta($pdfContent, $proposta->budgets[0]->budget));
+            //     }
 
             }
           
