@@ -243,7 +243,7 @@
                                     </td>
                                     <td style="border:none;border-bottom:solid black 1.0pt;padding:0cm 0cm 0cm 0cm">
                                         <p class="MsoNormal" align="right" style="text-align:right;line-height:10.5pt">
-                                            <span style="font-size:5.5pt;font-family:\'Arial\',sans-serif">5'.$line['discount'].'% '; if($line['discount2'] > 0 ){echo '+'.$line['discount2'];} echo'</span>
+                                            <span style="font-size:5.5pt;font-family:\'Arial\',sans-serif">'.$line['discount'].'% '; if($line['discount2'] > 0 ){echo '+'.$line['discount2'];} echo'</span>
                                         </p>
                                     </td>
                                     <td style="border:none;border-bottom:solid black 1.0pt;padding:0cm 0cm 0cm 0cm">

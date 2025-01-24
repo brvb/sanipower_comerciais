@@ -96,23 +96,27 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th>Data</th>
-                                    <th>Encomenda</th>
+                                    <th>Documento</th>
                                     <th>Total</th>
-                                    <th>Estado</th>                                  
+                                    <th>Tipo</th>
+                                    <th></th>                                  
                                     <th>Ações</th>
-
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($detalhesOcorrencias as $detalhe)
                                     <tr>
                                         <td>{{ date('Y-m-d', strtotime($detalhe->date)) }}</td>
-                                        <td>{{ $detalhe->occurrence }}</td>
+                                        <td>{{ $detalhe->document }} Nº {{ $detalhe->document_number }}</td>
                                         <td>{{ number_format($detalhe->total, 3) }}€</td>
-                                        <td>{{ $detalhe->status }}</td>
+                                        <td>{{ $detalhe->type_1 }}</td>
+                                        <td>{{ $detalhe->type_2 }}</td>
                                         <td>
                                             <button type="button" class="btn btn-sm btn-primary" wire:click="detalheOcorrenciasModal({{ json_encode($detalhe) }})">
                                                 <i class="fas fa-info"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-primary" wire:click="detalhesOcorrenciasModal({{ json_encode($detalhe) }})">
+                                                Detalhes
                                             </button>
                                         </td>
                                     </tr>
@@ -249,6 +253,50 @@
         </div>
     </div>
 
+    <div class="modal fade" id="detalhesOcorrenciasModal" tabindex="-1" role="dialog" aria-labelledby="detalhesOcorrenciasModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered" style="margin: 1.75rem auto;" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detalhesOcorrenciasModalLabel">Detalhes da Ocorrência</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Por quem?</th>
+                                <th>Data NC.</th>
+                                <th>Nota de crédito Nº</th>
+                                <th>Guia de transporte?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if($detailsLine)
+                                @foreach ($detailsLine['details'] as $prod)
+                                    <tr>
+                                        <td>{{ $prod['by_whom'] }}</td>
+                                        <td>{{ $prod['credit_note_date'] }}</td>
+                                        <td>{{ $prod['credit_note_number'] }}</td>
+                                        <td>{{ isset($prod['transport_guide']) && $prod['transport_guide'] ? 'Sim' : 'Não'  }}</td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="6">Não foram encontrados registos para exibir.</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="cursor:pointer">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!----->
 
     <script>
@@ -270,6 +318,9 @@
 
         document.addEventListener('openDetalheOcorrenciasModal', function() {
          $('#detalheOcorrenciasModal').modal('show');
+        });
+        document.addEventListener('openDetalhesOcorrenciasModal', function() {
+         $('#detalhesOcorrenciasModal').modal('show');
         });
     </script>
 

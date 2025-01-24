@@ -12,6 +12,7 @@ use App\Http\Controllers\CampanhasController;
 use App\Http\Controllers\AnaliseController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OcorrenciasController;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,6 +76,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/campanhas', [CampanhasController::class, 'index'])->name('campanhas');
 
+    Route::get('/ocorrencias', [OcorrenciasController::class, 'index'])->name('ocorrencias');
+    Route::get('/ocorrencias/{idOcorrencia}', [OcorrenciasController::class, 'showDetailOcorrencia'])->name('ocorrencias.ocorrencia');
 
     Route::get('/Analise', [AnaliseController::class, 'index'])->name('Analise');
 

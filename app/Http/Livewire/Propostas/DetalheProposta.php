@@ -1385,12 +1385,12 @@ class DetalheProposta extends Component
                 "tax_included" => false,
                 "pvp" => $prod->pvp,
                 "price" => $prod->price,
-                "discount1" => $prod->discount, // passar como inteiro 
+                "discount1" => $prod->discount,
                 "discount2" => $prod->discount2,
                 "discount3" => 0,
                 "total" => $totalItem,
                 "notes" => $comentario,
-                "visit_id" => $visitaCheck, // ou tenho de trazer da base de dados
+                "visit_id" => $visitaCheck,
                 "budgets_id" => ""
             ];
         }
@@ -1430,6 +1430,7 @@ class DetalheProposta extends Component
         //     $this->dispatchBrowserEvent('checkToaster', ["message" => "Tem de selecionar uma condição de pagamento", "status" => "error"]);
         //     return false;
         // }
+
         if (new DateTime($this->validadeProposta) < new DateTime('today')) {
             $this->tabDetail = "";
             $this->tabProdutos = "";
@@ -1478,7 +1479,7 @@ class DetalheProposta extends Component
             "visit_id" => $this->visitaCheck,
             "lines" => array_values($arrayProdutos)
         ];
-        // dd(json_encode($array));
+        // dd($array);
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/budgets',
@@ -1541,7 +1542,7 @@ class DetalheProposta extends Component
         {
 
             if ($response_decoded->success == true) {
-
+                // dd($response_decoded->id_document);
                 $proposta = $this->clientesRepository->getPropostaID($response_decoded->id_document);
 
 
@@ -1584,7 +1585,7 @@ class DetalheProposta extends Component
 
             $proposta = $this->clientesRepository->getPropostaID($response_decoded->id_document);
 
-
+            // dd($proposta);
                 $pdf = new Dompdf();
                 $pdf = PDF::loadView('pdf.pdfTabelaPropostas', ["proposta" => json_encode($proposta->budgets[0])]);
             
@@ -1870,7 +1871,7 @@ class DetalheProposta extends Component
                 
             }
         }
-
+        // dd($products, $this->searchSubFamily);
         $this->carrinhoCompras = Carrinho::where('id_cliente', $this->detailsClientes->customers[0]->no)
             ->where('id_user', Auth::user()->id)
             ->where('id_proposta', '!=', '')
