@@ -1328,7 +1328,7 @@ class DetalheProposta extends Component
                 return $email . " - Cliente";
             }, $this->emailArray);
     
-            array_push($this->emailArray, Auth::user()->email . " - Utilizador");
+            // array_push($this->emailArray, Auth::user()->email . " - Utilizador");
             
             // dd($emailArray);
     
@@ -1521,21 +1521,18 @@ class DetalheProposta extends Component
 
                 // $emailArray = explode("; ", $emailCliente["object"]->customers[0]->email);
 
-                $emailArray = $this->emailArray;
+                // dd($this->emailArray);
 
                 $emailUsuarioLogado = Auth::user()->email;
 
                 // tem que ativar quando for passar para a oficial
-            //    foreach($emailArray as $i => $email)
-            //     {
-            //         Mail::to($email)
-            //             ->cc($emailUsuarioLogado)
-            //             ->send(new SendProposta($pdfContent, $proposta->budgets[0]->budget));
-            //     }
 
+                if (!empty($this->emailArray)) {
+                    Mail::to($this->emailArray)
+                        ->bcc($emailUsuarioLogado)
+                        ->send(new SendProposta($pdfContent, $proposta->budgets[0]->budget));
+                }
             }
-          
-            
         }
 
         if($this->enviarAprovacao == true)
@@ -1564,16 +1561,13 @@ class DetalheProposta extends Component
                             $this->emailArray = array_merge($this->emailArray, $emails);
                         }
                         
-                        $this->emailArray[] = Auth::user()->email;
 
-                        // array_push($this->emailArray,Auth::user()->email); Esse é o email do utilizador atual
                         $this->emailArray = array_unique($this->emailArray);
-                        
-                        foreach($this->emailArray as $i => $email)
-                        {
-                            // dd($proposta);
-                            // $pdfContent = '';
-                            Mail::to($email)->send(new SendAprovacao($pdfContent, $proposta));
+
+                        if (!empty($this->emailArray)) {
+                            Mail::to(Auth::user()->email)
+                                ->bcc($this->emailArray)
+                                ->send(new SendAprovacao($pdfContent, $proposta));
                         }
                     }
                 }
@@ -1604,14 +1598,13 @@ class DetalheProposta extends Component
                             $this->emailArray = array_merge($this->emailArray, $emails);
                         }
                         
-                        $this->emailArray[] = Auth::user()->email;
 
-                        // array_push($this->emailArray,Auth::user()->email); Esse é o email do utilizador atual
                         $this->emailArray = array_unique($this->emailArray);
-                        
-                        foreach($this->emailArray as $i => $email)
-                        {
-                            Mail::to($email)->send(new SendProposta($pdfContent, $proposta->budgets[0]->budget));
+                        // dd($this->emailArray);
+                        if (!empty($this->emailArray)) {
+                            Mail::to(Auth::user()->email)
+                                ->bcc($this->emailArray)
+                                ->send(new SendProposta($pdfContent, $proposta->budgets[0]->budget));
                         }
                     }
                 }

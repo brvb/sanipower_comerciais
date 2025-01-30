@@ -79,6 +79,21 @@
                                     <input type="date" class="form-control" placeholder="Data Final" wire:model.lazy="endDate">
                                 </div>
                             </div>
+
+                            <div class="col-lg-4">
+                                <label class="mt-2">Status</label>
+                                <div class="input-group">
+                                    {{-- <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="ti-pin2"></i></span>
+                                    </div> --}}
+                                    {{-- <input type="text" class="form-control" placeholder="Zona" wire:model.lazy="zonaCliente"> --}}
+                                    <select name="perPage" class="form-control" wire:model.lazy="statusOcorrencia">
+                                        <option value="0" selected>Todas</option>
+                                        <option value="1">Abertas</option>
+                                        <option value="2">Fechadas</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="row ml-0 mr-0 mt-4 d-block">
@@ -130,20 +145,25 @@
                                                         <input type="text" class="form-control" placeholder="Email" wire:model.lazy="emailCliente">
                                                     </div>
                                                 </div>
+                                            
+
+                                                {{-- <div class="col-lg-4">
+                                                    <label class="mt-2">Zona</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="ti-pin2"></i></span>
+                                                        </div>
+                                                        <input type="text" class="form-control" placeholder="Zona" wire:model.lazy="zonaCliente">
+                                                    </div>
+                                                </div> --}}
                                             </div>
-
-
                                         </div>
                                     </div>
-                                    </div>
                                 </div>
-
                             </div>
-
-                        <!-- FIM DO ACCORDEON -->
-
                         </div>
-
+                        <!-- FIM DO ACCORDEON -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -170,7 +190,6 @@
                             </a>
                         </div> --}}
                     </div>
-
                 </div>
                 <div class="card-body">
                     <div id="dataTables_wrapper" class="dataTables_wrapper container" style="margin-left:0px;padding-left:0px;margin-bottom:10px;">
@@ -251,7 +270,6 @@
             });
         });
 
-
         document.addEventListener('livewire:load', function() {
             Livewire.hook('message.sent', () => {
                 document.getElementById('loader').style.display = 'block';
@@ -272,9 +290,5 @@
                 toastr.warning("{{ session('warning') }}");
             }
         });
-
-
-
     </script>
-
 </div>

@@ -299,7 +299,7 @@ class Ocorrencias extends Component
         $this->totalRecords = session('verOcorrenciaNr_registos');
     
     }
-    public function updatedStatusProsposta()
+    public function updatedStatusOcorrencia()
     {
         $this->pageChosen = 1;
         Session::put('verOcorrenciaPageChosen', $this->pageChosen);
@@ -426,7 +426,7 @@ class Ocorrencias extends Component
         $this->resetPage();
         session()->put('perPage', $this->perPage);
 
-        if($this->nomeCliente != "" || $this->numeroCliente != ""  || $this->zonaCliente != "" || $this->telemovelCliente != "" || $this->emailCliente != "" || $this->nifCliente != "" || $this->estadoOcorrencia != "0"){
+        if($this->nomeCliente != "" || $this->numeroCliente != ""  || $this->zonaCliente != "" || $this->telemovelCliente != "" || $this->emailCliente != "" || $this->nifCliente != "" || $this->statusOcorrencia != "0"){
 
             $ocorrenciaArray = $this->clientesRepository->getOcorrenciasCliente($this->perPage,$this->pageChosen,$this->idCliente,$this->nomeCliente,$this->numeroCliente,$this->zonaCliente,$this->telemovelCliente,$this->emailCliente,$this->nifCliente,$this->startDate,$this->endDate,$this->statusOcorrencia);
           
@@ -483,6 +483,5 @@ class Ocorrencias extends Component
         }
 
         return view('livewire.ocorrencias.ocorrencias',["ocorrencias" => $this->ocorrencias]);
-        // return view('livewire.ocorrencias.ocorrencias',["propostas" => $this->propostas]);
     }
 }

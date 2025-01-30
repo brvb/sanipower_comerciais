@@ -1235,7 +1235,7 @@ class DetalheEncomenda extends Component
         ];
 
         $curl = curl_init();
-
+        // dd(json_encode($array), $array);
         curl_setopt_array($curl, array(
             CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/orders',
             CURLOPT_RETURNTRANSFER => true,

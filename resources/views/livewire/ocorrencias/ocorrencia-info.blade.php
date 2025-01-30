@@ -204,7 +204,7 @@
                                             <td>{{ $prod->quantity }}</td>
                                             <td>{{ $prod->pvp }}€</td>
                                             <td>{{ $prod->price }}€</td>
-                                            <td>{{ $prod->discount }}% @if($prod->discount2 > 0) +{{$prod->discount2}}% @endif</td>
+                                            <td>{{ $prod->discount }}% @if($prod->discount2 > 0) + {{$prod->discount2}}% @endif</td>
                                             <td>{{ $prod->total }}€</td>                                        
                                         </tr>
                                     @empty
