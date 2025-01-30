@@ -4,23 +4,14 @@
     <div class="row navigationLinks">
         <div class="col">
             <ol class="breadcrumb pl-4" style="padding-left: 25px;">
-                <li class="breadcrumb-item"><a href="{{route('propostas')}}"><i class="ti-wallet"></i> Proposta</a></li>
+                <li class="breadcrumb-item"><a href="{{route('ocorrencias')}}"><i class="ti-wallet"></i> Ocorrencia</a></li>
                 <li class="breadcrumb-item">Cliente</li>
-                @if(isset($nameCliente))
-                    <li class="breadcrumb-item active">{{$nameCliente}}</li>
-                @else
-                    <li class="breadcrumb-item active">{{$proposta->name}}</li>
-                @endif
-
+                    <li class="breadcrumb-item active">{{$ocorrencia->customer_name}}</li>
             </ol>
         </div>
     </div>
     <div>
-        @if($proposta != null)
-            @livewire('propostas.proposta-info',["proposta" => $proposta])
-        @else
-            @livewire('propostas.detalhe-proposta',["codvisita"=> $codvisita, "cliente" => $idCliente, "codEncomenda" => $codEncomenda])
-        @endif
+            @livewire('ocorrencias.ocorrencia-info', ["ocorrencia" => $ocorrencia])
     </div>
     
 
@@ -42,7 +33,6 @@
         });
 
         window.addEventListener('beforeunload', function () {
-            // Show the loader when the user navigates away or the page is being unloaded
             document.getElementById('loader').style.display = 'block';
         });
 
@@ -54,7 +44,6 @@
                 }
             });
 
-            // Oculta o loader quando o Livewire terminar de carregar
             Livewire.hook('message.processed', () => {
                 if(document.getElementById('loader') != null){
                     document.getElementById('loader').style.display = 'none';

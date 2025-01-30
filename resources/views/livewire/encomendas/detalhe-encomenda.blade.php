@@ -1385,7 +1385,7 @@
                          <label>Vossa referência</label>
                          <div class="input-group">
                         
-                             <input type="text" class="form-control" wire:model.defer="referenciaFinalizar">
+                             <input type="text" class="form-control" wire:model.defer="referenciaFinalizar" maxlength="40">
                          </div>
                      </div>
 

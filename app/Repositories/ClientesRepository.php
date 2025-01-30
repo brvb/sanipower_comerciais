@@ -466,12 +466,16 @@ class ClientesRepository implements ClientesInterface
         ));
 
         $response = curl_exec($curl);
-    
+                
         curl_close($curl);
 
         $response_decoded = json_decode($response);
         if (isset($response_decoded->Message) && $response_decoded->Message === 'An error has occurred.') {
-          
+          return [
+            "object" => "",
+            "nr_paginas" => "",
+            "nr_registos" => ""
+                ];
         } else {
             return 
             [
@@ -480,13 +484,6 @@ class ClientesRepository implements ClientesInterface
                 "nr_registos" => $response_decoded->total_records
             ];
         }
-
-    //    return 
-    //     [
-    //         "object" => $response_decoded,
-    //         "nr_paginas" => $response_decoded->total_pages, 
-    //         "nr_registos" => $response_decoded->total_records
-    //     ];
     }
 
    
@@ -1242,13 +1239,11 @@ class ClientesRepository implements ClientesInterface
         // dd($response);
         $response_decoded = json_decode($response);
         if ($response_decoded->success == true) {
-            // Inserção bem-sucedida
             return response()->json([
                 'success' => true,
                 'message' => 'Comentário adicionado com sucesso'
             ], 201);
         } else {
-            // Falha na inserção
             return response()->json([
                 'success' => false,
                 'message' => 'Falha ao inserir na base de dados.'
@@ -1258,13 +1253,69 @@ class ClientesRepository implements ClientesInterface
         return $response_decoded;
     }
 
-    public function getOcorrenciasCliente($perPage,$page,$idCliente): array
+    public function getOcorrenciasCliente($perPage,$page,$idCliente,$nomeCliente,$noClient,$zonaCliente,$telemovelCliente,$emailCliente,$nifCliente,$startDate,$endDate,$statusOcorrencia): array
     {
+        if ($nomeCliente != "") {
+            $nomeCliente = '&Name='.urlencode($nomeCliente);
+        } else {
+            $nomeCliente = '&Name=';
+        }
+        
+        if ($noClient != "") {
+            $numeroCliente = '&Customer_number='.urlencode($noClient);
+        } else {
+            $numeroCliente = '&Customer_number=0';
+        }
+        
+        if ($zonaCliente != "") {
+            $zonaCliente = '&Zone='.urlencode($zonaCliente);
+        } else {
+            $zonaCliente = '&Zone=';
+        }
+
+        if ($telemovelCliente != "") {
+            $telemovelCliente = '&Mobile_phone='.urlencode($telemovelCliente);
+        } else {
+            $telemovelCliente = '&Mobile_phone=';
+        }
+
+        if ($emailCliente != "") {
+            $emailCliente = '&Email='.urlencode($emailCliente);
+        } else {
+            $emailCliente = '&Email=';
+        }
+
+        if ($nifCliente != "") {
+            $nifCliente = '&Nif='.urlencode($nifCliente);
+        } else {
+            $nifCliente = '&Nif=';
+        }
+
+        if ($startDate != "") {
+            $startDate = '&start_date='.urlencode($startDate);
+        } else {
+            $startDate = '&start_date=1900-01-01';
+        }
+
+        if ($endDate != "") {
+            $endDate = '&end_date='.urlencode($endDate);
+        } else {
+            $endDate = '&end_date=2900-12-31';
+        }
+
+        if ($statusOcorrencia != "") {
+            $statusOcorrencia = '&status='.urlencode($statusOcorrencia);
+        } else {
+            $statusOcorrencia = '&status=0';
+        }
+
+        $string = $zonaCliente.$nomeCliente.$numeroCliente.$telemovelCliente.$emailCliente.$nifCliente.$startDate.$endDate.$statusOcorrencia;
+
         $curl = curl_init();
-
+        // dd(env('SANIPOWER_URL_DIGITAL').'/api/documents/occurrences?perPage='.$perPage.'&Page='.$page.'&customer_id='.$idCliente.'&Salesman_number='. Auth::user()->id_phc.'&Name=&Customer_number=0&Zone=&Mobile_phone=&Email=&Nif=&start_date=&end_date=&status=0');
         curl_setopt_array($curl, array(
-
-            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/occurrences?perPage='.$perPage.'&Page='.$page.'&customer_id='.$idCliente.'&Salesman_number='. Auth::user()->id_phc,
+            // CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/occurrences?perPage='.$perPage.'&Page='.$page.'&customer_id='.$idCliente.'&Salesman_number='. Auth::user()->id_phc,
+            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/occurrences?perPage='.$perPage.'&Page='.$page.'&customer_id='.$idCliente.'&Salesman_number='. Auth::user()->id_phc.$string,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -1276,14 +1327,14 @@ class ClientesRepository implements ClientesInterface
                 'Content-Type: application/json'
             ),
         ));
-
+        // dd(env('SANIPOWER_URL_DIGITAL').'/api/documents/occurrences?perPage='.$perPage.'&Page='.$page.'&customer_id='.$idCliente.'&Salesman_number='. Auth::user()->id_phc.$string);
         $response = curl_exec($curl);
 
         curl_close($curl);
 
         $response_decoded = json_decode($response);
 
-        // dd($response_decoded);
+        // dd(env('SANIPOWER_URL_DIGITAL').'/api/documents/occurrences?perPage='.$perPage.'&Page='.$page.'&customer_id='.$idCliente.'&Salesman_number='. Auth::user()->id_phc.$string, $response_decoded);
 
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
 
@@ -1386,13 +1437,11 @@ class ClientesRepository implements ClientesInterface
         ]);
 
         if ($visitaCreate) {
-            // Inserção bem-sucedida
             return response()->json([
                 'success' => true,
                 'data' => $visitaCreate
             ], 201);
         } else {
-            // Falha na inserção
             return response()->json([
                 'success' => false,
                 'type' => 0,

@@ -1077,6 +1077,7 @@ class DetalheEncomenda extends Component
             'Entrega por transportadora' => $this->transportadora,
             
         ];
+        
         $propertiesPagamentos = [
            'condicoesFinalizar' => $this->condicoesFinalizar,
             'chequeFinalizar' => $this->chequeFinalizar,
@@ -1233,10 +1234,8 @@ class DetalheEncomenda extends Component
             "lines" => array_values($arrayProdutos)
         ];
 
-        // dd($array);
-
         $curl = curl_init();
-
+        // dd(json_encode($array), $array);
         curl_setopt_array($curl, array(
             CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/orders',
             CURLOPT_RETURNTRANSFER => true,
@@ -1268,7 +1267,7 @@ class DetalheEncomenda extends Component
             Carrinho::where('id_encomenda', $getEncomenda->id_encomenda)->delete();   
             $encomendasArray = $this->clientesRepository->getEncomendasClienteFiltro(10,1,$this->idCliente,$this->nomeCliente,$idCliente,$this->zonaCliente,$this->telemovelCliente,$this->emailCliente,$this->nifCliente,"0","0",$this->startDate,$this->endDate,$this->statusEncomenda);
             $encomenda = $this->clientesRepository->getEncomendaID($response_decoded->id_document);
-
+            // dd($encomenda);
             $encomenda = json_encode($encomenda->orders[0]);
             // dd($encomenda);
 

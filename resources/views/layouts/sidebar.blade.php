@@ -72,6 +72,13 @@
             </li>
 
             <li class="li-hover">
+                <a href="{{route('ocorrencias')}}" class="{{ Str::contains(request()->route()->getName(), 'ocorrencias') ? 'text-info' : '' }}">
+                    <i class="ti-eye"></i>
+                    <span>Ocorrências</span>
+                </a>
+            </li>
+
+            <li class="li-hover">
                 <a href="{{route('campanhas')}}" class="{{ Str::contains(request()->route()->getName(), 'campanhas') ? 'text-info' : '' }}">
                     <i class="fa fa-tag"></i>
                     <span>Campanhas</span>

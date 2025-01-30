@@ -1157,7 +1157,7 @@
                                     $cont++;
                                 @endphp
                                 {{-- @dd($prod); --}}
-                                {{-- @forelse ($item as $prod)      --}}
+                                {{-- @forelse ($item as $prod) --}}
 
                                     @if($prod->inkit == 1)
 
@@ -1523,7 +1523,7 @@
                                                 <td>{{ $item }}</td>
                                             </tr>
                                         @endforeach
-                                
+                                    
                                     @endif
                                 </tbody>
                             </table>
@@ -1664,13 +1664,13 @@
                     </div>
                 </div>
             </div>
-<div class="modal-footer">
-                <button type="button" id="cleanSelectionQuick" class="btn btn-outline-dark" data-dismiss="modal">Limpar seleção</button>
-                <button type="button" id="addAllButton" class="btn btn-outline-primary" wire:click="addAll('{{$nameProduct}}',{{$detalhesCliente->customers[0]->no}}, '{{ $ref }}','{{$codEncomenda}}')" disabled>Adicionar todos</button>
+            <div class="modal-footer">
+                            <button type="button" id="cleanSelectionQuick" class="btn btn-outline-dark" data-dismiss="modal">Limpar seleção</button>
+                            <button type="button" id="addAllButton" class="btn btn-outline-primary" wire:click="addAll('{{$nameProduct}}',{{$detalhesCliente->customers[0]->no}}, '{{ $ref }}','{{$codEncomenda}}')" disabled>Adicionar todos</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
                 {{-- <script>
                 document.getElementById('cleanSelectionQuick').addEventListener('click', function() {
                     

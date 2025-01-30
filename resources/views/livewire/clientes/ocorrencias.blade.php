@@ -96,9 +96,10 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th>Data</th>
-                                    <th>Encomenda</th>
+                                    <th>Documento</th>
                                     <th>Total</th>
-                                    <th>Estado</th>                                  
+                                    <th>Tipo</th>
+                                    <th></th>                                    
                                     <th>Ações</th>
 
                                 </tr>
@@ -107,12 +108,16 @@
                                 @foreach ($detalhesOcorrencias as $detalhe)
                                     <tr>
                                         <td>{{ date('Y-m-d', strtotime($detalhe->date)) }}</td>
-                                        <td>{{ $detalhe->occurrence }}</td>
+                                        <td>{{ $detalhe->document }} Nº {{ $detalhe->document_number }}</td>
                                         <td>{{ number_format($detalhe->total, 3) }}€</td>
-                                        <td>{{ $detalhe->status }}</td>
+                                        <td>{{ $detalhe->type_1 }}</td>
+                                        <td>{{ $detalhe->type_2 }}</td>
                                         <td>
                                             <button type="button" class="btn btn-sm btn-primary" wire:click="detalheOcorrenciasModal({{ json_encode($detalhe) }})">
                                                 <i class="fas fa-info"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-primary" wire:click="detalhesOcorrenciasModal({{ json_encode($detalhe) }})">
+                                                Detalhes
                                             </button>
                                         </td>
                                     </tr>
@@ -195,7 +200,7 @@
         <div class="modal-dialog modal-xl modal-dialog-centered" style="margin: 1.75rem auto;" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="detalheOcorrenciasModalLabel">Detalhes da Ocorrência</h5>
+                    <h5 class="modal-title" id="detalheOcorrenciasModalLabel">Linhas da Ocorrência</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -209,7 +214,6 @@
                                 <th>Quantidade</th>
                                 <th>Preço</th>
                                 <th>Desconto</th>
-                                {{-- <th>Desconto 2</th> --}}
                                 <th>Total</th>
                             </tr>
                         </thead>
@@ -221,9 +225,109 @@
                                         <td>{{ $prod['description'] }}</td>
                                         <td>{{ $prod['quantity'] }}</td>
                                         <td>{{ number_format($prod['price'], 3) }} €</td>
-                                        <td>{{ $prod['discount'] }}</td>
+                                        <td>{{ $prod['discount'] }}% @if($prod['discount2'] > 0) + {{$prod['discount2']}}% @endif</td>
                                         <td>{{ number_format($prod['total'], 3) }} €</td>
                                     </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="6">Não foram encontrados registos para exibir.</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="cursor:pointer">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="detalhesOcorrenciasModal" tabindex="-1" role="dialog" aria-labelledby="detalhesOcorrenciasModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered" style="margin: 1.75rem auto;" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detalhesOcorrenciasModalLabel">Detalhes da Ocorrência</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table class="table">
+                        <tbody>
+                            @if($detailsLine)
+                                @foreach ($detailsLine['details'] as $prod)
+                                <tr style="border-top:1px solid #9696969c!important; border-bottom:1px solid #9696969c!important;">
+                                    <td>
+                                        Por quem?
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" value = "{{ $prod['by_whom'] }}" readonly>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" value="{{ \Carbon\Carbon::parse($prod['collection_date'])->format('d/m/Y') }}" readonly>
+                                    </td>
+                                </tr>
+                                <tr style="border-top:1px solid #9696969c!important; border-bottom:1px solid #9696969c!important;">
+                                    <td>
+                                        Recolha de Material?
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" {{ isset($prod['invoice']) && $prod['invoice'] ? 'checked' : '' }} disabled>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" value="{{ \Carbon\Carbon::parse($prod['invoice_date'])->format('d/m/Y') }}" readonly>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" value="{{ $prod['invoice_number'] }}" readonly>
+                                    </td>
+                                </tr>
+                                
+                                <tr style="border-top:1px solid #9696969c!important; border-bottom:1px solid #9696969c!important;">
+                                    <td>
+                                        Guia de transporte?
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" {{ isset($prod['transport_guide']) && $prod['transport_guide'] ? 'checked' : '' }} disabled>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" value="{{ \Carbon\Carbon::parse($prod['transport_guide_date'])->format('d/m/Y') }}" readonly>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" value="{{ $prod['transport_guide_number'] }}" readonly>
+                                    </td>
+                                </tr>
+        
+                                <tr style="border-top:1px solid #9696969c!important; border-bottom:1px solid #9696969c!important;">
+                                    <td>
+                                        Encomenda de Cliente?
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" {{ isset($prod['order']) && $prod['order'] ? 'checked' : '' }} disabled>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" value="{{ \Carbon\Carbon::parse($prod['order_date'])->format('d/m/Y') }}" readonly>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" value="{{ $prod['order_number'] }}" readonly>
+                                    </td>
+                                </tr>
+        
+                                <tr style="border-top:1px solid #9696969c!important; border-bottom:1px solid #9696969c!important;">
+                                    <td>
+                                        Nota de Crédito?
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" {{ isset($prod['credit_note']) && $prod['credit_note'] ? 'checked' : '' }} disabled>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" value="{{ \Carbon\Carbon::parse($prod['credit_note_date'])->format('d/m/Y') }}" readonly>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" value="{{ $prod['credit_note_number'] }}" readonly>
+                                    </td>
+                                </tr>
                                 @endforeach
                             @else
                                 <tr>
@@ -261,6 +365,10 @@
 
         document.addEventListener('openDetalheOcorrenciasModal', function() {
          $('#detalheOcorrenciasModal').modal('show');
+        });
+
+        document.addEventListener('openDetalhesOcorrenciasModal', function() {
+         $('#detalhesOcorrenciasModal').modal('show');
         });
     </script>
 

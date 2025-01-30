@@ -331,7 +331,6 @@
                                                 $total = $proposta['total'];
                                                 $total_iva = $total * 1.23;
                                                 foreach ($proposta['lines'] as $line) {
-
                                                 echo '
                                                 <tr>
                                                     <td width="10%" style="width:10.0%;padding:.75pt .75pt .75pt .75pt">
