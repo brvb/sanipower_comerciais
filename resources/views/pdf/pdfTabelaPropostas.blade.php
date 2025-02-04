@@ -1,8 +1,12 @@
 @php
      $proposta = json_decode($proposta, true);
     //  dd($proposta);
-    $total = $proposta['total'];
-    $total_iva = $total * 1.23;
+     $total = $proposta['total'];
+     $total_iva = 0;
+    foreach ($proposta['lines'] as $line)
+    {
+        $total_iva += $line['total'] * ($line['tax']/100 + 1);
+    }
 @endphp
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -32,7 +36,7 @@
         .container {
             width: 100%;
             margin: auto;
-            padding-top: 100px; /* Espaço para o header */
+            padding-top: 100px;
         }
         .info-section {
             display: flex;

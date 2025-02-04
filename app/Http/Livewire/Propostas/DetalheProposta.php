@@ -1479,7 +1479,7 @@ class DetalheProposta extends Component
             "visit_id" => $this->visitaCheck,
             "lines" => array_values($arrayProdutos)
         ];
-        // dd($array);
+        // dd(json_encode($array), $array);
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/budgets',
@@ -1525,8 +1525,6 @@ class DetalheProposta extends Component
 
                 $emailUsuarioLogado = Auth::user()->email;
 
-                // tem que ativar quando for passar para a oficial
-
                 if (!empty($this->emailArray)) {
                     Mail::to($this->emailArray)
                         ->bcc($emailUsuarioLogado)
@@ -1561,7 +1559,6 @@ class DetalheProposta extends Component
                             $this->emailArray = array_merge($this->emailArray, $emails);
                         }
                         
-
                         $this->emailArray = array_unique($this->emailArray);
 
                         if (!empty($this->emailArray)) {
@@ -1659,14 +1656,14 @@ class DetalheProposta extends Component
         if (!isset($quickBuyProducts->product)){
             session()->forget('quickBuyProducts');
         }
-        // dd($detailProduto );
+
         $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
         $this->detailsClientes = $arrayCliente["object"];
 
-        // $this->getCategories = $this->PropostasRepository->getCategorias();
+
         $this->getCategoriesAll = $this->PropostasRepository->getCategorias();
-        // session()->forget('searchSubFamily');
-     
+
+        
 
         if (session('searchSubFamily') !== null) {
             $sessao = session('searchSubFamily');
@@ -1674,39 +1671,31 @@ class DetalheProposta extends Component
 
            
 
-            $productsList = [];  // Inicializa uma lista para armazenar os produtos convertidos
+            $productsList = []; 
 
-            // Itera sobre as categorias
+
             if (isset($sessao->categories)) {
                 
                 $category = new stdClass();
-                // dd($sessao,$category);
-                
                
-                    
     
                 $category = $sessao->categories;
                 
-                   // Iterar pelas categorias para ajustar 'families' e 'subamilies'
                     foreach ($category as $catIndex => $cat) {
-                        // Renomear 'families' para 'family'
-                        if (isset($cat->families)) {
-                            $category[$catIndex]->family = $cat->families;  // Criar nova chave 'family'
-                            unset($category[$catIndex]->families);  // Remover a chave antiga 'families'
 
-                            // Iterar pelas famílias dentro de cada categoria
+                        if (isset($cat->families)) {
+                            $category[$catIndex]->family = $cat->families;
+                            unset($category[$catIndex]->families);
+
                             foreach ($category[$catIndex]->family as $famIndex => $family) {
-                                // Renomear 'subamilies' para 'subfamily'
+
                                 if (isset($family->subamilies)) {
-                                    $category[$catIndex]->family[$famIndex]->subfamily = $family->subamilies;  // Criar nova chave 'subfamily'
-                                    unset($category[$catIndex]->family[$famIndex]->subamilies);  // Remover a chave antiga 'subamilies'
+                                    $category[$catIndex]->family[$famIndex]->subfamily = $family->subamilies;
+                                    unset($category[$catIndex]->family[$famIndex]->subamilies);
                                 }
                             }
                         }
-                    }
-
-                    // Exibir os dados após as modificações (para depuração)
-                    
+                    }                    
                     
                     $response = [
                         "success" => $sessao->success,
@@ -1717,8 +1706,6 @@ class DetalheProposta extends Component
                         "total_records" => count($sessao->categories),
                         "category" => $category
                     ];
-                    // Atribuindo o resultado à propriedade
-                    // $category = (object) $category;
     
                      $this->getCategoriesAll = (object) $response;
                
@@ -1748,19 +1735,17 @@ class DetalheProposta extends Component
                         }
                     }
                 }
-                
-                // session(['searchNameCategory' => "Pesquisa"]);
-    
+                    
                 session(['searchNameFamily' => "$this->searchProduct"]);
     
                 session(['searchNameSubFamily' => ""]);
 
-                // Converter o array de produtos para uma lista de objetos
+
                 $productsListObjects = array_map(function($product) {
                     return (object) $product;
                 }, $productsList);
                 
-                // Estrutura final da resposta
+
                 $response = [
                     "success" => $sessao->success,
                     "message" => $sessao->message,
@@ -1771,28 +1756,14 @@ class DetalheProposta extends Component
                     "product" => $productsListObjects
                 ];
                 
-                // Atribuindo o resultado à propriedade
+
                 $this->searchSubFamily = (object) $response;
-                // Armazenando na sessão (se necessário)
+
                 session(['searchSubFamily' => $this->searchSubFamily]);
-                
-                // Exibindo o resultado para depuração
-                // dd($response);
+
             }
-
-
-            //     if(isset($sessao->product)){
-            //     foreach ($sessao->product as $prod) {
-            //         $this->actualCategory = $prod->category_number;
-            //         $this->actualFamily = $prod->family_number;
-            //         $this->actualSubFamily = $prod->subfamily_number;
-
-            //     break;
-            //     }
-            // }
-            // $this->searchSubFamily = $this->PropostasRepository->getSubFamily($this->actualCategory, $this->actualFamily, $this->actualSubFamily);
         } else {
-            // $this->getCategories = $this->PropostasRepository->getCategorias();
+
             $firstCategories = $this->getCategoriesAll->category[0];
             session(['searchNameCategory' => $firstCategories->name]);
 
@@ -1813,8 +1784,8 @@ class DetalheProposta extends Component
         $productsCollection = new Collection($productsArray);
 
         $perPage = 12;
-        $currentPage = $this->page; // Use $this->page, que o WithPagination provê
-        // Paginando os produtos
+        $currentPage = $this->page;
+
         $currentItems = $productsCollection->forPage($currentPage, $perPage);
 
            $products = new \Illuminate\Pagination\LengthAwarePaginator(
@@ -1827,26 +1798,18 @@ class DetalheProposta extends Component
             ]
         );
 
-        // $currentPage = LengthAwarePaginator::resolveCurrentPage();
-        // $currentItems = $productsCollection->slice(($currentPage - 1) * $perPage, $perPage)->all();
-        // $products = new LengthAwarePaginator($currentItems, $productsCollection->count(), $perPage, $currentPage, [
-        //     'path' => Paginator::resolveCurrentPath(),
-        // ]);
-        
-
 
         if (session('searchProduct') !== null) {
             $this->searchProduct = session('searchProduct');
-            if ($this->searchProduct != "") {
-                $this->searchSubFamily = $this->PropostasRepository->getSubFamilySearch($this->searchProduct);
-                session(['Camp' => 1]);
-                session(['Category' => null]);
-                session(['Family' => null]);
-            }
-
+            // if ($this->searchProduct != "") {
+            //     $this->searchSubFamily = $this->PropostasRepository->getSubFamilySearch($this->searchProduct);
+            //     session(['Camp' => 1]);
+            //     session(['Category' => null]);
+            //     session(['Family' => null]);
+            // }
         }
         if ($this->searchProduct != "") {
-            // dd('AQUI 001');
+
             $this->searchSubFamily = $this->PropostasRepository->getSubFamilySearch($this->searchProduct);
             session(['Camp' => 1]);
             session(['Category' => null]);
@@ -1854,7 +1817,7 @@ class DetalheProposta extends Component
         }
 
         if (session('CampProds') !== null) {
-            // dd('AQUI 002');
+
             $this->searchProduct = session('CampProds');
 
             if ($this->searchProduct != "") {
@@ -1864,7 +1827,7 @@ class DetalheProposta extends Component
                 
             }
         }
-        // dd($products, $this->searchSubFamily);
+
         $this->carrinhoCompras = Carrinho::where('id_cliente', $this->detailsClientes->customers[0]->no)
             ->where('id_user', Auth::user()->id)
             ->where('id_proposta', '!=', '')
@@ -1905,8 +1868,6 @@ class DetalheProposta extends Component
                 }
             }
         }
-        // dd($arrayCart);
-       // Retorno da view com a paginação
 
        $campanhas = Campanhas::where('ativa', 1)
         ->where('destaque', 1)
@@ -1926,10 +1887,8 @@ class DetalheProposta extends Component
         }
         $this->searchProduct = "";
 
-        // $this->getCategories = $this->PropostasRepository->getCategorias();
+        // $this->getCategoriesAll = $this->PropostasRepository->getCategorias();
 
-        $this->getCategoriesAll = $this->PropostasRepository->getCategorias();
-        // dd($this->getCategoriesAll, $this->getCategories);
         return view('livewire.propostas.detalhe-proposta', [
             "products" => $products,
             "onkit" => $onkit,

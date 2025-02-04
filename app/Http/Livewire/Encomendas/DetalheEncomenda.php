@@ -1491,47 +1491,41 @@ class DetalheEncomenda extends Component
             session()->forget('quickBuyProducts');
         }
         
-        // $this->detailsClientes = $this->clientesRepository->getDetalhesCliente($this->idCliente);
         $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
+
         $this->detailsClientes = $arrayCliente["object"];
-
-
-        // $this->getCategories = $this->encomendasRepository->getCategorias();
         
         $this->getCategoriesAll = $this->encomendasRepository->getCategorias();
 
         if (session('searchSubFamily') !== null) {
             $sessao = session('searchSubFamily');
-            // dd($sessao );
-            $productsList = [];  // Inicializa uma lista para armazenar os produtos convertidos
 
-            // Itera sobre as categorias
+            $productsList = []; 
+
+
             if (isset($sessao->categories)) {
                 
                 $category = new stdClass();
-                // dd($sessao,$category);
+
 
                 $category = $sessao->categories;
                 
-                   // Iterar pelas categorias para ajustar 'families' e 'subamilies'
                     foreach ($category as $catIndex => $cat) {
-                        // Renomear 'families' para 'family'
-                        if (isset($cat->families)) {
-                            $category[$catIndex]->family = $cat->families;  // Criar nova chave 'family'
-                            unset($category[$catIndex]->families);  // Remover a chave antiga 'families'
 
-                            // Iterar pelas famílias dentro de cada categoria
+                        if (isset($cat->families)) {
+                            $category[$catIndex]->family = $cat->families; 
+                            unset($category[$catIndex]->families); 
+
+
                             foreach ($category[$catIndex]->family as $famIndex => $family) {
-                                // Renomear 'subamilies' para 'subfamily'
+
                                 if (isset($family->subamilies)) {
-                                    $category[$catIndex]->family[$famIndex]->subfamily = $family->subamilies;  // Criar nova chave 'subfamily'
-                                    unset($category[$catIndex]->family[$famIndex]->subamilies);  // Remover a chave antiga 'subamilies'
+                                    $category[$catIndex]->family[$famIndex]->subfamily = $family->subamilies;
+                                    unset($category[$catIndex]->family[$famIndex]->subamilies);
                                 }
                             }
                         }
                     }
-
-                    // Exibir os dados após as modificações (para depuração)
                     
                     
                     $response = [
@@ -1543,8 +1537,7 @@ class DetalheEncomenda extends Component
                         "total_records" => count($sessao->categories),
                         "category" => $category
                     ];
-                    // Atribuindo o resultado à propriedade
-                    // $category = (object) $category;
+
     
                      $this->getCategoriesAll = (object) $response;
                
@@ -1571,18 +1564,16 @@ class DetalheEncomenda extends Component
                         }
                     }
                 }
-                // session(['searchNameCategory' => "Pesquisa"]);
-    
+
+                
                 session(['searchNameFamily' => "$this->searchProduct"]);
     
                 session(['searchNameSubFamily' => ""]);
 
-                // Converter o array de produtos para uma lista de objetos
                 $productsListObjects = array_map(function($product) {
                     return (object) $product;
                 }, $productsList);
                 
-                // Estrutura final da resposta
                 $response = [
                     "success" => $sessao->success,
                     "message" => $sessao->message,
@@ -1593,31 +1584,13 @@ class DetalheEncomenda extends Component
                     "product" => $productsListObjects
                 ];
                 
-                // Atribuindo o resultado à propriedade
                 $this->searchSubFamily = (object) $response;
                 
-                // Armazenando na sessão (se necessário)
                 session(['searchSubFamily' => $this->searchSubFamily]);
-                
-                // Exibindo o resultado para depuração
-                // dd($response);
+
             }
-            
-            
-
-            // dd($sessao );
-            // foreach ($sessao->categories as $prod) {
-            //     $this->actualCategory = $prod->id;
-            //     $this->actualFamily = $prod->families;
-            //     $this->actualSubFamily = $prod->subfamily_number;
-
-            //     break;
-            // }
-
-            // $this->searchSubFamily = $this->encomendasRepository->getSubFamily($this->actualCategory, $this->actualFamily, $this->actualSubFamily);
         
         } else {
-            // $this->getCategories = $this->encomendasRepository->getCategorias();
 
             $firstCategories = $this->getCategoriesAll->category[0];
             session(['searchNameCategory' => $firstCategories->name]);
@@ -1638,8 +1611,8 @@ class DetalheEncomenda extends Component
         $productsCollection = new Collection($productsArray);
 
         $perPage = 12;
-        $currentPage = $this->page; // Use $this->page, que o WithPagination provê
-        // Paginando os produtos
+        $currentPage = $this->page;
+
         $currentItems = $productsCollection->forPage($currentPage, $perPage);
 
            $products = new \Illuminate\Pagination\LengthAwarePaginator(
@@ -1654,20 +1627,20 @@ class DetalheEncomenda extends Component
 
 
         if (session('searchProduct') !== null) {
-                    $this->searchProduct = session('searchProduct');
+                $this->searchProduct = session('searchProduct');
 
-                    if ($this->searchProduct != "") {
-                        $this->searchSubFamily = $this->encomendasRepository->getSubFamilySearch($this->searchProduct);
-                        session(['Camp' => 1]);
-                        session(['Category' => null]);
-                        session(['Family' => null]);
-                    }
-                }
+                // if ($this->searchProduct != "") {
+                //     $this->searchSubFamily = $this->encomendasRepository->getSubFamilySearch($this->searchProduct);
+                //     session(['Camp' => 1]);
+                //     session(['Category' => null]);
+                //     session(['Family' => null]);
+                // }
+            }
 
                 if ($this->searchProduct != "") {
-                    // dd('AQUI 001');
+
                     $this->searchSubFamily = $this->encomendasRepository->getSubFamilySearch($this->searchProduct);
-                    // dd($this->searchSubFamily);
+
                     session(['Camp' => 1]);
                     session(['Category' => null]);
                     session(['Family' => null]);
@@ -1678,7 +1651,7 @@ class DetalheEncomenda extends Component
 
                     if ($this->searchProduct != "") {
                         $products = $this->encomendasRepository->getprodCamp($this->searchProduct);
-                        // dd($products);
+
                         $products = isset($products->product) ? collect($products->product) : collect([]);
                         
                     }
@@ -1689,11 +1662,11 @@ class DetalheEncomenda extends Component
             ->where('id_encomenda', $this->codEncomenda)
             ->orderBy('inkit', 'desc')
             ->get();
-            // dd($this->detailsClientes->customers[0]->no, Auth::user()->id, $this->codEncomenda, $this->carrinhoCompras);
+
         $arrayCart = [];
         $onkit = 0;
         $allkit = 0;
-        // dd( $this->carrinhoCompras);
+
         $this->quantidadeLines = 0;
 
         if($this->carrinhoCompras->count() > 0) {
@@ -1755,15 +1728,8 @@ class DetalheEncomenda extends Component
             session(['Family' => null]);
         }
         $this->searchProduct = "";
-        // if ($this->getCategories->category == null) {
-        //     session()->flash('status', 'error');
-        //     session()->flash('message', 'Erro ao consultar as categorias! (erro : CP-404)');
-            
-        //     return view('pageErro');
-        // }
-        // dd($products,$onkit,$allkit,$this->detailsClientes,$this->getCategoriesAll,$this->searchSubFamily,$arrayCart,$this->codEncomenda,$campanhas);
-        // dd($this->getCategoriesAll);
-        $this->getCategoriesAll = $this->encomendasRepository->getCategorias();
+
+        // $this->getCategoriesAll = $this->encomendasRepository->getCategorias();
         return view('livewire.encomendas.detalhe-encomenda', [
             "products" => $products,
             "onkit" => $onkit,
@@ -1775,10 +1741,6 @@ class DetalheEncomenda extends Component
             "arrayCart" => $arrayCart,
             "codEncomenda" => $this->codEncomenda,
             "campanhas" => $campanhas
-        ]);
-        
-        
-        // dd($products);
-        
+        ]);        
     }
 }
