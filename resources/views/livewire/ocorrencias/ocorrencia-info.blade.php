@@ -31,7 +31,6 @@
             <div class="teste" style="padding-right:35px;">
                 <div class="row group-buttons group-buttons d-flex justify-content-end mr-0 mb-2">
                     <div class="tools">
-                        {{-- <a href="javascript:void(0);" wire:click="enviarEmail({{ json_encode($proposta) }})" class="btn btn-sm btn-primary"><i class="fas fa-paper-plane"></i> Enviar email</a> --}}
                         <a href="javascript:void(0);" wire:click="goBack" class="btn btn-sm btn-secondary"> Voltar atrás</a>
                     </div>
                 </div>
@@ -345,6 +344,15 @@
                         <table class="table table-hover init-datatable">
                             <tbody>
                                 @forelse ($ocorrencia->details as $prod)
+                                {{-- @dd($ocorrencia) --}}
+                                    <tr style="border-top:1px solid #9696969c!important; border-bottom:1px solid #9696969c!important;">
+                                        <td>
+                                            Descrição
+                                        </td>
+                                        <td colspan = 3>
+                                            <textarea class="form-control" rows="6" readonly>{{ $ocorrencia->description }}</textarea>
+                                        </td>
+                                    </tr>
                                     <tr style="border-top:1px solid #9696969c!important; border-bottom:1px solid #9696969c!important;">
                                         <td>
                                             Por quem?

@@ -6,6 +6,7 @@
         <div class="col">
             <ol class="breadcrumb" style="padding-left: 25px;">
                 <li class="breadcrumb-item"><a href="{{route('ocorrencias')}}"><i class="ti-wallet"></i> Ocorrências</a></li>
+                <li class="breadcrumb-item"> Clientes</li>
                 <li class="breadcrumb-item active">Listagem</li>
             </ol>
         </div>
@@ -13,7 +14,7 @@
 
     <h4>Ocorrências</h4>
     
-    @livewire('ocorrencias.ocorrencias')
+    @livewire('ocorrencias.ocorrencias-adicionar')
  
     
 
@@ -21,20 +22,6 @@
 
 @push('scripts_footer')
 
-    @if (session('status') && session('message'))
-        <script>
-            window.onload = function() {
-                let status = '{{ session('status') }}';
-                let message = '{{ session('message') }}';
-
-                if (status === 'success') {
-                    toastr.success(message);
-                } else if (status === 'error') {
-                    toastr.error(message);
-                }
-            };
-        </script>
-    @endif
 <script>
      document.addEventListener('livewire:load', function() {
             Livewire.hook('message.sent', () => {

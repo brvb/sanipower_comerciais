@@ -89,8 +89,11 @@
                                     {{-- <input type="text" class="form-control" placeholder="Zona" wire:model.lazy="zonaCliente"> --}}
                                     <select name="perPage" class="form-control" wire:model.lazy="statusOcorrencia">
                                         <option value="0" selected>Todas</option>
-                                        <option value="1">Abertas</option>
-                                        <option value="2">Fechadas</option>
+                                        <option value="1">Em aberto</option>
+                                        <option value="2">Em análise</option>
+                                        <option value="3">Não autorizado</option>
+                                        <option value="4">Não autorizado e fechado</option>
+                                        <option value="5">Concluído</option>
                                     </select>
                                 </div>
                             </div>
@@ -181,14 +184,14 @@
                     <div class="row">
                         <div class="col-12 col-sm-4">
                             <div class="caption uppercase">
-                                <i class="ti-user"></i> Ocorrencias
+                                <i class="ti-user"></i> Ocorrências
                             </div>
                         </div>
-                        {{-- <div class="col-12 col-sm-8 text-right">
-                            <a wire:click="adicionarProposta" style="color:white!important;" class="btn btn-sm btn-success">
-                                <i class="ti-book"></i> Adicionar Ocorrencias
+                        <div class="col-12 col-sm-8 text-right">
+                            <a wire:click="adicionarOcorrencia" style="color:white!important;" class="btn btn-sm btn-success">
+                                <i class="ti-book"></i> Adicionar Ocorrências
                             </a>
-                        </div> --}}
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">
@@ -214,7 +217,7 @@
                                 <tr>
                                     <th>Data</th>
                                     <th>Doc. Nº</th>
-                                    <th>Documento</th>
+                                    <th>Estado (Status)</th>
                                     <th>Cliente</th>
                                     <th>Cliente Nº</th>
                                     <th>Tipo</th>
@@ -225,16 +228,37 @@
                             <tbody>
                                 @foreach ($ocorrencias as $doc )
                                     <tr>
+                                        {{-- @dd($ocorrencias); --}}
                                         <td>{{ date('Y-m-d', strtotime($doc->date)) }}</td>
                                         <td>{{$doc->document_number}}</td>
-                                        <td>{{$doc->document}}</td>
+                                        <td>
+                                            @switch($doc->status)
+                                                @case(1)
+                                                    Em aberto
+                                                    @break
+                                                @case(2)
+                                                    Em análise
+                                                    @break
+                                                @case(3)
+                                                    Não autorizado
+                                                    @break
+                                                @case(4)
+                                                    Não autorizado e fechado
+                                                    @break
+                                                @case(5)
+                                                    Concluído
+                                                    @break
+                                                @default
+                                                    Não especificado
+                                            @endswitch
+                                        </td>     
                                         <td>{{$doc->customer_name}}</td>
                                         <td>{{$doc->customer_number}}</td>
                                         <td>{{$doc->type_1}}</td>
                                         <td>{{$doc->type_2}}</td>
                                         <td>
                                             <a wire:click="checkOrder({{json_encode($doc->id)}}, {{json_encode($doc)}})" style="color:white!important;" class="btn btn-sm btn-primary">
-                                                <i class="ti-eye"></i> Ver Ocorrencia
+                                                <i class="ti-eye"></i> Ver Ocorrência
                                             </a>
                                              {{-- <a wire:click="redirectNewProposta({{json_encode($doc->customer_id)}})" style="color:white!important;" class="btn btn-sm btn-primary">
                                                 <i class="ti-plus"></i> Nova Ocorrencia

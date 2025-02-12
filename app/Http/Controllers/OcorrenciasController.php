@@ -23,6 +23,14 @@ class OcorrenciasController extends Controller
         return view('ocorrencias.index');
     }
 
+    public function showDetail($id)
+    {
+        $arrayCliente = $this->clientesRepository->getDetalhesCliente($id);
+        $detailsClientes = $arrayCliente["object"];
+        // dd($detailsClientes);
+        return view('ocorrencias.newocorrencia',["cliente" =>  $detailsClientes, "nameCliente" => $detailsClientes->customers[0]->name]);
+    }
+
     public function showDetailOcorrencia($idOcorrencia)
     {
         if($idOcorrencia == "nova")
@@ -35,6 +43,11 @@ class OcorrenciasController extends Controller
             return view('ocorrencias.details',["ocorrencia" => $ocorrencia]);
         }
        
+    }
+
+    public function ocorrenciasList()
+    {
+        return view('ocorrencias.clientes');
     }
 
 }

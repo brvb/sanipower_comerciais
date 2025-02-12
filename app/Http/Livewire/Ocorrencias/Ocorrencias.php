@@ -261,6 +261,12 @@ class Ocorrencias extends Component
     
     }
 
+    public function adicionarOcorrencia()
+    {
+        Session::forget('ocorrencias');
+        return redirect()->route('ocorrencias.nova');
+    }
+
     public function updatedStartDate()
     {
         $this->pageChosen = 1;
@@ -458,6 +464,7 @@ class Ocorrencias extends Component
         }
         $json = json_encode($ocorrencia);
         $object = json_decode($json, false);
+        // dd($ocorrencia);
 
 
         Session::put('ocorrencia', $object);
