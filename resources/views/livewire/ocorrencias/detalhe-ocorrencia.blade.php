@@ -285,7 +285,69 @@
                                                 <textarea type="text" class="form-control" cols="4" rows="6" style="resize: none;" wire:model.defer="relatorio"></textarea>
                                             </div>
                                         </div>
-                                        
+
+                                        <div class="form-group">
+                                            <label>Anexos</label>
+                                            <div class="input-group mb-3">
+                                                <label class="input-group-text btn" for="inputGroupFile02">Upload</label>
+                                                <input 
+                                                    type="file" 
+                                                    class="form-control" 
+                                                    id="inputGroupFile02" 
+                                                    wire:model="anexos" 
+                                                    style="display:none;" 
+                                                    multiple
+                                                    onchange="validateFileSize()">
+                                            </div>
+                                            <script>
+                                                function validateFileSize() {
+                                                    const maxFileSize = 10 * 1024 * 1024;
+                                                     const input = document.getElementById('inputGroupFile02');
+                                         
+                                                     for (const file of input.files) {
+                                                         if (file.size > maxFileSize) {
+                                                             const message = `O arquivo ${file.name} excede o tamanho máximo permitido de 10MB.`;
+                                                         
+                                                             toastr.warning(message);
+                                                             input.value = '';
+                                                             return;
+                                                         }
+                                                     }
+                                                 }
+                                            </script>
+                                            @if(Session::has('OcorrenciasAnexos'))
+                                                <div class="mt-3">
+                                                    <ul style=" list-style-type: none; margin:0;padding: 0;">
+                                                        @foreach(Session::get('OcorrenciasAnexos') as $file)
+                                                        <li>
+                                                            @if(isset($file['path']))
+                                                                <button wire:click="removeAnexo('{{ $file['path'] }}')" class="btn btn-danger btn-sm">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </button>
+                                                                <a href="{{ asset('storage/' . $file['path']) }}" download="{{ $file['original_name'] }}">
+                                                                    {{ $file['original_name'] }}
+                                                                </a>
+                                                            @else
+                                                                @php
+                                                                    $filename = strstr($file, '/');
+                                                                    $filename = ltrim($filename, '/');
+                                                                    $filenameSee = strstr($file, '&');
+                                                                    $filenameSee = ltrim($filenameSee, '&');
+                                                                @endphp
+                                                                <button wire:click="removeAnexo('{{ $file }}')" class="btn btn-danger btn-sm">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </button>
+                                                                <a href="{{ asset('storage/anexos/' . $filename) }}" download="{{ $filenameSee }}">
+                                                                    {{ $filenameSee }}
+                                                                </a>
+                                                            @endif
+                                                        </li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                            @endif
+                                        </div>
+                                        <br>
                                         <div class="form-group">
                                             <label>Tipo</label>
                                             <div class="input-group">
@@ -354,8 +416,6 @@
                                                 tipo1.dispatchEvent(new Event("change"));
                                             });
                                             </script>
-                                        
-
                                         <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#invoiceModal">
                                             Selecionar Faturas
                                         </button>

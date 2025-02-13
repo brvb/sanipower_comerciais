@@ -86,7 +86,7 @@ class Financeiro extends Component
 
         if(session('verFinanceiroPaginator')){
             // $FinanceiroArray = $this->clientesRepository->getOcorrenciasCliente($this->perPage,$this->pageChosen,$this->idCliente,$this->nomeCliente,$this->numeroCliente,$this->zonaCliente,$this->telemovelCliente,$this->emailCliente,$this->nifCliente,$this->startDate,$this->endDate,$this->statusFinanceiro);
-            $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 566);
+            $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 0);
             // dd($FinanceiroArray);
             Session::put('verFinanceiroNomeCliente',$this->nomeCliente);
             Session::put('verFinanceiroNumeroCliente',$this->numeroCliente);
@@ -104,7 +104,7 @@ class Financeiro extends Component
             $this->totalRecords = session('verFinanceiroNr_registos');
         }else{
             // $FinanceiroArray = $this->clientesRepository->getOcorrenciasCliente($this->perPage,$this->pageChosen,$this->idCliente,$this->nomeCliente,$this->numeroCliente,$this->zonaCliente,$this->telemovelCliente,$this->emailCliente,$this->nifCliente,$this->startDate,$this->endDate,$this->statusFinanceiro);
-            $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 566);
+            $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 0);
             Session::put('verFinanceiroPaginator', $FinanceiroArray["object"]);
             Session::put('verFinanceiroNr_paginas', $FinanceiroArray["nr_paginas"] + 1);
             Session::put('verFinanceiroNr_registos', $FinanceiroArray["nr_registos"]);
@@ -319,14 +319,14 @@ class Financeiro extends Component
         if($this->nomeCliente != "" || $this->numeroCliente != ""  || $this->zonaCliente != "" || $this->telemovelCliente != "" || $this->emailCliente != "" || $this->nifCliente != "" || $this->statusFinanceiro != "0"){
 
         // $FinanceiroArray = $this->clientesRepository->getOcorrenciasCliente($this->perPage,$this->pageChosen,$this->idCliente,$this->nomeCliente,$this->numeroCliente,$this->zonaCliente,$this->telemovelCliente,$this->emailCliente,$this->nifCliente,$this->startDate,$this->endDate,$this->statusFinanceiro);
-        $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 566);
+        $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 0);
             
             Session::put('verFinanceiroPaginator', $FinanceiroArray["object"]);
             $this->Financeiros = session('verFinanceiroPaginator');
 
         } else {
             // $FinanceiroArray = $this->clientesRepository->getOcorrenciasCliente($this->perPage,$this->pageChosen,$this->idCliente,$this->nomeCliente,$this->numeroCliente,$this->zonaCliente,$this->telemovelCliente,$this->emailCliente,$this->nifCliente,$this->startDate,$this->endDate,$this->statusFinanceiro);
-            $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 566);
+            $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 0);
 
             Session::put('verFinanceiroPaginator', $FinanceiroArray["object"]);
             $this->Financeiros = session('verFinanceiroPaginator');
@@ -345,14 +345,14 @@ class Financeiro extends Component
             if($this->nomeCliente != "" || $this->numeroCliente != ""  || $this->zonaCliente != "" || $this->telemovelCliente != "" || $this->emailCliente != "" || $this->nifCliente != "" || $this->statusFinanceiro != "0"){
 
                 // $FinanceiroArray = $this->clientesRepository->getOcorrenciasCliente($this->perPage,$this->pageChosen,$this->idCliente,$this->nomeCliente,$this->numeroCliente,$this->zonaCliente,$this->telemovelCliente,$this->emailCliente,$this->nifCliente,$this->startDate,$this->endDate,$this->statusFinanceiro);
-                $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 566);
+                $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 0);
 
                 Session::put('verFinanceiroPaginator', $FinanceiroArray["object"]);
                 $this->Financeiros = session('verFinanceiroPaginator');
                 
             } else {
                 // $FinanceiroArray = $this->clientesRepository->getOcorrenciasCliente($this->perPage,$this->pageChosen,$this->idCliente,$this->nomeCliente,$this->numeroCliente,$this->zonaCliente,$this->telemovelCliente,$this->emailCliente,$this->nifCliente,$this->startDate,$this->endDate,$this->statusFinanceiro);
-                $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 566);
+                $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 0);
 
                 Session::put('verFinanceiroPaginator', $FinanceiroArray["object"]);
                 $this->Financeiros = session('verFinanceiroPaginator');
@@ -364,14 +364,14 @@ class Financeiro extends Component
             if($this->nomeCliente != "" || $this->numeroCliente != ""  || $this->zonaCliente != "" || $this->telemovelCliente != "" || $this->emailCliente != "" || $this->nifCliente != "" || $this->statusFinanceiro != "0"){
 
                 // $FinanceiroArray = $this->clientesRepository->getOcorrenciasCliente($this->perPage,$this->pageChosen,$this->idCliente,$this->nomeCliente,$this->numeroCliente,$this->zonaCliente,$this->telemovelCliente,$this->emailCliente,$this->nifCliente,$this->startDate,$this->endDate,$this->statusFinanceiro);
-                $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 566);
+                $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 0);
 
                 Session::put('verFinanceiroPaginator', $FinanceiroArray["object"]);
                 $this->Financeiros = session('verFinanceiroPaginator');
                 
             } else {
                 // $FinanceiroArray = $this->clientesRepository->getOcorrenciasCliente($this->perPage,$this->pageChosen,$this->idCliente,$this->nomeCliente,$this->numeroCliente,$this->zonaCliente,$this->telemovelCliente,$this->emailCliente,$this->nifCliente,$this->startDate,$this->endDate,$this->statusFinanceiro);
-                $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 566);
+                $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 0);
 
                 Session::put('verFinanceiroPaginator', $FinanceiroArray["object"]);
                 $this->Financeiros = session('verFinanceiroPaginator');
@@ -389,14 +389,14 @@ class Financeiro extends Component
             if($this->nomeCliente != "" || $this->numeroCliente != ""  || $this->zonaCliente != "" || $this->telemovelCliente != "" || $this->emailCliente != "" || $this->nifCliente != "" || $this->statusFinanceiro != "0"){
 
                 // $FinanceiroArray = $this->clientesRepository->getOcorrenciasCliente($this->perPage,$this->pageChosen,$this->idCliente,$this->nomeCliente,$this->numeroCliente,$this->zonaCliente,$this->telemovelCliente,$this->emailCliente,$this->nifCliente,$this->startDate,$this->endDate,$this->statusFinanceiro);
-                $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 566);
+                $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 0);
 
                 Session::put('verFinanceiroPaginator', $FinanceiroArray["object"]);
                 $this->Financeiros = session('verFinanceiroPaginator');
                 
             } else {
                 // $FinanceiroArray = $this->clientesRepository->getOcorrenciasCliente($this->perPage,$this->pageChosen,$this->idCliente,$this->nomeCliente,$this->numeroCliente,$this->zonaCliente,$this->telemovelCliente,$this->emailCliente,$this->nifCliente,$this->startDate,$this->endDate,$this->statusFinanceiro);
-                $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 566);
+                $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 0);
 
                 Session::put('verFinanceiroPaginator', $FinanceiroArray["object"]);
                 $this->Financeiros = session('verFinanceiroPaginator');
@@ -429,7 +429,7 @@ class Financeiro extends Component
         if($this->nomeCliente != "" || $this->numeroCliente != ""  || $this->zonaCliente != "" || $this->telemovelCliente != "" || $this->emailCliente != "" || $this->nifCliente != "" || $this->statusFinanceiro != "0"){
 
             // $FinanceiroArray = $this->clientesRepository->getOcorrenciasCliente($this->perPage,$this->pageChosen,$this->idCliente,$this->nomeCliente,$this->numeroCliente,$this->zonaCliente,$this->telemovelCliente,$this->emailCliente,$this->nifCliente,$this->startDate,$this->endDate,$this->statusFinanceiro);
-            $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 566);
+            $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 0);
 
             $this->Financeiros = $FinanceiroArray["object"];
             $this->numberMaxPages = $FinanceiroArray["nr_paginas"] + 1;
@@ -438,7 +438,7 @@ class Financeiro extends Component
         } else {
             // $FinanceiroArray = $this->clientesRepository->getOcorrenciasCliente($this->perPage,$this->pageChosen,$this->idCliente,$this->nomeCliente,$this->numeroCliente,$this->zonaCliente,$this->telemovelCliente,$this->emailCliente,$this->nifCliente,$this->startDate,$this->endDate,$this->statusFinanceiro);
            
-            $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 566);
+            $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 0);
             $this->Financeiros = $FinanceiroArray["object"];
             $this->numberMaxPages = $FinanceiroArray["nr_paginas"] + 1;
             $this->totalRecords = $FinanceiroArray["nr_registos"];

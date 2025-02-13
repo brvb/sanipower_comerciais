@@ -57,8 +57,12 @@ interface ClientesInterface
 
     //DETALHES CLIENTE -> ABA OCORRENCIAS
     public function getNumberOfPagesPropostasFiltro($perPage,$pageChosen,$idCliente,$nomeCliente,$numeroCliente,$zonaCliente,$telemovelCliente,$emailCliente,$nifCliente,$estadoProposta): array;
+
     public function getOcorrenciasCliente($perPage,$pageChosen,$idCliente,$nomeCliente,$numeroCliente,$zonaCliente,$telemovelCliente,$emailCliente,$nifCliente,$startDate,$endDate,$statusOcorrencia): array;
+
     public function getInvoiceCliente($perPage,$pageChosen,$numeroCliente): array;
+
+    public function getOcorrenciasID($idOcorrencia): array;
 
     public function getNumberOfPagesOcorrenciasCliente($perPage,$idCliente): array;
 

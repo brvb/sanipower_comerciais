@@ -344,7 +344,42 @@
                         <table class="table table-hover init-datatable">
                             <tbody>
                                 @forelse ($ocorrencia->details as $prod)
-                                {{-- @dd($ocorrencia) --}}
+                                    <tr style="border-top:1px solid #9696969c!important; border-bottom:1px solid #9696969c!important;">
+                                        <td>
+                                            Ficheiros -
+                                        </td>
+                                        <td colspan = 3>
+                                            @if(Session::has('OcorrenciasAnexos'))
+                                                <ul style=" list-style-type: none; margin:0;padding: 0;">
+                                                    @foreach(Session::get('OcorrenciasAnexos') as $file)
+                                                    <li>
+                                                        @if(isset($file['path']))
+                                                            {{-- <button wire:click="removeAnexo('{{ $file['path'] }}')" class="btn btn-danger btn-sm">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button> --}}
+                                                            <a href="{{ asset('storage/' . $file['path']) }}" download="{{ $file['original_name'] }}">
+                                                                {{ $file['original_name'] }}
+                                                            </a>
+                                                        @else
+                                                            @php
+                                                                $filename = strstr($file, '/');
+                                                                $filename = ltrim($filename, '/');
+                                                                $filenameSee = strstr($file, '&');
+                                                                $filenameSee = ltrim($filenameSee, '&');
+                                                            @endphp
+                                                            {{-- <button wire:click="removeAnexo('{{ $file }}')" class="btn btn-danger btn-sm">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button> --}}
+                                                            <a href="{{ asset('storage/anexos/' . $filename) }}" download="{{ $filenameSee }}">
+                                                                {{ $filenameSee }}
+                                                            </a>
+                                                        @endif
+                                                    </li>
+                                                    @endforeach
+                                                </ul>
+                                        @endif
+                                        </td>
+                                    </tr>
                                     <tr style="border-top:1px solid #9696969c!important; border-bottom:1px solid #9696969c!important;">
                                         <td>
                                             Descrição

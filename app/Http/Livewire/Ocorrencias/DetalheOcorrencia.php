@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Ocorrencias;
 use App\Models\Visitas;
 use Livewire\Component;
 use App\Models\Carrinho;
+use App\Models\Anexos;
 use Livewire\WithPagination;
 use App\Models\VisitasAgendadas;
 use Illuminate\Support\Facades\Auth;
@@ -16,13 +17,15 @@ use Dompdf\Dompdf;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Mail;
 use App\Models\GrupoEmail;
-use App\Mail\SendRelatorio;
+use App\Mail\SendOcorrencia;
 use Illuminate\Http\Request;
+use Livewire\WithFileUploads;
+
 
 
 class DetalheOcorrencia extends Component
 {
-    use WithPagination;
+    use WithPagination,WithFileUploads;
 
     private ?object $clientesRepository = NULL;
     private ?object $visitasRepository = NULL;
@@ -42,22 +45,13 @@ class DetalheOcorrencia extends Component
     private ?object $analysisClientes = NULL;
 
     public string $tabDetail = "show active";
-    public string $tabAnalysis = "";
-    public string $tabEncomendas = "";
-    public string $tabPropostas = "";
-    public string $tabFinanceiro = "";
-    public string $tabOcorrencia = "";
-    public string $tabVisitas = "";
-    public ?string $tabAssistencias = "";
 
     //FORM
     public ?string $assunto = "";
     public string $relatorio = "";
-    public string $pendentes = "";
-    public string $comentario_encomendas = "";
-    public string $comentario_propostas = "";
-    public string $comentario_financeiro = "";
-    public string $comentario_occorencias = "";
+    public ?string $selectedInvoicesJson = "";
+    public ?string $tipoOcorrenciaSelect2 = "";
+    public int $tipoOcorrenciaSelect1;
 
     public $emailArray;
     public $emailSend;
@@ -65,27 +59,16 @@ class DetalheOcorrencia extends Component
 
     public int $checkStatus;
 
-    private ?object $encomendasDetail = NULL;
-
-    public ?string $activeFinalizado = "";
-
-    public $tiposVisitaCollection;
-    public int $tipoVisitaSelect;
-
-    public ?int $idVisita;
     public ?string $clientID = "";
     public $anexos = [];
     public $tempPaths = [];
-    protected $listeners = ['eventoChamarSaveVisita' => 'saveVisita'];
 
     public $invoices;
     public $selectedLines = [];
     public $selectedLinesIds = [];
-    public ?string $selectedInvoicesJson = "";
-    public ?string $tipoOcorrenciaSelect2 = "";
-    public int $tipoOcorrenciaSelect1;
 
 
+    
 
     public function boot(ClientesInterface $clientesRepository, VisitasInterface $visitasRepository)
     {
@@ -107,26 +90,18 @@ class DetalheOcorrencia extends Component
 
     public function mount($idcliente)
     {
-        // dd($idcliente);
         $this->initProperties();
         $cliente =  $this->clientesRepository->getDetalhesCliente($idcliente);
-        // dd($cliente['object']->customers);
 
         $this->Cliente = $cliente['object']->customers[0];
 
         session()->put('Cliente', $this->Cliente);
-        
+
         $this->invoices = $this->clientesRepository->getInvoiceCliente(1000, 1, $this->Cliente->no);
         $this->invoices = $this->invoices['object'];
-    
-        // Session::put('visitasPropostasAssunto', $this->assunto );
-        // Session::put('visitasPropostasRelatorio', $this->relatorio );
-        // Session::put('visitasPropostasPendentes', $this->pendentes );
-        // Session::put('visitasPropostastipoVisitaSelect', $this->tipoVisitaSelect);
-        // Session::put('visitasPropostasAnexos', $this->anexos);
 
-        // $this->restartDetails();
-
+        session()->put('invoices', $this->invoices);
+        session()->put('OcorrenciasAnexos', null);
     }
 
 
@@ -151,8 +126,8 @@ class DetalheOcorrencia extends Component
 
         $parametro = Session::get('parametro');
         
-        if($rota == "visitas.info"){
-            $rota = "visitas";
+        if($rota == "ocorrencias.info"){
+            $rota = "ocorrencias";
             $parametro = "";
         }
 
@@ -165,14 +140,54 @@ class DetalheOcorrencia extends Component
             }
             return redirect()->route($rota);
         }
+        return redirect()->route('ocorrencias');
     }
     
     public function salvarOcorrencia()
     {
+        $updatedPaths = [];
+        if(session('OcorrenciasAnexos')){
+            $this->anexos = session('OcorrenciasAnexos');
+        }
+        foreach ($this->anexos as $file) {
+            if(isset($file['path'])){
+                $path = $file['path'];
+
+                $newPath = str_replace('temp/', 'anexos/', $path);
+        
+                if (\Storage::disk('public')->exists($path)) {
+                    \Storage::disk('public')->move($path, $newPath);
+        
+                    $updatedPaths[] = [
+                        'path' => $newPath,
+                        'original_name' => $file['original_name'],
+                    ];
+                }
+            }else{
+                $newPath = str_replace('temp/', 'anexos/', $file);
+                $filename = ltrim($file, 'temp/');
+
+                $updatedPaths[] = [
+                    'path' => $newPath,
+                    'original_name' => $filename,
+                ];
+            }
+        }
+
+        Session::put('OcorrenciasAnexos', $updatedPaths);
+
+        $this->anexos = session('OcorrenciasAnexos');
+        
+        $originalNames = [];
+        foreach ($this->anexos as $anexo) {
+            $originalNames[] = $anexo["path"];
+        }
+
         if(!isset($this->selectedInvoicesJson) || !isset($this->tipoOcorrenciaSelect2) || !isset($this->tipoOcorrenciaSelect1) || !isset($this->relatorio))
         {
             return redirect()->route('ocorrencias.detail', ['id' => session('Cliente')->id]);
         }
+
         $client = session('Cliente');
         $selectedInvoicesJson = json_decode($this->selectedInvoicesJson);
 
@@ -195,6 +210,7 @@ class DetalheOcorrencia extends Component
             ];
             $count++;
         }
+
         $array = [
             "customer_number" => $client->no,
             "customer_name" => $client->name,
@@ -238,16 +254,136 @@ class DetalheOcorrencia extends Component
             return redirect()->route('ocorrencias.detail', ['id' => session('Cliente')->id]);
         }else
         {
+
+            $anexoCreate = Anexos::create([
+                "idOcorrencia" => $response_decoded->id_document,
+                "anexo" => json_encode($originalNames),
+                "id_user" => Auth::user()->id
+            ]);
+
+            $grupos = GrupoEmail::where('local_funcionamento', 'nova_ocorrencia')->get();
+            if(isset($grupos)){
+                $this->emailArray = [];
+                foreach ($grupos as $grupo) {
+                    $emails = array_map('trim', explode(',', $grupo->emails));
+                    
+                    $this->emailArray = array_merge($this->emailArray, $emails);
+                }
+    
+                $this->emailArray[] = Auth::user()->email;
+    
+                $this->emailArray = array_unique($this->emailArray);
+    
+            Mail::to(Auth::user()->email)
+            ->bcc($this->emailArray)
+            ->send(new SendOcorrencia($response_decoded->id_document));
+            }
+
             $this->dispatchBrowserEvent('checkToaster', ["message" => "Ocorrência finalizada com sucesso", "status" => "success"]);
+
+            session()->put('ocorrencia', null);
 
             return redirect()->route('ocorrencias.ocorrencia', ['idOcorrencia' => $response_decoded->id_document]);
         }
         
     }
     
+    public function removeAnexo($filePath)
+    {
+        $currentAnexos = Session::get('OcorrenciasAnexos', []);
+        
+        Session::put('trueAdd', 1 );
+
+        $currentAnexos = array_filter($currentAnexos, function($file) use ($filePath) {
+            return $file !== $filePath;
+        });
+        Session::put('OcorrenciasAnexos', $currentAnexos);
+    
+        if (\Storage::disk('public')->exists($filePath)) {
+            \Storage::disk('public')->delete($filePath);
+        }
+        $this->anexos=  $currentAnexos;
+        $this->tempPaths = $currentAnexos;
+   
+        Session::put('OcorrenciasAnexos', $currentAnexos);
+
+        $updatedPaths = [];
+        foreach ($this->anexos as $file) {
+
+            if(isset($file['path'])){
+            
+                $path = $file['path'];
+
+                $newPath = str_replace('temp/', 'anexos/', $path);
+        
+                if (\Storage::disk('public')->exists($path)) {
+                    \Storage::disk('public')->move($path, $newPath);
+        
+                    $updatedPaths[] = [
+                        'path' => $newPath,
+                        'original_name' => $file['original_name'],
+                    ];
+                }
+            }else{
+                $newPath = str_replace('temp/', 'anexos/', $file);
+
+                $filename = ltrim($file, 'temp/');
+
+                $updatedPaths[] = [
+                    'path' => $newPath,
+                    'original_name' => $filename,
+                ];
+            }
+        }
+        Session::put('OcorrenciasAnexos', $updatedPaths);
+
+        $this->anexos = session('OcorrenciasAnexos');
+        
+        $originalNames = [];
+        foreach ($this->anexos as $anexo) {
+            $originalNames[] = $anexo["path"];
+        }
+        Visitas::where('id',session('idVisita'))->update([
+            "anexos" => json_encode($originalNames),
+        ]);
+    }
+    
+
+    public function updatedAnexos() 
+    {
+        $currentAnexos = Session::get('OcorrenciasAnexos', []);
+        
+        $maxFileSize = 10 * 1024 * 1024; 
+        foreach ($this->anexos as $anexo) {
+            if ($anexo->getSize() > $maxFileSize) {
+                $this->dispatchBrowserEvent('sendToaster', ["message" => "O arquivo deve ter no máximo 10 MB.", "status" => "error"]);
+                return false;
+            }
+    
+            $originalName = $anexo->getClientOriginalName();
+            
+            $path = $anexo->storeAs('temp', time() . '&' . $originalName, 'public');
+            
+            $currentAnexos[] = [
+                'path' => $path,
+                'original_name' => $originalName,
+            ];
+        }
+        
+        Session::put('OcorrenciasAnexos', $currentAnexos);
+        $this->tempPaths = $currentAnexos;
+    }
 
     public function render()
     {
+        if(!isset($this->Cliente))
+        {
+            $this->Cliente = session('Cliente');
+        }
+        if(!isset($this->invoices))
+        {
+            $this->invoices = session('invoices');
+        }
         return view('livewire.ocorrencias.detalhe-ocorrencia',["detalhesCliente" => $this->Cliente, "invoices" => $this->invoices]);
     }
 }

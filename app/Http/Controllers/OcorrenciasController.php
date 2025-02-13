@@ -33,16 +33,15 @@ class OcorrenciasController extends Controller
 
     public function showDetailOcorrencia($idOcorrencia)
     {
-        if($idOcorrencia == "nova")
-        {
-            return view('ocorrencias.clientes');
-        } 
-        else
-        {
             $ocorrencia = Session::get('ocorrencia');
+            if($ocorrencia == null)
+            {
+                $ocorrencia = $this->clientesRepository->getOcorrenciasID($idOcorrencia);
+                $ocorrencia = $ocorrencia['object'][0];
+            }
+            Session::put('ocorrencia', $ocorrencia);
             return view('ocorrencias.details',["ocorrencia" => $ocorrencia]);
-        }
-       
+        
     }
 
     public function ocorrenciasList()

@@ -7,6 +7,7 @@ use App\Mail\SendComentario;
 use Dompdf\Dompdf;
 use Livewire\Component;
 use App\Models\Carrinho;
+use App\Models\Anexos;
 use App\Models\GrupoEmail;
 use App\Mail\SendProposta;
 use App\Models\Comentarios;
@@ -108,6 +109,7 @@ class OcorrenciaInfo extends Component
     public ?array $produtosRapida = [];
     public $produtosComment = [];
     public $selectedItemsAdjudicar = [];
+    public $anexos = [];
     
 
     /***** */
@@ -157,6 +159,15 @@ class OcorrenciaInfo extends Component
         Session::put('tabDetail', '');
         $this->initProperties();
         $this->ocorrencia = $ocorrencia;
+
+        $Anexos = Anexos::where('idOcorrencia',$ocorrencia->id)->first();
+
+        if(isset($Anexos->anexo))
+        {
+            $this->anexos = $Anexos->anexo;
+            $this->anexos = json_decode($this->anexos);
+        }
+        Session::put('OcorrenciasAnexos', $this->anexos);
         
     }
 
@@ -185,7 +196,11 @@ class OcorrenciaInfo extends Component
         $ocorrencia = session('ocorrencia');
         
         $this->ocorrencia = session()->get('ocorrencia');
-        // dd($ocorrencia);
+
+        if(session('OcorrenciasAnexos')){
+            $this->anexos = session('OcorrenciasAnexos');
+        }
+
         return view('livewire.ocorrencias.ocorrencia-info',["ocorrencia" => $ocorrencia]);
 
     }
