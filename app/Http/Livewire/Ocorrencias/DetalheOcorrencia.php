@@ -115,7 +115,7 @@ class DetalheOcorrencia extends Component
         $this->Cliente = $cliente['object']->customers[0];
 
         session()->put('Cliente', $this->Cliente);
-
+        
         $this->invoices = $this->clientesRepository->getInvoiceCliente(1000, 1, $this->Cliente->no);
         $this->invoices = $this->invoices['object'];
     
@@ -169,7 +169,6 @@ class DetalheOcorrencia extends Component
     
     public function salvarOcorrencia()
     {
-        // dd($this->selectedInvoicesJson, $this->assunto, $this->relatorio, $this->tipoOcorrenciaSelect1, $this->tipoOcorrenciaSelect2);
         if(!isset($this->selectedInvoicesJson) || !isset($this->tipoOcorrenciaSelect2) || !isset($this->tipoOcorrenciaSelect1) || !isset($this->relatorio))
         {
             return redirect()->route('ocorrencias.detail', ['id' => session('Cliente')->id]);
@@ -231,7 +230,7 @@ class DetalheOcorrencia extends Component
         curl_close($curl);
 
         $response_decoded = json_decode($response);
-        // dd(env('SANIPOWER_URL_DIGITAL').'/api/documents/occurrence', $array,$response_decoded);
+
         if($response_decoded->success != true)
         {
             $this->dispatchBrowserEvent('checkToaster', ["message" => "A Ocorrência não foi finalizada", "status" => "error"]);
@@ -249,7 +248,6 @@ class DetalheOcorrencia extends Component
 
     public function render()
     {
-        // dd($this->Cliente);
         return view('livewire.ocorrencias.detalhe-ocorrencia',["detalhesCliente" => $this->Cliente, "invoices" => $this->invoices]);
     }
 }

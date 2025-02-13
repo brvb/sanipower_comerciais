@@ -79,6 +79,13 @@
             </li>
 
             <li class="li-hover">
+                <a href="{{route('financeiro')}}" class="{{ Str::contains(request()->route()->getName(), 'financeiro') ? 'text-info' : '' }}">
+                    <i class="ti-receipt"></i>
+                    <span>Financeiro</span>
+                </a>
+            </li>
+            
+            <li class="li-hover">
                 <a href="{{route('campanhas')}}" class="{{ Str::contains(request()->route()->getName(), 'campanhas') ? 'text-info' : '' }}">
                     <i class="fa fa-tag"></i>
                     <span>Campanhas</span>

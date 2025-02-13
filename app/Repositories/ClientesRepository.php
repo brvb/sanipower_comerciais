@@ -1278,16 +1278,47 @@ class ClientesRepository implements ClientesInterface
         $response_decoded = json_decode($response);
 
         // dd($response_decoded);
+
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+
+        if(isset($response_decoded->invoices))
+        {
+                if($response_decoded != null && $response_decoded->invoices != null)
+                {
+                    $currentItems = array_slice($response_decoded->invoices, $perPage * ($currentPage - 1), $perPage);
+
+                    $itemsPaginate = new LengthAwarePaginator($currentItems, $response_decoded->total_pages,$perPage);
+                }
+                else {
+
+                    $currentItems = [];
+
+                    $itemsPaginate = new LengthAwarePaginator($currentItems, $response_decoded->total_pages,$perPage);
+                }
+        } 
+        else {
+            $currentItems = [];
+
+            $itemsPaginate = new LengthAwarePaginator($currentItems, 0 ,$perPage);
+        }
        
+        if($noClient == 566)
+        {
+        return [
+            'object' => $itemsPaginate,
+            "nr_paginas" => $response_decoded->total_pages, 
+            "nr_registos" => $response_decoded->total_records
+        ];
+        }
+        else{
         return [
             'object' => $response_decoded->invoices,
             "nr_paginas" => $response_decoded->total_pages, 
             "nr_registos" => $response_decoded->total_records
         ];
+        }
 
-    
-        return $itemsPaginate; 
-    }
+        }
 
     public function getOcorrenciasCliente($perPage,$page,$idCliente,$nomeCliente,$noClient,$zonaCliente,$telemovelCliente,$emailCliente,$nifCliente,$startDate,$endDate,$statusOcorrencia): array
     {
@@ -1363,17 +1394,14 @@ class ClientesRepository implements ClientesInterface
                 'Content-Type: application/json'
             ),
         ));
-        // dd(env('SANIPOWER_URL_DIGITAL').'/api/documents/occurrences?perPage='.$perPage.'&Page='.$page.'&customer_id='.$idCliente.'&Salesman_number='. Auth::user()->id_phc.$string);
         $response = curl_exec($curl);
 
         curl_close($curl);
 
         $response_decoded = json_decode($response);
 
-        // dd(env('SANIPOWER_URL_DIGITAL').'/api/documents/occurrences?perPage='.$perPage.'&Page='.$page.'&customer_id='.$idCliente.'&Salesman_number='. Auth::user()->id_phc.$string, $response_decoded);
 
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
-
 
         if(isset($response_decoded->occurrences))
         {
