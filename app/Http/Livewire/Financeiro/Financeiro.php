@@ -482,7 +482,7 @@ class Financeiro extends Component
 
             return view('pageErro');
         }
-
+        // dd($this->Financeiros);
         return view('livewire.Financeiro.Financeiro',["financeiro" => $this->Financeiros]);
     }
 }

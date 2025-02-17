@@ -974,7 +974,7 @@
                                                                                 <tbody>
                                                                                     @if (!empty($detailProduto) || isset($quickBuyProducts->product))
                                                                                         @foreach ($detailProduto->product as $i => $prod)
-                                                                                            <tr style="background-color:{{ $prod->color }}">
+                                                                                            <tr style="background-color:{{ $prod->color }};">
                                                                                                 <td>{{ $prod->referense }}</td>
                                                                                                 <td>{{ $prod->model }}</td>
                                                                                                 <td>{{ number_format($prod->pvp,3) }}€</td>
@@ -1046,7 +1046,6 @@
                                                                                                                 </div>
                                                                                                             </a>
                                                                                                         </button>
-                                                                                                        
                                                                                                         <div class="dropdown">
                                                                                                             @if ($prod->color == '#41c6a0')
                                                                                                             <button class="btn btn-sm btn-outline-secondary" id="commentProductEncomenda{{$i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style = "Display:none;">

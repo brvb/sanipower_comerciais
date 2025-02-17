@@ -1278,15 +1278,38 @@ class ClientesRepository implements ClientesInterface
         $response_decoded = json_decode($response);
 
         // dd($response_decoded);
+
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+
+
+        if(isset($response_decoded->invoices))
+        {
+                if($response_decoded != null && $response_decoded->invoices != null)
+                {
+                    $currentItems = array_slice($response_decoded->invoices, $perPage * ($currentPage - 1), $perPage);
+
+                    $itemsPaginate = new LengthAwarePaginator($currentItems, $response_decoded->total_pages,$perPage);
+                }
+                else {
+
+                    $currentItems = [];
+
+                    $itemsPaginate = new LengthAwarePaginator($currentItems, $response_decoded->total_pages,$perPage);
+                }
+        } 
+        else {
+            $currentItems = [];
+
+            $itemsPaginate = new LengthAwarePaginator($currentItems, 0 ,$perPage);
+        }
        
+
         return [
-            'object' => $response_decoded->invoices,
+            'object' => $itemsPaginate,
             "nr_paginas" => $response_decoded->total_pages, 
             "nr_registos" => $response_decoded->total_records
         ];
-
-    
-        return $itemsPaginate; 
+       
     }
 
     public function getOcorrenciasID($idOcorrencia): array
