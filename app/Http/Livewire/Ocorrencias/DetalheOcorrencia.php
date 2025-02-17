@@ -102,6 +102,12 @@ class DetalheOcorrencia extends Component
 
         session()->put('invoices', $this->invoices);
         session()->put('OcorrenciasAnexos', null);
+
+        // if( session('ErroPreencher') != "")
+        // {   
+        //     session()->put('ErroPreencher', null);
+        //     $this->dispatchBrowserEvent('checkToaster', ["message" => "É obrigatório preencher todos os campos!", "status" => "error"]);
+        // }
     }
 
 
@@ -182,9 +188,10 @@ class DetalheOcorrencia extends Component
         foreach ($this->anexos as $anexo) {
             $originalNames[] = $anexo["path"];
         }
-
-        if(!isset($this->selectedInvoicesJson) || !isset($this->tipoOcorrenciaSelect2) || !isset($this->tipoOcorrenciaSelect1) || !isset($this->relatorio))
+        if(!isset($this->selectedInvoicesJson) || $this->selectedInvoicesJson == "" || !isset($this->tipoOcorrenciaSelect2) || !isset($this->tipoOcorrenciaSelect1) || !isset($this->relatorio))
         {
+            $this->dispatchBrowserEvent('checkToaster', ["message" => "É obrigatório preencher todos os campos!", "status" => "error"]);
+            // session()->put('ErroPreencher', 'Ativo');
             return redirect()->route('ocorrencias.detail', ['id' => session('Cliente')->id]);
         }
 

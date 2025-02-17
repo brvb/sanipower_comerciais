@@ -188,6 +188,9 @@ class OcorrenciaInfo extends Component
                 return redirect()->route($rota,$parametro);
             }
             return redirect()->route($rota);
+        }else
+        {
+            return redirect()->route('ocorrencias');
         }
     }
 
