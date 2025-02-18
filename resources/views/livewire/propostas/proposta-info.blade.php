@@ -753,34 +753,6 @@
             }
         });
 
-
-       
-        {{-- document.addEventListener('DOMContentLoaded', function() {
-             // Função para sincronizar os checkboxes
-    
-            function syncCheckboxes() {
-                 var isChecked = document.querySelector('.checkboxAll').checked;
-                 document.querySelectorAll('.checkboxItem').forEach(function(checkbox) {
-                    checkbox.checked = isChecked;
-                });
-            }
-
-            document.querySelector('.checkboxAll').addEventListener('click', function() {
-                syncCheckboxes();
-        });
-
-             document.addEventListener('livewire:load', function() {
-
-        Livewire.on('syncCheckbox', (checkBoxTrue) => {
-                     document.querySelector('.checkboxAll').checked = checkBoxTrue;
-                     document.querySelectorAll('.checkboxItem').forEach(function(checkbox) {
-                         checkbox.checked = checkBoxTrue;
-                     });
-                 });
-                 syncCheckboxes();
-             });
-         }); --}}
-
     </script>
     
 

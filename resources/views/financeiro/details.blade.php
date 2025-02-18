@@ -4,14 +4,14 @@
     <div class="row navigationLinks">
         <div class="col">
             <ol class="breadcrumb pl-4" style="padding-left: 25px;">
-                <li class="breadcrumb-item"><a href="{{route('ocorrencias')}}"><i class="ti-wallet"></i> Ocorrências</a></li>
+                <li class="breadcrumb-item"><a href="{{route('financeiro')}}"><i class="ti-wallet"></i> Financeiro</a></li>
                 <li class="breadcrumb-item">Cliente</li>
-                    <li class="breadcrumb-item active">{{$ocorrencia->customer_name}}</li>
+                    <li class="breadcrumb-item active">{{$financeiro->customer_name}}</li>
             </ol>
         </div>
     </div>
     <div>
-            @livewire('ocorrencias.ocorrencia-info', ["ocorrencia" => $ocorrencia])
+            @livewire('financeiro.financeiro-info', ["financeiro" => $financeiro])
     </div>
     
 
@@ -20,7 +20,6 @@
 
 @push('scripts_footer')
 
-{{-- <script src="{{asset('assets/scripts/pages/cp_datetime.js')}}"></script> --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.pt-BR.min.js"></script>
 <script>

@@ -13,6 +13,7 @@ use App\Http\Controllers\AnaliseController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OcorrenciasController;
+use App\Http\Controllers\FinanceiroController;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,7 +78,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/campanhas', [CampanhasController::class, 'index'])->name('campanhas');
 
     Route::get('/ocorrencias', [OcorrenciasController::class, 'index'])->name('ocorrencias');
+    
+    Route::get('/ocorrencias/nova', [OcorrenciasController::class, 'ocorrenciasList'])->name('ocorrencias.nova');
+
+    Route::get('/ocorrencias/detalhes/{id}', [OcorrenciasController::class, 'showDetail'])->name('ocorrencias.detail');
+
     Route::get('/ocorrencias/{idOcorrencia}', [OcorrenciasController::class, 'showDetailOcorrencia'])->name('ocorrencias.ocorrencia');
+
+
+    Route::get('/financeiro', [FinanceiroController::class, 'index'])->name('financeiro');
+    Route::get('/financeiro/{idFinanceiro}', [FinanceiroController::class, 'showDetailFinanceiro'])->name('financeiros.financeiro');
 
     Route::get('/Analise', [AnaliseController::class, 'index'])->name('Analise');
 

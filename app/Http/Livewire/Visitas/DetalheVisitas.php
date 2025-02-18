@@ -158,11 +158,12 @@ class DetalheVisitas extends Component
             {
                 $this->tipoVisitaSelect = $visitaAgendada->id_tipo_visita;
             }
-                if(isset($visita->anexos))
-                {
-                    $this->anexos = $visita->anexos;
-                    $this->anexos = json_decode($this->anexos);
-                }
+            
+            if(isset($visita->anexos))
+            {
+                $this->anexos = $visita->anexos;
+                $this->anexos = json_decode($this->anexos);
+            }
           
         
     
@@ -408,7 +409,6 @@ class DetalheVisitas extends Component
 
         $updatedPaths = [];
         foreach ($this->anexos as $file) {
-
             if(isset($file['path'])){
             
                 $path = $file['path'];
@@ -427,7 +427,7 @@ class DetalheVisitas extends Component
                 }
             }else{
                 $newPath = str_replace('temp/', 'anexos/', $file);
-
+                dd($file);
                 $filename = ltrim($file, 'temp/');
 
                 $updatedPaths[] = [

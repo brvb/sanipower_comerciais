@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Livewire\Ocorrencias;
+namespace App\Http\Livewire\Financeiro;
 
 use App\Mail\SendComentario;
 
 use Dompdf\Dompdf;
 use Livewire\Component;
 use App\Models\Carrinho;
-use App\Models\Anexos;
 use App\Models\GrupoEmail;
 use App\Mail\SendProposta;
 use App\Models\Comentarios;
@@ -29,7 +28,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class OcorrenciaInfo extends Component
+class FinanceiroInfo extends Component
 {
     use WithPagination ;
 
@@ -56,7 +55,7 @@ class OcorrenciaInfo extends Component
     public string $tabDetail = "";
     public string $tabLine = "";
     public string $tabProdutos = "";
-    public string $tabDetalhesOcorrencias = "show active";
+    public string $tabDetalhesfinanceiros = "show active";
     public string $tabFinalizar = "";
     public string $tabDetalhesCampanhas = "";
 
@@ -109,12 +108,11 @@ class OcorrenciaInfo extends Component
     public ?array $produtosRapida = [];
     public $produtosComment = [];
     public $selectedItemsAdjudicar = [];
-    public $anexos = [];
     
 
     /***** */
 
-    private ?object $ocorrencia = NULL;
+    private ?object $financeiro = NULL;
 
     public int $perPage = 10;
 
@@ -147,27 +145,17 @@ class OcorrenciaInfo extends Component
        
     }
 
-    public function mount($ocorrencia)
+    public function mount($financeiro)
     {
-        // dd($ocorrencia);
         if(session('tabDetail') != '')
         {
             $this->tabDetail = 'show active';
-            $this->tabDetalhesOcorrencias = '';
+            $this->tabDetalhesfinanceiros = '';
         }
         session()->put('tabDetail', '');
         Session::put('tabDetail', '');
         $this->initProperties();
-        $this->ocorrencia = $ocorrencia;
-
-        $Anexos = Anexos::where('idOcorrencia',$ocorrencia->id)->first();
-
-        if(isset($Anexos->anexo))
-        {
-            $this->anexos = $Anexos->anexo;
-            $this->anexos = json_decode($this->anexos);
-        }
-        Session::put('OcorrenciasAnexos', $this->anexos);
+        $this->financeiro = $financeiro;
         
     }
 
@@ -175,10 +163,9 @@ class OcorrenciaInfo extends Component
     {
         $rota = Session::get('rota');
         $parametro = Session::get('parametro');
-        // dd($rota, $parametro);
         
-        if($rota == "ocorrencias.ocorrencia"){
-            $rota = "ocorrencias";
+        if($rota == "financeiros.financeiro"){
+            $rota = "financeiros";
             $parametro = "";
         }
         if($rota != "")
@@ -188,23 +175,16 @@ class OcorrenciaInfo extends Component
                 return redirect()->route($rota,$parametro);
             }
             return redirect()->route($rota);
-        }else
-        {
-            return redirect()->route('ocorrencias');
         }
     }
 
     public function render()
     {
-        $ocorrencia = session('ocorrencia');
+        $financeiro = session('Financeiro');
         
-        $this->ocorrencia = session()->get('ocorrencia');
-
-        if(session('OcorrenciasAnexos')){
-            $this->anexos = session('OcorrenciasAnexos');
-        }
-
-        return view('livewire.ocorrencias.ocorrencia-info',["ocorrencia" => $ocorrencia]);
+        $this->financeiro = session()->get('Financeiro');
+        // dd($financeiro);
+        return view('livewire.financeiro.financeiro-info',["financeiro" => $financeiro]);
 
     }
 }

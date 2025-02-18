@@ -115,6 +115,8 @@ class DetalheEncomenda extends Component
     public $chequeFinalizar = false;
     public $pagamentoFinalizar = false;
     public $transferenciaFinalizar = false;
+    public $PaymentConditions = "";
+    
 
     public ?array $lojas = NULL;
 
@@ -1083,6 +1085,7 @@ class DetalheEncomenda extends Component
             'chequeFinalizar' => $this->chequeFinalizar,
             'pagamentoFinalizar' => $this->pagamentoFinalizar,
             'transferenciaFinalizar' => $this->transferenciaFinalizar,
+            // 'PaymentConditions' => $this->PaymentConditions,
             
         ];
 
@@ -1106,11 +1109,11 @@ class DetalheEncomenda extends Component
         }
 
 
-        if($resultPagamento[0] == "" || $resultLoja[0] == "")
-        {
-            $this->dispatchBrowserEvent('checkToaster', ["message" => "Tem de selecionar um dado logistico e um tipo de pagamento", "status" => "error"]);
-            return false;
-        }
+        // if($resultPagamento[0] == "" || $resultLoja[0] == "")
+        // {
+        //     $this->dispatchBrowserEvent('checkToaster', ["message" => "Tem de selecionar um dado logistico e um tipo de pagamento", "status" => "error"]);
+        //     return false;
+        // }
             
 
         $count = 0;
@@ -1188,23 +1191,25 @@ class DetalheEncomenda extends Component
             $randomNumber .= rand(0, 9);
         }
 
-        if($this->transferenciaFinalizar == true)
-        {
-            $condicaoPagamento = "Transferência Bancária";
-        }
-        if($this->pagamentoFinalizar == true)
-        {
-            $condicaoPagamento = "Pronto Pagamento";
-        }
-        if($this->chequeFinalizar == true)
-        {
-            $condicaoPagamento = "Cheque a 30 dias";
-        }
-        if($this->condicoesFinalizar == true)
-        {
-            $condicaoPagamento = "Condições acordadas";
-        }
+        // if($this->transferenciaFinalizar == true)
+        // {
+        //     $condicaoPagamento = "Transferência Bancária";
+        // }
+        // if($this->pagamentoFinalizar == true)
+        // {
+        //     $condicaoPagamento = "Pronto Pagamento";
+        // }
+        // if($this->chequeFinalizar == true)
+        // {
+        //     $condicaoPagamento = "Cheque a 30 dias";
+        // }
+        // if($this->condicoesFinalizar == true)
+        // {
+        //     $condicaoPagamento = "Condições acordadas";
+        // }
 
+        $condicaoPagamento = $this->PaymentConditions;
+        // dd($condicaoPagamento);
         if(json_decode($this->lojaFinalizar) == null)
         {
             $loja = "";
@@ -1235,6 +1240,7 @@ class DetalheEncomenda extends Component
         ];
 
         $curl = curl_init();
+        // dd($array);
         // dd(json_encode($array), $array);
         curl_setopt_array($curl, array(
             CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/orders',
@@ -1252,7 +1258,7 @@ class DetalheEncomenda extends Component
         ));
 
         $response = curl_exec($curl);
-
+        // dd($array);
         // dd($response);
 
         curl_close($curl);
@@ -1730,6 +1736,7 @@ class DetalheEncomenda extends Component
         $this->searchProduct = "";
 
         // $this->getCategoriesAll = $this->encomendasRepository->getCategorias();
+        $this->PaymentConditions = $this->detailsClientes->customers[0]->payment_conditions;
         return view('livewire.encomendas.detalhe-encomenda', [
             "products" => $products,
             "onkit" => $onkit,

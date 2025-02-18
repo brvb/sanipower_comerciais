@@ -1483,19 +1483,28 @@
                  </div>
 
                  <div class="col-xl-12 col-xs-12 mt-2">
-                     
-                     <div class="col-xl-12 col-xs-12">
-                         <div class="form-checkbox">
-                             <label>
-                                 <input type="checkbox" id="transferencia_bancaria" class="checkPagamento" wire:model.defer="transferenciaFinalizar">
-                                 <span class="checkmark"><i class="fa fa-check pick"></i></span>
-                                 Transferência Bancária
-                             </label>
-                         </div>
-                        
-                     </div>
+                    <div class="col-xl-12 col-xs-12">
+                        <div class="form-checkbox">
+                            <label>
+                                <input 
+                                    type="checkbox" 
+                                    id="PaymentConditions" 
+                                    class="PaymentConditions" 
+                                    wire:model.defer="PaymentConditions" 
+                                    value="{{ $detalhesCliente->customers[0]->payment_conditions }}" disabled>
+                                    <span class="checkmark">
+                                        <i class="fa fa-check pick"></i>
+                                      </span>
+                                      
+                                {{ $detalhesCliente->customers[0]->payment_conditions }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+            
      
-                     <div class="col-xl-12 col-xs-12">
+                     {{-- <div class="col-xl-12 col-xs-12">
                          <div class="form-checkbox">
                              <label>
                                  <input type="checkbox" id="pronto_pagamento" class="checkPagamento" wire:model.defer="pagamentoFinalizar">
@@ -1503,9 +1512,9 @@
                                  Pronto Pagamento
                              </label>
                          </div>
-                     </div>
+                     </div> --}}
  
-                     <div class="col-xl-12 col-xs-12">
+                     {{-- <div class="col-xl-12 col-xs-12">
                          <div class="form-checkbox">
                              <label>
                                  <input type="checkbox" id="cheque_entrega" class="checkPagamento" wire:model.defer="chequeFinalizar">
@@ -1513,9 +1522,9 @@
                                  Cheque a 30 dias contra entrega
                              </label>
                          </div>
-                     </div>
+                     </div> --}}
 
-                     <div class="col-xl-12 col-xs-12">
+                     {{-- <div class="col-xl-12 col-xs-12">
                          <div class="form-checkbox">
                              <label>
                                  <input type="checkbox" id="condicoes_pagamento" class="checkPagamento" wire:model.defer="condicoesFinalizar">
@@ -1523,7 +1532,7 @@
                                  Condições de pagamento acordadas
                              </label>
                          </div>
-                     </div>
+                     </div> --}}
 
                  </div>
 

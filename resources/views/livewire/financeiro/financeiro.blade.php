@@ -1,18 +1,12 @@
 
 <div>
-    <!--  LOADING -->
-
     <div id="loader" style="display: none;">
         <div class="loader" role="status">
 
         </div>
     </div>
 
-    <!-- FIM LOADING -->
-
-   <!--  INICIO FILTRO  -->
-
-    <div class="row">
+   <!-- <div class="row">
         <div class="col-12">
             <div class="card mb-3">
 
@@ -61,16 +55,6 @@
 
                         <div class="row">
                             <div class="col-lg-4">
-                                <label class="mt-2">Comentário</label>
-                                    <div class="input-group">
-                                        <select name="perPage" wire:model.lazy="estadoProposta" class="form-control">
-                                            <option value="0" selected>Todas</option>
-                                            <option value="1">Com comentário</option>
-                                            <option value="2">Sem comentário</option>
-                                        </select>
-                                    </div>
-                            </div>
-                            <div class="col-lg-4">
                                 <label class="mt-2">Data Inicial</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
@@ -89,21 +73,24 @@
                                     <input type="date" class="form-control" placeholder="Data Final" wire:model.lazy="endDate">
                                 </div>
                             </div>
-                            {{-- <div class="col-lg-4">
-                                <label class="mt-2">Estádo da Proposta</label>
+
+                            <div class="col-lg-4">
+                                <label class="mt-2">Status</label>
                                 <div class="input-group">
-                                    <select name="perPage" class="form-control" wire:model.lazy="statusProsposta">
-                                        <option value="0">Todas</option>
-                                        <option value="1" selected>Abertas</option>
-                                        <option value="2">Fechadas</option>
+                                    <select name="perPage" class="form-control" wire:model.lazy="statusOcorrencia">
+                                        <option value="0" selected>Todas</option>
+                                        <option value="1">Em aberto</option>
+                                        <option value="2">Em análise</option>
+                                        <option value="3">Não autorizado</option>
+                                        <option value="4">Não autorizado e fechado</option>
+                                        <option value="5">Concluído</option>
                                     </select>
                                 </div>
-                            </div> --}}
+                            </div>
                         </div>
 
                         <div class="row ml-0 mr-0 mt-4 d-block">
 
-                            <!-- PARTE DO ACCORDEON -->
                             <div class="row ml-0 mr-0 mt-4 d-block">
 
                                 <div class="accordion" id="accordionExample">
@@ -150,40 +137,18 @@
                                                         <input type="text" class="form-control" placeholder="Email" wire:model.lazy="emailCliente">
                                                     </div>
                                                 </div>
-
-                                                <div class="col-lg-4">
-                                                    <label class="mt-2">Tipo da Proposta</label>
-                                                    <div class="input-group">
-                                                        <select name="perPage" wire:model.lazy="typeProposta" class="form-control">
-                                                            <option value="" selected>Todas</option>
-                                                            <option value="1">Digital</option>
-                                                            <option value="2">Projeto</option>
-                                                            <option value="3">Loja</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
                                             </div>
-
                                         </div>
                                     </div>
-                                    </div>
                                 </div>
-
                             </div>
-
-                        <!-- FIM DO ACCORDEON -->
-
                         </div>
-
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- FIM FILTRO  -->
-
-    <!-- TABELA  -->
+    </div>-->
 
     <div class="row">
         <div class="col-lg-12">
@@ -192,16 +157,15 @@
                     <div class="row">
                         <div class="col-12 col-sm-4">
                             <div class="caption uppercase">
-                                <i class="ti-user"></i> Propostas
+                                <i class="ti-user"></i> Financeiro
                             </div>
                         </div>
-                        <div class="col-12 col-sm-8 text-right">
-                            <a wire:click="adicionarProposta" style="color:white!important;" class="btn btn-sm btn-success">
-                                <i class="ti-book"></i> Adicionar Proposta
+                        {{-- <div class="col-12 col-sm-8 text-right">
+                            <a wire:click="adicionarOcorrencia" style="color:white!important;" class="btn btn-sm btn-success">
+                                <i class="ti-book"></i> Adicionar Financeiro
                             </a>
-                        </div>
+                        </div> --}}
                     </div>
-
                 </div>
                 <div class="card-body">
                     <div id="dataTables_wrapper" class="dataTables_wrapper container" style="margin-left:0px;padding-left:0px;margin-bottom:10px;">
@@ -225,37 +189,39 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th>Data</th>
-                                    <th>Proposta</th>
+                                    <th>Doc. Nº</th>
+                                    <th>Documento</th>
                                     <th>Cliente</th>
+                                    <th>Cliente Nº</th>
                                     <th>Total</th>
-                                    <th>Tipo de Proposta</th>
                                     <th>Ações</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($propostas as $pro )
+                                @foreach ($financeiro as $doc )
                                     <tr>
-                                        <td>{{ date('Y-m-d', strtotime($pro->date)) }}</td>
-                                        <td>{{$pro->budget}}</td>
-                                        <td>{{$pro->name}}</td>
-                                        <td>{{ number_format($pro->total,3) }}€</td>
-                                        <td>{{$pro->status}}</td>
+                                        {{-- @dd($financeiro); --}}
+                                        <td>{{ date('Y-m-d', strtotime($doc->date)) }}</td>
+                                        <td>{{$doc->document_number}}</td>   
+                                        <td>{{$doc->document}}</td>
+                                        <td>{{$doc->customer_name}}</td>
+                                        <td>{{$doc->customer_number}}</td>
+                                        <td>{{$doc->total}}</td>
                                         <td>
-                                        {{-- {{dd($pro)}} --}}
-                                            <a wire:click="checkOrder({{json_encode($pro->id)}}, {{json_encode($pro)}})" style="color:white!important;" class="btn btn-sm btn-primary">
-                                                <i class="ti-eye"></i> Ver Proposta
+                                            <a wire:click="checkOrder({{json_encode($doc->id)}}, {{json_encode($doc)}})" style="color:white!important;" class="btn btn-sm btn-primary">
+                                                <i class="ti-eye"></i> Ver detalhes
                                             </a>
-                                             <a wire:click="redirectNewProposta({{json_encode($pro->customer_id)}})" style="color:white!important;" class="btn btn-sm btn-primary">
-                                                <i class="ti-plus"></i> Nova Proposta
-                                            </a>
+                                             {{-- <a wire:click="redirectNewProposta({{json_encode($doc->customer_id)}})" style="color:white!important;" class="btn btn-sm btn-primary">
+                                                <i class="ti-plus"></i> Nova Ocorrencia
+                                            </a>  --}}
                                         </td>
                                     </tr>
-                                @endforeach
+                                @endforeach 
 
                             </tbody>
                         </table>
                     </div>
-                    {{ $propostas->links() }}
+                    {{ $financeiro->links() }}
                 </div>
             </div>
         </div>
@@ -279,7 +245,6 @@
             });
         });
 
-
         document.addEventListener('livewire:load', function() {
             Livewire.hook('message.sent', () => {
                 document.getElementById('loader').style.display = 'block';
@@ -300,9 +265,5 @@
                 toastr.warning("{{ session('warning') }}");
             }
         });
-
-
-
     </script>
-
 </div>

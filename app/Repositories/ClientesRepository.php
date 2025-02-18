@@ -1253,6 +1253,98 @@ class ClientesRepository implements ClientesInterface
         return $response_decoded;
     }
 
+    
+    public function getInvoiceCliente($perPage, $page, $noClient): array
+    {
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/invoices?perPage='.$perPage.'&Page='.$page.'&customer_number='.$noClient.'&Salesman_number='. Auth::user()->id_phc,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            ),
+        ));
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+
+        $response_decoded = json_decode($response);
+
+        // dd($response_decoded);
+
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+
+
+        if(isset($response_decoded->invoices))
+        {
+                if($response_decoded != null && $response_decoded->invoices != null)
+                {
+                    $currentItems = array_slice($response_decoded->invoices, $perPage * ($currentPage - 1), $perPage);
+
+                    $itemsPaginate = new LengthAwarePaginator($currentItems, $response_decoded->total_pages,$perPage);
+                }
+                else {
+
+                    $currentItems = [];
+
+                    $itemsPaginate = new LengthAwarePaginator($currentItems, $response_decoded->total_pages,$perPage);
+                }
+        } 
+        else {
+            $currentItems = [];
+
+            $itemsPaginate = new LengthAwarePaginator($currentItems, 0 ,$perPage);
+        }
+       
+
+        return [
+            'object' => $itemsPaginate,
+            "nr_paginas" => $response_decoded->total_pages, 
+            "nr_registos" => $response_decoded->total_records
+        ];
+       
+    }
+
+    public function getOcorrenciasID($idOcorrencia): array
+    {
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/occurrence?occurrence_id='.$idOcorrencia,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+
+        $response_decoded = json_decode($response);
+        
+        return [
+            'object' => $response_decoded->occurrences,
+            "nr_paginas" => $response_decoded->total_pages, 
+            "nr_registos" => $response_decoded->total_records
+        ];
+
+    }
+
+
     public function getOcorrenciasCliente($perPage,$page,$idCliente,$nomeCliente,$noClient,$zonaCliente,$telemovelCliente,$emailCliente,$nifCliente,$startDate,$endDate,$statusOcorrencia): array
     {
         if ($nomeCliente != "") {

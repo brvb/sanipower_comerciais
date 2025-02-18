@@ -158,6 +158,7 @@
                             <option value="nova_propostas">Nova Proposta</option>
                             <option value="aprov_propostas">Aprovação da Proposta</option>
                             <option value="RelatorioVisita">Finalizar Visita</option>
+                            <option value="nova_ocorrencia">Novas Ocorrências</option>
                         </select>
                         @error('local_funcionamento') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
