@@ -63,7 +63,7 @@ class DetalheOcorrencia extends Component
     public $anexos = [];
     public $tempPaths = [];
 
-    public $invoices;
+    protected $invoices = NULL;
     public $selectedLines = [];
     public $selectedLinesIds = [];
 

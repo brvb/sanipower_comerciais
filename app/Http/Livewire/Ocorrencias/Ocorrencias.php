@@ -34,7 +34,7 @@ class Ocorrencias extends Component
     public $endDate = '';
     public int $statusOcorrencia = 0;
 
-    public $idCliente;
+    protected $idCliente;
     
 
     public function boot(ClientesInterface $clientesRepository)

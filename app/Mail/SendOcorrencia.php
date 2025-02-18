@@ -49,8 +49,9 @@ class SendOcorrencia extends Mailable
         curl_close($curl);
 
         $response_decoded = json_decode($response);
+        // dd(env('SANIPOWER_URL_DIGITAL').'/api/documents/occurrence?occurrence_id='.$idOcorrencia, $response_decoded, $idOcorrencia);
         $ocorrencia = $response_decoded->occurrences;
-
+        
         $this->ocorrenciaArray = $ocorrencia;
 
         if ($anexo && isset($anexo->anexo)) {
