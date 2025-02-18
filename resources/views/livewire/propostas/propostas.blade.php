@@ -150,8 +150,19 @@
                                                         <input type="text" class="form-control" placeholder="Email" wire:model.lazy="emailCliente">
                                                     </div>
                                                 </div>
-                                            </div>
 
+                                                <div class="col-lg-4">
+                                                    <label class="mt-2">Tipo da Proposta</label>
+                                                    <div class="input-group">
+                                                        <select name="perPage" wire:model.lazy="typeProposta" class="form-control">
+                                                            <option value="" selected>Todas</option>
+                                                            <option value="1">Digital</option>
+                                                            <option value="2">Projeto</option>
+                                                            <option value="3">Loja</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                         </div>
                                     </div>
