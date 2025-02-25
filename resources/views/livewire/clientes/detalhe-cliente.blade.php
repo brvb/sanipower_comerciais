@@ -18,7 +18,7 @@
             <a href="{{ route('encomendas.detail', $detalhesCliente->customers[0]->id ) }}" class="btn btn-sm btn-success"><i class="ti-package"></i> Encomenda</a>
             <a href="{{ route('propostas.detail', $detalhesCliente->customers[0]->id ) }}" class="btn btn-sm btn-danger"><i class="ti-file"></i> Proposta</a>
 
-            <a href="javascript:void(0);" class="btn btn-sm btn-warning"><i class="ti-eye"></i> Ocorrência</a>
+            <a href="{{route('ocorrencias.detail', $detalhesCliente->customers[0]->id)}}" class="btn btn-sm btn-warning"><i class="ti-eye"></i> Ocorrência</a>
             <a href="javascript:void(0);" wire:click="voltarAtras" class="btn btn-sm btn-secondary" > Voltar atrás</a>
 
         </div>

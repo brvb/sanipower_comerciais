@@ -1430,6 +1430,19 @@ class ClientesRepository implements ClientesInterface
 
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
 
+        if(isset($response_decoded->Message))
+        {
+            if($response_decoded->Message == "An error has occurred.")
+            {
+                $response_decoded = null;
+
+                return [
+                    'object' => null,
+                    "nr_paginas" => 0, 
+                    "nr_registos" => 0
+                ];
+            }
+        }
 
         if(isset($response_decoded->occurrences))
         {
