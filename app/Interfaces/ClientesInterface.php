@@ -34,6 +34,9 @@ interface ClientesInterface
 
     public function getNumberOfPagesAnalisesCliente($perPage,$idCliente): array;
 
+    public function getListagemAnaliseFamily($STdate,$EndDate,$customer_number, $salesman_number): array;
+
+    public function getListagemAnaliseAnual($customer_number,$salesman_number): array;
 
 
     //DETALHES CLIENTE -> ABA ENCOMENDAS **/
@@ -44,6 +47,8 @@ interface ClientesInterface
     public function getEncomendasClienteFiltro($perPage,$page,$idCliente,$nomeCliente,$numeroCliente,$zonaCliente,$telemovelCliente,$emailCliente,$nifCliente, $estadoEncomenda,$typeEncomenda,$startDate,$endDate,$statusEncomenda): array;
 
     public function getNumberOfPagesEncomendasFiltro($perPage,$pageChosen,$idCliente,$nomeCliente,$numeroCliente,$zonaCliente,$telemovelCliente,$emailCliente,$nifCliente, $estadoEncomenda): array;
+
+    public function  getEncomendasPendentes($perPage,$page): array;
 
     //DETALHES CLIENTE -> ABA PROPOSTAS **/
 
@@ -61,6 +66,8 @@ interface ClientesInterface
     public function getOcorrenciasCliente($perPage,$pageChosen,$idCliente,$nomeCliente,$numeroCliente,$zonaCliente,$telemovelCliente,$emailCliente,$nifCliente,$startDate,$endDate,$statusOcorrencia): array;
 
     public function getInvoiceCliente($perPage,$pageChosen,$numeroCliente): array;
+
+    public function getFinanceiroCliente($perPage,$page,$idCliente): array;
 
     public function getOcorrenciasID($idOcorrencia): array;
 

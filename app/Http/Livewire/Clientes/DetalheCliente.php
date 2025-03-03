@@ -22,7 +22,9 @@ class DetalheCliente extends Component
     public int $totalRecords = 0;
 
     private ?object $detailsClientes = NULL;
-    private ?object $analysisClientes = NULL;
+
+    public $analysisClientes;
+    public $analysisAnualClientes;
 
     public string $tabDetail = "show active";
     public string $tabAnalysis = "";
@@ -33,6 +35,9 @@ class DetalheCliente extends Component
     public string $tabVisitas = "";
     public string $tabAssistencias = "";
     public string $tabCampanhas = "";
+
+    public $DateIniAnalise;
+    public $DateEndAnalise;
 
     public function boot(ClientesInterface $clientesRepository)
     {
@@ -59,11 +64,19 @@ class DetalheCliente extends Component
         $this->detailsClientes = $arrayCliente["object"];
 
 
-        $arrayAna = $this->clientesRepository->getListagemAnalisesCliente($this->perPage,$this->pageChosen,$this->idCliente);
-        
-        $this->analysisClientes = $arrayAna["paginator"];
-        $this->numberMaxPages = $arrayAna["nr_paginas"] + 1;
-        $this->totalRecords = $arrayAna["nr_registos"];
+        $this->DateIniAnalise = Session::get('DateIniAnalise') ?? now()->startOfMonth()->format('Y-m-d');
+        $this->DateEndAnalise = Session::get('DateEndAnalise') ?? now()->format('Y-m-d');
+
+        $this->analysisClientes = $this->clientesRepository->getListagemAnaliseFamily($this->DateIniAnalise, $this->DateEndAnalise, $this->detailsClientes->customers[0]->no, 0);
+        if(isset($this->analysisClientes['message']))
+        {
+            $this->analysisClientes = null;
+        }
+        $this->analysisAnualClientes = $this->clientesRepository->getListagemAnaliseAnual(0, $this->detailsClientes->customers[0]->no);
+        if(isset($this->analysisAnualClientes['message']))
+        {
+            $this->analysisAnualClientes = null;
+        }
 
         Session::put('rota','clientes.detail');
         Session::put('parametro',$this->idCliente);
@@ -99,75 +112,92 @@ class DetalheCliente extends Component
         
     }
 
+    public function AlterDateIniAnalise($date)
+    {
+
+        $this->DateIniAnalise = $date;
+        Session::put('DateIniAnalise', $this->DateIniAnalise);
+
+        return redirect()->route('clientes.detail',["id" => $this->idCliente]);
+    }
+
+    public function AlterDateEndAnalise($date)
+    {
+
+        $this->DateEndAnalise = $date;
+        Session::put('DateEndAnalise', $this->DateEndAnalise);
+
+        return redirect()->route('clientes.detail',["id" => $this->idCliente]);
+    }
     
     public function gotoPage($page)
     {
-        $this->pageChosen = $page;
-        $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
-        $this->detailsClientes = $arrayCliente["object"];
+        // $this->pageChosen = $page;
+        // $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
+        // $this->detailsClientes = $arrayCliente["object"];
 
-        $arrayAna = $this->clientesRepository->getListagemAnalisesCliente($this->perPage,$this->pageChosen,$this->idCliente);
-        $this->analysisClientes = $arrayAna["paginator"];
+        // $arrayAna = $this->clientesRepository->getListagemAnalisesCliente($this->perPage,$this->pageChosen,$this->idCliente);
+        // $this->analysisClientes = $arrayAna["paginator"];
 
 
-        $this->tabDetail = "";
-        $this->tabAnalysis = "show active";
-        $this->tabEncomendas = "";
-        $this->tabPropostas = "";
-        $this->tabFinanceiro = "";
-        $this->tabOcorrencias = "";
-        $this->tabVisitas = "";
-        $this->tabAssistencias = "";
-        $this->tabCampanhas = "";
+        // $this->tabDetail = "";
+        // $this->tabAnalysis = "show active";
+        // $this->tabEncomendas = "";
+        // $this->tabPropostas = "";
+        // $this->tabFinanceiro = "";
+        // $this->tabOcorrencias = "";
+        // $this->tabVisitas = "";
+        // $this->tabAssistencias = "";
+        // $this->tabCampanhas = "";
     }
 
    
     public function previousPage()
     {
-        $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
-        $this->detailsClientes = $arrayCliente["object"];
+        // $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
+        // $this->detailsClientes = $arrayCliente["object"];
 
-        if ($this->pageChosen > 1) {
-            $this->pageChosen--;
-            $arrayAna = $this->clientesRepository->getListagemAnalisesCliente($this->perPage,$this->pageChosen,$this->idCliente);
-            $this->analysisClientes = $arrayAna["paginator"];
-        }
-        else if($this->pageChosen == 1){
-            $arrayAna = $this->clientesRepository->getListagemAnalisesCliente($this->perPage,$this->pageChosen,$this->idCliente);
-            $this->analysisClientes = $arrayAna["paginator"];
-        }
+        // if ($this->pageChosen > 1) {
+        //     $this->pageChosen--;
+        //     $arrayAna = $this->clientesRepository->getListagemAnalisesCliente($this->perPage,$this->pageChosen,$this->idCliente);
+        //     $this->analysisClientes = $arrayAna["paginator"];
+        // }
+        // else if($this->pageChosen == 1){
+        //     $arrayAna = $this->clientesRepository->getListagemAnalisesCliente($this->perPage,$this->pageChosen,$this->idCliente);
+        //     $this->analysisClientes = $arrayAna["paginator"];
+        // }
 
-        $this->tabDetail = "";
-        $this->tabAnalysis = "show active";
-        $this->tabEncomendas = "";
-        $this->tabPropostas = "";
-        $this->tabFinanceiro = "";
-        $this->tabOcorrencias = "";
-        $this->tabVisitas = "";
-        $this->tabAssistencias = "";
-        $this->tabCampanhas = "";
+        // $this->tabDetail = "";
+        // $this->tabAnalysis = "show active";
+        // $this->tabEncomendas = "";
+        // $this->tabPropostas = "";
+        // $this->tabFinanceiro = "";
+        // $this->tabOcorrencias = "";
+        // $this->tabVisitas = "";
+        // $this->tabAssistencias = "";
+        // $this->tabCampanhas = "";
     }
 
     public function nextPage()
     {
-        $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
-        $this->detailsClientes = $arrayCliente["object"];
+        // $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
+        // $this->detailsClientes = $arrayCliente["object"];
 
-        if ($this->pageChosen < $this->numberMaxPages) {
-            $this->pageChosen++;
-            $arrayAna = $this->clientesRepository->getListagemAnalisesCliente($this->perPage,$this->pageChosen,$this->idCliente);
-            $this->analysisClientes = $arrayAna["paginator"];
-        }
+        // if ($this->pageChosen < $this->numberMaxPages) {
+        //     $this->pageChosen++;
+        //     $arrayAna = $this->clientesRepository->getListagemAnalisesCliente($this->perPage,$this->pageChosen,$this->idCliente);
+        //     $this->analysisClientes = $arrayAna["paginator"];
+        // }
 
-        $this->tabDetail = "";
-        $this->tabAnalysis = "show active";
-        $this->tabEncomendas = "";
-        $this->tabPropostas = "";
-        $this->tabFinanceiro = "";
-        $this->tabOcorrencias = "";
-        $this->tabVisitas = "";
-        $this->tabAssistencias = "";
-        $this->tabCampanhas = "";
+        // $this->tabDetail = "";
+        // $this->tabAnalysis = "show active";
+        // $this->tabEncomendas = "";
+        // $this->tabPropostas = "";
+        // $this->tabFinanceiro = "";
+        // $this->tabOcorrencias = "";
+        // $this->tabVisitas = "";
+        // $this->tabAssistencias = "";
+        // $this->tabCampanhas = "";
     }
 
     public function getPageRange()
@@ -188,27 +218,27 @@ class DetalheCliente extends Component
 
     public function updatedPerPage(): void
     {
-        $this->resetPage();
-        session()->put('perPage', $this->perPage);
+        // $this->resetPage();
+        // session()->put('perPage', $this->perPage);
 
-        $this->tabDetail = "";
-        $this->tabAnalysis = "show active";
-        $this->tabEncomendas = "";
-        $this->tabPropostas = "";
-        $this->tabFinanceiro = "";
-        $this->tabOcorrencias = "";
-        $this->tabVisitas = "";
-        $this->tabAssistencias = "";
-        $this->tabCampanhas = "";
+        // $this->tabDetail = "";
+        // $this->tabAnalysis = "show active";
+        // $this->tabEncomendas = "";
+        // $this->tabPropostas = "";
+        // $this->tabFinanceiro = "";
+        // $this->tabOcorrencias = "";
+        // $this->tabVisitas = "";
+        // $this->tabAssistencias = "";
+        // $this->tabCampanhas = "";
 
-        $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
-        $this->detailsClientes = $arrayCliente["object"];
+        // $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
+        // $this->detailsClientes = $arrayCliente["object"];
 
-        $arrayAna = $this->clientesRepository->getListagemAnalisesCliente($this->perPage,$this->pageChosen,$this->idCliente);
-        $this->analysisClientes = $arrayAna["paginator"];
+        // $arrayAna = $this->clientesRepository->getListagemAnalisesCliente($this->perPage,$this->pageChosen,$this->idCliente);
+        // $this->analysisClientes = $arrayAna["paginator"];
 
-        $this->numberMaxPages = $arrayAna["nr_paginas"]  + 1;
-        $this->totalRecords = $arrayAna["nr_registos"];
+        // $this->numberMaxPages = $arrayAna["nr_paginas"]  + 1;
+        // $this->totalRecords = $arrayAna["nr_registos"];
     }
 
     public function voltarAtras()
@@ -246,6 +276,6 @@ class DetalheCliente extends Component
 
     public function render()
     {
-        return view('livewire.clientes.detalhe-cliente',["detalhesCliente" => $this->detailsClientes, "analisesCliente" =>$this->analysisClientes]);
+        return view('livewire.clientes.detalhe-cliente',["detalhesCliente" => $this->detailsClientes, "analisesCliente" =>$this->analysisClientes, "vendasAnuais" =>$this->analysisAnualClientes ]);
     }
 }

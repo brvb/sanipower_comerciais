@@ -20,7 +20,7 @@ use App\Models\GrupoEmail;
 use App\Mail\SendOcorrencia;
 use Illuminate\Http\Request;
 use Livewire\WithFileUploads;
-
+use Illuminate\Pagination\LengthAwarePaginator;
 
 
 class DetalheOcorrencia extends Component
@@ -95,19 +95,67 @@ class DetalheOcorrencia extends Component
 
         $this->Cliente = $cliente['object']->customers[0];
 
-        session()->put('Cliente', $this->Cliente);
+        session()->put('Cliente', $this->Cliente);        
 
-        $this->invoices = $this->clientesRepository->getInvoiceCliente(1000, 1, $this->Cliente->no);
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/invoices?perPage=99999&Page=1&customer_number='.$this->Cliente->no.'&Salesman_number='.Auth::user()->id_phc.'&occurrences=true',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            ),
+        ));
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+
+        $response_decoded = json_decode($response);
+
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+
+
+        if(isset($response_decoded->invoices))
+        {
+                if($response_decoded != null && $response_decoded->invoices != null)
+                {
+                    $currentItems = array_slice($response_decoded->invoices, 10 * ($currentPage - 1), 99999);
+
+                    $itemsPaginate = new LengthAwarePaginator($currentItems, $response_decoded->total_pages,99999);
+                }
+                else {
+
+                    $currentItems = [];
+
+                    $itemsPaginate = new LengthAwarePaginator($currentItems, $response_decoded->total_pages,99999);
+                }
+        } 
+        else {
+            $currentItems = [];
+
+            $itemsPaginate = new LengthAwarePaginator($currentItems, 0 ,99999);
+        }
+        if(isset($response_decoded->Message))
+        {
+            $this->invoices = null;
+        }
+        $this->invoices = [
+            'object' => $itemsPaginate,
+            "nr_paginas" => $response_decoded->total_pages, 
+            "nr_registos" => $response_decoded->total_records
+        ];
+
         $this->invoices = $this->invoices['object'];
 
         session()->put('invoices', $this->invoices);
         session()->put('OcorrenciasAnexos', null);
 
-        // if( session('ErroPreencher') != "")
-        // {   
-        //     session()->put('ErroPreencher', null);
-        //     $this->dispatchBrowserEvent('checkToaster', ["message" => "É obrigatório preencher todos os campos!", "status" => "error"]);
-        // }
     }
 
 

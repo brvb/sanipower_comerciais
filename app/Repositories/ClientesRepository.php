@@ -155,6 +155,88 @@ class ClientesRepository implements ClientesInterface
         return $arrayAnalysis;
     }
 
+    public function getListagemAnaliseFamily($STdate,$EndDate,$customer_number, $salesman_number): array
+    {
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/analytics/sales_by_family?Start_date='.$STdate.'&End_date='.$EndDate.'&Salesman_number='.$salesman_number.'&Customer_number='.$customer_number,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            ),
+        ));
+ 
+        $response = curl_exec($curl);
+        curl_close($curl);
+ 
+        $response_decoded = json_decode($response);
+        // dd($response_decoded);
+ 
+        // $arrayAnalysis = [
+        //     "object" => $response_decoded->items,
+        //     "nr_paginas" => $response_decoded->total_pages, 
+        //     "nr_registos" => $response_decoded->total_records
+        
+        if($response_decoded->success != false)
+        {
+            return $response_decoded->items;
+        }
+        else
+        {
+            return is_object($response_decoded) ? json_decode(json_encode($response_decoded), true) : $response_decoded;
+        }
+            
+    }
+
+    public function getListagemAnaliseAnual($salesman_number, $customer_number): array
+    {
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/analytics/annual_sales_comparison?Customer_number='.$customer_number.'&Salesman_number='.$salesman_number,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            ),
+        ));
+ 
+        $response = curl_exec($curl);
+        curl_close($curl);
+ 
+        $response_decoded = json_decode($response);
+        // dd(env('SANIPOWER_URL_DIGITAL').'/api/analytics/annual_sales_comparison?Customer_number='.$customer_number.'&Salesman_number='.$salesman_number, $response_decoded);
+ 
+        // $arrayAnalysis = [
+        //     "object" => $response_decoded->items,
+        //     "nr_paginas" => $response_decoded->total_pages, 
+        //     "nr_registos" => $response_decoded->total_records
+        // ];
+        
+        if($response_decoded->success != false)
+        {
+            return $response_decoded->items;
+        }
+        else
+        {
+            return is_object($response_decoded) ? json_decode(json_encode($response_decoded), true) : $response_decoded;
+        }
+    }
+
     public function getNumberOfPages($perPage): array
     {
         $nomeCliente = '&Name=';
@@ -548,6 +630,42 @@ class ClientesRepository implements ClientesInterface
     
         return [
             'paginator' => $itemsPaginate,
+            "nr_paginas" => $response_decoded->total_pages, 
+            "nr_registos" => $response_decoded->total_records
+        ];
+    }
+
+    public function getEncomendasPendentes($perPage,$page): array
+    {
+
+        $id = Auth::user()->id_phc;
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/analytics/pending?perPage='.$perPage.'&Page='.$page.'&Salesman_number='.$id ,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+
+        $response_decoded = json_decode($response);
+
+        // dd(env('SANIPOWER_URL_DIGITAL').'/api/analytics/pending?perPage='.$perPage.'&Page='.$page.'&Salesman_number='.$id , $response_decoded);
+       
+    
+        return [
+            'object' => $response_decoded->items,
             "nr_paginas" => $response_decoded->total_pages, 
             "nr_registos" => $response_decoded->total_records
         ];
@@ -961,7 +1079,7 @@ class ClientesRepository implements ClientesInterface
         } else {
             $zonaCliente = '&Zone=';
         }
-
+        
         if ($telemovelCliente != "") {
             $telemovelCliente = '&Mobile_phone='.urlencode($telemovelCliente);
         } else {
@@ -1256,10 +1374,15 @@ class ClientesRepository implements ClientesInterface
     
     public function getInvoiceCliente($perPage, $page, $noClient): array
     {
-
+        $id = Auth::user()->id_phc;
+        if($noClient != 0)
+        {
+            $id = 0;
+        }
         $curl = curl_init();
+        // dd(env('SANIPOWER_URL_DIGITAL').'/api/documents/invoices?perPage='.$perPage.'&Page='.$page.'&customer_number='.$noClient.'&Salesman_number='. Auth::user()->id_phc);
         curl_setopt_array($curl, array(
-            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/invoices?perPage='.$perPage.'&Page='.$page.'&customer_number='.$noClient.'&Salesman_number='. Auth::user()->id_phc,
+            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/invoices?perPage='.$perPage.'&Page='.$page.'&customer_number='.$noClient.'&Salesman_number='.$id.'&occurrences=false',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -1277,7 +1400,7 @@ class ClientesRepository implements ClientesInterface
 
         $response_decoded = json_decode($response);
 
-        // dd($response_decoded);
+        // dd(env('SANIPOWER_URL_DIGITAL').'/api/documents/invoices?perPage='.$perPage.'&Page='.$page.'&customer_number='.$noClient.'&Salesman_number='. Auth::user()->id_phc.'&occurrences=0',$response_decoded);
 
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
 
@@ -1302,14 +1425,47 @@ class ClientesRepository implements ClientesInterface
 
             $itemsPaginate = new LengthAwarePaginator($currentItems, 0 ,$perPage);
         }
-       
-
+        if(isset($response_decoded->Message))
+        {
+            return is_object($response_decoded) ? json_decode(json_encode($response_decoded), true) : $response_decoded;
+        }
         return [
             'object' => $itemsPaginate,
             "nr_paginas" => $response_decoded->total_pages, 
             "nr_registos" => $response_decoded->total_records
         ];
        
+    }
+
+    public function getFinanceiroCliente($perPage,$page,$idCliente): array
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/customers/financial?perPage=' . $perPage . '&Page=' . $page . '&customer_id=' . $idCliente,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $response_decoded = json_decode($response);
+
+        // dd(env('SANIPOWER_URL_DIGITAL').'/api/customers/financial?perPage=' . $perPage . '&Page=' . $page . '&customer_id=' . $idCliente, $response_decoded);
+
+        return [
+            'object' => $response_decoded->financial,
+            "nr_paginas" => $response_decoded->total_pages, 
+            "nr_registos" => $response_decoded->total_records
+        ];
     }
 
     public function getOcorrenciasID($idOcorrencia): array
