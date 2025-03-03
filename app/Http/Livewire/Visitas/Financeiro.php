@@ -86,6 +86,8 @@ class Financeiro extends Component
         // Session::forget('visitasPropostasAnexos');
         $this->initProperties();
         $this->idCliente = $idCliente;
+
+        // dd($this->idCliente);
         
         if(session('visitasPropostasComentario_financeiro')){
             $this->comentario_financeiro = session('visitasPropostasComentario_financeiro');

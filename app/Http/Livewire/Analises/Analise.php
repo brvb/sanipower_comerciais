@@ -14,6 +14,7 @@ use App\Models\Campanhas;
 use Livewire\WithPagination;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Session;
 
 
 
@@ -24,51 +25,75 @@ class Analise extends Component
     use WithPagination;
 
     public $page = 1;
+    private ?object $clientesRepository = NULL;
 
+    public $DateIniAnalise;
+    public $DateEndAnalise;
+
+    public $analysisClientes;
+    public $analysisAnualClientes;
+
+    public function boot(ClientesInterface $clientesRepository)
+    {
+        $this->clientesRepository = $clientesRepository;
+    }
 
     public function mount()
     {
         $id = Auth::user()->id_phc;
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/analytics/pending?Salesman_number='.$id ,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_HTTPHEADER => array(
-                'Content-Type: application/json'
-            ),
-        ));
-        // dd(env('SANIPOWER_URL_DIGITAL').'/api/analytics/pending?Salesman_number=59');
 
-        $response = curl_exec($curl);
+        $this->DateIniAnalise = Session::get('DateIniAnalise') ?? now()->startOfMonth()->format('Y-m-d');
+        $this->DateEndAnalise = Session::get('DateEndAnalise') ?? now()->format('Y-m-d');
 
-        curl_close($curl);
-
-        $response_decoded = json_decode($response);
-        $this->table = $response_decoded;
-        // dd($response_decoded);
-        if(isset($response_decoded->Message))
-        {
-            // dd($response_decoded);
-            $this->table = null;
-        }
+        $this->analysisClientes = $this->clientesRepository->getListagemAnaliseFamily($this->DateIniAnalise, $this->DateEndAnalise, 0, $id);
+        $this->analysisAnualClientes = $this->clientesRepository->getListagemAnaliseAnual($id, 0);
     }
 
+    public function AlterDateIniAnalise($date)
+    {
+        // dd('AQUI');
+        $this->DateIniAnalise = $date;
+        Session::put('DateIniAnalise', $this->DateIniAnalise);
+
+        // return redirect()->route('Analise');
+        $this->emit('refreshPage');
+
+    }
+
+    public function AlterDateEndAnalise($date)
+    {
+        // dd('AQUI2');
+        $this->DateEndAnalise = $date;
+        Session::put('DateEndAnalise', $this->DateEndAnalise);
+
+        // return redirect()->route('Analise');
+        $this->emit('refreshPage');
+
+
+    }
 
     public function render()
     {
-        if ($this->table == null) {
-            session()->flash('status', 'error');
-            session()->flash('message', 'Erro ao consultar as Analises! (erro : AN-404)');
+        if(!isset($this->analysisClientes))
+        {
+            $id = Auth::user()->id_phc;
 
-            return view('pageErro');
-        }else{
-         return view('livewire.Analise.analise', ['tabela' => $this->table]);
-         }
+            $this->DateIniAnalise = Session::get('DateIniAnalise') ?? now()->startOfMonth()->format('Y-m-d');
+            $this->DateEndAnalise = Session::get('DateEndAnalise') ?? now()->format('Y-m-d');
+
+            $this->analysisClientes = $this->clientesRepository->getListagemAnaliseFamily($this->DateIniAnalise, $this->DateEndAnalise, 0, $id);
+        }
+
+        if(!isset($this->analysisAnualClientes))
+        {
+            $id = Auth::user()->id_phc;
+
+            $this->analysisAnualClientes = $this->clientesRepository->getListagemAnaliseAnual($id, 0);
+        }
+        
+        
+
+        return view('livewire.Analise.analise', ["analisesCliente" =>$this->analysisClientes, "vendasAnuais" =>$this->analysisAnualClientes ]);
+
     }
 }

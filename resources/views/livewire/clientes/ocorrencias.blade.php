@@ -105,6 +105,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            @if(!empty($detalhesOcorrencias))
                                 @foreach ($detalhesOcorrencias as $detalhe)
                                     <tr>
                                         <td>{{ date('Y-m-d', strtotime($detalhe->date)) }}</td>
@@ -122,10 +123,13 @@
                                         </td>
                                     </tr>
                                 @endforeach
+                            @endif
                             </tbody>
                         </table>
                     </div>
+                    @if(!empty($detalhesOcorrencias))
                     {{ $detalhesOcorrencias->links() }}
+                    @endif
                 </div>
             </div>
         </div>

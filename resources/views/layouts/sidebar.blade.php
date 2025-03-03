@@ -92,12 +92,12 @@
                 </a>
             </li>
 
-            {{-- <li class="li-hover">
+            <li class="li-hover">
                 <a href="{{route('Analise')}}" class="{{ Str::contains(request()->route()->getName(), 'Analise') ? 'text-info' : '' }}">
                     <i class="fa fa-chart-bar"></i>
-                    <span>Análise</span>
+                    <span>Análises</span>
                 </a>
-            </li> --}}
+            </li>
              
             @if (Auth::user()->nivel == '1')
             <li class="li-hover">

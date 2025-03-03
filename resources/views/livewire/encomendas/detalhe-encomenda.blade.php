@@ -138,7 +138,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
         <div class="card-body" id="scrollModalBody" style="padding-right: 0;">
@@ -205,7 +204,7 @@
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text bg-carolina"><i
-                                                class="ti-location-arrow text-light"></i></span>
+                                              class="ti-location-arrow text-light"></i></span>
                                     </div>
                                     <input type="text" class="form-control"
                                         value="{{ $detalhesCliente->customers[0]->address }}" readonly>
@@ -220,10 +219,10 @@
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text bg-carolina"><i
-                                                class="ti-location-arrow text-light"></i></span>
+                                              class="ti-location-arrow text-light"></i></span>
                                     </div>
                                     <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->city }}" readonly>
+                                           value="{{ $detalhesCliente->customers[0]->city }}" readonly>
                                 </div>
                             </div>
 
@@ -1366,6 +1365,14 @@
                     </table>
                 </div>
             </div>
+            {{-- <div class="row p-4">
+                <div class="col-12 p-0 d-none d-md-table-cell text-right mt-3">
+                <a href="#tab7" data-toggle="tab" class="btn btn-primary fundo_azul {{ $tabFinalizar }}" style="color:white;"><i class="las la-angle-right"></i>Finalizar Encomenda</a>
+                </div>
+                <div class="col-12 pb-3 p-0 d-md-none text-center">
+                    <a href="#tab7" data-toggle="tab" class="btn btn-primary fundo_azul" style="color:white;"><i class="las la-angle-right"></i> Finalizar Encomenda</a>
+                </div>
+            </div> --}}
         </div>
 
         <div class="tab-pane fade {{ $tabFinalizar }}" id="tab7">
@@ -1533,25 +1540,16 @@
                              </label>
                          </div>
                      </div> --}}
-
                  </div>
-
-                                   
-
-             </div>
-
-             <div class="row p-4">
-                 <div class="col-12 p-0 d-none d-md-table-cell text-right mt-3">
-                     {{-- <a class="btn btn-cinzento btn_limpar_carrinho" style="border: #232b58 solid 1px; margin-right: 1rem;" wire:click="deletartodos"><i class="las la-eraser"></i> Limpar Carrinho</a> --}}
-                     <a class="btn btn-primary fundo_azul" style="color:white;" wire:click="finalizarencomenda"><i class="las la-angle-right"></i>Encomendar</a>
-                 </div>
-                 <div class="col-12 pb-3 p-0 d-md-none text-center">
-                     {{-- <a class="btn btn-cinzento btn_limpar_carrinho w-100 mb-2" style="border: #232b58 solid 1px;" wire:click="deletartodos"><i class="las la-eraser"></i> Limpar Carrinho</a> --}}
-                     <a class="btn btn-primary fundo_azul w-100" style="color:white;" wire:click="finalizarencomenda"><i class="las la-angle-right"></i> Finalizar Encomenda</a>
-                 </div>
-             </div>
-                
-
+                    <div class="row p-4">
+                        <div class="col-12 p-0 d-none d-md-table-cell text-right mt-3">
+                            <a class="btn btn-primary fundo_azul" style="color:white;" wire:click="finalizarencomenda"><i class="las la-angle-right"></i>Encomendar</a>
+                        </div>
+                        <div class="col-12 pb-3 p-0 d-md-none text-center">
+                            <a class="btn btn-primary fundo_azul w-100" style="color:white;" wire:click="finalizarencomenda"><i class="las la-angle-right"></i> Finalizar Encomenda</a>
+                        </div>
+                    </div>             
+             </div>                
 
 
             </p>
@@ -1938,7 +1936,6 @@
         //         // jQuery(".tab-content").css("z-index","-20");
         //         jQuery(".sidebarProd").css("z-index","+100");
         
-                
         // });
     document.addEventListener("DOMContentLoaded", function() {
 
@@ -2491,7 +2488,6 @@
                 tab.classList.remove('show', 'active');
             }
         });
-
         // Atualiza o link da navegação para refletir a aba ativa
         var navLinks = document.querySelectorAll('.nav-link');
         navLinks.forEach(function(link) {

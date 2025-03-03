@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Route;
 use App\Interfaces\PropostasInterface;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Pagination\LengthAwarePaginator;
-
+use Barryvdh\DomPDF\Facade\Pdf;
+use Dompdf\Dompdf;
+use Illuminate\Support\Facades\Storage;
 class Financeiro extends Component
 {
     use WithPagination;
@@ -19,10 +21,15 @@ class Financeiro extends Component
     public int $pageChosen = 1;
     public int $numberMaxPages;
     public int $totalRecords = 0;
+
+    public $perPagePendente;
+    public $pageChosenPendente;
+    
     private ?object $clientesRepository = NULL;
 
     protected ?object $clientes = NULL;
     protected $Financeiros = NULL;
+    public $FinanceirosPendente;
 
     public ?string $nomeCliente = '';
     public ?string $numeroCliente = '';
@@ -52,6 +59,14 @@ class Financeiro extends Component
             $this->perPage = 10;
         }
 
+        if (isset($this->perPagePendente)) {
+            session()->put('perPagePendente', $this->perPagePendente);
+        } elseif (session('perPagePendente')) {
+            $this->perPagePendente = session('perPagePendente');
+        } else {
+            $this->perPagePendente = 10;
+        }
+
         $this->nomeCliente = '';
         $this->numeroCliente = '';
         $this->zonaCliente = '';
@@ -76,7 +91,6 @@ class Financeiro extends Component
             $this->statusFinanceiro = session('verFinanceiroStatusFinanceiro');
         }
 
-
         $this->idCliente = '';
     }
 
@@ -87,7 +101,7 @@ class Financeiro extends Component
         if(session('verFinanceiroPaginator')){
             // $FinanceiroArray = $this->clientesRepository->getOcorrenciasCliente($this->perPage,$this->pageChosen,$this->idCliente,$this->nomeCliente,$this->numeroCliente,$this->zonaCliente,$this->telemovelCliente,$this->emailCliente,$this->nifCliente,$this->startDate,$this->endDate,$this->statusFinanceiro);
             $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 0);
-            // dd($FinanceiroArray);
+
             Session::put('verFinanceiroNomeCliente',$this->nomeCliente);
             Session::put('verFinanceiroNumeroCliente',$this->numeroCliente);
             Session::put('verFinanceiroZonaCliente',$this->zonaCliente);
@@ -113,9 +127,62 @@ class Financeiro extends Component
             $this->numberMaxPages = session('verFinanceiroNr_paginas');
             $this->totalRecords = session('verFinanceiroNr_registos');
         }
-        
-        
+
+        $this->perPagePendente = Session::get('perPagePendente') ?? 10;
+        $this->pageChosenPendente = Session::get('pageChosenPendente') ?? 1;
+        $this->FinanceirosPendente = $this->clientesRepository->getFinanceiroCliente($this->perPagePendente,$this->pageChosenPendente, '');
+        Session::put('FinanceirosPendente', $this->FinanceirosPendente);
     }
+
+    public function loadPendentes()
+    {
+        // $this->perPagePendente = Session::get('perPagePendente') ?? 10;
+        // $this->pageChosenPendente = Session::get('pageChosenPendente') ?? 1;
+        // $this->FinanceirosPendente = $this->clientesRepository->getFinanceiroCliente($this->perPagePendente,$this->pageChosenPendente, '');
+        return redirect()->route('financeiro');
+    }
+
+    public function updatedPerPagePendente()
+    {
+        $this->pageChosenPendente = 1;
+        Session::put('perPagePendente', $this->perPagePendente);
+        $this->loadPendentes();
+    }
+   
+    public function PerPagePendente($page)
+    {
+        $this->perPagePendente = $page;
+        Session::put('perPagePendente', $this->perPagePendente);
+        $this->loadPendentes();
+    }
+
+    public function previousPagePendente()
+    {
+        if ($this->pageChosenPendente > 1) {
+            $this->pageChosenPendente--;
+            Session::put('pageChosenPendente', $this->pageChosenPendente);
+            $this->loadPendentes();
+        }
+    }
+
+    public function nextPagePendente()
+    {
+        if ($this->pageChosenPendente < $this->FinanceirosPendente['nr_paginas']) {
+            $this->pageChosenPendente++;
+            Session::put('pageChosenPendente', $this->pageChosenPendente);
+            $this->loadPendentes();
+        }
+    }
+
+    public function goToPagePendente($page)
+    {
+        if ($page >= 1 && $page <= $this->FinanceirosPendente['nr_paginas']) {
+            $this->pageChosenPendente = $page;
+            Session::put('pageChosenPendente', $this->pageChosenPendente);
+            $this->loadPendentes();
+        }
+    }
+
 
     public function updatedNomeCliente()
     {
@@ -272,6 +339,7 @@ class Financeiro extends Component
         $this->totalRecords = session('verFinanceiroNr_registos');
     
     }
+
     public function updatedEndDate()
     {
         $this->pageChosen = 1;
@@ -320,6 +388,10 @@ class Financeiro extends Component
 
         // $FinanceiroArray = $this->clientesRepository->getOcorrenciasCliente($this->perPage,$this->pageChosen,$this->idCliente,$this->nomeCliente,$this->numeroCliente,$this->zonaCliente,$this->telemovelCliente,$this->emailCliente,$this->nifCliente,$this->startDate,$this->endDate,$this->statusFinanceiro);
         $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 0);
+        if(isset($FinanceiroArray['Message']))
+        {
+            $FinanceiroArray['object'] = null;
+        }
             
             Session::put('verFinanceiroPaginator', $FinanceiroArray["object"]);
             $this->Financeiros = session('verFinanceiroPaginator');
@@ -331,11 +403,10 @@ class Financeiro extends Component
             Session::put('verFinanceiroPaginator', $FinanceiroArray["object"]);
             $this->Financeiros = session('verFinanceiroPaginator');
 
-        }
-        
+        }    
     }
 
-   
+
     public function previousPage()
     {
         if ($this->pageChosen > 1) {
@@ -403,10 +474,13 @@ class Financeiro extends Component
                 
             }
         }
+
     }
+
 
     public function getPageRange()
     {
+        // dd('getPageRange');
         $currentPage = $this->pageChosen;
         $lastPage = $this->numberMaxPages;
 
@@ -416,13 +490,16 @@ class Financeiro extends Component
         return range($start, $end);
     }
 
+
     public function isCurrentPage($page)
     {
+        // dd('isCurrentPage');
         return $page == $this->pageChosen;
     }
 
     public function updatedPerPage(): void
     {
+        // dd('updatedPerPage');
         $this->resetPage();
         session()->put('perPage', $this->perPage);
 
@@ -448,6 +525,27 @@ class Financeiro extends Component
 
     }
 
+    public function GerarPdfFinanceiro()
+    {
+        // Obtendo os dados financeiros
+        $FinanceiroArray = $this->clientesRepository->getFinanceiroCliente(99999, 1, '');
+        // dd($FinanceiroArray);
+        // Extraindo os itens do paginator e agrupando por 'customer_name'
+        $financeiro = collect($FinanceiroArray["object"])->groupBy('customer_name');
+
+
+        // dd($financeiro);
+        // Gerando o PDF com a Blade
+        $pdf = PDF::loadView('pdf.pdfMapaDividas', ["financeiroAgrupado" => $financeiro]);
+
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->output();
+        }, 'pdfMapaDividas.pdf');
+    }
+
+
+
+
     public function checkOrder($idFinanceiro, $Financeiro)
     {
             
@@ -455,7 +553,7 @@ class Financeiro extends Component
             session()->flash('status', 'error');
             session()->flash('message', 'Nao foi encontrado os detalhes dessa Fatura! (erro : EC-404)');
 
-            return redirect()->route('Financeiros');
+            return redirect()->route('financeiro');
         }
         $json = json_encode($Financeiro);
         $object = json_decode($json, false);
@@ -470,7 +568,10 @@ class Financeiro extends Component
 
     public function paginationView()
     {
+        // dd('paginationView');
+        // return 'livewire.pendentepagination';
         return 'livewire.pagination';
+
     }
 
         
@@ -482,7 +583,9 @@ class Financeiro extends Component
 
             return view('pageErro');
         }
-        // dd($this->Financeiros);
-        return view('livewire.financeiro.financeiro',["financeiro" => $this->Financeiros]);
+
+        $this->FinanceirosPendente = session('FinanceirosPendente');
+
+        return view('livewire.financeiro.financeiro',["financeiro" => $this->Financeiros, "financeiroPendente" => $this->FinanceirosPendente]);
     }
 }

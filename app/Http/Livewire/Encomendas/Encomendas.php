@@ -36,7 +36,8 @@ class Encomendas extends Component
     public int $statusEncomenda = 1;
     public $Analise;
 
-
+    public $perPagePendente;
+    public $pageChosenPendente;
     
     public $idCliente;
 
@@ -57,13 +58,6 @@ class Encomendas extends Component
             $this->perPage = 10;
         }
 
-        // $this->nomeCliente = '';
-        // $this->numeroCliente = '';
-        // $this->zonaCliente = '';
-        // $this->telemovelCliente = '';
-        // $this->emailCliente = '';
-        // $this->nifCliente = '';
-
         $this->nomeCliente = session('verEncomendaNomeCliente');
         $this->numeroCliente = session('verEncomendaNumeroCliente');
         $this->zonaCliente = session('verEncomendaZonaCliente');
@@ -81,7 +75,6 @@ class Encomendas extends Component
         }
         
         $this->idCliente = '';
-
     }
 
     public function mount()
@@ -118,36 +111,61 @@ class Encomendas extends Component
             $this->totalRecords = session('verEncoemendaNr_registos');
         }
 
-        $id = Auth::user()->id_phc;
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/analytics/pending?Salesman_number='.$id ,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_HTTPHEADER => array(
-                'Content-Type: application/json'
-            ),
-        ));
-
-        $response = curl_exec($curl);
-
-        curl_close($curl);
-
-        $response_decoded = json_decode($response);
-        $this->Analise = $response_decoded;
-
-        if(isset($response_decoded->Message))
-        {
-            $this->Analise = null;
-        }
+        $this->perPagePendente = Session::get('perPagePendente') ?? 10;
+        $this->pageChosenPendente = Session::get('pageChosenPendente') ?? 1;
+        $this->Analise = $this->clientesRepository->getEncomendasPendentes($this->perPagePendente, $this->pageChosenPendente);
     }
     
+    public function loadPendentes()
+    {
+        // $this->perPagePendente = Session::get('perPagePendente') ?? 10;
+        // $this->pageChosenPendente = Session::get('pageChosenPendente') ?? 1;
+        // $this->Analise = $this->clientesRepository->getEncomendasPendentes($this->perPagePendente, $this->pageChosenPendente);
+        return redirect()->route('encomendas');
+    }
+
+    public function updatedPerPagePendente()
+    {
+        // Reseta para a primeira página ao mudar a quantidade de registros
+        $this->pageChosenPendente = 1;
+        Session::put('perPagePendente', $this->perPagePendente);
+        $this->loadPendentes();
+    }
    
+    public function PerPagePendente($page)
+    {
+        $this->perPagePendente = $page;
+        Session::put('perPagePendente', $this->perPagePendente);
+        $this->loadPendentes();
+    }
+
+    public function previousPagePendente()
+    {
+        if ($this->pageChosenPendente > 1) {
+            $this->pageChosenPendente--;
+            Session::put('pageChosenPendente', $this->pageChosenPendente);
+            $this->loadPendentes();
+        }
+    }
+
+    public function nextPagePendente()
+    {
+        if ($this->pageChosenPendente < $this->Analise['nr_paginas']) {
+            $this->pageChosenPendente++;
+            Session::put('pageChosenPendente', $this->pageChosenPendente);
+            $this->loadPendentes();
+        }
+    }
+
+    public function goToPagePendente($page)
+    {
+        if ($page >= 1 && $page <= $this->Analise['nr_paginas']) {
+            $this->pageChosenPendente = $page;
+            Session::put('pageChosenPendente', $this->pageChosenPendente);
+            $this->loadPendentes();
+        }
+    }
+
     public function updatedNomeCliente()
     {
         $this->pageChosen = 1;
@@ -177,7 +195,7 @@ class Encomendas extends Component
         $type = 0;
         $encomendasArray = $this->clientesRepository->getEncomendasClienteFiltro($this->perPage,$this->pageChosen,$this->idCliente,$this->nomeCliente,$this->numeroCliente,$this->zonaCliente,$this->telemovelCliente,$this->emailCliente,$this->nifCliente,$this->estadoEncomenda,$type,$this->startDate,$this->endDate,$this->statusEncomenda);
         Session::put('verEncomendaNumeroCliente',$this->numeroCliente);
-       
+
         Session::put('verEncoemendaPaginator', $encomendasArray["paginator"]);
         Session::put('verEncoemendaNr_paginas', $encomendasArray["nr_paginas"] + 1);
         Session::put('verEncoemendaNr_registos', $encomendasArray["nr_registos"]);
@@ -212,7 +230,6 @@ class Encomendas extends Component
         // $this->encomendas = $encomendasArray["paginator"];
         // $this->numberMaxPages = $encomendasArray["nr_paginas"];
         // $this->totalRecords = $encomendasArray["nr_registos"];
-
     }
 
     public function updatedNifCliente()
@@ -258,7 +275,6 @@ class Encomendas extends Component
         // $this->encomendas = $encomendasArray["paginator"];
         // $this->numberMaxPages = $encomendasArray["nr_paginas"];
         // $this->totalRecords = $encomendasArray["nr_registos"];
-
     }
 
 
@@ -303,6 +319,7 @@ class Encomendas extends Component
         // $this->totalRecords = $encomendasArray["nr_registos"];
 
     }
+
     public function updatedStartDate()
     {
         $this->pageChosen = 1;
@@ -325,6 +342,7 @@ class Encomendas extends Component
         // $this->totalRecords = $encomendasArray["nr_registos"];
 
     }
+
     public function updatedEndDate()
     {
         $this->pageChosen = 1;
@@ -345,8 +363,8 @@ class Encomendas extends Component
         // $this->encomendas = $encomendasArray["paginator"];
         // $this->numberMaxPages = $encomendasArray["nr_paginas"];
         // $this->totalRecords = $encomendasArray["nr_registos"];
-
     }
+
     public function updatedStatusEncomenda()
     {
         $this->pageChosen = 1;
@@ -495,8 +513,6 @@ class Encomendas extends Component
             $this->numberMaxPages = $encomendasArray["nr_paginas"] + 1;
             $this->totalRecords = $encomendasArray["nr_registos"];
         }
-        
-
     }
 
     public function checkOrder($idEncomenda, $encomenda)
@@ -532,6 +548,7 @@ class Encomendas extends Component
         //     }
         // }
     }
+
     public function redirectNewEncomenda($id)
     {
         session()->forget('searchSubFamily');
@@ -540,6 +557,7 @@ class Encomendas extends Component
         session(['parametro' => ""]);
         return redirect()->route('encomendas.detail', ['id' => $id]);
     }
+
     public function adicionarEncomenda()
     {
         Session::forget('encomenda');

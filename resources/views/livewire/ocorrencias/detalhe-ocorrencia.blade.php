@@ -439,23 +439,28 @@
                                                         <!-- Tabela de Faturas -->
                                                         <div class="w-50 pr-2">
                                                             <h6>Faturas</h6>
+                                                            <input type="text" id="filterInput" class="form-control mb-2" placeholder="Filtrar por Nº. Doc.">
                                                             <table class="table table-bordered">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th>Número</th>
+                                                                        <th>Nº. Doc.</th>
+                                                                        <th>Documento</th>
                                                                         <th>Cliente</th>
+                                                                        <th>Data</th>
                                                                         <th>Total</th>
                                                                         <th>Ação</th>
                                                                     </tr>
                                                                 </thead>
-                                                                <tbody>
+                                                                <tbody id="invoiceTableBody">
                                                                     @foreach($invoices as $invoice)
                                                                         @php
                                                                             $invoice = (object) $invoice;
                                                                         @endphp
                                                                         <tr>
-                                                                            <td>{{ $invoice->document_number }}</td>
+                                                                            <td class="document-number">{{ $invoice->document_number }}</td>
+                                                                            <td>{{ $invoice->document }}</td>
                                                                             <td>{{ $invoice->customer_name }}</td>
+                                                                            <td>{{ \Carbon\Carbon::parse($invoice->date ?? null)->format('d/m/Y') }}</td>
                                                                             <td>{{ number_format($invoice->total, 2, ',', '.') }}</td>
                                                                             <td>
                                                                                 <button class="btn btn-sm btn-primary select-invoice" 
@@ -468,6 +473,18 @@
                                                                 </tbody>
                                                             </table>
                                                         </div>
+
+                                                        <script>
+                                                            document.getElementById('filterInput').addEventListener('input', function () {
+                                                                let filter = this.value.trim(); // Remove espaços extras
+                                                                let rows = document.querySelectorAll('#invoiceTableBody tr');
+                                                        
+                                                                rows.forEach(row => {
+                                                                    let documentNumber = row.querySelector('.document-number').textContent.trim(); // Garante que não tenha espaços
+                                                                    row.style.display = (documentNumber === filter || filter === '') ? '' : 'none';
+                                                                });
+                                                            });
+                                                        </script>
 
                                                         <!-- Tabela de Linhas da Fatura Selecionada -->
                                                         <div class="w-50 pl-2">

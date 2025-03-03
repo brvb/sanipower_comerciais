@@ -27,7 +27,7 @@
 
                     <a href="javascript:void(0);" wire:click="openProposta({{  json_encode($detalhesCliente->customers[0]->id) }}, {{$idVisita}})" class="btn btn-sm btn-danger"><i class="ti-file"></i> Proposta</a>
 
-                    <a href="javascript:void(0);" class="btn btn-sm btn-warning"><i class="ti-eye"></i> Ocorrência</a>
+                    <a href="{{route('ocorrencias.detail', $detalhesCliente->customers[0]->id)}}" class="btn btn-sm btn-warning"><i class="ti-eye"></i> Ocorrência</a>
                 @else
                 <a href="javascript:void(0);"  wire:click="gerarPdfVisita({{ json_encode($getVisita)}})" class="btn btn-sm btn-secondary"><i class="ti-save"></i>Gerar PDF</a>
                 @endif

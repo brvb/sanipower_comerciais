@@ -157,8 +157,12 @@ class Ocorrencias extends Component
     {
         $ocorrenciasArray = $this->clientesRepository->getOcorrenciasCliente($this->perPage,$this->pageChosen,$this->idCliente, '', $this->noClient, '', '', '', '', '', '', '','');
 
+        if(!empty($ocorrenciasArray["object"]))
+        {
         $this->detailsOcorrencias = $ocorrenciasArray["object"];
-
+        }else{
+            $this->detailsOcorrencias = null;
+        }
         $this->numberMaxPages = $ocorrenciasArray["nr_paginas"] + 1;
         $this->totalRecords = $ocorrenciasArray["nr_registos"];
 

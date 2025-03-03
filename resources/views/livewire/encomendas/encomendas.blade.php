@@ -201,13 +201,14 @@
                                     <option value="10"
                                         @if ($perPage == 10) selected @endif>10</option>
                                     <option value="25"
-                                        @if ($perPage == 25) selected @endif>25</option>
+                                        @if ($perPage== 25) selected @endif>25</option>
                                     <option value="50"
                                         @if ($perPage == 50) selected @endif>50</option>
                                     <option value="100"
                                         @if ($perPage == 100) selected @endif>100</option>
                                 </select>
-                                registos</label>
+                                registos
+                            </label>
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -257,8 +258,8 @@
         <!-- TABELA  -->
 
         <div class="row">
-            <div class="col"  style="width: 90px;">
-                <div class="card mb-3"style="margin-left: 19px;">
+            <div class="col-lg-12">
+                <div class="card mb-3">
                     <div class="card-header d-block">
                         <div class="row">
                             <div class="col-12 col-sm-4">
@@ -266,8 +267,29 @@
                                     <i class="ti-user"></i> Pendentes
                                 </div>
                             </div>
+                            <div class="col-12 col-sm-8 text-right">
+                                {{-- <a href="javascript:void(0);" wire:click="GerarPdfFinanceiro()" class="btn btn-sm btn-secondary"> Gerar PDF</a> --}}
+                           </div>
+                        </div>
                     </div>
                     <div class="card-body">
+                        <div id="dataTables_wrapper" class="dataTables_wrapper container" style="margin-left:0px;padding-left:0px;margin-bottom:10px;">
+                            <div class="left">
+                                <label>Mostrar
+                                    <select name="perPage" wire:model="perPagePendente" wire:change="PerPagePendente($event.target.value)">
+                                        <option value="10"
+                                            @if ($perPagePendente == 10) selected @endif>10</option>
+                                        <option value="25"
+                                            @if ($perPagePendente == 25) selected @endif>25</option>
+                                        <option value="50"
+                                            @if ($perPagePendente == 50) selected @endif>50</option>
+                                        <option value="100"
+                                            @if ($perPagePendente == 100) selected @endif>100</option>
+                                    </select>
+                                    registos
+                                </label>
+                            </div>
+                        </div>
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover init-datatable" id="tabela-cliente">
                                 <thead class="thead-light">
@@ -287,13 +309,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($analise as $index => $item)
+                                    @if($analise != null)
+                                    @foreach ($analise['object'] as $index => $item)
                                         @php
                                             if (is_array($item)) {
                                                 $item = (object) $item;
                                             }
                                         @endphp
-
                                         <tr>
                                             <td>{{ $item->Document ?? null }}</td>
                                             <td>{{ $item->Document_number ?? null }}</td>
@@ -310,11 +332,34 @@
                                         </tr>                              
     
                                     @endforeach
-    
+                                @endif
                                 </tbody>
                             </table>
                         </div>
-                        {{-- {{ $encomendas->links() }} --}}
+                        <!-- PAGINAÇÃO -->
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <button wire:click="previousPagePendente" class="btn btn-primary" 
+                                @if ($pageChosenPendente <= 1) disabled @endif>
+                                Anterior
+                            </button>
+
+                            <span>Página {{ $pageChosenPendente }} de {{ $analise['nr_paginas'] }}</span>
+
+                            <button wire:click="nextPagePendente" class="btn btn-primary" 
+                                @if ($pageChosenPendente >= $analise['nr_paginas']) disabled @endif>
+                                Próxima
+                            </button>
+                        </div>
+
+                        <!-- SELECIONAR PÁGINA -->
+                        <div class="mt-2">
+                            <label>Ir para a página:</label>
+                            <select wire:model="pageChosenPendente" wire:change="goToPagePendente($event.target.value)" class="form-control w-auto d-inline">
+                                @for ($i = 1; $i <= $analise['nr_paginas']; $i++)
+                                    <option value="{{ $i }}">{{ $i }}</option>
+                                @endfor
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
