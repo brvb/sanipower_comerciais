@@ -91,8 +91,6 @@ class Analise extends Component
             $this->analysisAnualClientes = $this->clientesRepository->getListagemAnaliseAnual($id, 0);
         }
         
-        
-
         return view('livewire.Analise.analise', ["analisesCliente" =>$this->analysisClientes, "vendasAnuais" =>$this->analysisAnualClientes ]);
 
     }

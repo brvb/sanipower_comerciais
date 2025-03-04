@@ -1,4 +1,68 @@
 <div>
+    <style>
+        @media (max-width: 1100px) {
+            .btn:not(:disabled):not(.disabled) {
+                cursor: pointer;
+                font-size: 0.9rem;
+                height: auto;
+                padding: 0.3rem 0.6rem;
+                margin-top: 0.6rem;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .font-menor
+            {
+                font-size: 10pt;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .font-menor
+            {
+                font-size: 8pt;
+            }
+        }
+        
+        @media (max-width: 680px) {
+            .btn:not(:disabled):not(.disabled) {
+                cursor: pointer;
+                font-size: 0.8rem;
+                height: auto;
+                padding: 0.3rem 0.5rem;
+                margin-top: 0.6rem;
+            }
+
+            .col-lg-12 {
+                padding-right: 0;
+                padding-left: 8px;
+            }
+
+            .card-body {
+
+                padding: 0.35rem;
+            }
+
+            .main {
+                padding-left: 0.3rem !important;
+            }
+
+            .font-menor
+            {
+                font-size: 10pt;
+            }
+            .table td {
+                padding: 0.5rem;
+                font-size: 0.8rem;
+            }
+
+            .table .thead-light th {
+                font-size: 0.9rem;
+                padding: 0.5rem;
+            }
+
+        }
+    </style>
       <!--  LOADING -->
 
       <div id="loader" style="display: none;">
@@ -266,17 +330,13 @@
                                         <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->email}}" readonly>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
-
-                        <!--  FIM DETALHES   -->
                     </p>
                 </div>
                 <div class="tab-pane fade {{$tabAnalysis}}" id="tab5">
-
                     <p class="card-text">
-                        <!-- INICIO TABELA  -->
+                    <div>
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="card mb-3">
@@ -287,37 +347,19 @@
                                                     <i class="ti-stats-up"></i> Análises Por Família
                                                 </div>
                                             </div>
-                                            <div class="col-xl-6 col-xs-12 d-flex gap-3">
-                                                <div class="col-xl-6">
-                                                    <label for="data-inicial">Data inicial</label>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-2">
+                                                <div class="col-lg-6">
+                                                    <label class="mt-2">Data inicial</label>
                                                     <input type="date" id="data-inicial" class="form-control" value = "{{ $this->DateIniAnalise }}" wire:change="AlterDateIniAnalise($event.target.value)">
                                                 </div>
-                                                <div class="col-xl-6">
-                                                    <label for="data-final">Data final</label>
+                                                <div class="col-lg-6">
+                                                    <label class="mt-2">Data final</label>
                                                     <input type="date" id="data-final" class="form-control" value = "{{ $this->DateEndAnalise }}" wire:change="AlterDateEndAnalise($event.target.value)">
                                                 </div>
-                                            </div>
-                                            </div>
                                         </div>
-                                    <div class="card-body">
-                                        <div id="dataTables_wrapper" class="dataTables_wrapper container" style="margin-left:0px;padding-left:0px;margin-bottom:10px;">
-                                            {{-- <div class="left">
-                                                <label>Mostrar
-                                                    <select name="perPage" wire:model="perPage">
-                                                        <option value="10"
-                                                            @if ($perPage == 10) selected @endif>10</option>
-                                                        <option value="25"
-                                                            @if ($perPage == 25) selected @endif>25</option>
-                                                        <option value="50"
-                                                            @if ($perPage == 50) selected @endif>50</option>
-                                                        <option value="100"
-                                                            @if ($perPage == 100) selected @endif>100</option>
-                                                    </select>
-                                                    registos
-                                                </label>
-                                            </div> --}}
-                                        </div>
-
                                         <div class="table-responsive">
                                             <table class="table table-bordered table-hover" id="tabela-cliente2">
                                                 <thead class="thead-light">
@@ -347,12 +389,8 @@
                                 </div>
                             </div>
                         </div>
-
                         <!-- FIM TABELA  -->
-
-                    </p>
                 
-                    <p class="card-text">
                         <!-- INICIO TABELA  -->
                         <div class="row">
                             <div class="col-lg-12">
@@ -364,29 +402,11 @@
                                                     <i class="ti-stats-up"></i> Análises Anual
                                                 </div>
                                             </div>
-                                            </div>
                                         </div>
+                                    </div>
                                     <div class="card-body">
-                                        <div id="dataTables_wrapper" class="dataTables_wrapper container" style="margin-left:0px;padding-left:0px;margin-bottom:10px;">
-                                            {{-- <div class="left">
-                                                <label>Mostrar
-                                                    <select name="perPage" wire:model="perPage">
-                                                        <option value="10"
-                                                            @if ($perPage == 10) selected @endif>10</option>
-                                                        <option value="25"
-                                                            @if ($perPage == 25) selected @endif>25</option>
-                                                        <option value="50"
-                                                            @if ($perPage == 50) selected @endif>50</option>
-                                                        <option value="100"
-                                                            @if ($perPage == 100) selected @endif>100</option>
-                                                    </select>
-                                                    registos
-                                                </label>
-                                            </div> --}}
-                                        </div>
-
                                         <div class="table-responsive">
-                                            <table class="table table-bordered table-hover">
+                                            <table class="table table-bordered table-hover font-menor" id="tabela-cliente2" >
                                                 <thead class="thead-light">
                                                     <tr>
                                                         <th>Ano</th>
@@ -427,18 +447,16 @@
                                                     @endforeach
                                                 @endif
                                                 </tbody>
-                                            </table>                        
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                         <!-- FIM TABELA  -->
-
-                    </p>
-
-                </div>
+                    </div>
+                </p>
+            </div>
 
 
                 <div class="tab-pane fade {{$tabEncomendas}}" id="tab6">

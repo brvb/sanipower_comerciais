@@ -239,7 +239,13 @@
 
 
     <!-- MODALS -->
-
+    <script>
+        window.addEventListener('download-started', function() {
+            setTimeout(function() {
+                window.location.reload();
+            }, 3000);
+        });
+    </script>
 
     
 

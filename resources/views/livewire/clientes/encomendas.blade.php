@@ -127,12 +127,6 @@
                             <tbody>
                                 @foreach ($detalhesEncomenda as $detalhe)
                                 <tr>
-
-                                  
-
-
-                                        
-
                                             <td>{{ date('Y-m-d', strtotime($detalhe->date)) }}</td>
                                             <td>{{ $detalhe->order }}</td>
                                             <td>{{ number_format($detalhe->total, 3) }}€</td>
@@ -142,18 +136,11 @@
                                                 <button type="button" class="btn btn-primary" wire:click="detalheEncomendaModal({{ json_encode($detalhe) }})">
                                                     <i class="ti ti-plus"></i> Ver Encomenda
                                                 </button>
-                                            
-                                               
+                                                
                                                 {{-- <button type="button" class="btn btn-primary" wire:click="verComentario({{ json_encode($detalhe->id) }})">
                                                     Comentários
                                                 </button> --}}
-                                               
-                                            
-                                                
                                             </td>
-
-
-                                   
                                 </tr>
                                 @endforeach
                             </tbody>
