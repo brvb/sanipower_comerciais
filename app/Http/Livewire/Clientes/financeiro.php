@@ -219,20 +219,21 @@ class Financeiro extends Component
 
     public function GerarPdfFinanceiro()
     {
-        // Obtendo os dados financeiros
+
         $FinanceiroArray = $this->clientesRepository->getFinanceiroCliente(9999, 1, $this->idCliente);
-        // dd($FinanceiroArray);
-        // Extraindo os itens do paginator e agrupando por 'customer_name'
+
+
         $financeiro = collect($FinanceiroArray["object"])->groupBy('customer_name');
 
 
-        // dd($financeiro);
-        // Gerando o PDF com a Blade
+    
         $pdf = PDF::loadView('pdf.pdfMapaDividas', ["financeiroAgrupado" => $financeiro]);
         
-        redirect()->route('clientes.detail',["id" => $this->idCliente]);
+        // redirect()->route('clientes.detail',["id" => $this->idCliente]);
 
-        return response()->streamDownload(function () use ($pdf) {
+        $this->dispatchBrowserEvent('download-started');
+
+        return response()->streamDownload(function() use ($pdf) {
             echo $pdf->output();
         }, 'pdfMapaDividas.pdf');
     }
