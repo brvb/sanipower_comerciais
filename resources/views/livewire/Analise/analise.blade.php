@@ -1,5 +1,4 @@
 <style>
-    /* Ajuste de fonte para telas menores */
     @media (max-width: 1200px) {
         .font-menor {
             font-size: 7pt;
@@ -12,17 +11,15 @@
         }
     }
 
-    /* Wrapper para criar rolagem lateral */
     .table-wrapper {
         width: 100% !important;
         overflow-x: auto !important;
         -webkit-overflow-scrolling: touch !important; 
     }
 
-    /* Impedir quebra de texto nas células e garantir scroll */
     .table-responsive table {
         width: 100% !important;
-        min-width: 900px !important; /* Garante que não fique muito comprimida */
+        min-width: 900px !important;
         white-space: nowrap !important;
     }
 </style>
@@ -153,7 +150,6 @@
     </p>
 </div>
 </div>
-
 <script>
     document.addEventListener('livewire:load', function () {
         Livewire.on('refreshPage', () => {

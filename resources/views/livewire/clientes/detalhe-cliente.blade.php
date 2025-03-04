@@ -332,8 +332,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!--  FIM DETALHES   -->
                     </p>
                 </div>
                 <div class="tab-pane fade {{$tabAnalysis}}" id="tab5">
@@ -449,7 +447,7 @@
                                                     @endforeach
                                                 @endif
                                                 </tbody>
-                                            </table>                        
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
