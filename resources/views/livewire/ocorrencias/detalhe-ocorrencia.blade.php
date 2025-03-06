@@ -396,7 +396,7 @@
                                             
                                                     tipo2.innerHTML = "";
                                             
-
+                                                
                                                     if (optionsMap[selectedValue]) {
                                                         optionsMap[selectedValue].forEach(option => {
                                                             let newOption = document.createElement("option");
@@ -405,7 +405,7 @@
                                                             tipo2.appendChild(newOption);
                                                         });
                                                     } else {
-
+                                                    
                                                         let defaultOption = document.createElement("option");
                                                         defaultOption.value = "0";
                                                         defaultOption.textContent = "Selecione uma opção válida";
@@ -424,9 +424,31 @@
                                                 max-width: 90vw !important;
                                             }
                                         </style>
-
+                                        <style>
+                                            @media (max-width: 1200px) {
+                                                .modal-dialog {
+                                                    max-width: 95% !important;
+                                                }
+                                                .modal-body {
+                                                    display: flex;
+                                                    flex-wrap: nowrap;
+                                                    overflow-x: auto;
+                                                    max-height: 70vh;
+                                                }
+                                                .modal-body > div {
+                                                    min-width: 50%;
+                                                    flex: 1;
+                                                    padding: 5px;
+                                                    overflow-x: auto;
+                                                }
+                                                .table-responsive {
+                                                    overflow-x: auto;
+                                                }
+                                            }
+                                        </style>
+                                        
                                         <div class="modal fade" id="invoiceModal" tabindex="-1" role="dialog" aria-labelledby="invoiceModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-custom" role="document">
+                                            <div class="modal-dialog modal-custom modal-dialog-centered" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="invoiceModalLabel">Selecionar Faturas</h5>
@@ -437,202 +459,180 @@
                                                     <button type="button" class="btn btn-success" id="confirmSelection">Confirmar Seleção</button>
                                                     <div class="modal-body d-flex">
                                                         <!-- Tabela de Faturas -->
-                                                        <div class="w-50 pr-2">
+                                                        <div class="pr-2">
                                                             <h6>Faturas</h6>
                                                             <input type="text" id="filterInput" class="form-control mb-2" placeholder="Filtrar por Nº. Doc.">
-                                                            <table class="table table-bordered">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>Nº. Doc.</th>
-                                                                        <th>Documento</th>
-                                                                        <th>Cliente</th>
-                                                                        <th>Data</th>
-                                                                        <th>Total</th>
-                                                                        <th>Ação</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody id="invoiceTableBody">
-                                                                    @foreach($invoices as $invoice)
-                                                                        @php
-                                                                            $invoice = (object) $invoice;
-                                                                        @endphp
+                                                            <div class="table-responsive">
+                                                                <table class="table table-bordered">
+                                                                    <thead>
                                                                         <tr>
-                                                                            <td class="document-number">{{ $invoice->document_number }}</td>
-                                                                            <td>{{ $invoice->document }}</td>
-                                                                            <td>{{ $invoice->customer_name }}</td>
-                                                                            <td>{{ \Carbon\Carbon::parse($invoice->date ?? null)->format('d/m/Y') }}</td>
-                                                                            <td>{{ number_format($invoice->total, 2, ',', '.') }}</td>
-                                                                            <td>
-                                                                                <button class="btn btn-sm btn-primary select-invoice" 
-                                                                                    data-invoice="{{ json_encode($invoice) }}">
-                                                                                    Selecionar
-                                                                                </button>
-                                                                            </td>
+                                                                            <th>Nº. Doc.</th>
+                                                                            <th>Documento</th>
+                                                                            <th>Cliente</th>
+                                                                            <th>Data</th>
+                                                                            <th>Total</th>
+                                                                            <th>Ação</th>
                                                                         </tr>
-                                                                    @endforeach
-                                                                </tbody>
-                                                            </table>
+                                                                    </thead>
+                                                                    <tbody id="invoiceTableBody">
+                                                                        @foreach($invoices as $invoice)
+                                                                            @php
+                                                                                $invoice = (object) $invoice;
+                                                                            @endphp
+                                                                            <tr>
+                                                                                <td class="document-number">{{ $invoice->document_number }}</td>
+                                                                                <td>{{ $invoice->document }}</td>
+                                                                                <td>{{ $invoice->customer_name }}</td>
+                                                                                <td>{{ \Carbon\Carbon::parse($invoice->date ?? null)->format('d/m/Y') }}</td>
+                                                                                <td>{{ number_format($invoice->total, 2, ',', '.') }}</td>
+                                                                                <td>
+                                                                                    <button class="btn btn-sm btn-primary select-invoice" 
+                                                                                        data-invoice="{{ json_encode($invoice) }}">
+                                                                                        Selecionar
+                                                                                    </button>
+                                                                                </td>
+                                                                            </tr>
+                                                                        @endforeach
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
                                                         </div>
-
-                                                        <script>
-                                                            document.getElementById('filterInput').addEventListener('input', function () {
-                                                                let filter = this.value.trim(); // Remove espaços extras
-                                                                let rows = document.querySelectorAll('#invoiceTableBody tr');
-                                                        
-                                                                rows.forEach(row => {
-                                                                    let documentNumber = row.querySelector('.document-number').textContent.trim(); // Garante que não tenha espaços
-                                                                    row.style.display = (documentNumber === filter || filter === '') ? '' : 'none';
-                                                                });
-                                                            });
-                                                        </script>
-
+                                                    
                                                         <!-- Tabela de Linhas da Fatura Selecionada -->
-                                                        <div class="w-50 pl-2">
+                                                        <div class="pl-2">
                                                             <h6>Linhas da Fatura</h6>
-                                                            <table class="table table-bordered">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>Referência</th>
-                                                                        <th>Descrição</th>
-                                                                        <th>Quantidade</th>
-                                                                        <th>Ação</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody id="invoice-lines">
-                                                                    <!-- Linhas serão carregadas aqui -->
-                                                                </tbody>
-                                                            </table>
+                                                            <div class="table-responsive">
+                                                                <table class="table table-bordered">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Referência</th>
+                                                                            <th>Descrição</th>
+                                                                            <th>Quantidade</th>
+                                                                            <th>Ação</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="invoice-lines">
+                                                                        <!-- Linhas serão carregadas aqui -->
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <!-- Campo oculto para armazenar os dados selecionados -->
                                                         <input type="hidden" id="selectedInvoicesInput" name="selected_invoices" wire:model.defer="selectedInvoicesJson">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        
                                         <div id="toaster" class="toast" style="position: absolute; top: 20px; right: 20px; z-index: 1000; display: none; background-color: #28a745; color: white; padding: 10px; border-radius: 5px;">
                                             Seleção registrada com sucesso! ✅
                                         </div>
-                                        <!-- JavaScript -->
+                                        
                                         <script>
-                                        document.addEventListener("DOMContentLoaded", function () {
-                                        let selectedInvoice = null;
-                                        let selectedLines = [];
-
-                                        document.querySelectorAll(".select-invoice").forEach(button => {
-                                            button.addEventListener("click", function () {
-                                                const invoice = JSON.parse(this.getAttribute("data-invoice"));
-                                                const linesContainer = document.getElementById("invoice-lines");
-                                                
-                                                selectedLines = [];
-
-                                                document.querySelectorAll(".select-line").forEach(lineButton => {
-                                                    lineButton.classList.remove("btn-danger");
-                                                    lineButton.classList.add("btn-success");
-                                                    lineButton.textContent = "Selecionar";
+                                            document.getElementById('filterInput').addEventListener('input', function () {
+                                                let filter = this.value.trim();
+                                                let rows = document.querySelectorAll('#invoiceTableBody tr');
+                                        
+                                                rows.forEach(row => {
+                                                    let documentNumber = row.querySelector('.document-number').textContent.trim();
+                                                    row.style.display = (documentNumber === filter || filter === '') ? '' : 'none';
                                                 });
-
-                                                selectedInvoice = invoice;
-
-                                                document.querySelectorAll(".select-invoice").forEach(btn => {
-                                                    btn.classList.remove("btn-warning");
-                                                    btn.textContent = "Selecionar";
-                                                });
-
-                                                this.classList.add("btn-warning");
-                                                this.textContent = "Selecionado ✅";
-
-                                                linesContainer.innerHTML = "";
-                                                invoice.lines.forEach(line => {
-                                                    let row = document.createElement("tr");
-                                                    row.innerHTML = `
-                                                        <td>${line.reference}</td>
-                                                        <td>${line.description}</td>
-                                                        <td>${line.quantity}</td>
-                                                        <td>
-                                                            <button class="btn btn-sm btn-success select-line" data-line='${JSON.stringify(line)}'>
-                                                                Selecionar
-                                                            </button>
-                                                        </td>
-                                                    `;
-
-                                                    linesContainer.appendChild(row);
-                                                });
-
-                                                document.querySelectorAll(".select-line").forEach(lineButton => {
-                                                    lineButton.addEventListener("click", function () {
-                                                        const lineData = JSON.parse(this.getAttribute("data-line"));
-
-                                                        const index = selectedLines.findIndex(l => l.id === lineData.id);
-                                                        if (index === -1) {
-                                                            selectedLines.push(lineData);
-                                                            this.textContent = "Remover";
-                                                            this.classList.remove("btn-success");
-                                                            this.classList.add("btn-danger");
-                                                        } else {
-                                                            selectedLines.splice(index, 1);
-                                                            this.textContent = "Selecionar";
-                                                            this.classList.remove("btn-danger");
-                                                            this.classList.add("btn-success");
-                                                        }
+                                            });
+                                        
+                                            document.addEventListener("DOMContentLoaded", function () {
+                                                let selectedInvoice = null;
+                                                let selectedLines = [];
+                                        
+                                                document.querySelectorAll(".select-invoice").forEach(button => {
+                                                    button.addEventListener("click", function () {
+                                                        const invoice = JSON.parse(this.getAttribute("data-invoice"));
+                                                        const linesContainer = document.getElementById("invoice-lines");
+                                                        
+                                                        selectedLines = [];
+                                        
+                                                        document.querySelectorAll(".select-line").forEach(lineButton => {
+                                                            lineButton.classList.remove("btn-danger");
+                                                            lineButton.classList.add("btn-success");
+                                                            lineButton.textContent = "Selecionar";
+                                                        });
+                                        
+                                                        selectedInvoice = invoice;
+                                        
+                                                        document.querySelectorAll(".select-invoice").forEach(btn => {
+                                                            btn.classList.remove("btn-warning");
+                                                            btn.textContent = "Selecionar";
+                                                        });
+                                        
+                                                        this.classList.add("btn-warning");
+                                                        this.textContent = "Selecionado ✅";
+                                        
+                                                        linesContainer.innerHTML = "";
+                                                        invoice.lines.forEach(line => {
+                                                            let row = document.createElement("tr");
+                                                            row.innerHTML = `
+                                                                <td>${line.reference}</td>
+                                                                <td>${line.description}</td>
+                                                                <td>${line.quantity}</td>
+                                                                <td>
+                                                                    <button class="btn btn-sm btn-success select-line" data-line='${JSON.stringify(line)}'>
+                                                                        Selecionar
+                                                                    </button>
+                                                                </td>
+                                                            `;
+                                        
+                                                            linesContainer.appendChild(row);
+                                                        });
+                                        
+                                                        document.querySelectorAll(".select-line").forEach(lineButton => {
+                                                            lineButton.addEventListener("click", function () {
+                                                                const lineData = JSON.parse(this.getAttribute("data-line"));
+                                        
+                                                                const index = selectedLines.findIndex(l => l.id === lineData.id);
+                                                                if (index === -1) {
+                                                                    selectedLines.push(lineData);
+                                                                    this.textContent = "Remover";
+                                                                    this.classList.remove("btn-success");
+                                                                    this.classList.add("btn-danger");
+                                                                } else {
+                                                                    selectedLines.splice(index, 1);
+                                                                    this.textContent = "Selecionar";
+                                                                    this.classList.remove("btn-danger");
+                                                                    this.classList.add("btn-success");
+                                                                }
+                                                            });
+                                                        });
                                                     });
                                                 });
+                                        
+                                                document.getElementById("confirmSelection").addEventListener("click", function () {
+                                                    let hiddenInput = document.getElementById("selectedInvoicesInput");
+                                        
+                                                    if (!selectedInvoice) {
+                                                        alert("Por favor, selecione uma fatura principal antes de confirmar.");
+                                                        return;
+                                                    }
+                                        
+                                                    let selectedData = {
+                                                        invoice: selectedInvoice,
+                                                        lines: selectedLines
+                                                    };
+                                        
+                                                    hiddenInput.value = JSON.stringify(selectedData);
+                                                    hiddenInput.dispatchEvent(new Event('input'));
+                                        
+                                                    $("#invoiceModal").modal("hide");
+                                        
+                                                    let toaster = document.getElementById("toaster");
+                                                    toaster.style.display = "block";
+                                        
+                                                    setTimeout(() => {
+                                                        toaster.style.display = "none";
+                                                    }, 3000);
+                                                });
+                                        
                                             });
-                                        });
-
-                                        document.getElementById("confirmSelection").addEventListener("click", function () {
-                                            let hiddenInput = document.getElementById("selectedInvoicesInput");
-
-                                            if (!selectedInvoice) {
-                                                alert("Por favor, selecione uma fatura principal antes de confirmar.");
-                                                return;
-                                            }
-
-                                            let selectedData = {
-                                                invoice: selectedInvoice,
-                                                lines: selectedLines
-                                            };
-
-                                            hiddenInput.value = JSON.stringify(selectedData);
-                                            hiddenInput.dispatchEvent(new Event('input'));
-
-                                            $("#invoiceModal").modal("hide");
-
-                                            let toaster = document.getElementById("toaster");
-                                            toaster.style.display = "block";
-
-                                            setTimeout(() => {
-                                                toaster.style.display = "none";
-                                            }, 3000);
-                                        });
-
-                                        document.getElementById("openModalBtn").addEventListener("click", function () {
-                                            let hiddenInput = document.getElementById("selectedInvoicesInput");
-                                            hiddenInput.value = "";
-                                            hiddenInput.dispatchEvent(new Event('input'));
-
-                                            selectedInvoice = null;
-                                            selectedLines = [];
-
-                                            document.querySelectorAll(".select-invoice").forEach(btn => {
-                                                btn.classList.remove("btn-warning");
-                                                btn.textContent = "Selecionar";
-                                            });
-
-                                            document.getElementById("invoice-lines").innerHTML = "";
-                                        });
-                                    });
-
                                         </script>
-                                        <script>
-                                         window.addEventListener('checkToaster', function(e) {
-                                            const checkboxes = document.querySelectorAll('.checkboxAddKit');
-                                            checkboxes.forEach(function(checkbox) {
-                                                checkbox.checked = false;
-                                            });
-                                        });
-                                    </script>
                                     </div>
                                 </div>
                             </div>

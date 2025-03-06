@@ -4,7 +4,7 @@
         <div class="row">
             <label style="padding-left:15px;">Selecione Comercial</label>
             <div class="input-group" style="padding-left:15px;margin-bottom:10px;">
-                        
+            
                 <select class="form-control" id="userSelected" wire:model="userSelected">
                     <option value="0">Todos</option>
                     @isset($comerciais)
@@ -142,7 +142,6 @@
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Exibe o loader
                     document.getElementById('loader').style.display = 'block';
                     @this.call('EliminarAgendado');
                 }
@@ -152,262 +151,182 @@
 
      <script>
 
-        function startCalendarLeft()
-        {
-            var calendarValues = JSON.parse($('#values').text());
-            
-            var event = [];
-
-            $.each(calendarValues, function(index, valores) {
-                {
-
-                    if(valores.finalizado == 0){
-                        colorState = "blue";
-                        
-                    } else if(valores.finalizado == 1) {
-                        colorState = "green";
-                    } else {
-                        colorState = "#e6e600";
-                    }
-                    
-                   // Supondo que valores.data_inicial seja uma string de data no formato "yyyy-mm-dd"
-                   let dataInicial = valores.data_inicial;
-
-                    // Verifica se a data está no formato dd-mm-yyyy ou yyyy-mm-dd
-                    if (/^\d{2}-\d{2}-\d{4}$/.test(dataInicial)) {
-                        // Caso seja dd-mm-yyyy, transforma para yyyy-mm-dd
-                        let [dia, mes, ano] = dataInicial.split('-');
-                        valores.data_inicial = `${ano}-${mes}-${dia}`;
-                    } else if (/^\d{4}-\d{2}-\d{2}$/.test(dataInicial)) {
-                        // Caso já esteja no formato yyyy-mm-dd, mantém o valor
-                        valores.data_inicial = dataInicial;
-                    } else {
-                        console.error("Formato de data inválido");
-                    }
-
-                    // Formatação para dataFormatada no formato dd-mm-yyyy
-                    let [ano, mes, dia] = valores.data_inicial.split('-'); // Extrai diretamente da string formatada
-                    let dataFormatada = `${dia}-${mes}-${ano}`;
-
-                    
-                    event.push({
-                        title: valores.cliente,
-                        start: valores.data_inicial+"T"+valores.hora_inicial,
-                        end: valores.data_inicial+"T"+valores.hora_final,
-                        backgroundColor: colorState,
-                        assunto: valores.assunto_text,
-                        dataInicial: dataFormatada,
-                        horaInicial: valores.hora_inicial,
-                        horaFinal: valores.hora_final,
-                        corVisita: valores.tipovisita.cor,
-                        nomeVisita: valores.tipovisita.tipo,
-                        idTipoVisita : valores.id_tipo_visita,
-                        clientId: valores.client_id,
-                        visitaID: valores.id,
-                        finalizado: valores.finalizado
-                    })
-                }
-            });
-
-            var calendarEl = document.getElementById('calendar');
-
-            var checkFlagReset = jQuery("#flagReset").val();
-
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            events:event,
-            locale: 'pt-br',
-            headerToolbar: {
-                        left: 'prev,next today',
-                        center: 'title',
-                        right: 'dayGridMonth,timeGridWeek,timeGridDay'
-            },
-            buttonText: {
-                today: 'Hoje',
-                    month: 'Mês',
-                    week: 'Semana',
-                    day: 'Dia',
-                    list: 'Lista'
-            },
-            views: {
-                timeGridWeek: {
-                    allDayText: 'Dia'
-                },
-                timeGridDay: {
-                    allDayText: 'Dia'
-                }
-            },
-            //FAZER O ABRIR POP PARA VER A INFORMAÇÃO
-            eventDidMount: function (info,element) {
-                var scroller = info.el.closest(".fc-scroller");
-
-                if (scroller) {
-                    scroller.id = "scrollModal";
-                }
-
+function startCalendarLeft() {
+    var calendarValues = JSON.parse($('#values').text());
     
+    var eventMap = {}; // Objeto para agrupar eventos por data
 
-                var eventElement = info.el.closest('.fc-daygrid-event-harness');
+    $.each(calendarValues, function(index, valores) {
+        if (valores.finalizado == 0) {
+            colorState = "blue";
+        } else if (valores.finalizado == 1) {
+            colorState = "green";
+        } else {
+            colorState = "#e6e600";
+        }
+        
+        // Verifica e converte o formato da data
+        let dataInicial = valores.data_inicial;
+        if (/^\d{2}-\d{2}-\d{4}$/.test(dataInicial)) {
+            let [dia, mes, ano] = dataInicial.split('-');
+            valores.data_inicial = `${ano}-${mes}-${dia}`;
+        } else if (!/^\d{4}-\d{2}-\d{2}$/.test(dataInicial)) {
+            console.error("Formato de data inválido");
+        }
 
-                    if (eventElement) {
-                        eventElement.style.backgroundColor = info.backgroundColor; // Defina a cor desejada aqui
-                        eventElement.style.color = "white";
-                        eventElement.style.marginBottom = "5px";
-                    }
+        let dataFormatada = valores.data_inicial; // Mantemos no formato yyyy-mm-dd
 
-                if (info.event.end - info.event.start <= 3600000) { // Se a duração for menor ou igual a 1 hora
-                    info.el.classList.add('fc-short-event'); // Adiciona a classe para eventos curtos
+        let eventObj = {
+            title: valores.cliente,
+            start: valores.data_inicial + "T" + valores.hora_inicial,
+            end: valores.data_inicial + "T" + valores.hora_final,
+            backgroundColor: colorState,
+            assunto: valores.assunto_text,
+            dataInicial: dataFormatada,
+            horaInicial: valores.hora_inicial,
+            horaFinal: valores.hora_final,
+            corVisita: valores.tipovisita.cor,
+            nomeVisita: valores.tipovisita.tipo,
+            idTipoVisita: valores.id_tipo_visita,
+            clientId: valores.client_id,
+            visitaID: valores.id,
+            finalizado: valores.finalizado
+        };
+
+        // Agrupar eventos por data
+        if (!eventMap[dataFormatada]) {
+            eventMap[dataFormatada] = [];
+        }
+        
+        eventMap[dataFormatada].push(eventObj);
+    });
+
+    var filteredEvents = [];
+
+    // Limitar a 3 eventos por dia
+    Object.keys(eventMap).forEach(function(date) {
+        filteredEvents = filteredEvents.concat(eventMap[date].slice(0, 3));
+    });
+
+    var calendarEl = document.getElementById('calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        events: filteredEvents,
+        locale: 'pt-br',
+        contentHeight: 'auto', // Ajusta a altura para evitar sobreposição
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        buttonText: {
+            today: 'Hoje',
+            month: 'Mês',
+            week: 'Semana',
+            day: 'Dia',
+            list: 'Lista'
+        },
+        views: {
+            dayGridMonth: {
+                dayMaxEventRows: true, // Mostra apenas um número fixo de eventos antes do "+X mais"
+                moreLinkText: function(n) {
+                    return `+${n} mais`; // Personaliza o botão de eventos extras
                 }
             },
-            eventContent: function(arg) {
-                let customDiv = document.createElement('div');
-                customDiv.className = 'custom-event-content';
-                    
-                    let timeString = new Date(arg.event.start).toLocaleTimeString('pt-BR', {
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    }) + ' - ' + new Date(arg.event.end).toLocaleTimeString('pt-BR', {
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    });
-
-                    var custom = customDiv.closest('.custom-event-content');
-            
-                    if (custom) {
-                        custom.style.whiteSpace = 'normal'; // Defina a cor desejada aqui
-                    }
-
-                    customDiv.innerHTML = '<div>' + arg.event.title + '</div><div>' + timeString + '</div>';
-
-                return { domNodes: [customDiv] };
+            timeGridWeek: {
+                allDayText: 'Dia'
             },
-            dateClick: function(info) {
-
-
-                var clickedDate = new Date(info.dateStr).toISOString().split('T')[0];
-
-                var checkComercial = jQuery("#userSelected").val();
-
-                Livewire.emit("changeDashWithDate",clickedDate,checkComercial)
-            },
-            eventClick: function(info) {
-
-                $("#modalInformacao").modal('show');
-
-                $.fn.datepicker.dates['pt-BR'] = {
-                    days: ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"],
-                    daysShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
-                    daysMin: ["Do", "Se", "Te", "Qu", "Qu", "Se", "Sá"],
-                    months: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
-                    monthsShort: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
-                    today: "Hoje",
-                    clear: "Limpar",
-                    format: "dd/mm/yyyy",
-                    titleFormat: "MM yyyy",
-                    /* Leverages same syntax as 'format' */
-                    weekStart: 0
-                };
-
-
-                $('#dataInicialVisita').datepicker({
-                    format: 'dd/mm/yyyy',
-                    language: 'pt-BR',
-                    autoclose: true
-                }).on('changeDate', function(e) {
-
-                    var formattedDate = moment(e.date).format('YYYY-MM-DD');
-
-                    @this.set('dataInicialVisita', formattedDate, true);
-
-                });
-
-            
-                $('.horaInicialVisita').timepicker({
-                    minuteStep: 5,
-                    showSeconds: false,
-                    showMeridian: false,
-                    defaultTime: '09:00',
-                    icons: {
-                        up: 'ti-angle-up',
-                        down: 'ti-angle-down'
-                    }
-                }).on('changeDate', function(e) {
-
-                    var formattedDate = moment(e.date).format('HH:ii');
-
-                    @this.set('horaInicialVisita', formattedDate, true);
-
-                });
-
-
-            
-                $('.horaFinalVisita').timepicker({
-                    minuteStep: 5,
-                    showSeconds: false,
-                    showMeridian: false,
-                    defaultTime: '10:00',
-                    icons: {
-                        up: 'ti-angle-up',
-                        down: 'ti-angle-down'
-                    }
-                }).on('changeDate', function(e) {
-
-                    var formattedDate = moment(e.date).format('HH:ii');
-
-                    @this.set('horaFinalVisita', formattedDate, true);
-
-                });
-
-
-                @this.set('visitaID',info.event.extendedProps.visitaID,true);
-                @this.set('dataInicialVisita',info.event.extendedProps.dataInicial,true);
-                @this.set('horaInicialVisita',info.event.extendedProps.horaInicial,true);
-                @this.set('horaFinalVisita',info.event.extendedProps.horaFinal,true);
-                @this.set('tipoVisitaEscolhido',info.event.extendedProps.idTipoVisita,true);
-                @this.set('assuntoTextVisita',info.event.extendedProps.assunto,true);
-
+            timeGridDay: {
+                allDayText: 'Dia'
+            }
+        },
+        eventDidMount: function(info) {
+            var eventElement = info.el.closest('.fc-daygrid-event-harness');
+            if (eventElement) {
+                eventElement.style.backgroundColor = info.backgroundColor;
+                eventElement.style.color = "white";
+                eventElement.style.marginBottom = "5px";
+                eventElement.style.overflow = "hidden"; // Evita que o conteúdo ultrapasse o espaço do evento
+                eventElement.style.whiteSpace = "nowrap"; // Mantém o texto em uma linha
+                eventElement.style.textOverflow = "ellipsis"; // Adiciona "..." se o texto for muito longo
+            }
+        },
+        eventContent: function(arg) {
+            let customDiv = document.createElement('div');
+            customDiv.className = 'custom-event-content';
+            customDiv.style.fontSize = "12px"; // Diminui o tamanho do texto para melhor encaixe
                 
-                $('#clienteVisitaID').val(JSON.stringify(info.event.extendedProps.clientId));
-                $('#dataInicialVisita').val(info.event.extendedProps.dataInicial);
-                $('#horaInicialVisita').val(info.event.extendedProps.horaInicial);
-                $('#horaFinalVisita').val(info.event.extendedProps.horaFinal);
-                $('#assunto_text').val(info.event.extendedProps.assunto);             
-                $('#tipovisitaselect').val(info.event.extendedProps.idTipoVisita);  
-                $('#visitaID').val(info.event.extendedProps.visitaID);  
-
-             
-                if(info.event.extendedProps.finalizado == 1)
-                {
-                    $('#clienteVisitaID').attr('readonly', true);
-                    $('#dataInicialVisita').attr('readonly', true);
-                    $('#horaInicialVisita').attr('readonly', true);
-                    $('#horaFinalVisita').attr('readonly', true);
-                    $('#assunto_text').attr('readonly', true);    
-                    $('#tipovisitaselect').attr('readonly', true);
-
-                    $("#addVisitaModalBtn").css("display","none");
-                } 
-                else {
-                    $('#clienteVisitaID').attr('readonly', false);
-                    $('#dataInicialVisita').attr('readonly', false);
-                    $('#horaInicialVisita').attr('readonly', false);
-                    $('#horaFinalVisita').attr('readonly', false);
-                    $('#assunto_text').attr('readonly', false);    
-                    $('#tipovisitaselect').attr('readonly', false);
-
-                    $("#addVisitaModalBtn").css("display","block");
-                }
-
-
-
-                
-
-              }
-
+            let timeString = new Date(arg.event.start).toLocaleTimeString('pt-BR', {
+                hour: '2-digit',
+                minute: '2-digit'
+            }) + ' - ' + new Date(arg.event.end).toLocaleTimeString('pt-BR', {
+                hour: '2-digit',
+                minute: '2-digit'
             });
 
-            calendar.render();
+            customDiv.innerHTML = '<div>' + arg.event.title + '</div><div>' + timeString + '</div>';
+
+            return { domNodes: [customDiv] };
+        },
+        dateClick: function(info) {
+            var clickedDate = new Date(info.dateStr).toISOString().split('T')[0];
+            var checkComercial = jQuery("#userSelected").val();
+            Livewire.emit("changeDashWithDate", clickedDate, checkComercial);
+        },
+        eventClick: function(info) {
+            $("#modalInformacao").modal('show');
+
+            $('#dataInicialVisita').datepicker({
+                format: 'dd/mm/yyyy',
+                language: 'pt-BR',
+                autoclose: true
+            }).on('changeDate', function(e) {
+                var formattedDate = moment(e.date).format('YYYY-MM-DD');
+                @this.set('dataInicialVisita', formattedDate, true);
+            });
+
+            @this.set('visitaID', info.event.extendedProps.visitaID, true);
+            @this.set('dataInicialVisita', info.event.extendedProps.dataInicial, true);
+            @this.set('horaInicialVisita', info.event.extendedProps.horaInicial, true);
+            @this.set('horaFinalVisita', info.event.extendedProps.horaFinal, true);
+            @this.set('tipoVisitaEscolhido', info.event.extendedProps.idTipoVisita, true);
+            @this.set('assuntoTextVisita', info.event.extendedProps.assunto, true);
+
+            $('#clienteVisitaID').val(JSON.stringify(info.event.extendedProps.clientId));
+            $('#dataInicialVisita').val(info.event.extendedProps.dataInicial);
+            $('#horaInicialVisita').val(info.event.extendedProps.horaInicial);
+            $('#horaFinalVisita').val(info.event.extendedProps.horaFinal);
+            $('#assunto_text').val(info.event.extendedProps.assunto);             
+            $('#tipovisitaselect').val(info.event.extendedProps.idTipoVisita);  
+            $('#visitaID').val(info.event.extendedProps.visitaID);  
+
+            if(info.event.extendedProps.finalizado == 1) {
+                $('#clienteVisitaID').attr('readonly', true);
+                $('#dataInicialVisita').attr('readonly', true);
+                $('#horaInicialVisita').attr('readonly', true);
+                $('#horaFinalVisita').attr('readonly', true);
+                $('#assunto_text').attr('readonly', true);    
+                $('#tipovisitaselect').attr('readonly', true);
+                $("#addVisitaModalBtn").css("display","none");
+            } else {
+                $('#clienteVisitaID').attr('readonly', false);
+                $('#dataInicialVisita').attr('readonly', false);
+                $('#horaInicialVisita').attr('readonly', false);
+                $('#horaFinalVisita').attr('readonly', false);
+                $('#assunto_text').attr('readonly', false);    
+                $('#tipovisitaselect').attr('readonly', false);
+                $("#addVisitaModalBtn").css("display","block");
+            }
         }
+    });
+
+    calendar.render();
+}
+
+
+
+
         
 
         document.addEventListener('DOMContentLoaded', function() {

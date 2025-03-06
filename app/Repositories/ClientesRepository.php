@@ -1440,9 +1440,13 @@ class ClientesRepository implements ClientesInterface
     public function getFinanceiroCliente($perPage,$page,$idCliente): array
     {
         $curl = curl_init();
-
+        $id = 0;
+        if($idCliente == '')
+        {
+            $id = Auth::user()->id_phc;
+        }
         curl_setopt_array($curl, array(
-            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/customers/financial?perPage=' . $perPage . '&Page=' . $page . '&customer_id=' . $idCliente,
+            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/customers/financial?perPage=' . $perPage . '&Page=' . $page . '&customer_id=' . $idCliente.'&Salesman_number='.$id,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,

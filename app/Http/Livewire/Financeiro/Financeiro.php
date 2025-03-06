@@ -97,11 +97,11 @@ class Financeiro extends Component
     public function mount()
     {
         $this->initProperties();
-
+        Session::put('Reload', 0);
         if(session('verFinanceiroPaginator')){
             // $FinanceiroArray = $this->clientesRepository->getOcorrenciasCliente($this->perPage,$this->pageChosen,$this->idCliente,$this->nomeCliente,$this->numeroCliente,$this->zonaCliente,$this->telemovelCliente,$this->emailCliente,$this->nifCliente,$this->startDate,$this->endDate,$this->statusFinanceiro);
             $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 0);
-
+            
             Session::put('verFinanceiroNomeCliente',$this->nomeCliente);
             Session::put('verFinanceiroNumeroCliente',$this->numeroCliente);
             Session::put('verFinanceiroZonaCliente',$this->zonaCliente);
@@ -414,13 +414,13 @@ class Financeiro extends Component
             Session::put('verFinanceiroPageChosen', $this->pageChosen);
 
             if($this->nomeCliente != "" || $this->numeroCliente != ""  || $this->zonaCliente != "" || $this->telemovelCliente != "" || $this->emailCliente != "" || $this->nifCliente != "" || $this->statusFinanceiro != "0"){
-
+            
                 // $FinanceiroArray = $this->clientesRepository->getOcorrenciasCliente($this->perPage,$this->pageChosen,$this->idCliente,$this->nomeCliente,$this->numeroCliente,$this->zonaCliente,$this->telemovelCliente,$this->emailCliente,$this->nifCliente,$this->startDate,$this->endDate,$this->statusFinanceiro);
                 $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 0);
-
+            
                 Session::put('verFinanceiroPaginator', $FinanceiroArray["object"]);
                 $this->Financeiros = session('verFinanceiroPaginator');
-                
+            
             } else {
                 // $FinanceiroArray = $this->clientesRepository->getOcorrenciasCliente($this->perPage,$this->pageChosen,$this->idCliente,$this->nomeCliente,$this->numeroCliente,$this->zonaCliente,$this->telemovelCliente,$this->emailCliente,$this->nifCliente,$this->startDate,$this->endDate,$this->statusFinanceiro);
                 $FinanceiroArray = $this->clientesRepository->getInvoiceCliente($this->perPage,$this->pageChosen, 0);
@@ -528,16 +528,13 @@ class Financeiro extends Component
     public function GerarPdfFinanceiro()
     {
         // Obtendo os dados financeiros
-        $FinanceiroArray = $this->clientesRepository->getFinanceiroCliente(99999, 1, '');
-        // dd($FinanceiroArray);
-        // Extraindo os itens do paginator e agrupando por 'customer_name'
+        $FinanceiroArray = $this->clientesRepository->getFinanceiroCliente(10, 1, '');
+        
         $financeiro = collect($FinanceiroArray["object"])->groupBy('customer_name');
-
-
-        // dd($financeiro);
-        // Gerando o PDF com a Blade
+    
         $pdf = PDF::loadView('pdf.pdfMapaDividas', ["financeiroAgrupado" => $financeiro]);
 
+        
         return response()->streamDownload(function () use ($pdf) {
             echo $pdf->output();
         }, 'pdfMapaDividas.pdf');

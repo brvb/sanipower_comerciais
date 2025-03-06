@@ -148,76 +148,6 @@
             </div>
         </div>
     </div>-->
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card mb-3">
-                <div class="card-header d-block">
-                    <div class="row">
-                        <div class="col-12 col-sm-4">
-                            <div class="caption uppercase">
-                                <i class="ti-user"></i> Documentos de Faturação
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div id="dataTables_wrapper" class="dataTables_wrapper container" style="margin-left:0px;padding-left:0px;margin-bottom:10px;">
-                        <div class="left">
-                            <label>Mostrar
-                                <select name="perPage" wire:model="perPage">
-                                    <option value="10"
-                                        @if ($perPage == 10) selected @endif>10</option>
-                                    <option value="25"
-                                        @if ($perPage == 25) selected @endif>25</option>
-                                    <option value="50"
-                                        @if ($perPage == 50) selected @endif>50</option>
-                                    <option value="100"
-                                        @if ($perPage == 100) selected @endif>100</option>
-                                </select>
-                                registos
-                            </label>
-                        </div>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover init-datatable" id="tabela-cliente">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>Data</th>
-                                    <th>Doc. Nº</th>
-                                    <th>Documento</th>
-                                    <th>Cliente</th>
-                                    <th>Cliente Nº</th>
-                                    <th>Total</th>
-                                    <th>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            @if($financeiro != null)
-                                @foreach ($financeiro as $doc )
-                                    <tr>
-                                        <td>{{ date('Y-m-d', strtotime($doc->date)) }}</td>
-                                        <td>{{$doc->document_number}}</td>   
-                                        <td>{{$doc->document}}</td>
-                                        <td>{{$doc->customer_name}}</td>
-                                        <td>{{$doc->customer_number}}</td>
-                                        <td>{{$doc->total}}€</td>
-                                        <td>
-                                            <a wire:click="checkOrder({{json_encode($doc->id)}}, {{json_encode($doc)}})" style="color:white!important;" class="btn btn-sm btn-primary">
-                                                <i class="ti-eye"></i> Ver detalhes
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
-                            </tbody>
-                        </table>
-                    </div>
-                    {{ $financeiro->links() }}
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="row">
         <div class="col-lg-12">
             <div class="card mb-3">
@@ -229,7 +159,7 @@
                             </div>
                         </div>
                         <div class="col-12 col-sm-8 text-right">
-                            <a href="javascript:void(0);" wire:click="GerarPdfFinanceiro()" class="btn btn-sm btn-secondary"> Gerar PDF</a>
+                            <a href="{{ route('gerar.pdf.financeiro') }}" target="_blank" class="btn btn-sm btn-secondary"> Gerar PDF</a>
                        </div>
                     </div>
                 </div>
@@ -318,37 +248,94 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card mb-3">
+                <div class="card-header d-block">
+                    <div class="row">
+                        <div class="col-12 col-sm-4">
+                            <div class="caption uppercase">
+                                <i class="ti-user"></i> Documentos de Faturação
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="dataTables_wrapper" class="dataTables_wrapper container" style="margin-left:0px;padding-left:0px;margin-bottom:10px;">
+                        <div class="left">
+                            <label>Mostrar
+                                <select name="perPage" wire:model="perPage">
+                                    <option value="10"
+                                        @if ($perPage == 10) selected @endif>10</option>
+                                    <option value="25"
+                                        @if ($perPage == 25) selected @endif>25</option>
+                                    <option value="50"
+                                        @if ($perPage == 50) selected @endif>50</option>
+                                    <option value="100"
+                                        @if ($perPage == 100) selected @endif>100</option>
+                                </select>
+                                registos
+                            </label>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover init-datatable" id="tabela-cliente">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Doc. Nº</th>
+                                    <th>Documento</th>
+                                    <th>Cliente</th>
+                                    <th>Cliente Nº</th>
+                                    <th>Total</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @if($financeiro != null)
+                                @foreach ($financeiro as $doc )
+                                    <tr>
+                                        <td>{{ date('Y-m-d', strtotime($doc->date)) }}</td>
+                                        <td>{{$doc->document_number}}</td>   
+                                        <td>{{$doc->document}}</td>
+                                        <td>{{$doc->customer_name}}</td>
+                                        <td>{{$doc->customer_number}}</td>
+                                        <td>{{$doc->total}}€</td>
+                                        <td>
+                                            <a wire:click="checkOrder({{json_encode($doc->id)}}, {{json_encode($doc)}})" style="color:white!important;" class="btn btn-sm btn-primary">
+                                                <i class="ti-eye"></i> Ver detalhes
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                            </tbody>
+                        </table>
+                    </div>
+                    {{ $financeiro->links() }}
+                </div>
+            </div>
+        </div>
+    </div>
     
+    @if(session('Reload') != 0)
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                console.log('AQUI');
+                window.dispatchEvent(new Event('download-started'));
+            });
+        </script>
+    @endif
+
     <script>
-        const tableRows = document.querySelectorAll('tr[data-href]');
-
-        tableRows.forEach(function(row) {
-            row.addEventListener('click', function() {
-
-                const href = row.dataset.href;
-
-                window.location.href = href;
-            });
-        });
-
-        document.addEventListener('livewire:load', function() {
-            Livewire.hook('message.sent', () => {
-                document.getElementById('loader').style.display = 'block';
-            });
-
-            Livewire.hook('message.processed', () => {
-                document.getElementById('loader').style.display = 'none';
-            });
-        });
-        
-
-        window.addEventListener('DOMContentLoaded', (event) => {
-            if ("{{ session('success') }}") {
-                toastr.success("{{ session('success') }}");
-            }
-            if("{{ session('warning') }}"){
-                toastr.warning("{{ session('warning') }}");
-            }
+        window.addEventListener('download-started', function() {
+            console.log('AQUI');
+            setTimeout(function() {
+                window.location.reload();
+            }, 3000);
         });
     </script>
+
+   
 </div>

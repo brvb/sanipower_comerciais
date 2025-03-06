@@ -1,5 +1,4 @@
 <div>
-
     <style>
         @media (max-width: 1100px) {
            .btn:not(:disabled):not(.disabled) {
@@ -68,9 +67,7 @@
                                 <i class="ti-stats-up"></i> Propostas
                             </div>
                         </div>
-
                     </div>
-
                 </div>
                 <div class="card-body">
                     <div class="row mb-2">
@@ -105,14 +102,12 @@
                                     <option value="10" @if ($perPage == 10) selected @endif>10</option>
                                     <option value="25" @if ($perPage == 25) selected @endif>25</option>
                                     <option value="50" @if ($perPage == 50) selected @endif>50</option>
-                                    <option value="100" @if ($perPage == 100) selected @endif>100
-                                    </option>
+                                    <option value="100" @if ($perPage == 100) selected @endif>100</option>
                                 </select>
                                 registos
                             </label>
                         </div>
                     </div>
-
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover" id="tabela-cliente2">
                             <thead class="thead-light">
@@ -128,7 +123,6 @@
                          
                                @foreach ($detalhesPropostas as $detalhe)
                                 <tr>
-
                                     <td>{{ date('Y-m-d', strtotime($detalhe->date)) }}</td>
                                     <td>{{ $detalhe->budget }}</td>
                                     <td>{{ number_format($detalhe->total, 3) }}€</td>
@@ -140,9 +134,7 @@
                                         {{-- <button type="button" class="btn btn-primary" wire:click="verComentario({{ json_encode($detalhe->id) }})">
                                             Comentários
                                         </button> --}}
-                                    </td>
-
-                                   
+                                    </td>  
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -152,7 +144,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <!-- FIM TABELA  -->
@@ -333,9 +324,7 @@
             if(e.detail.status == "error"){
                 toastr.warning(e.detail.message);
             }
-        });
-
-  
+        });  
     </script>
 
 </div>

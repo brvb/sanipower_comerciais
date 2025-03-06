@@ -739,14 +739,14 @@
                                                         @endphp
                                                         {{-- @dd($getCategories->category[$valueCat]); --}}
                                                             @foreach ($getCategoriesAll->category[$valueCat]->family as $family)
-                                                            <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-3">
-                                                                <div class="card card-decoration card-outline-primary border border-2">
-                                                                    @php
-                                                                    $familyId = $family->id;
-                                                                    $familyIdSemHifen = str_replace('-', '', $familyId);
-                                                                    $editado = str_pad($familyIdSemHifen, 4, '0', STR_PAD_LEFT);
-                                                                    $valueCatEnv = $valueCat + 1;
+                                                                @php
+                                                                $familyId = $family->id;
+                                                                $familyIdSemHifen = str_replace('-', '', $familyId);
+                                                                $editado = str_pad($familyIdSemHifen, 4, '0', STR_PAD_LEFT);
+                                                                $valueCatEnv = $valueCat + 1;
                                                                 @endphp
+                                                            <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-3">
+                                                                <div class="card card-decoration card-outline-primary border border-2" style="cursor:pointer;" wire:click="ShowSubFamily('{{ $family->id }}', '{{ $valueCatEnv }}')">
                                                                         {{-- <a href="javascript:void(0)"
                                                                         wire:click="openDetailProduto({{ json_encode($cam->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subfamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})"
                                                                         style="pointer-events: auto"> --}}
@@ -784,7 +784,7 @@
                                                             {{-- @dd($family); --}}
                                                             @foreach ($family->subfamily as $subfamily)
                                                             <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-3">
-                                                                <div class="card card-decoration card-outline-primary border border-2">
+                                                                <div class="card card-decoration card-outline-primary border border-2" style="cursor:pointer;" wire:click="searchSubFamily({{ $valueCatEnv }},{{ json_encode($valueFam) }},{{ json_encode($subfamily->id) }})">
                                                                         {{-- <a href="javascript:void(0)"
                                                                         wire:click="openDetailProduto({{ json_encode($cam->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subfamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})"
                                                                         style="pointer-events: auto"> --}}
