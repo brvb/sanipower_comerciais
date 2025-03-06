@@ -63,7 +63,6 @@ class Analise extends Component
         $arrayCliente = $this->clientesRepository->getDetalhesCliente($this->idCliente);
         $this->detailsClientes = $arrayCliente["object"];
 
-
         $this->DateIniAnalise = Session::get('DateIniAnalise') ?? now()->startOfMonth()->format('Y-m-d');
         $this->DateEndAnalise = Session::get('DateEndAnalise') ?? now()->format('Y-m-d');
 
@@ -109,7 +108,6 @@ class Analise extends Component
             $this->tabCampanhas = "";
             Session::forget('rotaTab');
         }
-        
     }
 
     public function AlterDateIniAnalise($date)
@@ -264,8 +262,6 @@ class Analise extends Component
                 return redirect()->route($rota,$parametro);
             }
             return redirect()->route($rota);
-
-        
         }
     }
     

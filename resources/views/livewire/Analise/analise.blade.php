@@ -81,7 +81,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- Tabela Anual -->
             <div class="row">
                 <div class="col-lg-12">

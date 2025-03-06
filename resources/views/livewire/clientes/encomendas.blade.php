@@ -68,9 +68,7 @@
                                 <i class="ti-stats-up"></i> Encomendas
                             </div>
                         </div>
-
                     </div>
-
                 </div>
                 <div class="card-body">
                     <div class="row mb-2">
@@ -136,7 +134,7 @@
                                                 <button type="button" class="btn btn-primary" wire:click="detalheEncomendaModal({{ json_encode($detalhe) }})">
                                                     <i class="ti ti-plus"></i> Ver Encomenda
                                                 </button>
-                                                
+                                  
                                                 {{-- <button type="button" class="btn btn-primary" wire:click="verComentario({{ json_encode($detalhe->id) }})">
                                                     Comentários
                                                 </button> --}}
@@ -181,8 +179,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-outline-primary"
-                        wire:click="sendComentario({{ json_encode($encomendaID) }})">Adicionar</button>
+                    <button type="button" class="btn btn-outline-primary" wire:click="sendComentario({{ json_encode($encomendaID) }})">Adicionar</button>
                 </div>
             </div>
         </div>
@@ -216,7 +213,6 @@
             </div>
         </div>
     </div>
-
         <div class="modal fade" id="detalheEncomendaModal" tabindex="-1" role="dialog" aria-labelledby="detalheEncomendaModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered" style="margin: 1.75rem auto;" role="document">
                 <div class="modal-content">
@@ -285,22 +281,17 @@
             Livewire.hook('message.sent', () => {
                 document.getElementById('loader').style.display = 'block';
             });
-
-            // Oculta o loader quando o Livewire terminar de carregar
+            
             Livewire.hook('message.processed', () => {
                 document.getElementById('loader').style.display = 'none';
             });
         });
-
-
         document.addEventListener('abrirModalVerComentario', function() {
             $('#modalVerComentario').modal('show');
         });
-
         document.addEventListener('openDetalheEncomendaModal', function() {
             $('#detalheEncomendaModal').modal('show');
         });
-
         document.addEventListener('DOMContentLoaded', function () {
             window.addEventListener('checkToaster', event => {
                 $('#detalhePropostaModal').modal('hide');
@@ -310,5 +301,4 @@
             $('#detalheEncomendaModal').modal('hide');
         });
     </script>
-
 </div>

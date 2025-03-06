@@ -219,14 +219,10 @@ class Financeiro extends Component
 
     public function GerarPdfFinanceiro()
     {
-
         $FinanceiroArray = $this->clientesRepository->getFinanceiroCliente(9999, 1, $this->idCliente);
-
 
         $financeiro = collect($FinanceiroArray["object"])->groupBy('customer_name');
 
-
-    
         $pdf = PDF::loadView('pdf.pdfMapaDividas', ["financeiroAgrupado" => $financeiro]);
         
         // redirect()->route('clientes.detail',["id" => $this->idCliente]);
@@ -240,7 +236,7 @@ class Financeiro extends Component
 
     public function checkOrder($idFinanceiro, $Financeiro)
     {
-            
+        
         if ($Financeiro == null) {
             session()->flash('status', 'error');
             session()->flash('message', 'Nao foi encontrado os detalhes dessa Fatura! (erro : EC-404)');
@@ -266,10 +262,12 @@ class Financeiro extends Component
         $this->restartDetails();
 
     }
+    
     public function paginationView()
     {
         return 'livewire.pagination';
     }
+
     public function render()
     {
         Session::put('FinanceirosPendente', $this->FinanceirosPendente['object']);

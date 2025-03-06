@@ -88,6 +88,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/financeiro', [FinanceiroController::class, 'index'])->name('financeiro');
     Route::get('/financeiro/{idFinanceiro}', [FinanceiroController::class, 'showDetailFinanceiro'])->name('financeiros.financeiro');
+    Route::get('/gerar-pdf-financeiro', [FinanceiroController::class, 'GerarPdfFinanceiro'])->name('gerar.pdf.financeiro');
+
 
     Route::get('/Analise', [AnaliseController::class, 'index'])->name('Analise');
 

@@ -118,6 +118,8 @@ class DetalheOcorrencia extends Component
 
         $response_decoded = json_decode($response);
 
+        dd($response_decoded);
+
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
 
 
