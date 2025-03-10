@@ -118,7 +118,7 @@ class DetalheOcorrencia extends Component
 
         $response_decoded = json_decode($response);
 
-        dd($response_decoded);
+        // dd($response_decoded);
 
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
 
@@ -244,14 +244,19 @@ class DetalheOcorrencia extends Component
             // session()->put('ErroPreencher', 'Ativo');
             return redirect()->route('ocorrencias.detail', ['id' => session('Cliente')->id]);
         }
-
+        
         $client = session('Cliente');
         $selectedInvoicesJson = json_decode($this->selectedInvoicesJson);
-
+        if(!isset($selectedInvoicesJson->lines) || $selectedInvoicesJson->lines == [])
+        {
+            $this->dispatchBrowserEvent('checkToaster', ["message" => "É obrigatório preencher todos os campos!", "status" => "error"]);
+            // session()->put('ErroPreencher', 'Ativo');
+            return redirect()->route('ocorrencias.detail', ['id' => session('Cliente')->id]);
+        }
         $invoice = $selectedInvoicesJson->invoice;
-
         $lines = $selectedInvoicesJson->lines;
         $count = 0 ;
+
         foreach($lines as $line)
         {
             $arrayLines[$count] = [
