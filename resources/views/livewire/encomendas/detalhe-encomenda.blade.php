@@ -1395,9 +1395,7 @@
                              <input type="text" class="form-control" wire:model.defer="referenciaFinalizar" maxlength="40">
                          </div>
                      </div>
-
                  </div>
-
                  <div class="col-xl-12 col-xs-12">
                      <div class="form-group">
                          <div class="form-group">
@@ -1428,12 +1426,12 @@
                      <div class="col-xl-12 col-xs-12">
                          <div class="form-checkbox">
                              <label>
-                                 <input type="checkbox" id="levantamento_loja" class="checkFinalizar" wire:model.defer="levantamentoLoja">
+                                 <input type="checkbox" id="levantamento_loja" class="checkFinalizar" wire:model.defer="levantamentoLoja" @if($levantamentoLoja == true) checked @endif>
                                  <span class="checkmark"><i class="fa fa-check pick"></i></span>
                                  Levantamento em loja
                              </label>
                          </div>
-                        
+                         
                      </div>
      
                      <div class="col-xl-12 col-xs-12">
@@ -1445,7 +1443,7 @@
                              </label>
                          </div>
                      </div>
- 
+
                      <div class="col-xl-12 col-xs-12">
                          <div class="form-checkbox">
                              <label>
@@ -1456,6 +1454,16 @@
                          </div>
                      </div>
 
+                     <div class="col-xl-12 col-xs-12">
+                        <div class="form-checkbox">
+                            <label>
+                                <input type="checkbox" id="entrega_obra" class="checkFinalizar" wire:model.defer="entrega_obra">
+                                <span class="checkmark"><i class="fa fa-check pick"></i></span>
+                                Entrega em Obra
+                            </label>
+                        </div>
+                    </div>
+
                  </div>
 
                  <div class="col-xl-6 col-xs-6 mt-2">
@@ -1464,6 +1472,7 @@
                         <label id="selectLabel" style="display:none;">Selecione loja</label>
   
                         <select class="form-control" id="selectBox" wire:model.defer="lojaFinalizar" style="display:none;">
+                            <option selected> Selecione a Loja</option>
                         @foreach ($lojas as $loja)
                             @if (!is_null($loja) && property_exists($loja, 'stores') && $loja->stores)
                                 @foreach ($loja->stores as $store)
@@ -1476,41 +1485,96 @@
 
                         </select>
                      </div>
-               
 
-                 </div>
-               
-                
-
-             </div>
-
-             <div class="row form-group mt-4">
-                 <div class="col-xl-12 col-xs-12">
-                     <h5 style="border-bottom:1px solid;padding-bottom:10px;">Tipo de pagamento</h5>
-                 </div>
-
-                 <div class="col-xl-12 col-xs-12 mt-2">
-                    <div class="col-xl-12 col-xs-12">
-                        <div class="form-checkbox">
-                            <label>
-                                <input 
-                                    type="checkbox" 
-                                    id="PaymentConditions" 
-                                    class="PaymentConditions" 
-                                    wire:model.defer="PaymentConditions" 
-                                    value="{{ $detalhesCliente->customers[0]->payment_conditions }}" disabled>
-                                    <span class="checkmark">
-                                        <i class="fa fa-check pick"></i>
-                                      </span>
-                                      
-                                {{ $detalhesCliente->customers[0]->payment_conditions }}
-                            </label>
+                    
+                <div class="col-xl-12 col-xs-12">
+                    <div class="container mt-4">
+                        <div class="row mb-2">
+                            <div class="col-12">
+                                <label id="SelectMorada" style="display:none;">Morada</label>
+                                <input type="text" class="form-control" id="selectBoxMorada" wire:model.defer="moradaFinalizar" style="display:none;">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                                <label id="SelectCodpostal" style="display:none;">Cod. Postal</label>
+                                <input type="text" class="form-control" id="selectBoxCodpostal" wire:model.defer="codpostalFinalizar" style="display:none;">
+                            </div>
+                            <div class="col-3">
+                                <label id="SelectLoc" style="display:none;">Localidade</label>
+                                <input type="text" class="form-control" id="selectBoxLoc" wire:model.defer="locFinalizar" style="display:none;">
+                            </div>
                         </div>
                     </div>
                 </div>
-                
-            
-     
+            </div>
+            <div class="col-xl-12 col-xs-12">
+                <div class="row form-group mt-4">
+                    <div class="col-xl-12 col-xs-12">
+                        <h5 style="border-bottom:1px solid;padding-bottom:10px;">Tipo de pagamento</h5>
+                    </div>
+
+                    <div class="col-xl-12 col-xs-12 mt-2">
+                        <div class="col-xl-12 col-xs-12">
+                            <div class="form-checkbox">
+                                <label>
+                                    <input 
+                                        type="checkbox" 
+                                        id="PaymentConditions" 
+                                        class="PaymentConditions" 
+                                        wire:model.defer="PaymentConditions" 
+                                        value="{{ $detalhesCliente->customers[0]->payment_conditions }}" disabled>
+                                        <span class="checkmark">
+                                            <i class="fa fa-check pick"></i>
+                                        </span>
+                                        
+                                    {{ $detalhesCliente->customers[0]->payment_conditions }}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-12 col-xs-12">
+                        <div class="row form-group mt-4">
+                            <div class="col-xl-12 col-xs-12">
+                                <h5 style="border-bottom:1px solid;padding-bottom:10px;">Encomenda Programada?</h5>
+                            </div>
+                    
+                            <!-- Agrupando Checkbox e Select na mesma linha -->
+                            <div class="col-xl-12 col-xs-12 mt-2">
+                                <div class="col-xl-12 col-xs-12">
+                                    <!-- Checkbox -->
+                                    <div class="me-3">
+                                        <div class="form-checkbox">
+                                            <label>
+                                                <input type="checkbox" id="encomendaProgramada" class="checkDate" wire:model.defer="encomendaProgramada">
+                                                <span class="checkmark"><i class="fa fa-check pick"></i></span>
+                                                Encomenda Programada
+                                            </label>
+                                        </div>
+                                    </div>
+                    
+                                    <!-- Select (Input de Data) -->
+                                    <div class="col-xl-6 col-xs-6">
+                                        <label id="selectDate" style="display:none;">Data Programada</label>
+                                        <input type="date" class="form-control" id="selectBoxDate" wire:model.defer="dateFinalizar" style="display:none;">                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            let dateInput = document.getElementById("selectBoxDate");
+                            let today = new Date();
+                            today.setDate(today.getDate() + 30);
+                            
+                            let minDate = today.toISOString().split("T")[0];
+                            dateInput.min = minDate;
+                        });
+                    </script>
+                    
                      {{-- <div class="col-xl-12 col-xs-12">
                          <div class="form-checkbox">
                              <label>
@@ -1550,7 +1614,7 @@
                         </div>
                     </div>             
              </div>                
-
+            </div>
 
             </p>
 
@@ -2154,7 +2218,42 @@
             $('#selectLabel').css("display","none");
 
             $('.checkFinalizar').off('change').on('change', function() {
-                $('.checkFinalizar').not(this).prop('checked', false);
+                // $('.checkFinalizar').not(this).prop('checked', false);
+
+                if($('#levantamento_loja').is(':checked')) {
+                    @this.set('transportadora', false); 
+                    @this.set('entrega_obra', false); 
+                    @this.set('viaturaSanipower', false); 
+                    @this.set('tabFinalizar', 'show active');
+                    @this.set('tabProdutos', ''); 
+
+                }
+
+                if($('#viatura_sanipower').is(':checked')) {
+                    @this.set('transportadora', false); 
+                    @this.set('entrega_obra', false); 
+                    @this.set('levantamentoLoja', false); 
+                    @this.set('tabFinalizar', 'show active');
+                    @this.set('tabProdutos', ''); 
+                }
+
+                if($('#entrega_obra').is(':checked')) {
+                    @this.set('transportadora', false); 
+                    @this.set('viaturaSanipower', false); 
+                    @this.set('levantamentoLoja', false);
+                    @this.set('tabFinalizar', 'show active');
+                    @this.set('tabProdutos', '');  
+
+                }
+
+                if($('#transportadora').is(':checked')) {
+                    @this.set('entrega_obra', false); 
+                    @this.set('viaturaSanipower', false); 
+                    @this.set('levantamentoLoja', false);
+                    @this.set('tabFinalizar', 'show active');  
+                    @this.set('tabProdutos', ''); 
+
+                }
 
                 if($('#levantamento_loja').is(':checked')) {
                     $('#selectBox').show();
@@ -2163,10 +2262,37 @@
                     $('#selectBox').hide();
                     $('#selectLabel').css("display","none");
                 }
+
+                if($('#entrega_obra').is(':checked') || $('#transportadora').is(':checked')) {
+                    $('#selectBoxMorada').show();
+                    $('#SelectMorada').css("display","block");
+                    $('#selectBoxCodpostal').show();
+                    $('#SelectCodpostal').css("display","block");
+                    $('#selectBoxLoc').show();
+                    $('#SelectLoc').css("display","block");
+                } else {
+                    $('#selectBoxMorada').hide();
+                    $('#SelectMorada').css("display","none");
+                    $('#selectBoxCodpostal').hide();
+                    $('#SelectCodpostal').css("display","none");
+                    $('#selectBoxLoc').hide();
+                    $('#SelectLoc').css("display","none");
+                }
+
             });
 
             $('.checkPagamento').off('change').on('change', function() {
                 $('.checkPagamento').not(this).prop('checked', false);
+            });
+
+            $('.checkDate').off('change').on('change', function() {
+                if($('#encomendaProgramada').is(':checked')) {
+                    $('#selectBoxDate').show();
+                    $('#selectDate').css("display","block");
+                } else {
+                    $('#selectBoxDate').hide();
+                    $('#selectDate').css("display","none");
+                }
             });
         }
         attachHandlers();
@@ -2214,28 +2340,28 @@
     });
 
     window.addEventListener('refreshComponentEncomenda2', function(e) {
-
+    
         var accordions2 = document.getElementsByClassName("accordion2");
-
+    
         for (var i = 0; i < accordions2.length; i++) {
             accordions2[i].addEventListener("click", function() {
                 this.classList.toggle("active");
-
+    
                 var panel2 = this.nextElementSibling;
                 if (panel2.style.maxHeight) {
                     panel2.style.maxHeight = null;
-                    this.querySelector('.arrow').innerHTML = '<i class="fa-regular fa-square-caret-down"></i>'; // Change arrow down
+                    this.querySelector('.arrow').innerHTML = '<i class="fa-regular fa-square-caret-down"></i>';
                 } else {
                     panel2.style.maxHeight = panel2.scrollHeight + "%";
-                    this.querySelector('.arrow').innerHTML = '<i class="fa-regular fa-square-caret-up"></i>'; // Change arrow up
+                    this.querySelector('.arrow').innerHTML = '<i class="fa-regular fa-square-caret-up"></i>';
                 }
             });
         }
-
+    
         document.querySelectorAll('.subsidebarProd').forEach(function(item) {
             item.style.display = 'none';
         });
-
+    
         const subItem = document.querySelector("#subItemInput" + e.detail.id);
         if (subItem) {
             subItem.style.display = 'block';
@@ -2245,7 +2371,7 @@
     window.addEventListener('refreshComponent', function(e) {
         //window.location.reload();
         var check = jQuery("[data-id='"+e.detail.id+"']").attr("data-id");
-
+    
         document.querySelectorAll('.familyHREF'+check).forEach(function(item) {
             item.style.display = 'none';
         });
@@ -2253,9 +2379,9 @@
         document.querySelectorAll('.subsidebarProd').forEach(function(item) {
             item.style.display = 'none';
         });
-
+    
         jQuery("#subItemInput" + e.detail.id).css("display", "block");
-   
+    
     });
 
     const inputProdutos = document.querySelectorAll('.input-config-produtos');
@@ -2391,8 +2517,6 @@
                 $('#addProductProposta'+id).attr('disabled', 'disabled');
             }
         });
-            
-
             
         }
         attachHandlers()
