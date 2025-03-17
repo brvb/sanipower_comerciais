@@ -267,23 +267,6 @@ class EncomendaInfo extends Component
         $pdf->render();
     
         $pdfContent = $pdf->output();
-    
-        
-   
-        // foreach($this->emailArray as $i => $email)
-        // {
-        //     $emailParts = explode(" - ", $email);
-        //     $emailAddress = $emailParts[0];
-        //     if(isset($this->emailSend[$i]))
-        //     {
-        //         if($this->emailSend[$i] == true)
-        //         {
-        //             // dd(json_encode($encomenda));
-        //             Mail::to($emailAddress)->send(new SendEncomenda($pdfContent, $encomenda));
-        //         }
-        //     }
-           
-        // }
 
         $this->emailArray = array_map(function ($email) {
             $emailParts = explode(" - ", $email);
@@ -296,7 +279,7 @@ class EncomendaInfo extends Component
                 $bccEmails[] = $emailAddress;
             }
         }
-        
+        dd($bccEmails);
         if (!empty($bccEmails)) {
 
             Mail::to(Auth::user()->email)

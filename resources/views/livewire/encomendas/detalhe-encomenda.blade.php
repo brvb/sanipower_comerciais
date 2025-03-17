@@ -1279,11 +1279,6 @@
                                                     {{ $prod->qtd }}
                                                 </td>
                                             @else
-                                                @if($prod->id_proposta != "")
-                                                    <td style="text-align: right; white-space: nowrap;">
-                                                        {{ $prod->qtd }}
-                                                    </td>
-                                                @else
                                                     <td style="text-align: right; white-space: nowrap;">
                                                         <input type="text" 
                                                             style="width: 100%; text-align: right;"
@@ -1293,7 +1288,6 @@
                                                             wire:change="editProductQuickBuyEncomenda({{ $cont }},{{ $prod->referencia }}, '{{ $prod->designacao }}', {{ $detalhesCliente->customers[0]->no }}, '{{ $prod->image_ref }}', '{{ $codEncomenda }}','{{ $prod->price }}')" />
                                                     </td>
                                                 @endif
-                                            @endif
 
                                             <td style=" text-align: right; white-space: nowrap;">{{ $prod->iva }} %</td>
                                             <td style=" text-align: right; width:5%"> <i class="fas fa-trash-alt text-primary" wire:click="deletar(`{{ $prod->referencia }}`,`{{ $prod->designacao }}`,`{{ $prod->model }}`,`{{ $prod->price }}`)"></i> </td>
@@ -1395,7 +1389,9 @@
                              <input type="text" class="form-control" wire:model.defer="referenciaFinalizar" maxlength="40">
                          </div>
                      </div>
+
                  </div>
+
                  <div class="col-xl-12 col-xs-12">
                      <div class="form-group">
                          <div class="form-group">
@@ -1426,12 +1422,12 @@
                      <div class="col-xl-12 col-xs-12">
                          <div class="form-checkbox">
                              <label>
-                                 <input type="checkbox" id="levantamento_loja" class="checkFinalizar" wire:model.defer="levantamentoLoja" @if($levantamentoLoja == true) checked @endif>
+                                 <input type="checkbox" id="levantamento_loja" class="checkFinalizar" wire:model.defer="levantamentoLoja">
                                  <span class="checkmark"><i class="fa fa-check pick"></i></span>
                                  Levantamento em loja
                              </label>
                          </div>
-                         
+                        
                      </div>
      
                      <div class="col-xl-12 col-xs-12">
@@ -2218,42 +2214,7 @@
             $('#selectLabel').css("display","none");
 
             $('.checkFinalizar').off('change').on('change', function() {
-                // $('.checkFinalizar').not(this).prop('checked', false);
-
-                if($('#levantamento_loja').is(':checked')) {
-                    @this.set('transportadora', false); 
-                    @this.set('entrega_obra', false); 
-                    @this.set('viaturaSanipower', false); 
-                    @this.set('tabFinalizar', 'show active');
-                    @this.set('tabProdutos', ''); 
-
-                }
-
-                if($('#viatura_sanipower').is(':checked')) {
-                    @this.set('transportadora', false); 
-                    @this.set('entrega_obra', false); 
-                    @this.set('levantamentoLoja', false); 
-                    @this.set('tabFinalizar', 'show active');
-                    @this.set('tabProdutos', ''); 
-                }
-
-                if($('#entrega_obra').is(':checked')) {
-                    @this.set('transportadora', false); 
-                    @this.set('viaturaSanipower', false); 
-                    @this.set('levantamentoLoja', false);
-                    @this.set('tabFinalizar', 'show active');
-                    @this.set('tabProdutos', '');  
-
-                }
-
-                if($('#transportadora').is(':checked')) {
-                    @this.set('entrega_obra', false); 
-                    @this.set('viaturaSanipower', false); 
-                    @this.set('levantamentoLoja', false);
-                    @this.set('tabFinalizar', 'show active');  
-                    @this.set('tabProdutos', ''); 
-
-                }
+                $('.checkFinalizar').not(this).prop('checked', false);
 
                 if($('#levantamento_loja').is(':checked')) {
                     $('#selectBox').show();
@@ -2340,28 +2301,28 @@
     });
 
     window.addEventListener('refreshComponentEncomenda2', function(e) {
-    
+
         var accordions2 = document.getElementsByClassName("accordion2");
-    
+
         for (var i = 0; i < accordions2.length; i++) {
             accordions2[i].addEventListener("click", function() {
                 this.classList.toggle("active");
-    
+
                 var panel2 = this.nextElementSibling;
                 if (panel2.style.maxHeight) {
                     panel2.style.maxHeight = null;
-                    this.querySelector('.arrow').innerHTML = '<i class="fa-regular fa-square-caret-down"></i>';
+                    this.querySelector('.arrow').innerHTML = '<i class="fa-regular fa-square-caret-down"></i>'; // Change arrow down
                 } else {
                     panel2.style.maxHeight = panel2.scrollHeight + "%";
-                    this.querySelector('.arrow').innerHTML = '<i class="fa-regular fa-square-caret-up"></i>';
+                    this.querySelector('.arrow').innerHTML = '<i class="fa-regular fa-square-caret-up"></i>'; // Change arrow up
                 }
             });
         }
-    
+
         document.querySelectorAll('.subsidebarProd').forEach(function(item) {
             item.style.display = 'none';
         });
-    
+
         const subItem = document.querySelector("#subItemInput" + e.detail.id);
         if (subItem) {
             subItem.style.display = 'block';
@@ -2371,7 +2332,7 @@
     window.addEventListener('refreshComponent', function(e) {
         //window.location.reload();
         var check = jQuery("[data-id='"+e.detail.id+"']").attr("data-id");
-    
+
         document.querySelectorAll('.familyHREF'+check).forEach(function(item) {
             item.style.display = 'none';
         });
@@ -2379,9 +2340,9 @@
         document.querySelectorAll('.subsidebarProd').forEach(function(item) {
             item.style.display = 'none';
         });
-    
+
         jQuery("#subItemInput" + e.detail.id).css("display", "block");
-    
+   
     });
 
     const inputProdutos = document.querySelectorAll('.input-config-produtos');
@@ -2517,6 +2478,8 @@
                 $('#addProductProposta'+id).attr('disabled', 'disabled');
             }
         });
+            
+
             
         }
         attachHandlers()
