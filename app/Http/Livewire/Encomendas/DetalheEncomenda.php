@@ -726,7 +726,6 @@ class DetalheEncomenda extends Component
                 ->where('referencia', $referense)
                 ->where('price', $price)
                 ->where('designacao', $nameProduct)
-                ->where('id_proposta', '')
                 ->get();
             if ($itensSemProposta->count() > 1) {
                 // Inicializa a variável para consolidar os dados
@@ -1088,11 +1087,11 @@ class DetalheEncomenda extends Component
 
     public function finalizarencomenda()
     {
-        dd($this->levantamentoLoja,
-        $this->viaturaSanipower,
-         $this->transportadora,
-         $this->entrega_obra,
-         $this->encomendaProgramada);
+        // dd($this->levantamentoLoja,
+        // $this->viaturaSanipower,
+        //  $this->transportadora,
+        //  $this->entrega_obra,
+        //  $this->encomendaProgramada);
         $propertiesLoja = [
             'levantamentoLoja' => $this->levantamentoLoja,
             'Entrega por viatura Sanipower' => $this->viaturaSanipower,
