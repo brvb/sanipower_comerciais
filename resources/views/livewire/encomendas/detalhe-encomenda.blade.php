@@ -49,7 +49,7 @@
     }
     #navbar2 {
         height: auto;
-        max-height: none; /* Evita restrições de altura */
+        max-height: none;
     }
       #navbar2::-webkit-scrollbar{
         height: 0.6rem;
@@ -1133,8 +1133,8 @@
                                     </div>
                                 </div>
                             </div>
-                </div>
-            </div>
+                        </div>
+                    </div>
    
             <div class="tab-pane fade {{ $tabDetalhesEncomendas }} m-3" id="tab6" style="border: none;">
              @php
@@ -1413,9 +1413,7 @@
                             <textarea type="text" class="form-control" cols="4" rows="6" style="resize: none;" wire:model.defer="observacaoFinalizarPDF"></textarea>
                         </div>
                     </div>
-                </div>
-
-              
+                </div>              
              </div>
 
              <div class="row form-group">
@@ -1455,7 +1453,7 @@
                              </label>
                          </div>
                      </div>
-
+                    
                      <div class="col-xl-12 col-xs-12">
                         <div class="form-checkbox">
                             <label>
@@ -1465,14 +1463,14 @@
                             </label>
                         </div>
                     </div>
-
+                
                  </div>
-
+                
                  <div class="col-xl-6 col-xs-6 mt-2">
 
                      <div class="col-xl-12 col-xs-12">
                         <label id="selectLabel" style="display:none;">Selecione loja</label>
-  
+                        
                         <select class="form-control" id="selectBox" wire:model.defer="lojaFinalizar" style="display:none;">
                             <option selected> Selecione a Loja</option>
                         @foreach ($lojas as $loja)
@@ -1484,10 +1482,8 @@
                                 @endforeach
                             @endif
                         @endforeach
-
                         </select>
                      </div>
-
                     
                 <div class="col-xl-12 col-xs-12">
                     <div class="container mt-4">
@@ -1529,13 +1525,13 @@
                                         <span class="checkmark">
                                             <i class="fa fa-check pick"></i>
                                         </span>
-                                        
+                                    
                                     {{ $detalhesCliente->customers[0]->payment_conditions }}
                                 </label>
                             </div>
                         </div>
                     </div>
-
+                    
                     <div class="col-xl-12 col-xs-12">
                         <div class="row form-group mt-4">
                             <div class="col-xl-12 col-xs-12">
@@ -1617,9 +1613,7 @@
                     </div>             
              </div>                
             </div>
-
             </p>
-
         </div>
 
 
