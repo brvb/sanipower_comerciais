@@ -183,8 +183,15 @@
                     <h4 class="card-title">{{ $detalhesCliente->customers[0]->name }}</h4>
                     <p class="card-text">
 
+                        <style>
+                            @media (max-width: 1199px) {
+                                .RespStyle {
+                                    display: none;
+                                }
+                            }
+                        </style>
                         <!--  INICIO DOS DETALHES   -->
-                        <div class="row form-group">
+                        <div class="row form-group RespStyle">
                             <div class="col-xl-4">
                                 Informações Gerais
                             </div>
@@ -367,7 +374,6 @@
                             
                             </div>
                             <div class="col-xl-4">
-
                                 
                                 
                             </div>

@@ -117,6 +117,10 @@ class DetalheEncomenda extends Component
     public $dateFinalizar = "";
     public $codpostalFinalizar = "";
     public $locFinalizar = "";
+
+    public $moradaFinalizarCli = "";
+    public $codpostalFinalizarCli = "";
+    public $locFinalizarCli = "";
     
     public $condicoesFinalizar = false;
     public $chequeFinalizar = false;
@@ -1087,11 +1091,46 @@ class DetalheEncomenda extends Component
 
     public function finalizarencomenda()
     {
-        // dd($this->levantamentoLoja,
-        // $this->viaturaSanipower,
-        //  $this->transportadora,
-        //  $this->entrega_obra,
-        //  $this->encomendaProgramada);
+         if($this->entrega_obra == "levantamento_loja_selecionado")
+         {
+            $this->levantamentoLoja = true;
+            $this->viaturaSanipower = false;
+            $this->transportadora = false;
+            $this->entrega_obra = false;
+         }
+         if($this->entrega_obra == "viatura_sanipower_selecionado")
+         {
+            $this->levantamentoLoja = false;
+            $this->viaturaSanipower = true;
+            $this->transportadora = false;
+            $this->entrega_obra = false;
+         }
+         if($this->entrega_obra == "transportadora_selecionado")
+         {
+            $this->levantamentoLoja = false;
+            $this->viaturaSanipower = false;
+            $this->transportadora = true;
+            $this->entrega_obra = false;
+
+            $this->moradaFinalizar = $this->moradaFinalizarCli;
+            $this->codpostalFinalizar = $this->codpostalFinalizarCli;
+            $this->locFinalizar = $this->locFinalizarCli;
+         }
+         if($this->entrega_obra == "entrega_obra_selecionado")
+         {
+            $this->levantamentoLoja = false;
+            $this->viaturaSanipower = false;
+            $this->transportadora = false;
+            $this->entrega_obra = true;
+         }
+        //  dd($this->levantamentoLoja,
+        //     $this->viaturaSanipower,
+        //     $this->transportadora,
+        //     $this->entrega_obra,
+        //     $this->encomendaProgramada);
+
+        // dd($this->moradaFinalizar, $this->codpostalFinalizar, $this->locFinalizar);
+
         $propertiesLoja = [
             'levantamentoLoja' => $this->levantamentoLoja,
             'Entrega por viatura Sanipower' => $this->viaturaSanipower,
@@ -1415,6 +1454,14 @@ class DetalheEncomenda extends Component
 
     }
     
+    public function levantamentoLojaChange()
+    {
+        $this->levantamentoLoja = true;
+        $this->viaturaSanipower = false;
+        $this->transportadora = false;
+        $this->entrega_obra = false;
+        $this->encomendaProgramada = false;
+    }
 
     public function AdicionarItemKit()
     {
@@ -1799,6 +1846,9 @@ class DetalheEncomenda extends Component
 
         $this->dateFinalizar = now()->addDays(30)->format('Y-m-d');
 
+        $this->moradaFinalizarCli = $this->detailsClientes->customers[0]->address;
+        $this->codpostalFinalizarCli = $this->detailsClientes->customers[0]->zipcode;
+        $this->locFinalizarCli = $this->detailsClientes->customers[0]->city;
 
         // $this->getCategoriesAll = $this->encomendasRepository->getCategorias();
         $this->PaymentConditions = $this->detailsClientes->customers[0]->payment_conditions;

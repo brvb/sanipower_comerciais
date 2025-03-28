@@ -146,9 +146,15 @@
                 <div class="tab-pane fade {{ $tabDetail }}" id="tab4">
                     <h4 class="card-title">{{ $detalhesCliente->customers[0]->name }}</h4>
                     <p class="card-text">
-
+                        <style>
+                            @media (max-width: 1199px) {
+                                .RespStyle {
+                                    display: none;
+                                }
+                            }
+                        </style>
                         <!--  INICIO DOS DETALHES   -->
-                        <div class="row form-group">
+                        <div class="row form-group RespStyle">
                             <div class="col-xl-4">
                                 Informações Gerais
                             </div>
@@ -1431,13 +1437,11 @@
                                  Levantamento em loja
                              </label>
                          </div>
-                        
                      </div>
-     
                      <div class="col-xl-12 col-xs-12">
                          <div class="form-checkbox">
                              <label>
-                                 <input type="checkbox" id="viatura_sanipower" class="checkFinalizar" wire:model.defer="viaturaSanipower">
+                                 <input type="checkbox" class="checkFinalizar" id="viatura_sanipower" wire:model.defer="viaturaSanipower">
                                  <span class="checkmark"><i class="fa fa-check pick"></i></span>
                                  Entrega por viatura SANIPOWER
                              </label>
@@ -1447,7 +1451,7 @@
                      <div class="col-xl-12 col-xs-12">
                          <div class="form-checkbox">
                              <label>
-                                 <input type="checkbox" id="transportadora" class="checkFinalizar" wire:model.defer="transportadora">
+                                 <input type="checkbox" class="checkFinalizar" id="transportadora" wire:model.defer="transportadora">
                                  <span class="checkmark"><i class="fa fa-check pick"></i></span>
                                  Entrega por transportadora
                              </label>
@@ -1457,14 +1461,61 @@
                      <div class="col-xl-12 col-xs-12">
                         <div class="form-checkbox">
                             <label>
-                                <input type="checkbox" id="entrega_obra" class="checkFinalizar" wire:model.defer="entrega_obra">
+                                <input type="checkbox" class="checkFinalizar" id="entrega_obra">
                                 <span class="checkmark"><i class="fa fa-check pick"></i></span>
                                 Entrega em Obra
                             </label>
                         </div>
+                        <input name = "entregaObraVerify" class="entregaObraVerify" id = "entregaObraVerify" wire:model.defer="entrega_obra" type = "hidden">
                     </div>
-                
                  </div>
+                 <script>
+                   document.addEventListener("livewire:load", () => {
+                    console.log('AQUI');
+
+                    let checkboxes = [
+                        document.getElementById('entrega_obra'),
+                        document.getElementById('transportadora'),
+                        document.getElementById('viatura_sanipower'),
+                        document.getElementById('levantamento_loja')
+                    ];
+                    let input = document.getElementById('entregaObraVerify');
+
+                    if (input) {
+
+                        function atualizarInput() {
+                            let selecionado = checkboxes.find(checkbox => checkbox && checkbox.checked);
+                            
+                            if (selecionado) {
+                                input.value = selecionado.id + '_selecionado';
+                            } else {
+                                input.value = ''; 
+                            }
+
+                            input.dispatchEvent(new Event('input', { bubbles: true }));
+                            input.dispatchEvent(new Event('change', { bubbles: true }));
+                        }
+
+                        function desmarcarOutras(event) {
+                            checkboxes.forEach(checkbox => {
+                                if (checkbox !== event.target) {
+                                    checkbox.checked = false;
+                                }
+                            });
+                            atualizarInput();
+                        }
+
+                        checkboxes.forEach(checkbox => {
+                            if (checkbox) {
+                                checkbox.addEventListener('change', desmarcarOutras);
+                            }
+                        });
+
+
+                        atualizarInput();
+                    }
+                });
+                </script>
                 
                  <div class="col-xl-6 col-xs-6 mt-2">
 
@@ -1503,6 +1554,22 @@
                                 <input type="text" class="form-control" id="selectBoxLoc" wire:model.defer="locFinalizar" style="display:none;">
                             </div>
                         </div>
+                        <div class="row mb-2">
+                            <div class="col-12">
+                                <label id="SelectMorada1" style="display:none;">Morada</label>
+                                <input type="text" class="form-control" id="selectBoxMorada1" value = "{{ $detalhesCliente->customers[0]->address }}" wire:model.defer="moradaFinalizarCli" style="display:none;">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                                <label id="SelectCodpostal1" style="display:none;">Cod. Postal</label>
+                                <input type="text" class="form-control" id="selectBoxCodpostal1" value = "{{ $detalhesCliente->customers[0]->zipcode }}" wire:model.defer="codpostalFinalizarCli" style="display:none;">
+                            </div>
+                            <div class="col-3">
+                                <label id="SelectLoc1" style="display:none;">Localidade</label>
+                                <input type="text" class="form-control" id="selectBoxLoc1" value = "{{ $detalhesCliente->customers[0]->city }}" wire:model.defer="locFinalizarCli" style="display:none;">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1537,7 +1604,7 @@
                             <div class="col-xl-12 col-xs-12">
                                 <h5 style="border-bottom:1px solid;padding-bottom:10px;">Encomenda Programada?</h5>
                             </div>
-                    
+                        
                             <!-- Agrupando Checkbox e Select na mesma linha -->
                             <div class="col-xl-12 col-xs-12 mt-2">
                                 <div class="col-xl-12 col-xs-12">
@@ -1551,7 +1618,7 @@
                                             </label>
                                         </div>
                                     </div>
-                    
+                                
                                     <!-- Select (Input de Data) -->
                                     <div class="col-xl-6 col-xs-6">
                                         <label id="selectDate" style="display:none;">Data Programada</label>
@@ -2224,7 +2291,10 @@
                     $('#selectLabel').css("display","none");
                 }
 
-                if($('#entrega_obra').is(':checked') || $('#transportadora').is(':checked')) {
+
+
+                
+                if($('#entrega_obra').is(':checked')) {
                     $('#selectBoxMorada').show();
                     $('#SelectMorada').css("display","block");
                     $('#selectBoxCodpostal').show();
@@ -2240,6 +2310,21 @@
                     $('#SelectLoc').css("display","none");
                 }
 
+                if($('#transportadora').is(':checked')) {
+                    $('#selectBoxMorada1').show();
+                    $('#SelectMorada1').css("display","block");
+                    $('#selectBoxCodpostal1').show();
+                    $('#SelectCodpostal1').css("display","block");
+                    $('#selectBoxLoc1').show();
+                    $('#SelectLoc1').css("display","block");
+                } else {
+                    $('#selectBoxMorada1').hide();
+                    $('#SelectMorada1').css("display","none");
+                    $('#selectBoxCodpostal1').hide();
+                    $('#SelectCodpostal1').css("display","none");
+                    $('#selectBoxLoc1').hide();
+                    $('#SelectLoc1').css("display","none");
+                }
             });
 
             $('.checkPagamento').off('change').on('change', function() {
@@ -2427,12 +2512,12 @@
 
                     checkbox.checked = true;
                     sidebar.classList.remove('open');
-                   
-
+                
+                
                 } else {
                     checkbox.checked = false;
                 }
-              
+            
 
             }
         } else {}
@@ -2479,7 +2564,6 @@
             }
         });
             
-
             
         }
         attachHandlers()
