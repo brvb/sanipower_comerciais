@@ -1,5 +1,69 @@
 
 <div>
+    <style>
+        @media (max-width: 1100px) {
+            .btn:not(:disabled):not(.disabled) {
+                cursor: pointer;
+                font-size: 0.9rem;
+                height: auto;
+                padding: 0.3rem 0.6rem;
+                margin-top: 0.6rem;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .font-menor
+            {
+                font-size: 10pt;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .font-menor
+            {
+                font-size: 8pt;
+            }
+        }
+        
+        @media (max-width: 680px) {
+            .btn:not(:disabled):not(.disabled) {
+                cursor: pointer;
+                font-size: 0.8rem;
+                height: auto;
+                padding: 0.3rem 0.5rem;
+                margin-top: 0.6rem;
+            }
+
+            .col-lg-12 {
+                padding-right: 0;
+                padding-left: 8px;
+            }
+
+            .card-body {
+
+                padding: 0.35rem;
+            }
+
+            .main {
+                padding-left: 0.3rem !important;
+            }
+
+            .font-menor
+            {
+                font-size: 10pt;
+            }
+            .table td {
+                padding: 0.5rem;
+                font-size: 0.8rem;
+            }
+
+            .table .thead-light th {
+                font-size: 0.9rem;
+                padding: 0.5rem;
+            }
+
+        }
+    </style>
     <!--  LOADING -->
 
     <div id="loader" style="display: none;">
@@ -194,7 +258,7 @@
 
                 </div>
                 <div class="card-body">
-                    <div id="dataTables_wrapper" class="dataTables_wrapper container" style="margin-left:0px;padding-left:0px;margin-bottom:10px;">
+                    <div id="dataTables_wrapper" class="dataTables_wrapper w-100" style="margin-left:0px;padding-left:0px;margin-bottom:10px;">
                         <div class="left">
                             <label>Mostrar
                                 <select name="perPage" wire:model="perPage">
@@ -212,7 +276,7 @@
                         </div>
                     </div>
                     <div class="table-responsive">
-                        <table class="table table-bordered table-hover init-datatable" id="tabela-cliente">
+                        <table class="table table-bordered table-hover table-nowrap" id="tabela-cliente">
                             <thead class="thead-light">
                                 <tr>
                                     <th>Data</th>
@@ -245,7 +309,6 @@
                                     </tr>                              
 
                                 @endforeach
-
                             </tbody>
                         </table>
                     </div>
@@ -273,7 +336,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div id="dataTables_wrapper" class="dataTables_wrapper container" style="margin-left:0px;padding-left:0px;margin-bottom:10px;">
+                        <div id="dataTables_wrapper" class="dataTables_wrapper w-100" style="margin-left:0px;padding-left:0px;margin-bottom:10px;">
                             <div class="left">
                                 <label>Mostrar
                                     <select name="perPage" wire:model="perPagePendente" wire:change="PerPagePendente($event.target.value)">
@@ -291,7 +354,7 @@
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-bordered table-hover init-datatable" id="tabela-cliente">
+                            <table class="table table-bordered table-hover table-nowrap" id="tabela-cliente2">
                                 <thead class="thead-light">
                                     <tr>
                                         <th>Documento</th>

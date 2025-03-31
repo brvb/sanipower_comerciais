@@ -17,11 +17,29 @@
         </div>
         
         <div class="tools col-md-9 col-xs-12 text-right">
-            <a href="javascript:void(0);" wire:click="salvarOcorrencia" class="btn btn-sm btn-primary"><i class="ti-save"></i> Gravar</a>           
+            <a href="javascript:void(0);" wire:click="salvarOcorrencia" id="saveButton" class="btn btn-sm btn-primary" disabled><i class="ti-save"></i> Gravar</a>           
            
             <a href="javascript:void(0);" wire:click="voltarAtras" class="btn btn-sm btn-secondary" > Voltar atrás</a>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const input = document.getElementById("selectedInvoicesInput");
+            const button = document.getElementById("saveButton");
+    
+            function toggleButton() {
+                button.disabled = !input.value.trim(); // Desativa se estiver vazio, ativa se tiver valor
+            }
+    
+            // Observer para detectar mudanças no atributo 'value' do input
+            const observer = new MutationObserver(toggleButton);
+            observer.observe(input, { attributes: true, attributeFilter: ["value"] });
+    
+            // Chama a função no início para garantir o estado correto do botão
+            toggleButton();
+        });
+    </script>
 
     <div class="card card-tabs-pills mb-3">
         <div class="card-body">
@@ -462,6 +480,9 @@
                                                         <div class="pr-2">
                                                             <h6>Faturas</h6>
                                                             <input type="text" id="filterInput" class="form-control mb-2" placeholder="Filtrar por Nº. Doc.">
+                                                            <label>
+                                                                <input type="checkbox" id="endCustomerFilter" checked> Consumidor final?
+                                                            </label>
                                                             <div class="table-responsive">
                                                                 <table class="table table-bordered">
                                                                     <thead>
@@ -528,7 +549,22 @@
                                         <div id="toaster" class="toast" style="position: absolute; top: 20px; right: 20px; z-index: 1000; display: none; background-color: #28a745; color: white; padding: 10px; border-radius: 5px;">
                                             Seleção registrada com sucesso! ✅
                                         </div>
-                                        
+
+                                        <script>
+                                            document.getElementById('endCustomerFilter').addEventListener('change', function () {
+                                                let showEndCustomers = this.checked; 
+                                                let rows = document.querySelectorAll('#invoiceTableBody tr');
+                                            
+                                                rows.forEach(row => {
+                                                    let invoiceData = JSON.parse(row.querySelector('.select-invoice').getAttribute('data-invoice'));
+                                                    // console.log(invoiceData);
+                                                    let isEndCustomer = invoiceData.end_customer; 
+                                            
+                                                    row.style.display = (showEndCustomers === isEndCustomer) ? '' : 'none';
+                                                });
+                                            });
+                                            </script>
+
                                         <script>
                                             document.getElementById('filterInput').addEventListener('input', function () {
                                                 let filter = this.value.trim();

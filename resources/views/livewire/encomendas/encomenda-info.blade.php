@@ -451,24 +451,30 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @if($emailArray != null)
-                                           
+                                        @if($emailArray != null)   
                                             @foreach ($emailArray as $i => $item)
                                                 <tr>
                                                     <td>
                                                         <div class="form-checkbox">
                                                             <label>
-                                                                <input type="checkbox" id="emailCheckBox" wire:model.defer="emailSend.{{$i}}">
+                                                                <input type="checkbox" id="emailCheckBox.{{$i}}" wire:model.defer="emailSend.{{$i}}"  onclick="event.stopPropagation();">
                                                                 <span class="checkmark"><i class="fa fa-check pick"></i></span>
                                                             </label>
                                                         </div>
                                                     </td>
-
-                                                    <td>{!! $item !!}</td>
+                                                    <td><label for = "emailCheckBox.{{$i}}">{!! $item !!}</label></td>
                                                 </tr>
                                             @endforeach
-                                    
                                         @endif
+                                        {{-- <script>
+                                            function toggleCheckbox(index) {
+                                                console.log('AQUI');
+                                                let checkbox = document.getElementById("emailCheckBox." + index);
+                                                if (checkbox) {
+                                                    checkbox.checked = !checkbox.checked;
+                                                }
+                                            }
+                                        </script> --}}
                                     </tbody>
                                 </table>
                             </div>

@@ -83,7 +83,7 @@
         }
         #scroll-col-9 {
             height: auto;
-            max-height: none; /* Evita restrições de altura */
+            max-height: none;
         }
        
         #navbar2::-webkit-scrollbar{
@@ -183,236 +183,254 @@
                     <h4 class="card-title">{{ $detalhesCliente->customers[0]->name }}</h4>
                     <p class="card-text">
 
+                        <style>
+                            @media (max-width: 1199px) {
+                                .RespStyle {
+                                    display: none;
+                                }
+                            }
+                        </style>
                         <!--  INICIO DOS DETALHES   -->
-
-                    <div class="row form-group">
-                        <div class="col-xl-4">
-
-                            <div class="form-group">
-                                <label>Nome do Cliente</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                                class="ti-user text-light"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->name }}" readonly>
-                                </div>
+                        <div class="row form-group RespStyle">
+                            <div class="col-xl-4">
+                                Informações Gerais
                             </div>
-
-                        </div>
-                        <div class="col-xl-4">
-
-                            <div class="form-group">
-                                <label>Nº do Cliente</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                                class="ti-info-alt text-light"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->no }}" readonly>
-                                </div>
+                            <div class="col-xl-4">
+                                Informações Comerciais
                             </div>
-
-                        </div>
-                        <div class="col-xl-4">
-
-                            <div class="form-group">
-                                <label>Nº de Contribuinte</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                                class="ti-marker text-light"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->nif }}" readonly>
-                                </div>
+                            <div class="col-xl-4">
+                                Informações Financeiras
                             </div>
                         </div>
-                    </div>
+                        <div class="row form-group">
+                            <div class="col-xl-4">
 
-                    <div class="row form-group">
+                                <div class="form-group">
+                                    <label>Nome do Cliente</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-carolina"><i class="ti-user text-light"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->name}}" readonly>
+                                    </div>
+                                </div>
+
+                            </div>
+                            
+                            <div class="col-xl-4">
+
+                                <div class="form-group">
+                                    <label>Nº Propostas em aberto</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-carolina"><i class="ti-comment text-light"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->open_proposals}}" readonly>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-xl-4">
+
+                                <div class="form-group">
+                                    <label>Condições de pagamento</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-carolina"><i class="ti-credit-card text-light"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->payment_conditions}}" readonly>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-xl-4">
+
+                                <div class="form-group">
+                                    <label>Nº do Cliente</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-carolina"><i class="ti-info-alt text-light"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->no}}" readonly>
+                                    </div>
+                                </div>
+                            
+
+                            </div>
+                            <div class="col-xl-4">
+
+                                <div class="form-group">
+                                    <label>Nº Ocorrências em aberto</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-carolina"><i class="ti-light-bulb text-light"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->open_occurrences}}" readonly>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-xl-4">
+
+                                <div class="form-group">
+                                    <label>Saldo em Aberto</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-carolina"><i class="ti-money text-light"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="{{ number_format($detalhesCliente->customers[0]->current_account,3)}}€" readonly>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-xl-4">
+
+                                <div class="form-group">
+                                    <label>Nº de Contribuinte</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-carolina"><i class="ti-marker text-light"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->nif}}" readonly>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-xl-4">
+
+                                <div class="form-group">
+                                    <label>Pontos</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-carolina"><i class="ti-stats-up text-light"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->balance_points}}" readonly>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-xl-4">
+
+                                <div class="form-group">
+                                    <label>Cheques em carteira</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-carolina"><i class="ti-bag text-light"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->balance_checks}}" readonly>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-xl-4">
+
+                                <div class="form-group">
+                                    <label>E-mail</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-carolina"><i class="ti-email text-light"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->email}}" readonly>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-xl-4">
+
+                            
+                            </div>
+
+                            <div class="col-xl-4">
+
+                                
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-xl-4">
+
+                                <div class="form-group">
+                                    <label>Contactos</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-carolina"><i class="fas fa-phone text-light"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->phone}}" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                            
+                            
+                            
+                            </div>
+                            <div class="col-xl-4">
+                                
+                                
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
                         <div class="col-xl-4">
-
                             <div class="form-group">
                                 <label>Morada</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                                class="ti-location-arrow text-light"></i></span>
+                                        <span class="input-group-text bg-carolina"><i class="ti-location-arrow text-light"></i></span>
                                     </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->address }}" readonly>
+                                    <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->address}}" readonly>
                                 </div>
                             </div>
-
                         </div>
-                        <div class="col-xl-4">
-
-                            <div class="form-group">
-                                <label>Localidade</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                                class="ti-location-arrow text-light"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->city }}" readonly>
-                                </div>
-                            </div>
-
                         </div>
+                        <div class="row form-group">
                         <div class="col-xl-4">
-
                             <div class="form-group">
                                 <label>Código Postal</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                                class="ti-location-arrow text-light"></i></span>
+                                        <span class="input-group-text bg-carolina"><i class="ti-location-arrow text-light"></i></span>
                                     </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->zipcode }}" readonly>
+                                    <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->zipcode}}" readonly>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row form-group">
+                        </div>
+                        <div class="row form-group">
                         <div class="col-xl-4">
-
+                            <div class="form-group">
+                                <label>Localidade</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-carolina"><i class="ti-location-arrow text-light"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->city}}" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row form-group">
+                        <div class="col-xl-4">
                             <div class="form-group">
                                 <label>Zona do Cliente</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                                class="ti-pin text-light"></i></span>
+                                        <span class="input-group-text bg-carolina"><i class="ti-pin text-light"></i></span>
                                     </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->zone }}" readonly>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-xl-4">
-
-                            <div class="form-group">
-                                <label>Contactos</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                                class="ti-email text-light"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->phone }}" readonly>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="col-xl-4">
-
-                            <div class="form-group">
-                                <label>Nº Propostas em aberto</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                                class="ti-comment text-light"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->open_proposals }}" readonly>
+                                    <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->zone}}" readonly>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <div class="col-xl-4">
-                            <div class="form-group">
-                                <label>Email do Cliente</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                                class="ti-credit-card text-light"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->email }}" readonly>
-                                </div>
-                            </div>
                         </div>
-                        <div class="col-xl-4">
-                            <div class="form-group">
-                                <label>Saldo em Aberto</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                                class="ti-money text-light"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ number_format($detalhesCliente->customers[0]->current_account,3) }}" readonly>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-4">
-                            <div class="form-group">
-                                <label>Cheques em carteira</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                                class="ti-bag text-light"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->balance_checks }}" readonly>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <div class="col-xl-4">
-
-                            <div class="form-group">
-                                <label>Nº Ocorrências em aberto</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                                class="ti-light-bulb text-light"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->open_occurrences }}" readonly>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-4">
-
-                            <div class="form-group">
-                                <label>Pontos</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                                class="ti-stats-up text-light"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->balance_points }}" readonly>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-4">
-
-                            <div class="form-group">
-                                <label>Condições de pagamento</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                                class="ti-credit-card text-light"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->payment_conditions }}" readonly>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                     <!--  FIM DETALHES   -->
                     </p>
@@ -1015,7 +1033,7 @@
                                                                                                             <a class="popover-test" data-toggle="tooltip" data-placement="top" title="Clique para ver os valores">
                                                                                                                 <div class="dropdownIcon">
                                                                                                                     <i class="ti-package text-light dropdownIcon-toggle" style="margin:0;padding:0;"></i>
-                                                                                    
+                                                                                                                
                                                                                                                 
                                                                                                                     <ul class="dropdownIcon-menu" style="color:black;left:-350px!important;">
                                                                                                                         <li><i class="fa fa-play icon-play"></i></li>
@@ -1047,7 +1065,7 @@
                                                                                                             </a>
                                                                                                         </button>
                                                                                                         <div class="dropdown">
-                                                                                                            @if ($prod->color == '#41c6a0')
+                                                                                                            @if ($prod->color == '#41c6a0' || $prod->locked == true)
                                                                                                             <button class="btn btn-sm btn-outline-secondary" id="commentProductEncomenda{{$i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style = "Display:none;">
                                                                                                                 <i class="ti-comment"></i>
                                                                                                             </button>
@@ -1083,18 +1101,75 @@
                                                                                     @endif
                                                                                 </tbody>
                                                                             </table>
+                                                                            <style>
+                                                                                .modal {
+                                                                                    display: none;
+                                                                                    position: fixed;
+                                                                                    z-index: 1000;
+                                                                                    left: 0;
+                                                                                    top: 0;
+                                                                                    width: 100%;
+                                                                                    height: 100%;
+                                                                                    background-color: rgba(0, 0, 0, 0.5);
+                                                                                    justify-content: center;
+                                                                                    align-items: center;
+                                                                                }
+                                                                                .modal-content {
+                                                                                    background: white;
+                                                                                    padding: 20px;
+                                                                                    border-radius: 10px;
+                                                                                    width: 300px;
+                                                                                    position: relative;
+                                                                                }
+                                                                                .close {
+                                                                                    position: absolute;
+                                                                                    top: 10px;
+                                                                                    right: 10px;
+                                                                                    cursor: pointer;
+                                                                                    font-size: 18px;
+                                                                                }
+                                                                            </style>
+                                                                            @php $descricao =  session('descricao');  @endphp
+                                                                            <div id="myModal" class="modal">
+                                                                                <div class="modal-content">
+                                                                                    <span class="close">&times;</span>
+                                                                                    @if($descricao != "")
+                                                                                    <p>{{$descricao}}</p>
+                                                                                    @else
+                                                                                    <p>Sem descrição adicional.</p>
+                                                                                    @endif
+                                                                                </div>
+                                                                            </div>
+                                                                            <script>
+                                                                                document.getElementById("openModal").addEventListener("click", function() {
+                                                                                    document.getElementById("myModal").style.display = "flex";
+                                                                                });
+                                                                                
+                                                                                document.querySelector(".close").addEventListener("click", function() {
+                                                                                    document.getElementById("myModal").style.display = "none";
+                                                                                });
+                                                                                window.addEventListener("click", function(event) {
+                                                                                    if (event.target === modal) {
+                                                                                        modal.style.display = "none";
+                                                                                    }
+                                                                                });
+                                                                            </script>
                                                                         </div>
                                                                         <div style="display: flex;justify-content: space-between;width: 100%;">
                                                                             <div class="container-buttons-produtos">
+                                                                                @php $link =  session('link');  @endphp
                                                                                 <div>
+                                                                                    <a href= "https://www.sanipower.pt/criar-ficha/{{ $searchNameCategory }}/{{ $family }}/{{ $link }}" target = "_blank">
                                                                                     <button class="btn btn-md btn-primary"><i class="ti-file"></i> Ficha do Produto</button>
+                                                                                    </a>
                                                                                 </div>
                                                                         
                                                                                 <div>
-                                                                                    <button class="btn btn-md btn-primary"><i class="ti-info"></i> Descrição Produto</button>
+                                                                                    
+                                                                                    <button class="btn btn-md btn-primary" id="openModal"><i class="ti-info"></i> Descrição Produto</button>
                                                                                 </div>
                                                                                 <div>
-                                                                                    <button class="btn btn-md btn-primary"><i class="ti-file"></i> Manuais Certificados</button>
+                                                                                    {{-- <button class="btn btn-md btn-primary"><i class="ti-file"></i> Manuais Certificados</button> --}}
                                                                                 </div>
                                                                             </div>
                                                                             <div class="container-buttons-produtos">
@@ -1353,7 +1428,7 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td >Total s/IVA</td>
+                                <td>Total s/IVA</td>
                                 <td style="width: 10%;white-space: nowrap;" class="bold">{{ number_format($ValorTotal, 3, ',', '.') }} €</td>
                             </tr>
                             <tr style="background:#d6d8db78;">
@@ -1365,7 +1440,7 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td >Total c/IVA</td>
+                                <td>Total c/IVA</td>
                                 <td style="width: 10%;white-space: nowrap;" class="bold">{{ number_format($ValorTotalComIva, 3, ',', '.') }} €</td>
                             </tr>
                         </tbody>
@@ -1482,7 +1557,6 @@
                 window.addEventListener('chooseEmail', function(e) {
                         $("#emailCheckBox").prop('checked', false);
                         $("#modalProposta").modal();
-
                     });
             </script>
 <div class="modal fade" id="modalProposta" tabindex="-1" role="dialog" aria-labelledby="modalProposta" aria-hidden="true" >
@@ -1513,16 +1587,15 @@
                                                 <td>
                                                     <div class="form-checkbox">
                                                         <label>
-                                                            <input type="checkbox" id="emailCheckBox" wire:model.defer="emailSend.{{$i}}">
+                                                            <input type="checkbox" id="emailCheckBox.{{$i}}" wire:model.defer="emailSend.{{$i}}">
                                                             <span class="checkmark"><i class="fa fa-check pick"></i></span>
                                                         </label>
                                                     </div>
                                                 </td>
 
-                                                <td>{{ $item }}</td>
+                                                <td><label for = "emailCheckBox.{{$i}}">{{ $item }}</label></td>
                                             </tr>
                                         @endforeach
-                                    
                                     @endif
                                 </tbody>
                             </table>
@@ -1629,7 +1702,7 @@
                                                         <i class="ti-shopping-cart"></i>
                                                     </button>
                                                     <div class="dropdown">
-                                                    @if ($prod->color != '#41c6a0')
+                                                    @if ($prod->color != '#41c6a0' || $prod->locked == true)
                                                         <button class="btn btn-sm btn-warning" id="commentProductEncomenda{{$i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                             <i class="ti-comment"></i>
                                                         </button>

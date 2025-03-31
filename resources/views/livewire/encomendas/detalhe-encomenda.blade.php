@@ -49,7 +49,7 @@
     }
     #navbar2 {
         height: auto;
-        max-height: none; /* Evita restrições de altura */
+        max-height: none;
     }
       #navbar2::-webkit-scrollbar{
         height: 0.6rem;
@@ -146,244 +146,256 @@
                 <div class="tab-pane fade {{ $tabDetail }}" id="tab4">
                     <h4 class="card-title">{{ $detalhesCliente->customers[0]->name }}</h4>
                     <p class="card-text">
-
+                        <style>
+                            @media (max-width: 1199px) {
+                                .RespStyle {
+                                    display: none;
+                                }
+                            }
+                        </style>
                         <!--  INICIO DOS DETALHES   -->
-
-                    <div class="row form-group">
-                        <div class="col-xl-4">
-
-                            <div class="form-group">
-                                <label>Nome do Cliente</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                                class="ti-user text-light"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->name }}" readonly>
-                                </div>
+                        <div class="row form-group RespStyle">
+                            <div class="col-xl-4">
+                                Informações Gerais
                             </div>
-
-                        </div>
-                        <div class="col-xl-4">
-
-                            <div class="form-group">
-                                <label>Nº do Cliente</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                                class="ti-info-alt text-light"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->no }}" readonly>
-                                </div>
+                            <div class="col-xl-4">
+                                Informações Comerciais
                             </div>
-
-                        </div>
-                        <div class="col-xl-4">
-
-                            <div class="form-group">
-                                <label>Nº de Contribuinte</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                                class="ti-marker text-light"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->nif }}" readonly>
-                                </div>
+                            <div class="col-xl-4">
+                                Informações Financeiras
                             </div>
                         </div>
-                    </div>
+                        <div class="row form-group">
+                            <div class="col-xl-4">
 
-                    <div class="row form-group">
+                                <div class="form-group">
+                                    <label>Nome do Cliente</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-carolina"><i class="ti-user text-light"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->name}}" readonly>
+                                    </div>
+                                </div>
+
+                            </div>
+                            
+                            <div class="col-xl-4">
+
+                                <div class="form-group">
+                                    <label>Nº Propostas em aberto</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-carolina"><i class="ti-comment text-light"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->open_proposals}}" readonly>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-xl-4">
+
+                                <div class="form-group">
+                                    <label>Condições de pagamento</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-carolina"><i class="ti-credit-card text-light"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->payment_conditions}}" readonly>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-xl-4">
+
+                                <div class="form-group">
+                                    <label>Nº do Cliente</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-carolina"><i class="ti-info-alt text-light"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->no}}" readonly>
+                                    </div>
+                                </div>
+                            
+
+                            </div>
+                            <div class="col-xl-4">
+
+                                <div class="form-group">
+                                    <label>Nº Ocorrências em aberto</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-carolina"><i class="ti-light-bulb text-light"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->open_occurrences}}" readonly>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-xl-4">
+
+                                <div class="form-group">
+                                    <label>Saldo em Aberto</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-carolina"><i class="ti-money text-light"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="{{ number_format($detalhesCliente->customers[0]->current_account,3)}}€" readonly>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-xl-4">
+
+                                <div class="form-group">
+                                    <label>Nº de Contribuinte</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-carolina"><i class="ti-marker text-light"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->nif}}" readonly>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-xl-4">
+
+                                <div class="form-group">
+                                    <label>Pontos</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-carolina"><i class="ti-stats-up text-light"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->balance_points}}" readonly>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-xl-4">
+
+                                <div class="form-group">
+                                    <label>Cheques em carteira</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-carolina"><i class="ti-bag text-light"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->balance_checks}}" readonly>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-xl-4">
+
+                                <div class="form-group">
+                                    <label>E-mail</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-carolina"><i class="ti-email text-light"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->email}}" readonly>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-xl-4">
+
+                            
+                            </div>
+
+                            <div class="col-xl-4">
+
+                                
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-xl-4">
+
+                                <div class="form-group">
+                                    <label>Contactos</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-carolina"><i class="fas fa-phone text-light"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->phone}}" readonly>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-xl-4">
+
+                            
+
+                            </div>
+                            <div class="col-xl-4">
+
+                                
+                                
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
                         <div class="col-xl-4">
-
                             <div class="form-group">
                                 <label>Morada</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                              class="ti-location-arrow text-light"></i></span>
+                                        <span class="input-group-text bg-carolina"><i class="ti-location-arrow text-light"></i></span>
                                     </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->address }}" readonly>
+                                    <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->address}}" readonly>
                                 </div>
                             </div>
-
                         </div>
-                        <div class="col-xl-4">
-
-                            <div class="form-group">
-                                <label>Localidade</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                              class="ti-location-arrow text-light"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                           value="{{ $detalhesCliente->customers[0]->city }}" readonly>
-                                </div>
-                            </div>
-
                         </div>
+                        <div class="row form-group">
                         <div class="col-xl-4">
-
                             <div class="form-group">
                                 <label>Código Postal</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                                class="ti-location-arrow text-light"></i></span>
+                                        <span class="input-group-text bg-carolina"><i class="ti-location-arrow text-light"></i></span>
                                     </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->zipcode }}" readonly>
+                                    <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->zipcode}}" readonly>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row form-group">
+                        </div>
+                        <div class="row form-group">
                         <div class="col-xl-4">
-
+                            <div class="form-group">
+                                <label>Localidade</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-carolina"><i class="ti-location-arrow text-light"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->city}}" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row form-group">
+                        <div class="col-xl-4">
                             <div class="form-group">
                                 <label>Zona do Cliente</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                                class="ti-pin text-light"></i></span>
+                                        <span class="input-group-text bg-carolina"><i class="ti-pin text-light"></i></span>
                                     </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->zone }}" readonly>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-xl-4">
-
-                            <div class="form-group">
-                                <label>Contactos</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                                class="ti-email text-light"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->phone }}" readonly>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="col-xl-4">
-
-                            <div class="form-group">
-                                <label>Nº Propostas em aberto</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                                class="ti-comment text-light"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->open_proposals }}" readonly>
+                                    <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->zone}}" readonly>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <div class="col-xl-4">
-
-                            <div class="form-group">
-                                <label>Email do Cliente</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                                class="ti-light-bulb text-light"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->email }}" readonly>
-                                </div>
-                            </div>
-
                         </div>
-                        <div class="col-xl-4">
-
-                            <div class="form-group">
-                                <label>Saldo em Aberto</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                                class="ti-money text-light"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ number_format($detalhesCliente->customers[0]->current_account,3) }}€" readonly>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-xl-4">
-
-                            <div class="form-group">
-                                <label>Cheques em carteira</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                                class="ti-bag text-light"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->balance_checks }}" readonly>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <div class="col-xl-4">
-                            <div class="form-group">
-                                <label>Nº Ocorrências em aberto</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                                class="ti-light-bulb text-light"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->open_occurrences }}" readonly>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-xl-4">
-
-                            <div class="form-group">
-                                <label>Pontos</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                                class="ti-stats-up text-light"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->balance_points }}" readonly>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-xl-4">
-
-                            <div class="form-group">
-                                <label>Condições de pagamento</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text bg-carolina"><i
-                                                class="ti-credit-card text-light"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        value="{{ $detalhesCliente->customers[0]->payment_conditions }}" readonly>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
 
                     <!--  FIM DETALHES   -->
                     </p>
@@ -945,6 +957,7 @@
                                                             <div class="col-12 d-flex flex-wrap row" style="padding-right: 0 !important;">
                                                                 <div class="d-none d-xxl-block col-xxl-2">
                                                                     <img src="https://storage.sanipower.pt/storage/produtos/{{ $family }}/{{ $family }}-{{ $subFamily }}-{{ $productNumber }}.jpg" width="100%">
+                                                                    
                                                                 </div>
                                                                 @php
                                                                     $ref = "https://storage.sanipower.pt/storage/produtos/$family/$family-$subFamily-$productNumber.jpg";
@@ -1056,7 +1069,7 @@
                                                                                                             </a>
                                                                                                         </button>
                                                                                                         <div class="dropdown">
-                                                                                                            @if ($prod->color == '#41c6a0')
+                                                                                                            @if ($prod->color == '#41c6a0' || $prod->locked == true)
                                                                                                             <button class="btn btn-sm btn-outline-secondary" id="commentProductEncomenda{{$i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style = "Display: none;">
                                                                                                                 <i class="ti-comment"></i>
                                                                                                             </button>
@@ -1101,7 +1114,7 @@
                                                                                     <button class="btn btn-md btn-primary"><i class="ti-info"></i> Descrição Produto</button>
                                                                                 </div>
                                                                                 <div>
-                                                                                    <button class="btn btn-md btn-primary"><i class="ti-file"></i> Manuais Certificados</button>
+                                                                                    {{-- <button class="btn btn-md btn-primary"><i class="ti-file"></i> Manuais Certificados</button> --}}
                                                                                 </div>
                                                                             </div>
                                                                             <div class="container-buttons-produtos">
@@ -1127,8 +1140,8 @@
                                     </div>
                                 </div>
                             </div>
-                </div>
-            </div>
+                        </div>
+                    </div>
    
             <div class="tab-pane fade {{ $tabDetalhesEncomendas }} m-3" id="tab6" style="border: none;">
              @php
@@ -1279,21 +1292,15 @@
                                                     {{ $prod->qtd }}
                                                 </td>
                                             @else
-                                                @if($prod->id_proposta != "")
-                                                    <td style="text-align: right; white-space: nowrap;">
-                                                        {{ $prod->qtd }}
-                                                    </td>
-                                                @else
                                                     <td style="text-align: right; white-space: nowrap;">
                                                         <input type="text" 
                                                             style="width: 100%; text-align: right;"
                                                             wire:model.defer="prodtQTD.{{ $cont }}"
                                                             value="{{ $prod->qtd }}"
                                                             placeholder="{{ $prod->qtd }}"
-                                                            wire:change="editProductQuickBuyEncomenda({{ $cont }},{{ $prod->referencia }}, '{{ $prod->designacao }}', {{ $detalhesCliente->customers[0]->no }}, '{{ $prod->image_ref }}', '{{ $codEncomenda }}','{{ $prod->price }}')" />
+                                                            wire:change="editProductQuickBuyEncomenda({{ $cont }}, '{{ $prod->referencia }}', '{{ $prod->designacao }}', {{ $detalhesCliente->customers[0]->no }}, '{{ $prod->image_ref }}', '{{ $codEncomenda }}','{{ $prod->price }}')" />
                                                     </td>
                                                 @endif
-                                            @endif
 
                                             <td style=" text-align: right; white-space: nowrap;">{{ $prod->iva }} %</td>
                                             <td style=" text-align: right; width:5%"> <i class="fas fa-trash-alt text-primary" wire:click="deletar(`{{ $prod->referencia }}`,`{{ $prod->designacao }}`,`{{ $prod->model }}`,`{{ $prod->price }}`)"></i> </td>
@@ -1413,9 +1420,7 @@
                             <textarea type="text" class="form-control" cols="4" rows="6" style="resize: none;" wire:model.defer="observacaoFinalizarPDF"></textarea>
                         </div>
                     </div>
-                </div>
-
-              
+                </div>              
              </div>
 
              <div class="row form-group">
@@ -1433,37 +1438,93 @@
                                  Levantamento em loja
                              </label>
                          </div>
-                        
                      </div>
-     
                      <div class="col-xl-12 col-xs-12">
                          <div class="form-checkbox">
                              <label>
-                                 <input type="checkbox" id="viatura_sanipower" class="checkFinalizar" wire:model.defer="viaturaSanipower">
+                                 <input type="checkbox" class="checkFinalizar" id="viatura_sanipower" wire:model.defer="viaturaSanipower">
                                  <span class="checkmark"><i class="fa fa-check pick"></i></span>
                                  Entrega por viatura SANIPOWER
                              </label>
                          </div>
                      </div>
- 
+
                      <div class="col-xl-12 col-xs-12">
                          <div class="form-checkbox">
                              <label>
-                                 <input type="checkbox" id="transportadora" class="checkFinalizar" wire:model.defer="transportadora">
+                                 <input type="checkbox" class="checkFinalizar" id="transportadora" wire:model.defer="transportadora">
                                  <span class="checkmark"><i class="fa fa-check pick"></i></span>
                                  Entrega por transportadora
                              </label>
                          </div>
                      </div>
-
+                    
+                     <div class="col-xl-12 col-xs-12">
+                        <div class="form-checkbox">
+                            <label>
+                                <input type="checkbox" class="checkFinalizar" id="entrega_obra">
+                                <span class="checkmark"><i class="fa fa-check pick"></i></span>
+                                Entrega em Obra
+                            </label>
+                        </div>
+                        <input name = "entregaObraVerify" class="entregaObraVerify" id = "entregaObraVerify" wire:model.defer="entrega_obra" type = "hidden">
+                    </div>
                  </div>
+                 <script>
+                   document.addEventListener("livewire:load", () => {
+                    console.log('AQUI');
 
+                    let checkboxes = [
+                        document.getElementById('entrega_obra'),
+                        document.getElementById('transportadora'),
+                        document.getElementById('viatura_sanipower'),
+                        document.getElementById('levantamento_loja')
+                    ];
+                    let input = document.getElementById('entregaObraVerify');
+
+                    if (input) {
+
+                        function atualizarInput() {
+                            let selecionado = checkboxes.find(checkbox => checkbox && checkbox.checked);
+                            
+                            if (selecionado) {
+                                input.value = selecionado.id + '_selecionado';
+                            } else {
+                                input.value = ''; 
+                            }
+
+                            input.dispatchEvent(new Event('input', { bubbles: true }));
+                            input.dispatchEvent(new Event('change', { bubbles: true }));
+                        }
+
+                        function desmarcarOutras(event) {
+                            checkboxes.forEach(checkbox => {
+                                if (checkbox !== event.target) {
+                                    checkbox.checked = false;
+                                }
+                            });
+                            atualizarInput();
+                        }
+
+                        checkboxes.forEach(checkbox => {
+                            if (checkbox) {
+                                checkbox.addEventListener('change', desmarcarOutras);
+                            }
+                        });
+
+
+                        atualizarInput();
+                    }
+                });
+                </script>
+                
                  <div class="col-xl-6 col-xs-6 mt-2">
 
                      <div class="col-xl-12 col-xs-12">
                         <label id="selectLabel" style="display:none;">Selecione loja</label>
-  
+                        
                         <select class="form-control" id="selectBox" wire:model.defer="lojaFinalizar" style="display:none;">
+                            <option selected> Selecione a Loja</option>
                         @foreach ($lojas as $loja)
                             @if (!is_null($loja) && property_exists($loja, 'stores') && $loja->stores)
                                 @foreach ($loja->stores as $store)
@@ -1473,44 +1534,113 @@
                                 @endforeach
                             @endif
                         @endforeach
-
                         </select>
                      </div>
-               
-
-                 </div>
-               
-                
-
-             </div>
-
-             <div class="row form-group mt-4">
-                 <div class="col-xl-12 col-xs-12">
-                     <h5 style="border-bottom:1px solid;padding-bottom:10px;">Tipo de pagamento</h5>
-                 </div>
-
-                 <div class="col-xl-12 col-xs-12 mt-2">
-                    <div class="col-xl-12 col-xs-12">
-                        <div class="form-checkbox">
-                            <label>
-                                <input 
-                                    type="checkbox" 
-                                    id="PaymentConditions" 
-                                    class="PaymentConditions" 
-                                    wire:model.defer="PaymentConditions" 
-                                    value="{{ $detalhesCliente->customers[0]->payment_conditions }}" disabled>
-                                    <span class="checkmark">
-                                        <i class="fa fa-check pick"></i>
-                                      </span>
-                                      
-                                {{ $detalhesCliente->customers[0]->payment_conditions }}
-                            </label>
+                    
+                <div class="col-xl-12 col-xs-12">
+                    <div class="container mt-4">
+                        <div class="row mb-2">
+                            <div class="col-12">
+                                <label id="SelectMorada" style="display:none;">Morada</label>
+                                <input type="text" class="form-control" id="selectBoxMorada" wire:model.defer="moradaFinalizar" style="display:none;">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                                <label id="SelectCodpostal" style="display:none;">Cod. Postal</label>
+                                <input type="text" class="form-control" id="selectBoxCodpostal" wire:model.defer="codpostalFinalizar" style="display:none;">
+                            </div>
+                            <div class="col-3">
+                                <label id="SelectLoc" style="display:none;">Localidade</label>
+                                <input type="text" class="form-control" id="selectBoxLoc" wire:model.defer="locFinalizar" style="display:none;">
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-12">
+                                <label id="SelectMorada1" style="display:none;">Morada</label>
+                                <input type="text" class="form-control" id="selectBoxMorada1" value = "{{ $detalhesCliente->customers[0]->address }}" wire:model.defer="moradaFinalizarCli" style="display:none;">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                                <label id="SelectCodpostal1" style="display:none;">Cod. Postal</label>
+                                <input type="text" class="form-control" id="selectBoxCodpostal1" value = "{{ $detalhesCliente->customers[0]->zipcode }}" wire:model.defer="codpostalFinalizarCli" style="display:none;">
+                            </div>
+                            <div class="col-3">
+                                <label id="SelectLoc1" style="display:none;">Localidade</label>
+                                <input type="text" class="form-control" id="selectBoxLoc1" value = "{{ $detalhesCliente->customers[0]->city }}" wire:model.defer="locFinalizarCli" style="display:none;">
+                            </div>
                         </div>
                     </div>
                 </div>
-                
-            
-     
+            </div>
+            <div class="col-xl-12 col-xs-12">
+                <div class="row form-group mt-4">
+                    <div class="col-xl-12 col-xs-12">
+                        <h5 style="border-bottom:1px solid;padding-bottom:10px;">Tipo de pagamento</h5>
+                    </div>
+
+                    <div class="col-xl-12 col-xs-12 mt-2">
+                        <div class="col-xl-12 col-xs-12">
+                            <div class="form-checkbox">
+                                <label>
+                                    <input 
+                                        type="checkbox" 
+                                        id="PaymentConditions" 
+                                        class="PaymentConditions" 
+                                        wire:model.defer="PaymentConditions" 
+                                        value="{{ $detalhesCliente->customers[0]->payment_conditions }}" disabled>
+                                        <span class="checkmark">
+                                            <i class="fa fa-check pick"></i>
+                                        </span>
+                                    
+                                    {{ $detalhesCliente->customers[0]->payment_conditions }}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xl-12 col-xs-12">
+                        <div class="row form-group mt-4">
+                            <div class="col-xl-12 col-xs-12">
+                                <h5 style="border-bottom:1px solid;padding-bottom:10px;">Encomenda Programada?</h5>
+                            </div>
+                        
+                            <!-- Agrupando Checkbox e Select na mesma linha -->
+                            <div class="col-xl-12 col-xs-12 mt-2">
+                                <div class="col-xl-12 col-xs-12">
+                                    <!-- Checkbox -->
+                                    <div class="me-3">
+                                        <div class="form-checkbox">
+                                            <label>
+                                                <input type="checkbox" id="encomendaProgramada" class="checkDate" wire:model.defer="encomendaProgramada">
+                                                <span class="checkmark"><i class="fa fa-check pick"></i></span>
+                                                Encomenda Programada
+                                            </label>
+                                        </div>
+                                    </div>
+                                
+                                    <!-- Select (Input de Data) -->
+                                    <div class="col-xl-6 col-xs-6">
+                                        <label id="selectDate" style="display:none;">Data Programada</label>
+                                        <input type="date" class="form-control" id="selectBoxDate" wire:model.defer="dateFinalizar" style="display:none;">                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            let dateInput = document.getElementById("selectBoxDate");
+                            let today = new Date();
+                            today.setDate(today.getDate() + 30);
+                            
+                            let minDate = today.toISOString().split("T")[0];
+                            dateInput.min = minDate;
+                        });
+                    </script>
+                    
                      {{-- <div class="col-xl-12 col-xs-12">
                          <div class="form-checkbox">
                              <label>
@@ -1550,10 +1680,8 @@
                         </div>
                     </div>             
              </div>                
-
-
+            </div>
             </p>
-
         </div>
 
 
@@ -1653,7 +1781,7 @@
                                                         <i class="ti-shopping-cart"></i>
                                                     </button>
                                                     <div class="dropdown">
-                                                        @if ($prod->color != '#41c6a0')
+                                                        @if ($prod->color != '#41c6a0' || $prod->locked == true)
                                                         <button class="btn btn-sm btn-warning" id="commentProductEncomenda{{$i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                             <i class="ti-comment"></i>
                                                         </button>
@@ -2163,10 +2291,55 @@
                     $('#selectBox').hide();
                     $('#selectLabel').css("display","none");
                 }
+
+
+
+                
+                if($('#entrega_obra').is(':checked')) {
+                    $('#selectBoxMorada').show();
+                    $('#SelectMorada').css("display","block");
+                    $('#selectBoxCodpostal').show();
+                    $('#SelectCodpostal').css("display","block");
+                    $('#selectBoxLoc').show();
+                    $('#SelectLoc').css("display","block");
+                } else {
+                    $('#selectBoxMorada').hide();
+                    $('#SelectMorada').css("display","none");
+                    $('#selectBoxCodpostal').hide();
+                    $('#SelectCodpostal').css("display","none");
+                    $('#selectBoxLoc').hide();
+                    $('#SelectLoc').css("display","none");
+                }
+
+                if($('#transportadora').is(':checked')) {
+                    $('#selectBoxMorada1').show();
+                    $('#SelectMorada1').css("display","block");
+                    $('#selectBoxCodpostal1').show();
+                    $('#SelectCodpostal1').css("display","block");
+                    $('#selectBoxLoc1').show();
+                    $('#SelectLoc1').css("display","block");
+                } else {
+                    $('#selectBoxMorada1').hide();
+                    $('#SelectMorada1').css("display","none");
+                    $('#selectBoxCodpostal1').hide();
+                    $('#SelectCodpostal1').css("display","none");
+                    $('#selectBoxLoc1').hide();
+                    $('#SelectLoc1').css("display","none");
+                }
             });
 
             $('.checkPagamento').off('change').on('change', function() {
                 $('.checkPagamento').not(this).prop('checked', false);
+            });
+
+            $('.checkDate').off('change').on('change', function() {
+                if($('#encomendaProgramada').is(':checked')) {
+                    $('#selectBoxDate').show();
+                    $('#selectDate').css("display","block");
+                } else {
+                    $('#selectBoxDate').hide();
+                    $('#selectDate').css("display","none");
+                }
             });
         }
         attachHandlers();
@@ -2340,12 +2513,12 @@
 
                     checkbox.checked = true;
                     sidebar.classList.remove('open');
-                   
-
+                
+                
                 } else {
                     checkbox.checked = false;
                 }
-              
+            
 
             }
         } else {}
@@ -2392,7 +2565,6 @@
             }
         });
             
-
             
         }
         attachHandlers()

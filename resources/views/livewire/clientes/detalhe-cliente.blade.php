@@ -126,8 +126,25 @@
                     <h4 class="card-title">{{$detalhesCliente->customers[0]->name}}</h4>
                     <p class="card-text">
 
+                        <style>
+                            @media (max-width: 1199px) {
+                                .RespStyle {
+                                    display: none;
+                                }
+                            }
+                        </style>
                         <!--  INICIO DOS DETALHES   -->
-
+                        <div class="row form-group RespStyle">
+                            <div class="col-xl-4">
+                                Informações Gerais
+                            </div>
+                            <div class="col-xl-4">
+                                Informações Comerciais
+                            </div>
+                            <div class="col-xl-4">
+                                Informações Financeiras
+                            </div>
+                        </div>
                         <div class="row form-group">
                             <div class="col-xl-4">
 
@@ -142,101 +159,7 @@
                                 </div>
 
                             </div>
-                            <div class="col-xl-4">
-
-                                <div class="form-group">
-                                    <label>Nº do Cliente</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text bg-carolina"><i class="ti-info-alt text-light"></i></span>
-                                        </div>
-                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->no}}" readonly>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="col-xl-4">
-
-                                <div class="form-group">
-                                    <label>Nº de Contribuinte</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text bg-carolina"><i class="ti-marker text-light"></i></span>
-                                        </div>
-                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->nif}}" readonly>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row form-group">
-                            <div class="col-xl-4">
-
-                                <div class="form-group">
-                                    <label>Morada</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text bg-carolina"><i class="ti-location-arrow text-light"></i></span>
-                                        </div>
-                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->address}}" readonly>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="col-xl-4">
-
-                                <div class="form-group">
-                                    <label>Localidade</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text bg-carolina"><i class="ti-location-arrow text-light"></i></span>
-                                        </div>
-                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->city}}" readonly>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="col-xl-4">
-
-                                <div class="form-group">
-                                    <label>Código Postal</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text bg-carolina"><i class="ti-location-arrow text-light"></i></span>
-                                        </div>
-                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->zipcode}}" readonly>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row form-group">
-                            <div class="col-xl-4">
-
-                                <div class="form-group">
-                                    <label>Zona do Cliente</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text bg-carolina"><i class="ti-pin text-light"></i></span>
-                                        </div>
-                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->zone}}" readonly>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="col-xl-4">
-
-                                <div class="form-group">
-                                    <label>Contactos</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text bg-carolina"><i class="fas fa-phone text-light"></i></span>
-                                        </div>
-                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->phone}}" readonly>
-                                    </div>
-                                </div>
-
-                            </div>
+                            
                             <div class="col-xl-4">
 
                                 <div class="form-group">
@@ -248,10 +171,38 @@
                                         <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->open_proposals}}" readonly>
                                     </div>
                                 </div>
+
+                            </div>
+                            <div class="col-xl-4">
+
+                                <div class="form-group">
+                                    <label>Condições de pagamento</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-carolina"><i class="ti-credit-card text-light"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->payment_conditions}}" readonly>
+                                    </div>
+                                </div>
+                                
                             </div>
                         </div>
-
+                        
                         <div class="row form-group">
+                            <div class="col-xl-4">
+
+                                <div class="form-group">
+                                    <label>Nº do Cliente</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-carolina"><i class="ti-info-alt text-light"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->no}}" readonly>
+                                    </div>
+                                </div>
+                               
+
+                            </div>
                             <div class="col-xl-4">
 
                                 <div class="form-group">
@@ -276,23 +227,24 @@
                                         <input type="text" class="form-control" value="{{ number_format($detalhesCliente->customers[0]->current_account,3)}}€" readonly>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="col-xl-4">
-
-                                <div class="form-group">
-                                    <label>Cheques em carteira</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text bg-carolina"><i class="ti-bag text-light"></i></span>
-                                        </div>
-                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->balance_checks}}" readonly>
-                                    </div>
-                                </div>
                             </div>
                         </div>
 
                         <div class="row form-group">
+                            <div class="col-xl-4">
+
+                                <div class="form-group">
+                                    <label>Nº de Contribuinte</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-carolina"><i class="ti-marker text-light"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->nif}}" readonly>
+                                    </div>
+                                </div>
+
+                            </div>
                             <div class="col-xl-4">
 
                                 <div class="form-group">
@@ -309,16 +261,19 @@
                             <div class="col-xl-4">
 
                                 <div class="form-group">
-                                    <label>Condições de pagamento</label>
+                                    <label>Cheques em carteira</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text bg-carolina"><i class="ti-credit-card text-light"></i></span>
+                                            <span class="input-group-text bg-carolina"><i class="ti-bag text-light"></i></span>
                                         </div>
-                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->payment_conditions}}" readonly>
+                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->balance_checks}}" readonly>
                                     </div>
                                 </div>
-
+                                
                             </div>
+                        </div>
+
+                        <div class="row form-group">
                             <div class="col-xl-4">
 
                                 <div class="form-group">
@@ -330,8 +285,97 @@
                                         <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->email}}" readonly>
                                     </div>
                                 </div>
+
+                            </div>
+                            <div class="col-xl-4">
+
+                               
+                            </div>
+
+                            <div class="col-xl-4">
+
+                                
                             </div>
                         </div>
+
+                        <div class="row form-group">
+                            <div class="col-xl-4">
+
+                                <div class="form-group">
+                                    <label>Contactos</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-carolina"><i class="fas fa-phone text-light"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->phone}}" readonly>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-xl-4">
+
+                               
+
+                            </div>
+                            <div class="col-xl-4">
+
+                                
+                                
+                            </div>
+                        </div>
+
+                    <div class="row form-group">
+                        <div class="col-xl-4">
+                            <div class="form-group">
+                                <label>Morada</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-carolina"><i class="ti-location-arrow text-light"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->address}}" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-xl-4">
+                            <div class="form-group">
+                                <label>Código Postal</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-carolina"><i class="ti-location-arrow text-light"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->zipcode}}" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-xl-4">
+                            <div class="form-group">
+                                <label>Localidade</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-carolina"><i class="ti-location-arrow text-light"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->city}}" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-xl-4">
+                            <div class="form-group">
+                                <label>Zona do Cliente</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-carolina"><i class="ti-pin text-light"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->zone}}" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     </p>
                 </div>
                 <div class="tab-pane fade {{$tabAnalysis}}" id="tab5">

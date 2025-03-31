@@ -634,13 +634,13 @@
                                                     <td>
                                                         <div class="form-checkbox">
                                                             <label>
-                                                                <input type="checkbox" id="emailCheckBox" wire:model.defer="emailSend.{{$i}}">
+                                                                <input type="checkbox" id="emailCheckBox.{{$i}}" wire:model.defer="emailSend.{{$i}}">
                                                                 <span class="checkmark"><i class="fa fa-check pick"></i></span>
                                                             </label>
                                                         </div>
                                                     </td>
 
-                                                    <td>{{ $item }}</td>
+                                                    <td> <label for = "emailCheckBox.{{$i}}">{{ $item }}</label></td>
                                                 </tr>
                                             @endforeach
                                     

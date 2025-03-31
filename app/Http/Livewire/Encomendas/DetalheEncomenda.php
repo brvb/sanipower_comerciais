@@ -103,13 +103,24 @@ class DetalheEncomenda extends Component
     /** PARTE DO FINALIZAR **/
 
     public $transportadora = false;
+    public $entrega_obra = false;
     public $viaturaSanipower = false;
+    public $encomendaProgramada = false;
     public $levantamentoLoja = false;
     public $observacaoFinalizar;
     public $observacaoFinalizarPDF;
     public $referenciaFinalizar;
 
     public $lojaFinalizar = "";
+
+    public $moradaFinalizar = "";
+    public $dateFinalizar = "";
+    public $codpostalFinalizar = "";
+    public $locFinalizar = "";
+
+    public $moradaFinalizarCli = "";
+    public $codpostalFinalizarCli = "";
+    public $locFinalizarCli = "";
     
     public $condicoesFinalizar = false;
     public $chequeFinalizar = false;
@@ -137,7 +148,7 @@ class DetalheEncomenda extends Component
 
     public int $perPage = 10;
 
-    protected $listeners = ['toggleNavbarState' => 'toggleNavbarState',"callInputGroup","rechargeFamily" => "rechargeFamily", "cleanModal" => "cleanModal" ,'campoAlterado' =>'campoAlterado', 'addProductCommentEncomenda'=>'addProductCommentEncomenda','setIsMobile'];
+    protected $listeners = ['toggleNavbarState' => 'toggleNavbarState',"callInputGroup","rechargeFamily" => "rechargeFamily", "cleanModal" => "cleanModal" ,'campoAlterado' =>'campoAlterado', 'addProductCommentEncomenda'=>'addProductCommentEncomenda','setIsMobile', 'updateEntregaObra' => 'updateEntregaObra'];
 
     public function boot(ClientesInterface $clientesRepository, EncomendasInterface $encomendasRepository, PropostasInterface $propostasRepository)
     {
@@ -719,7 +730,6 @@ class DetalheEncomenda extends Component
                 ->where('referencia', $referense)
                 ->where('price', $price)
                 ->where('designacao', $nameProduct)
-                ->where('id_proposta', '')
                 ->get();
             if ($itensSemProposta->count() > 1) {
                 // Inicializa a variável para consolidar os dados
@@ -1070,13 +1080,63 @@ class DetalheEncomenda extends Component
         $this->skipRender();
     }
 
+    public function updateEntregaObra($value)
+    {
+        // dd('AQUI');
+        $this->entrega_obra = $value;
+        $this->tabFinalizar = 'show active';
+        $this->tabProdutos = '';
+    }
+
 
     public function finalizarencomenda()
     {
+         if($this->entrega_obra == "levantamento_loja_selecionado")
+         {
+            $this->levantamentoLoja = true;
+            $this->viaturaSanipower = false;
+            $this->transportadora = false;
+            $this->entrega_obra = false;
+         }
+         if($this->entrega_obra == "viatura_sanipower_selecionado")
+         {
+            $this->levantamentoLoja = false;
+            $this->viaturaSanipower = true;
+            $this->transportadora = false;
+            $this->entrega_obra = false;
+         }
+         if($this->entrega_obra == "transportadora_selecionado")
+         {
+            $this->levantamentoLoja = false;
+            $this->viaturaSanipower = false;
+            $this->transportadora = true;
+            $this->entrega_obra = false;
+
+            $this->moradaFinalizar = $this->moradaFinalizarCli;
+            $this->codpostalFinalizar = $this->codpostalFinalizarCli;
+            $this->locFinalizar = $this->locFinalizarCli;
+         }
+         if($this->entrega_obra == "entrega_obra_selecionado")
+         {
+            $this->levantamentoLoja = false;
+            $this->viaturaSanipower = false;
+            $this->transportadora = false;
+            $this->entrega_obra = true;
+         }
+        //  dd($this->levantamentoLoja,
+        //     $this->viaturaSanipower,
+        //     $this->transportadora,
+        //     $this->entrega_obra,
+        //     $this->encomendaProgramada);
+
+        // dd($this->moradaFinalizar, $this->codpostalFinalizar, $this->locFinalizar);
+
         $propertiesLoja = [
             'levantamentoLoja' => $this->levantamentoLoja,
             'Entrega por viatura Sanipower' => $this->viaturaSanipower,
             'Entrega por transportadora' => $this->transportadora,
+            'Entrega em obra' => $this->entrega_obra,
+            'Encomenda Programda' => $this->encomendaProgramada,
             
         ];
         
@@ -1107,8 +1167,38 @@ class DetalheEncomenda extends Component
         if(empty($resultPagamento)){
             $resultPagamento[0] = "";
         }
+        // dd($resultLoja[0],);
+        // dd($this->dateFinalizar);
+        if ($this->transportadora == true || $this->entrega_obra == true){
+            if($this->moradaFinalizar == '' || $this->codpostalFinalizar == '' || $this->locFinalizar == '')
+            {
+                $this->dispatchBrowserEvent('checkToaster', ["message" => "Os dados de morada não foram preenchidos!", "status" => "error"]);
+                return false;
+            }
+        }
 
+        if($this->transportadora == false || $this->entrega_obra == false)
+        {
+            $this->moradaFinalizar = ''; 
+            $this->codpostalFinalizar = ''; 
+            $this->locFinalizar = '';
+        }
 
+        if ($this->encomendaProgramada == true && $this->dateFinalizar == ''){
+            if($this->dateFinalizar == now()->format('Y-m-d'))
+            {
+                $this->dispatchBrowserEvent('checkToaster', ["message" => "A data não foi preenchida!", "status" => "error"]);
+                return false;
+            }
+            $this->dispatchBrowserEvent('checkToaster', ["message" => "A data não foi preenchida!", "status" => "error"]);
+            return false;
+        }
+
+        if ($this->encomendaProgramada == false){
+            $this->dateFinalizar = now()->format('Y-m-d');
+        }
+
+        // dd($this->moradaFinalizar, $this->codpostalFinalizar, $this->locFinalizar);
         // if($resultPagamento[0] == "" || $resultLoja[0] == "")
         // {
         //     $this->dispatchBrowserEvent('checkToaster', ["message" => "Tem de selecionar um dado logistico e um tipo de pagamento", "status" => "error"]);
@@ -1236,6 +1326,11 @@ class DetalheEncomenda extends Component
             "salesman_number" => Auth::user()->id_phc,
             "type" => "order",
             "visit_id" => $this->visitaCheck,
+            "address" => $this->moradaFinalizar,
+            "city" => $this->locFinalizar,
+            "zipcode" => $this->codpostalFinalizar,
+            "scheduled_order" => $this->encomendaProgramada,
+            "scheduled_date" => $this->dateFinalizar,
             "lines" => array_values($arrayProdutos)
         ];
 
@@ -1359,6 +1454,14 @@ class DetalheEncomenda extends Component
 
     }
     
+    public function levantamentoLojaChange()
+    {
+        $this->levantamentoLoja = true;
+        $this->viaturaSanipower = false;
+        $this->transportadora = false;
+        $this->entrega_obra = false;
+        $this->encomendaProgramada = false;
+    }
 
     public function AdicionarItemKit()
     {
@@ -1734,6 +1837,18 @@ class DetalheEncomenda extends Component
             session(['Family' => null]);
         }
         $this->searchProduct = "";
+
+        // $this->transportadora = false;
+        // $this->entrega_obra = false;
+        // $this->viaturaSanipower = false;
+        // $this->encomendaProgramada = false;
+        // $this->levantamentoLoja = false;
+
+        $this->dateFinalizar = now()->addDays(30)->format('Y-m-d');
+
+        $this->moradaFinalizarCli = $this->detailsClientes->customers[0]->address;
+        $this->codpostalFinalizarCli = $this->detailsClientes->customers[0]->zipcode;
+        $this->locFinalizarCli = $this->detailsClientes->customers[0]->city;
 
         // $this->getCategoriesAll = $this->encomendasRepository->getCategorias();
         $this->PaymentConditions = $this->detailsClientes->customers[0]->payment_conditions;
