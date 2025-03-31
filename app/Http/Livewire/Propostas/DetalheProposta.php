@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\Campanhas;
 use App\Models\GrupoEmail;
+use App\Models\ProdutosDB;
 use App\Mail\SendAprovacao;
 
 
@@ -1888,6 +1889,18 @@ class DetalheProposta extends Component
         $this->searchProduct = "";
 
         // $this->getCategoriesAll = $this->PropostasRepository->getCategorias();
+        // dd($detailProduto);
+
+        // if($detailProduto != "")
+        // {
+        //     $link = ProdutosDB::where('ref', $detailProduto->product[0]->referense)
+        //     ->value('link');
+        //     $descricao = ProdutosDB::where('ref', $detailProduto->product[0]->referense)
+        //     ->value('seo_descricao');
+
+        //     session(['link' => $link]);
+        //     session(['descricao' => $descricao]);
+        // }
 
         return view('livewire.propostas.detalhe-proposta', [
             "products" => $products,

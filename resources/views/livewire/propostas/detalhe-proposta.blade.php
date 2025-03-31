@@ -1033,7 +1033,7 @@
                                                                                                             <a class="popover-test" data-toggle="tooltip" data-placement="top" title="Clique para ver os valores">
                                                                                                                 <div class="dropdownIcon">
                                                                                                                     <i class="ti-package text-light dropdownIcon-toggle" style="margin:0;padding:0;"></i>
-                                                                                    
+                                                                                                                
                                                                                                                 
                                                                                                                     <ul class="dropdownIcon-menu" style="color:black;left:-350px!important;">
                                                                                                                         <li><i class="fa fa-play icon-play"></i></li>
@@ -1065,7 +1065,7 @@
                                                                                                             </a>
                                                                                                         </button>
                                                                                                         <div class="dropdown">
-                                                                                                            @if ($prod->color == '#41c6a0')
+                                                                                                            @if ($prod->color == '#41c6a0' || $prod->locked == true)
                                                                                                             <button class="btn btn-sm btn-outline-secondary" id="commentProductEncomenda{{$i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style = "Display:none;">
                                                                                                                 <i class="ti-comment"></i>
                                                                                                             </button>
@@ -1101,18 +1101,75 @@
                                                                                     @endif
                                                                                 </tbody>
                                                                             </table>
+                                                                            <style>
+                                                                                .modal {
+                                                                                    display: none;
+                                                                                    position: fixed;
+                                                                                    z-index: 1000;
+                                                                                    left: 0;
+                                                                                    top: 0;
+                                                                                    width: 100%;
+                                                                                    height: 100%;
+                                                                                    background-color: rgba(0, 0, 0, 0.5);
+                                                                                    justify-content: center;
+                                                                                    align-items: center;
+                                                                                }
+                                                                                .modal-content {
+                                                                                    background: white;
+                                                                                    padding: 20px;
+                                                                                    border-radius: 10px;
+                                                                                    width: 300px;
+                                                                                    position: relative;
+                                                                                }
+                                                                                .close {
+                                                                                    position: absolute;
+                                                                                    top: 10px;
+                                                                                    right: 10px;
+                                                                                    cursor: pointer;
+                                                                                    font-size: 18px;
+                                                                                }
+                                                                            </style>
+                                                                            @php $descricao =  session('descricao');  @endphp
+                                                                            <div id="myModal" class="modal">
+                                                                                <div class="modal-content">
+                                                                                    <span class="close">&times;</span>
+                                                                                    @if($descricao != "")
+                                                                                    <p>{{$descricao}}</p>
+                                                                                    @else
+                                                                                    <p>Sem descrição adicional.</p>
+                                                                                    @endif
+                                                                                </div>
+                                                                            </div>
+                                                                            <script>
+                                                                                document.getElementById("openModal").addEventListener("click", function() {
+                                                                                    document.getElementById("myModal").style.display = "flex";
+                                                                                });
+                                                                                
+                                                                                document.querySelector(".close").addEventListener("click", function() {
+                                                                                    document.getElementById("myModal").style.display = "none";
+                                                                                });
+                                                                                window.addEventListener("click", function(event) {
+                                                                                    if (event.target === modal) {
+                                                                                        modal.style.display = "none";
+                                                                                    }
+                                                                                });
+                                                                            </script>
                                                                         </div>
                                                                         <div style="display: flex;justify-content: space-between;width: 100%;">
                                                                             <div class="container-buttons-produtos">
+                                                                                @php $link =  session('link');  @endphp
                                                                                 <div>
+                                                                                    <a href= "https://www.sanipower.pt/criar-ficha/{{ $searchNameCategory }}/{{ $family }}/{{ $link }}" target = "_blank">
                                                                                     <button class="btn btn-md btn-primary"><i class="ti-file"></i> Ficha do Produto</button>
+                                                                                    </a>
                                                                                 </div>
                                                                         
                                                                                 <div>
-                                                                                    <button class="btn btn-md btn-primary"><i class="ti-info"></i> Descrição Produto</button>
+                                                                                    
+                                                                                    <button class="btn btn-md btn-primary" id="openModal"><i class="ti-info"></i> Descrição Produto</button>
                                                                                 </div>
                                                                                 <div>
-                                                                                    <button class="btn btn-md btn-primary"><i class="ti-file"></i> Manuais Certificados</button>
+                                                                                    {{-- <button class="btn btn-md btn-primary"><i class="ti-file"></i> Manuais Certificados</button> --}}
                                                                                 </div>
                                                                             </div>
                                                                             <div class="container-buttons-produtos">
@@ -1645,7 +1702,7 @@
                                                         <i class="ti-shopping-cart"></i>
                                                     </button>
                                                     <div class="dropdown">
-                                                    @if ($prod->color != '#41c6a0')
+                                                    @if ($prod->color != '#41c6a0' || $prod->locked == true)
                                                         <button class="btn btn-sm btn-warning" id="commentProductEncomenda{{$i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                             <i class="ti-comment"></i>
                                                         </button>

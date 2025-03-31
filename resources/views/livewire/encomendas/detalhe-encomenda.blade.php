@@ -957,6 +957,7 @@
                                                             <div class="col-12 d-flex flex-wrap row" style="padding-right: 0 !important;">
                                                                 <div class="d-none d-xxl-block col-xxl-2">
                                                                     <img src="https://storage.sanipower.pt/storage/produtos/{{ $family }}/{{ $family }}-{{ $subFamily }}-{{ $productNumber }}.jpg" width="100%">
+                                                                    
                                                                 </div>
                                                                 @php
                                                                     $ref = "https://storage.sanipower.pt/storage/produtos/$family/$family-$subFamily-$productNumber.jpg";
@@ -1068,7 +1069,7 @@
                                                                                                             </a>
                                                                                                         </button>
                                                                                                         <div class="dropdown">
-                                                                                                            @if ($prod->color == '#41c6a0')
+                                                                                                            @if ($prod->color == '#41c6a0' || $prod->locked == true)
                                                                                                             <button class="btn btn-sm btn-outline-secondary" id="commentProductEncomenda{{$i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style = "Display: none;">
                                                                                                                 <i class="ti-comment"></i>
                                                                                                             </button>
@@ -1113,7 +1114,7 @@
                                                                                     <button class="btn btn-md btn-primary"><i class="ti-info"></i> Descrição Produto</button>
                                                                                 </div>
                                                                                 <div>
-                                                                                    <button class="btn btn-md btn-primary"><i class="ti-file"></i> Manuais Certificados</button>
+                                                                                    {{-- <button class="btn btn-md btn-primary"><i class="ti-file"></i> Manuais Certificados</button> --}}
                                                                                 </div>
                                                                             </div>
                                                                             <div class="container-buttons-produtos">
@@ -1780,7 +1781,7 @@
                                                         <i class="ti-shopping-cart"></i>
                                                     </button>
                                                     <div class="dropdown">
-                                                        @if ($prod->color != '#41c6a0')
+                                                        @if ($prod->color != '#41c6a0' || $prod->locked == true)
                                                         <button class="btn btn-sm btn-warning" id="commentProductEncomenda{{$i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                             <i class="ti-comment"></i>
                                                         </button>
