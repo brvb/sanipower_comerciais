@@ -682,49 +682,47 @@ class DetalheEncomenda extends Component
             return false;
         }
         
-        $productChosen = [];
-        $productChosenComment = [];
+        // $productChosen = [];
+        // $productChosenComment = [];
         // dd($prodID, $nameProduct, $no, $ref, $codEncomenda, $this->produtosRapida, $this->prodtQTD, $this->codvisita, $this->idCliente);
 
-        // dd($quickBuyProducts->product);
-        foreach ($quickBuyProducts->product as $i => $prod) {
-            if ($i == $prodID) {
-                foreach ($this->produtosRapida as $j => $prodRap) {
+        // dd($quickBuyProducts);
+        // foreach ($quickBuyProducts->product as $i => $prod) {
+        //     if ($i == $prodID) {
+        //         foreach ($this->produtosRapida as $j => $prodRap) {
 
-                    if ($i == $j) {
+        //             if ($i == $j) {
 
-                        if ($prodRap == "0" || $prodRap == "") {
-                            $this->dispatchBrowserEvent('checkToaster', ["message" => "Tem de selecionar uma quantidade", "status" => "error"]);
-                            $flag = 1;
-                            break;
-                        } else {
-                            $productChosen = ["product" => $prod, "quantidade" => $prodRap];
-                        }
-                    }
-                }
-                if($this->produtosComment){
-                    foreach ($this->produtosComment as $j => $prodComm) {
-                        if ($i == $j) {
-                            $productChosenComment = ["comentario" => $prodComm];
-                        }
-                    }
-                }
-            }
+        //                 if ($prodRap == "0" || $prodRap == "") {
+        //                     $this->dispatchBrowserEvent('checkToaster', ["message" => "Tem de selecionar uma quantidade", "status" => "error"]);
+        //                     $flag = 1;
+        //                     break;
+        //                 } else {
+        //                     $productChosen = ["product" => $prod, "quantidade" => $prodRap];
+        //                 }
+        //             }
+        //         }
+        //         if($this->produtosComment){
+        //             foreach ($this->produtosComment as $j => $prodComm) {
+        //                 if ($i == $j) {
+        //                     $productChosenComment = ["comentario" => $prodComm];
+        //                 }
+        //             }
+        //         }
+        //     }
 
-            if ($flag == 1) {
-                break;
-            }
+        //     if ($flag == 1) {
+        //         break;
+        //     }
 
-        }
-        if ($flag == 1) {
-            return false;
-        }
+        // }
+        // if ($flag == 1) {
+        //     return false;
+        // }
 
         if( $this->prodtQTD != null )
         {
-            // dd('id_encomenda', $codEncomenda, 'referencia', $productChosen['product']->referense, 'designacao', $nameProduct, 'model', $productChosen['product']->model, 'price', $productChosen['product']->price);
             // $price = $productChosen['product']->price;
-            // dd($nameProduct);
             // $nameProduct = str_replace(' ', '', $nameProduct);
             $itensSemProposta = Carrinho::where('id_encomenda', $codEncomenda)
                 ->where('referencia', $referense)
@@ -732,24 +730,19 @@ class DetalheEncomenda extends Component
                 ->where('designacao', $nameProduct)
                 ->get();
             if ($itensSemProposta->count() > 1) {
-                // Inicializa a variável para consolidar os dados
                 $quantidadeTotal = 0;
                 $primeiroItem = null;
             
                 foreach ($itensSemProposta as $index => $item) {
                     if ($index === 0) {
-                        // O primeiro item será usado como base para consolidar os dados
                         $primeiroItem = $item;
                     } else {
-                        // Somar a quantidade dos demais itens
                         $quantidadeTotal += $item->qtd;
             
-                        // Remover o item extra
                         $item->delete();
                     }
                 }
             
-                // Atualiza o primeiro item com a quantidade total consolidada
                 if ($primeiroItem) {
                     $primeiroItem->qtd += $quantidadeTotal;
                     $primeiroItem->save();
@@ -972,7 +965,6 @@ class DetalheEncomenda extends Component
     public function addAll($nameProduct,$no, $ref ,$codEncomenda)
     {
         $quickBuyProducts = session('quickBuyProducts');
-
         $productChosen = [];
         $productChosenComment = [];
         $count = 0;

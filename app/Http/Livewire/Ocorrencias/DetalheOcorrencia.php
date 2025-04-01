@@ -256,9 +256,10 @@ class DetalheOcorrencia extends Component
         $invoice = $selectedInvoicesJson->invoice;
         $lines = $selectedInvoicesJson->lines;
         $count = 0 ;
-
+        // dd($lines);
         foreach($lines as $line)
         {
+
             $arrayLines[$count] = [
                 "id" => $line->id,
                 "reference" => $line->reference,
@@ -286,7 +287,7 @@ class DetalheOcorrencia extends Component
             "type_2"=> $this->tipoOcorrenciaSelect2,
             "lines" => array_values($arrayLines)
         ];
-
+        // dd($array);
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/documents/occurrence',

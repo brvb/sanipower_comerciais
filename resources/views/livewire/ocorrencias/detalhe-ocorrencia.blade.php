@@ -266,7 +266,7 @@
                     </div>
                 
                 
-
+                
                     <p class="card-text">
 
                         <!-- INICIO RELATORIO  -->
@@ -604,25 +604,52 @@
                                                         this.textContent = "Selecionado ✅";
                                         
                                                         linesContainer.innerHTML = "";
-                                                        invoice.lines.forEach(line => {
+                                                        invoice.lines.forEach((line, index) => {
                                                             let row = document.createElement("tr");
                                                             row.innerHTML = `
                                                                 <td>${line.reference}</td>
                                                                 <td>${line.description}</td>
-                                                                <td>${line.quantity}</td>
+                                                                <td>
+                                                                    <input type="number" value="${line.quantity}" min="1" max="${line.quantity}" 
+                                                                        class="form-control quantity-input" data-max="${line.quantity}" data-id="${line.id}" disabled>
+                                                                </td>
                                                                 <td>
                                                                     <button class="btn btn-sm btn-success select-line" data-line='${JSON.stringify(line)}'>
                                                                         Selecionar
                                                                     </button>
                                                                 </td>
                                                             `;
-                                        
+
                                                             linesContainer.appendChild(row);
                                                         });
-                                        
+
+                                                        // Adiciona um evento para validar e atualizar o objeto 'line'
+                                                        document.querySelectorAll(".quantity-input").forEach(input => {
+                                                            input.addEventListener("input", function () {
+                                                                let max = parseInt(this.dataset.max);
+                                                                let min = 1;
+                                                                let value = parseInt(this.value);
+                                                                let lineId = this.dataset.id;
+
+                                                                if (value > max) {
+                                                                    this.value = max;
+                                                                } else if (value < min) {
+                                                                    this.value = min;
+                                                                }
+
+                                                                // Atualiza a quantidade da linha no selectedLines
+                                                                let selectedLine = selectedLines.find(line => line.id == lineId);
+                                                                if (selectedLine) {
+                                                                    selectedLine.quantity = parseInt(this.value);
+                                                                }
+                                                            });
+                                                        });
+
+
                                                         document.querySelectorAll(".select-line").forEach(lineButton => {
                                                             lineButton.addEventListener("click", function () {
                                                                 const lineData = JSON.parse(this.getAttribute("data-line"));
+                                                                let input = document.querySelector(`input[data-id="${lineData.id}"]`);
                                         
                                                                 const index = selectedLines.findIndex(l => l.id === lineData.id);
                                                                 if (index === -1) {
@@ -630,11 +657,13 @@
                                                                     this.textContent = "Remover";
                                                                     this.classList.remove("btn-success");
                                                                     this.classList.add("btn-danger");
+                                                                    input.disabled = false;
                                                                 } else {
                                                                     selectedLines.splice(index, 1);
                                                                     this.textContent = "Selecionar";
                                                                     this.classList.remove("btn-danger");
                                                                     this.classList.add("btn-success");
+                                                                    input.disabled = true; 
                                                                 }
                                                             });
                                                         });
@@ -648,12 +677,12 @@
                                                         alert("Por favor, selecione uma fatura principal antes de confirmar.");
                                                         return;
                                                     }
-                                        
+                                                    
                                                     let selectedData = {
                                                         invoice: selectedInvoice,
                                                         lines: selectedLines
                                                     };
-                                        
+
                                                     hiddenInput.value = JSON.stringify(selectedData);
                                                     hiddenInput.dispatchEvent(new Event('input'));
                                         
