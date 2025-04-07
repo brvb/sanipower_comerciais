@@ -763,8 +763,8 @@
                                                                 $editado = str_pad($familyIdSemHifen, 4, '0', STR_PAD_LEFT);
                                                                 $valueCatEnv = $valueCat + 1;
                                                                 @endphp
-                                                            <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-3">
-                                                                <div class="card card-decoration card-outline-primary border border-2" style="cursor:pointer;" wire:click="ShowSubFamily('{{ $family->id }}', '{{ $valueCatEnv }}')">
+                                                            <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-3" wire:click="ShowSubFamily('{{ $family->id }}', '{{ $valueCatEnv }}')">
+                                                                <div class="card card-decoration card-outline-primary border border-2" style="cursor:pointer;">
                                                                         {{-- <a href="javascript:void(0)"
                                                                         wire:click="openDetailProduto({{ json_encode($cam->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subfamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})"
                                                                         style="pointer-events: auto"> --}}
@@ -801,8 +801,8 @@
                                                             @if ($family->id == $valueFam)
                                                             {{-- @dd($family); --}}
                                                             @foreach ($family->subfamily as $subfamily)
-                                                            <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-3">
-                                                                <div class="card card-decoration card-outline-primary border border-2" style="cursor:pointer;" wire:click="searchSubFamily({{ $valueCatEnv }},{{ json_encode($valueFam) }},{{ json_encode($subfamily->id) }})">
+                                                            <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-3" wire:click="searchSubFamily({{ $valueCatEnv }},{{ json_encode($valueFam) }},{{ json_encode($subfamily->id) }})">
+                                                                <div class="card card-decoration card-outline-primary border border-2" style="cursor:pointer;">
                                                                         {{-- <a href="javascript:void(0)"
                                                                         wire:click="openDetailProduto({{ json_encode($cam->category_number) }},{{ json_encode($prodt->family_number) }},{{ json_encode($prodt->subfamily_number) }},{{ json_encode($prodt->product_number) }},{{ json_encode($detalhesCliente->customers[0]->no) }},{{ json_encode($prodt->product_name) }})"
                                                                         style="pointer-events: auto"> --}}
@@ -969,7 +969,6 @@
                                                                                     <div class="col">
                                                                                         <h3 id="detailNameProduct">{{ $produtoNameDetail }}</h3>
                                                                                     </div>
-
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -1083,7 +1082,7 @@
                                                                                                                             <i class="ti-check"></i>
                                                                                                                         </button>
                                                                                                                     </h6>
-                                                                                                                    <textarea type="text" class="form-control {{ $prod->color }}" id="addTextosEncomenda{{$i}}" cols="7" rows="4" style="resize: none;" wire:model.defer="produtosComment.{{$i}}"></textarea>
+                                                                                                                    <textarea type="text" class="form-control {{ $prod->color }}" id="addTextosEncomenda{{$i}}" cols="7" rows="4" style="resize: none;" wire:model.defer="produtosComment.{{$i}}" maxlength="40"></textarea>
                                                                                                                 </li>
                                                                                                             </div>
                                                                                                         </div>
@@ -1559,6 +1558,75 @@
                         $("#modalProposta").modal();
                     });
             </script>
+            <style>
+            .container {
+            -webkit-overflow-scrolling: touch;
+            overflow-y: scroll;
+            }
+
+            .sticky-element {
+            position: -webkit-sticky;
+            }
+            input, button, textarea {
+            -webkit-appearance: none;
+            -webkit-border-radius: 0;
+            }
+
+            input::-webkit-input-placeholder {
+            color: #999;
+            }
+
+            input[type="search"]::-webkit-search-decoration,
+            input[type="search"]::-webkit-search-cancel-button {
+            -webkit-appearance: none;
+            }
+            .element {
+            -webkit-transform: translate3d(0, 0, 0);
+            -webkit-backface-visibility: hidden;
+            -webkit-perspective: 1000;
+            }
+
+            .background {
+            background: -webkit-linear-gradient(top, #fff, #000);
+            }
+            @viewport {
+            width: device-width;
+            zoom: 1.0;
+            }
+
+            .element {
+            height: -webkit-fill-available;
+            }
+            ::-webkit-scrollbar {
+            width: 8px;
+            }
+
+            ::-webkit-scrollbar-thumb {
+            background-color: rgba(0,0,0,0.2);
+            }
+
+            input[type="text"],
+            input[type="email"],
+            input[type="tel"],
+            textarea {
+            -webkit-text-size-adjust: 100%;
+            font-size: 16px;
+            }
+
+            .clickable {
+            -webkit-tap-highlight-color: transparent;
+            cursor: pointer;
+            }
+
+            .element {
+            -webkit-border-radius: 5px;
+                    border-radius: 5px;
+            -webkit-box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            -webkit-transition: all 0.3s ease;
+                    transition: all 0.3s ease;
+            }
+            </style>
 <div class="modal fade" id="modalProposta" tabindex="-1" role="dialog" aria-labelledby="modalProposta" aria-hidden="true" >
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -1721,7 +1789,7 @@
                                                                     </button>
                                                                 </h6>
                                                                 <textarea type="text" class="form-control {{ $prod->color }}" id="addTextosEncomenda{{$i}}" cols="7" rows="4" style="resize: none;"
-                                                                    wire:model.defer="produtosComment.{{$i}}">
+                                                                    wire:model.defer="produtosComment.{{$i}}" maxlength="40">
                                                                 </textarea>
                                                             </li>
                                                         </div>

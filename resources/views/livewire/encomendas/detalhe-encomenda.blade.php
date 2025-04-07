@@ -1087,7 +1087,7 @@
                                                                                                                             <i class="ti-check"></i>
                                                                                                                         </button>
                                                                                                                     </h6>
-                                                                                                                    <textarea type="text" class="form-control {{ $prod->color }}" id="addTextosEncomenda{{$i}}" cols="7" rows="4" style="resize: none;" wire:model.defer="produtosComment.{{$i}}"></textarea>
+                                                                                                                    <textarea type="text" class="form-control {{ $prod->color }}" id="addTextosEncomenda{{$i}}" cols="7" rows="4" style="resize: none;" wire:model.defer="produtosComment.{{$i}}" maxlength="40"></textarea>
                                                                                                                 </li>
                                                                                                             </div>
                                                                                                         </div>
@@ -1800,7 +1800,7 @@
                                                                     </button>
                                                                 </h6>
                                                                 <textarea type="text" class="form-control {{ $prod->color }}" id="addTextosEncomenda{{$i}}" cols="7" rows="4" style="resize: none;"
-                                                                    wire:model.defer="produtosComment.{{$i}}">
+                                                                    wire:model.defer="produtosComment.{{$i}}" maxlength="40">
                                                                 </textarea>
                                                             </li>
                                                         </div>
