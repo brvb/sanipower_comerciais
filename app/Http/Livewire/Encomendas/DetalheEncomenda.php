@@ -1761,7 +1761,7 @@ class DetalheEncomenda extends Component
         $this->carrinhoCompras = Carrinho::where('id_cliente', $this->detailsClientes->customers[0]->no)
             ->where('id_user', Auth::user()->id)
             ->where('id_encomenda', $this->codEncomenda)
-            ->orderBy('inkit', 'desc')
+            ->orderBy('id', 'desc')
             ->get();
 
         $arrayCart = [];
@@ -1812,7 +1812,7 @@ class DetalheEncomenda extends Component
             // return redirect()->route('encomendas.detail', ['id' => $this->idCliente]);
         }
         $campanhas = Campanhas::where('ativa', 1)
-        ->where('destaque', 1)
+        // ->where('destaque', 1)
         ->where('dh_fim', '>', now())
         ->get();
 

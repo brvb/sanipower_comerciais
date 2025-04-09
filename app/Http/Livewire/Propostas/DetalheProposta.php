@@ -1833,7 +1833,7 @@ class DetalheProposta extends Component
             ->where('id_user', Auth::user()->id)
             ->where('id_proposta', '!=', '')
             ->where('id_proposta', $this->codEncomenda)
-            ->orderBy('inkit', 'desc')
+            ->orderBy('id', 'desc')
             ->get();
 
         $arrayCart = [];
@@ -1871,7 +1871,7 @@ class DetalheProposta extends Component
         }
 
        $campanhas = Campanhas::where('ativa', 1)
-        ->where('destaque', 1)
+        // ->where('destaque', 1)
         ->where('dh_fim', '>', now())
         ->get();
 
@@ -1897,7 +1897,21 @@ class DetalheProposta extends Component
         //     ->value('link');
         //     $descricao = ProdutosDB::where('ref', $detailProduto->product[0]->referense)
         //     ->value('seo_descricao');
+        //     $medida = ProdutosDB::where('ref', $detailProduto->product[0]->referense)
+        //     ->value('Medida');
+        //     $desc_medida = ProdutosDB::where('ref', $detailProduto->product[0]->referense)
+        //     ->value('desc_medida');
+        //     $obs = ProdutosDB::where('ref', $detailProduto->product[0]->referense)
+        //     ->value('obs');
 
+        //     $temp = array(
+        //         'id' => $medida,
+        //         'mesure' => $desc_medida,
+        //         'desc' => $obs,
+        //     );
+        //     $Product_characteristics[] = $temp;
+
+        //     session(['Product_characteristics' => $Product_characteristics]);
         //     session(['link' => $link]);
         //     session(['descricao' => $descricao]);
         // }
@@ -1914,6 +1928,5 @@ class DetalheProposta extends Component
             "codEncomenda" => $this->codEncomenda,
             "campanhas" => $campanhas
         ]);
-
     }
 }

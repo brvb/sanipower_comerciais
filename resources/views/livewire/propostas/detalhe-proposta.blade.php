@@ -1156,9 +1156,13 @@
                                                                         </div>
                                                                         <div style="display: flex;justify-content: space-between;width: 100%;">
                                                                             <div class="container-buttons-produtos">
-                                                                                @php $link =  session('link');  @endphp
+                                                                                @php $link =  session('link'); $Product_characteristics =  session('Product_characteristics');  @endphp
                                                                                 <div>
+                                                                                    @if($Product_characteristics == null)
                                                                                     <a href= "https://www.sanipower.pt/criar-ficha/{{ $searchNameCategory }}/{{ $family }}/{{ $link }}" target = "_blank">
+                                                                                    @else
+                                                                                    <a href= "https://www.sanipower.pt/criar-ficha/{{ $searchNameCategory }}/{{ $family }}/{{ $link }}/{{bin2hex($Product_characteristics['mesure'])}}" target = "_blank">
+                                                                                    @endif
                                                                                     <button class="btn btn-md btn-primary"><i class="ti-file"></i> Ficha do Produto</button>
                                                                                     </a>
                                                                                 </div>
