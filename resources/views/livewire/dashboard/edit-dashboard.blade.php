@@ -22,6 +22,11 @@
                 <input type="checkbox" id="showObjMargin" class="toggle-checkbox" wire:model="showObjMargin" {{ $this->showObjMargin ? 'checked' : '' }}>
             </div>
 
+            <div class="form-group">
+                <label for="showTop1000">Mostrar - Top 1000</label>
+                <input type="checkbox" id="showTop1000" class="toggle-checkbox" wire:model="showTop1000">
+            </div>
+
             <button type="submit" class="btn btn-primary">Guardar Preferências</button>
         </form>
     </div>

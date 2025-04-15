@@ -1161,7 +1161,7 @@
                                                                                     @if($Product_characteristics == null)
                                                                                     <a href= "https://www.sanipower.pt/criar-ficha/{{ $searchNameCategory }}/{{ $family }}/{{ $link }}" target = "_blank">
                                                                                     @else
-                                                                                    <a href= "https://www.sanipower.pt/criar-ficha/{{ $searchNameCategory }}/{{ $family }}/{{ $link }}/{{bin2hex($Product_characteristics['mesure'])}}" target = "_blank">
+                                                                                    <a href= "https://www.sanipower.pt/criar-ficha/{{ $searchNameCategory }}/{{ $family }}/{{ $link }}/{{bin2hex($Product_characteristics[0]['mesure'])}}" target = "_blank">
                                                                                     @endif
                                                                                     <button class="btn btn-md btn-primary"><i class="ti-file"></i> Ficha do Produto</button>
                                                                                     </a>
