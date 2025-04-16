@@ -34,6 +34,73 @@
                             <div class="row">
                                 <div class="col-lg-8 col-md-12">
                                     <div class="caption uppercase">
+                                    <i class="ti-stats-up"></i> Análise de Vendas por Cliente
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Filtro de data -->
+                        @php
+                            $DataInicial = $_GET['dataInicio'] ?? now()->subDays(30)->format('Y-m-d');
+                            $DataFinal = $_GET['dataFim'] ?? now()->format('Y-m-d');
+                        @endphp
+                    
+                        <div class="row mb-1">
+                            <form class="w-100 d-flex align-items-end justify-content-start flex-wrap gap-3">
+                                <div class="form-group me-3">
+                                    <label for="dataInicio">Data Inicial</label>
+                                    <input type="date" class="form-control" id="dataInicio" name="dataInicio" value="{{ $DataInicial }}"  wire:model.defer="dataInicio">
+                                </div>
+                                
+                                <div class="form-group me-3">
+                                    <label for="dataFim">Data Final</label>
+                                    <input type="date" class="form-control" id="dataFim" name="dataFim" value="{{ $DataFinal }}"  wire:model.defer="dataFim">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary" wire:click.prevent="carregarClientes">
+                                        Filtrar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Tabela de clientes -->
+                        <div class="table-wrapper">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover" id="tabela-cliente3">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Número</th>
+                                            <th>Cliente</th>
+                                            <th style="text-align:right;">Vendas (€)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @php $clientes1 = session('clientes'); @endphp
+                                        @if(!isset($clientes1->Message))
+                                            @foreach (session('clientes') as $cliente)
+                                                <tr>
+                                                    <td>{{ $cliente->number ?? null }}</td>
+                                                    <td>{{ $cliente->name ?? null }}</td>
+                                                    <td class="font-weight-bold text-right">{{ number_format($cliente->sales ?? null, 2, ',', '.') }}€</td>
+                                                </tr>
+                                            @endforeach
+                                        @endif
+                                    </tbody>
+                                </table>                        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card mb-3">
+                        <div class="card-header d-block">
+                            <div class="row">
+                                <div class="col-lg-8 col-md-12">
+                                    <div class="caption uppercase">
                                         <i class="ti-stats-up"></i> Análises Por Família
                                     </div>
                                 </div>
@@ -145,6 +212,7 @@
                     </div>
                 </div>
             </div>
+        </div>
             <style>
             .range-container {
                 width: 300px;
@@ -190,72 +258,6 @@
                 font-weight: bold;
             }
             </style>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card mb-3">
-                        <div class="card-header d-block">
-                            <div class="row">
-                                <div class="col-lg-8 col-md-12">
-                                    <div class="caption uppercase">
-                                        <i class="ti-stats-up"></i> Análise de Vendas por Cliente
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <!-- Filtro de data -->
-                            @php
-                                $DataInicial = $_GET['dataInicio'] ?? now()->subDays(30)->format('m-d-Y');
-                                $DataFinal = $_GET['dataFim'] ?? now()->format('m-d-Y');
-                            @endphp
-                            <div class="row mb-4">
-                                <form>
-                                    <div class="range-container">
-                                        <div class="slider"></div>
-                                        <input type="range" id="rangeStart" min="0" max="29" data-default-date="{{ $DataInicial }}">
-                                        <input type="range" id="rangeEnd" min="0" max="29" data-default-date="{{ $DataFinal }}">
-                                        <div class="date-labels">
-                                            <span id="startDateLabel"></span>
-                                            <span id="endDateLabel"></span>
-                                        </div>
-                                        <input type="hidden" id="hiddenStartDate" name = "dataInicio" wire:model.defer="dataInicio">
-                                        <input type="hidden" id="hiddenEndDate" name = "dataFim" wire:model.defer="dataFim">
-
-                                        <button class="btn btn-primary mt-3" wire:click="carregarClientes">Filtrar</button>
-                                    </div>
-                                </form>
-                            </div>
-                            <!-- Tabela de clientes -->
-                            <div class="table-wrapper">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-hover font-menor" id="tabela-clientes">
-                                        <thead class="thead-light">
-                                            <tr>
-                                                <th>Número</th>
-                                                <th>Cliente</th>
-                                                <th style="text-align:right;">Vendas (€)</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @php $clientes1 = session('clientes'); @endphp
-                                            {{-- @dd(session('clientes')); --}}
-                                            @if(!isset($clientes1->Message))
-                                                @foreach (session('clientes') as $cliente)
-                                                    <tr>
-                                                        <td>{{ $cliente->number ?? null }}</td>
-                                                        <td>{{ $cliente->name ?? null }}</td>
-                                                        <td class="font-weight-bold text-right">{{ number_format($cliente->sales ?? null, 2, ',', '.') }}€</td>
-                                                    </tr>
-                                                @endforeach
-                                            @endif
-                                        </tbody>
-                                    </table>                        
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </p>
 </div>

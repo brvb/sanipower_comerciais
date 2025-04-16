@@ -17,15 +17,6 @@
 </div>
 </div>
 <div class="row" style="margin-left: 10px;">
-    @if ($this->show90dias == true)
-    <div class="col-lg-6 col-md-12 col-sm-12">
-        <div class="card mb-3">
-            <div class="card-body">
-                <div id="product-sales-chart"></div>
-            </div>
-        </div>
-    </div>
-    @endif
     @if ($this->showObjFat == true)
     <div class="col-lg-6 col-md-12 col-sm-12">
         <div class="card mb-3">
@@ -35,20 +26,6 @@
         </div>
     </div>
     @endif  
-</div>
-
-<div class="row" style="margin-left: 10px;">
-    <!-- Expenses Chart -->
-    @if ($this->showTop500 == true)
-     <!-- Inputs para Mês e Ano -->
-     <div class="col-lg-6 col-md-12 col-sm-12">
-        <div class="card mb-3">
-            <div class="card-body">
-                <div id="expenses-chart2"></div>
-            </div>
-        </div>
-    </div>
-    @endif
     <!-- Expenses Chart -->
     @if ($this->showObjMargin == true)
     <div class="col-lg-6 col-md-12 col-sm-12">
@@ -63,6 +40,17 @@
 
 <div class="row" style="margin-left: 10px;">
     <!-- Expenses Chart -->
+    @if ($this->showTop500 == true)
+     <!-- Inputs para Mês e Ano -->
+     <div class="col-lg-6 col-md-12 col-sm-12">
+        <div class="card mb-3">
+            <div class="card-body">
+                <div id="expenses-chart2"></div>
+            </div>
+        </div>
+    </div>
+    @endif
+
     @if ($this->showTop1000 == true)
      <!-- Inputs para Mês e Ano -->
      <div class="col-lg-6 col-md-12 col-sm-12">
@@ -73,7 +61,18 @@
         </div>
     </div>
     @endif
+</div>
 
+<div class="row" style="margin-left: 10px;">
+    @if ($this->show90dias == true)
+    <div class="col-lg-6 col-md-12 col-sm-12">
+        <div class="card mb-3">
+            <div class="card-body">
+                <div id="product-sales-chart"></div>
+            </div>
+        </div>
+    </div>
+    @endif
 </div>
 
 <!-- EOF MAIN-BODY -->
