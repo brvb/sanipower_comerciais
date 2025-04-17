@@ -17,15 +17,6 @@
 </div>
 </div>
 <div class="row" style="margin-left: 10px;">
-    @if ($this->show90dias == true)
-    <div class="col-lg-6 col-md-12 col-sm-12">
-        <div class="card mb-3">
-            <div class="card-body">
-                <div id="product-sales-chart"></div>
-            </div>
-        </div>
-    </div>
-    @endif
     @if ($this->showObjFat == true)
     <div class="col-lg-6 col-md-12 col-sm-12">
         <div class="card mb-3">
@@ -35,6 +26,16 @@
         </div>
     </div>
     @endif  
+    <!-- Expenses Chart -->
+    @if ($this->showObjMargin == true)
+    <div class="col-lg-6 col-md-12 col-sm-12">
+        <div class="card mb-3">
+            <div class="card-body">
+                <div id="expenses-chart3"></div>
+            </div>
+        </div>
+    </div> 
+    @endif
 </div>
 
 <div class="row" style="margin-left: 10px;">
@@ -49,15 +50,28 @@
         </div>
     </div>
     @endif
-    <!-- Expenses Chart -->
-    @if ($this->showObjMargin == true)
+
+    @if ($this->showTop1000 == true)
+     <!-- Inputs para Mês e Ano -->
+     <div class="col-lg-6 col-md-12 col-sm-12">
+        <div class="card mb-3">
+            <div class="card-body">
+                <div id="expenses-chart4"></div>
+            </div>
+        </div>
+    </div>
+    @endif
+</div>
+
+<div class="row" style="margin-left: 10px;">
+    @if ($this->show90dias == true)
     <div class="col-lg-6 col-md-12 col-sm-12">
         <div class="card mb-3">
             <div class="card-body">
-                <div id="expenses-chart3"></div>
+                <div id="product-sales-chart"></div>
             </div>
         </div>
-    </div> 
+    </div>
     @endif
 </div>
 
@@ -100,6 +114,7 @@
             ObjetivoFat1(event.detail.objectiveOBJ1, event.detail.salesOBJ1);
             ObjetivoFat2(event.detail.objectiveOBJ2, event.detail.salesOBJ2);
             ObjetivoFat3(event.detail.objectiveOBJ3, event.detail.salesOBJ3);    
+            ObjetivoFat4(event.detail.objectiveOBJ4, event.detail.salesOBJ4);   
 
         });
     
@@ -323,6 +338,61 @@
     
                 var chart = new ApexCharts(document.querySelector("#expenses-chart3"), options);
                 chart.render(); // Renderiza o gráfico com os novos dados
+        
+        
+        }
+
+        function ObjetivoFat4(objective, sales) {
+                console.log(objective, sales);
+                var objetivo = objective;
+                var vendas = sales;
+                var diference = objetivo - vendas;
+
+                // Arredondar para as centésimas e trocar ponto por vírgula
+                var diferenceForm = (diference).toFixed(2).replace('.', ',');
+                var objetivoForm = (objetivo).toFixed(2).replace('.', ',');
+                var vendasForm = (vendas).toFixed(2).replace('.', ',');
+    
+            var options = {
+                    title: {
+                        text: 'TOP 1000 - ' + objetivo + ' Clientes',
+                        align: 'left'
+                    },
+                    series: [diference, vendas],
+                    chart: {
+                        height: 310,
+                        width: 480,
+                        type: 'donut',
+                        foreColor: '#999999'
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    fill: {
+                        type: 'gradient',
+                    },
+                    labels: ['Restante', 'Clientes'],
+                    legend: {
+                        formatter: function (val, opts) {
+                            return val + " - " + opts.w.globals.series[opts.seriesIndex];
+                        }
+                    },
+                    responsive: [{
+                        breakpoint: 480,
+                        options: {
+                            chart: {
+                                height: 310,
+                                width: 300
+                            },
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }]
+                };
+    
+                var chart = new ApexCharts(document.querySelector("#expenses-chart4"), options);
+                chart.render();
     }
 </script>
 @if ($this->INICIO == 1)
@@ -337,7 +407,9 @@
                 objectiveOBJ2: ".session('objectiveOBJ2').",
                 salesOBJ2: ".session('salesOBJ2').",
                 objectiveOBJ3: ".session('objectiveOBJ3').",
-                salesOBJ3: ".session('salesOBJ3')."
+                salesOBJ3: ".session('salesOBJ3').",
+                objectiveOBJ4: ".session('objectiveOBJ4').",
+                salesOBJ4: ".session('salesOBJ4')."
             }
         });
         // Disparar o evento

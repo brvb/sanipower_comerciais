@@ -37,7 +37,7 @@ class Campanha extends Component
     public function render()
     {
         $campanhas = Campanhas::where('ativa', 1)
-        ->where('destaque', 1)
+        // ->where('destaque', 1)
         ->where('dh_fim', '>', now())
         ->get();
 

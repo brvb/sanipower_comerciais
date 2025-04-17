@@ -19,6 +19,7 @@ class DashboardPreference extends Model
         'days90',
         'ObjFat',
         'Top500',
+        'Top1000',
         'ObjMargin'
-    ];
+        ];
 }

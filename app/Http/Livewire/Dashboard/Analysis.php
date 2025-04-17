@@ -18,19 +18,17 @@ class Analysis extends Component
     public $show90dias = '';
     public $showObjFat = '';
     public $showTop500 = '';
+    public $showTop1000 = '';
     public $showObjMargin = '';
+    public $showSlsCus = '';
 
     public $objective = '';
     public $sales = '';
 
     public $Month;
     public $Year;
-    public $Month1;
-    public $Year1;
-    public $Month2;
-    public $Year2;
-    public $Month3;
-    public $Year3;
+
+
     
     public $INICIO;
 
@@ -41,22 +39,22 @@ class Analysis extends Component
                 $this->show90dias = $preferences->days90 == 1 ? true : false;
                 $this->showObjFat = $preferences->ObjFat == 1 ? true : false;
                 $this->showTop500 = $preferences->Top500 == 1 ? true : false;
+                $this->showTop1000 = $preferences->Top1000 == 1 ? true : false;
                 $this->showObjMargin = $preferences->ObjMargin == 1 ? true : false;
+                $this->showSlsCus = $preferences->SlsPerCus == 1 ? true : false;
             }
 
             $this->Month = now()->month; 
             $this->Year = now()->year;   
-            $this->Month1 = now()->month; 
-            $this->Year1 = now()->year;
-            $this->Month2 = now()->month; 
-            $this->Year2 = now()->year;
-            $this->Month3 = now()->month; 
-            $this->Year3 = now()->year;
+
+
 
             $this->updateDateproductSalesChart();
             $this->updateDateObjetivoFat1();
             $this->updateDateObjetivoFat2();
             $this->updateDateObjetivoFat3();
+            $this->updateDateObjetivoFat4();
+            // $this->updateDateObjetivoFat5();
 
 
             $this->INICIO = 1;            
@@ -71,6 +69,7 @@ class Analysis extends Component
             $this->updateDateObjetivoFat1();
             $this->updateDateObjetivoFat2();
             $this->updateDateObjetivoFat3();
+            $this->updateDateObjetivoFat4();
 
             $this->dispatchBrowserEvent('callJavascriptFunction', [
                 'function' => 'productSalesChart',
@@ -81,7 +80,9 @@ class Analysis extends Component
                 'objectiveOBJ2' => session('objectiveOBJ2') ?? 0,
                 'salesOBJ2' => session('salesOBJ2') ?? 0,
                 'objectiveOBJ3' => session('objectiveOBJ3') ?? 0,
-                'salesOBJ3' => session('salesOBJ3') ?? 0    
+                'salesOBJ3' => session('salesOBJ3') ?? 0,
+                'objectiveOBJ4' => session('objectiveOBJ4') ?? 0,
+                'salesOBJ4' => session('salesOBJ4') ?? 0      
             ]);
 
         }
@@ -238,6 +239,46 @@ class Analysis extends Component
         session(['salesOBJ3' => $response_decoded->sales]);
         return;
     }
+
+    public function updateDateObjetivoFat4()
+    {
+        // dd('Mês:'.$this->Month.'Ano:'.$this->Year);
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => env('SANIPOWER_URL_DIGITAL').'/api/analytics/top1000_objectives?Salesman_number='.Auth::user()->id_phc.'&year='.$this->Year.'&month='.$this->Month,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        
+        curl_close($curl);
+
+        $response_decoded = json_decode($response);
+        // dd( env('SANIPOWER_URL_DIGITAL').'/api/analytics/objectives?Salesman_number=59&year='.$this->Year.'&month='.$this->Month, $response_decoded);
+        if(isset($response_decoded->Message))
+        {
+            session(['objectiveOBJ4' => 0]);
+            session(['salesOBJ4' => 0]);
+            return;
+        }
+
+        session(['objectiveOBJ4' => $response_decoded->objective]);
+        session(['salesOBJ4' => $response_decoded->sales]);
+        return;
+    }
+
+
 
     public function render()
     {
