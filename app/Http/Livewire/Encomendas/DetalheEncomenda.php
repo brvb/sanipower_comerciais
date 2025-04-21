@@ -1206,10 +1206,15 @@ class DetalheEncomenda extends Component
         $idCliente = "";
         foreach($this->carrinhoCompras as $prod)
         {
-            $count++;
-
             $idCliente = $prod->id_cliente;
 
+            $key = implode('|', [
+                $prod->referencia,
+                $prod->price,
+                $prod->pvp,
+                $prod->discount,
+                $prod->discount2
+            ]);
 
             $totalItem = $prod->price * $prod->qtd;
             $totalItemComIva = $totalItem + ($totalItem * ($prod->iva / 100));
@@ -1221,47 +1226,41 @@ class DetalheEncomenda extends Component
                 ->where('id_carrinho_compras', $prod->id)
                 ->first();
 
-            if(empty($comentarioCheck))
-            {
-                $comentario = "";
-            } else {
-                $comentario = $comentarioCheck->comentario;
-            }
+            $comentario = $comentarioCheck ? $comentarioCheck->comentario : "";
 
-            if($prod->id_visita == null)
-            {
-                $visitaCheck = 0;
-                $this->visitaCheck =  0;
-            } 
-            else {
-                $visitaCheck = $prod->id_visita;
-                $this->visitaCheck = $visitaCheck;
+            $visitaCheck = $prod->id_visita ?? 0;
+            $this->visitaCheck = $visitaCheck;
+
+            $id_proposta = $prod->id_proposta ?? "";
+
+            if (!isset($agrupados[$key])) {
+                $count++;
+                $agrupados[$key] = [
+                    "id" => $count,
+                    "reference" => $prod->referencia,
+                    "description" => $prod->designacao,
+                    "quantity" => $prod->qtd,
+                    "tax" => $prod->iva,
+                    "tax_included" => false,
+                    "pvp" => $prod->pvp,
+                    "price" => $prod->price,
+                    "discount1" => $prod->discount,
+                    "discount2" => $prod->discount2,
+                    "discount3" => 0,
+                    "total" => $totalItem,
+                    "notes" => $comentario,
+                    "visit_id" => $visitaCheck,
+                    "budgets_id" => $id_proposta,
+                    "origin_id" => $prod->origin_id,
+                    "awarded" => $prod->awarded
+                ];
+            } else {
+                $agrupados[$key]["quantity"] += $prod->qtd;
+                $agrupados[$key]["total"] += $totalItem;
             }
-            if($prod->id_proposta == null){
-                $id_proposta = "";
-            }else{
-                $id_proposta = $prod->id_proposta;
-            }
-            $arrayProdutos[$count] = [
-                "id" => $count,
-                "reference" => $prod->referencia,
-                "description" => $prod->designacao,
-                "quantity" => $prod->qtd,
-                "tax" => $prod->iva,
-                "tax_included" => false,
-                "pvp" => $prod->pvp,
-                "price" => $prod->price,
-                "discount1" => $prod->discount,
-                "discount2" => $prod->discount2,
-                "discount3" => 0,
-                "total" => $totalItem,
-                "notes" => $comentario,
-                "visit_id" => $visitaCheck,
-                "budgets_id" =>  $id_proposta,
-                "origin_id" => $prod->origin_id,
-                "awarded" => $prod->awarded
-            ];
         }
+
+        $arrayProdutos = array_values($agrupados);
         // dd($arrayProdutos);
         if ($count <= 0){
             $this->dispatchBrowserEvent('checkToaster', ["message" => "Não foi selecionado artigos!", "status" => "error"]);
@@ -1358,13 +1357,12 @@ class DetalheEncomenda extends Component
            
             ComentariosProdutos::where('id_encomenda', $getEncomenda->id_encomenda)->delete();
             Carrinho::where('id_encomenda', $getEncomenda->id_encomenda)->delete();   
+            
             $encomendasArray = $this->clientesRepository->getEncomendasClienteFiltro(10,1,$this->idCliente,$this->nomeCliente,$idCliente,$this->zonaCliente,$this->telemovelCliente,$this->emailCliente,$this->nifCliente,"0","0",$this->startDate,$this->endDate,$this->statusEncomenda);
             $encomenda = $this->clientesRepository->getEncomendaID($response_decoded->id_document);
-            // dd($encomenda);
-            $encomenda = json_encode($encomenda->orders[0]);
-            // dd($encomenda);
 
-            // dd($encomenda);
+            $encomenda = json_encode($encomenda->orders[0]);
+
 
             $pdf = new Dompdf();
             $pdf = PDF::loadView('pdf.pdfTabelaEncomenda', ["encomenda" => $encomenda]);

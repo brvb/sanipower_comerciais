@@ -279,7 +279,7 @@ class EncomendaInfo extends Component
                 $bccEmails[] = $emailAddress;
             }
         }
-        dd($bccEmails);
+        // dd($bccEmails);
         if (!empty($bccEmails)) {
 
             Mail::to(Auth::user()->email)
