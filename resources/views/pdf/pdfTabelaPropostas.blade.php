@@ -23,7 +23,6 @@
             padding: 0;
         }
         .header {
-            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -37,7 +36,7 @@
         .container {
             width: 100%;
             margin: auto;
-            padding-top: 100px;
+            padding-top: 30px;
         }
         .info-section {
             display: flex;
@@ -106,45 +105,65 @@
         }
         .table-products tr {
             page-break-inside: avoid;
-            border-bottom: 1px solid #ccc; /* linha entre linhas */
+            border-bottom: 1px solid #ccc;
         }
 
         .product-ref-img {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    text-align: center;
-}
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            text-align: center;
+        }
 
-.product-ref-img > *:first-child {
-    margin-bottom: 5px;
-    font-weight: bold;
-}
+        .product-ref-img > *:first-child {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
 
-.product-description {
-    text-align: left;
-}
+        .product-description {
+            text-align: left;
+        }
 
-.product-obs {
-    font-size: 9px;
-    color: #555;
-    margin-top: 5px;
-    white-space: pre-line;
-    word-break: break-word;
-    padding-left: 15px;
-    text-align: left !important;
-}
+        .product-obs {
+            font-size: 8px;
+            color: #555;
+            margin-top: 5px;
+            white-space: pre-line;
+            word-break: break-word;
+            padding-left: 15px;
+            text-align: left !important;
+        }
+        .product-ref-text {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        @page {
+            margin-top: 30px;
+            @top-center {
+                content: element(header);
+            }
+        }
 
+        .header {
+            position: running(header);
+            text-align: left;
+            /* padding: 20px; */
+            background-color: white;
+        }
 
     </style>
 </head>
 <body>
 
     <!-- Header -->
-    <header class="header">
-        <img src="https://sanipower.pt/img/sanidigital.png" alt="Sanipower Logo">
-    </header>
+    <htmlpageheader name="myHeader">
+        <img src="https://sanipower.pt/img/sanidigital.png" style="height:50px;">
+    </htmlpageheader>
+    
+    <sethtmlpageheader name="myHeader" value="on" show-this-page="1" />
+    
+    
 
     <!-- Main Content -->
     <main class="container">
@@ -182,9 +201,7 @@
             </thead>
             <tbody>
                 @foreach ($proposta['lines'] as $line)
-                @php
-                    // use Illuminate\Support\Facades\Storage;
-            
+                @php            
                     if(session($proposta['id'].'DSC') == 1) {
                         $obs = ProdutosDB::where('ref', $line['reference'])->value('obs');
                     }
@@ -208,14 +225,14 @@
                 <tr class="table-line">
                     <td>
                         <div class="product-ref-img">
-                            {{ $line['reference'] }}
+                            <div class="product-ref-text">{{ $line['reference'] }}</div>
                             @if($imageExists)
                                 <img src="{{ $imgPath }}" alt="Imagem produto" style="max-width: 60px; margin-top: 5px;">
                             @endif
-                        </div>
+                        </div>                        
                     </td>
                     <td class="product-description">
-                        {{ $line['description'] }}
+                        <b>{{ $line['description'] }}</b>
                         @if(!empty($obs))
                             <div class="product-obs">
                                 {!! nl2br(e($obs)) !!}

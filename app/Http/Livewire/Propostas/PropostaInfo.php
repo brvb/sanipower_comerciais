@@ -274,16 +274,23 @@ class PropostaInfo extends Component
     {
         // dd($proposta);
         $idSession = $proposta['id'];
+        $idSessionDSC = $idSession.'DSC';
+        $idSessionIMGS = $idSession.'IMGS';
+
         if($this->DSCPDF == true)
         {
-            $idSessionDSC = $idSession.'DSC';
             Session::put($idSessionDSC, 1);
+        }else
+        {
+            Session::put($idSessionDSC, 0);
         }
 
         if($this->IMGSPDF == true)
         {
-            $idSessionIMGS = $idSession.'IMGS';
             Session::put($idSessionIMGS, 1);
+        }else
+        {
+            Session::put($idSessionIMGS, 0);
         }
 
         if (!$proposta) {
