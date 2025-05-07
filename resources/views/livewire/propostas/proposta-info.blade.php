@@ -67,53 +67,8 @@
                         </div>
                             @endif
                         @endif
-
-                  
-                       <!-- Botão que chama o modal -->
-                            {{-- @if($check == false)
-                            @if($cliente[0])
-                                <a href="javascript:void(0);" wire:click="$emit('showModal', @json($proposta))" class="btn btn-sm btn-success">
-                                    <i class="ti-shopping-cart"></i>
-                                    Adjudicar Proposta
-                                </a>
-                            @endif
-                            @endif --}}
-                            {{-- @push('scripts')
-                                <script>
-                                    window.addEventListener('show-confirmation-modal', event => {
-                                        console.log('Modal de confirmação será exibido');
-                                        $('#confirmAdjudicarModal').modal('show');
-                                    });
-
-                                    window.addEventListener('hide-confirmation-modal', event => {
-                                        console.log('Modal de confirmação será ocultado');
-                                        $('#confirmAdjudicarModal').modal('hide');
-                                    });
-                                </script>
-                                @endpush --}}
-
-                            <!-- Modal de Confirmação -->
-                            {{-- <div class="modal fade" id="confirmAdjudicarModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true" wire:ignore.self>
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="confirmModalLabel">Confirmação</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        Tem certeza de que deseja adjudicar esta proposta?
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                        <button type="button" class="btn btn-primary" wire:click="confirmAdjudicar">Confirmar</button>
-                                    </div>
-                                </div>
-                            </div>
-                            </div> --}}
                         <a href="javascript:void(0);" wire:click="enviarEmail({{ json_encode($proposta) }})" class="btn btn-sm btn-primary"><i class="fas fa-paper-plane"></i> Enviar email</a>
-                        <a href="javascript:void(0);" wire:click="gerarPdfProposta({{ json_encode($proposta) }})" class="btn btn-sm btn-secondary"> Gerar PDF</a>
+                        <a href="javascript:void(0);" wire:click="confPDF({{ json_encode($proposta) }})" class="btn btn-sm btn-secondary"> Gerar PDF</a>
                         <a href="javascript:void(0);" wire:click="goBack" class="btn btn-sm btn-secondary"> Voltar atrás</a>
                     </div>
                 </div>
@@ -658,6 +613,62 @@
         </div>
     </div>
 
+    <div class="modal fade" id="confPDFModal" tabindex="-1" role="dialog" aria-labelledby="modalProposta" aria-hidden="true" >
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-primary"><i class="ti-archive"></i>Configuração do PDF</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="table-responsive" style="overflow-x:none!important;">
+                                <table class="table table-bordered table-hover">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Check</th>
+                                            <th>Email</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="form-checkbox">
+                                                    <label>
+                                                        <input type="checkbox" id="confPDFCheckBox1" wire:model.defer="DSCPDF">
+                                                        <span class="checkmark"><i class="fa fa-check pick"></i></span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td> <label for = "confPDFCheckBox1">Com descrição</label></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="form-checkbox">
+                                                    <label>
+                                                        <input type="checkbox" id="confPDFCheckBox2" wire:model.defer="IMGSPDF">
+                                                        <span class="checkmark"><i class="fa fa-check pick"></i></span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td> <label for = "confPDFCheckBox2">Com imagens</label></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#tab6" id="enviarEmailClientes" wire:click="gerarPdfProposta({{json_encode($proposta)}})" data-toggle="tab" class="nav-link btn btn-outline-primary">Gerar PDF</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="modalComentario" tabindex="-1" role="dialog" aria-labelledby="modalComentario" aria-hidden="true" >
         <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -691,6 +702,11 @@
 
         window.addEventListener('open-modal-adjudicar-proposta', event => {
             $('#confirmAdjudicarModal').modal('show');
+        });
+
+        window.addEventListener('open-modal-conf-pdf-proposta', event => {
+            $("#confPDFCheckBox").prop('checked', false);
+            $('#confPDFModal').modal('show');
         });
        
         window.addEventListener('chooseEmail', function(e) {

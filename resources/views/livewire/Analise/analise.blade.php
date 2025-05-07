@@ -48,20 +48,28 @@
                     
                         <div class="row mb-1">
                             <form class="w-100 d-flex align-items-end justify-content-start flex-wrap gap-3">
-                                <div class="form-group me-3">
+                                <div class="form-group me-3" style = 'Margin-right:10px;'   >
                                     <label for="dataInicio">Data Inicial</label>
                                     <input type="date" class="form-control" id="dataInicio" name="dataInicio" value="{{ $DataInicial }}"  wire:model.defer="dataInicio">
                                 </div>
                                 
-                                <div class="form-group me-3">
+                                <div class="form-group me-3" style = 'Margin-right:10px;'>
                                     <label for="dataFim">Data Final</label>
                                     <input type="date" class="form-control" id="dataFim" name="dataFim" value="{{ $DataFinal }}"  wire:model.defer="dataFim">
                                 </div>
                                 
-                                <div class="form-group">
+                                <div class="form-group" style = 'Margin-right:20px;'>
                                     <button type="submit" class="btn btn-primary" wire:click.prevent="carregarClientes">
                                         Filtrar
                                     </button>
+                                </div>
+                                <div class="form-group me-3">
+                                    <label for="minValue">Valor Mínimo (€)</label>
+                                    <input type="number" class="form-control" id="minValue" step="0.01" placeholder="0.00">
+                                </div>
+                                <div class="form-group me-3">
+                                    <label for="maxValue">Valor Máximo (€)</label>
+                                    <input type="number" class="form-control" id="maxValue" step="0.01" placeholder="99999.99">
                                 </div>
                             </form>
                         </div>
@@ -94,6 +102,56 @@
                         </div>
                     </div>
                 </div>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const tabela = document.getElementById('tabela-cliente3');
+                        const cabecalho = tabela.querySelector('thead');
+                        let ordemDescendente = true;
+                    
+                        function getValorNumerico(celula) {
+                            return parseFloat(
+                                celula.textContent.replace('€', '').replace(/\./g, '').replace(',', '.')
+                            );
+                        }
+                    
+                        function aplicarFiltroPorIntervalo() {
+                            const min = parseFloat(document.getElementById('minValue').value) || 0;
+                            const max = parseFloat(document.getElementById('maxValue').value) || Infinity;
+                    
+                            const linhas = tabela.querySelectorAll('tbody tr');
+                            linhas.forEach(linha => {
+                                const valor = getValorNumerico(linha.children[2]);
+                                linha.style.display = (valor >= min && valor <= max) ? '' : 'none';
+                            });
+                        }
+                    
+                        document.getElementById('minValue').addEventListener('input', aplicarFiltroPorIntervalo);
+                        document.getElementById('maxValue').addEventListener('input', aplicarFiltroPorIntervalo);
+                    
+                        cabecalho.addEventListener('click', function (e) {
+                            const th = e.target.closest('th');
+                            if (!th) return;
+                            const colunaIndex = Array.from(th.parentNode.children).indexOf(th);
+                            if (colunaIndex !== 2) return;
+                    
+                            const linhas = Array.from(tabela.querySelectorAll('tbody tr'));
+                    
+                            const linhasOrdenadas = linhas.sort((a, b) => {
+                                const valorA = getValorNumerico(a.children[colunaIndex]);
+                                const valorB = getValorNumerico(b.children[colunaIndex]);
+                                return ordemDescendente ? valorB - valorA : valorA - valorB;
+                            });
+                    
+                            ordemDescendente = !ordemDescendente;
+                    
+                            const tbody = tabela.querySelector('tbody');
+                            tbody.innerHTML = '';
+                            linhasOrdenadas.forEach(linha => tbody.appendChild(linha));
+                    
+                            aplicarFiltroPorIntervalo(); // Reaplica o filtro após ordenação
+                        });
+                    });
+                    </script>                     
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card mb-3">

@@ -1,3 +1,4 @@
+<?php use App\Models\ProdutosDB; ?>
 @php
      $proposta = json_decode($proposta, true);
     //  dd($proposta);
@@ -103,6 +104,39 @@
         .footer-logo img {
             height: 50px;
         }
+        .table-products tr {
+            page-break-inside: avoid;
+            border-bottom: 1px solid #ccc; /* linha entre linhas */
+        }
+
+        .product-ref-img {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+}
+
+.product-ref-img > *:first-child {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.product-description {
+    text-align: left;
+}
+
+.product-obs {
+    font-size: 9px;
+    color: #555;
+    margin-top: 5px;
+    white-space: pre-line;
+    word-break: break-word;
+    padding-left: 15px;
+    text-align: left !important;
+}
+
+
     </style>
 </head>
 <body>
@@ -149,27 +183,59 @@
             <tbody>
                 @foreach ($proposta['lines'] as $line)
                 @php
-					$pvp = floatval($line['pvp']);
-					$pvp_formatado = number_format($pvp, 3, '.', '');
-				@endphp
-                <tr style = "border-bottom: none !important; border-top: none !important;">
-                    <td>{{ $line['reference'] }}</td>
-                    <td>{{ $line['description'] }}</td>
-                    <td>{{ trim(number_format(floatval($line['quantity']), 0)) }}</td>
-                    <td>{{ floatval($pvp_formatado) }}€</td>
+                    // use Illuminate\Support\Facades\Storage;
+            
+                    if(session($proposta['id'].'DSC') == 1) {
+                        $obs = ProdutosDB::where('ref', $line['reference'])->value('obs');
+                    }
+            
+                    $imageExists = false;
+                    if(session($proposta['id'].'IMGS') == 1) {
+                        $imgName = ProdutosDB::where('ref', $line['reference'])->value('imagem');
+                        $imgPath = "https://storage.sanipower.pt/storage/produtos/{$line['family_number']}/{$imgName}.jpg";
+            
+                        // Checagem simples por headers HTTP (apenas se estiver acessando URL externa)
+                        $headers = @get_headers($imgPath);
+                        if ($headers && strpos($headers[0], '200') !== false) {
+                            $imageExists = true;
+                        }
+                    }
+            
+                    $pvp = floatval($line['pvp']);
+                    $pvp_formatado = number_format($pvp, 3, '.', '');
+                @endphp
+            
+                <tr class="table-line">
                     <td>
-                    {{ number_format($line['discount'], 0) }}%
-                    @if($line['discount2'] > 0)
-                    +{{ number_format($line['discount2'], 0) }}%
-                    @endif</td>
-                    <?php
-					$line['price'] = number_format($line['price'], 3, '.', '');			
-					?>
+                        <div class="product-ref-img">
+                            {{ $line['reference'] }}
+                            @if($imageExists)
+                                <img src="{{ $imgPath }}" alt="Imagem produto" style="max-width: 60px; margin-top: 5px;">
+                            @endif
+                        </div>
+                    </td>
+                    <td class="product-description">
+                        {{ $line['description'] }}
+                        @if(!empty($obs))
+                            <div class="product-obs">
+                                {!! nl2br(e($obs)) !!}
+                            </div>
+                        @endif
+                    </td>
+                    <td>{{ trim(number_format(floatval($line['quantity']), 0)) }}</td>
+                    <td>{{ $pvp_formatado }}€</td>
+                    <td>
+                        {{ number_format($line['discount'], 0) }}%
+                        @if($line['discount2'] > 0)
+                        +{{ number_format($line['discount2'], 0) }}%
+                        @endif
+                    </td>
+                    @php $line['price'] = number_format($line['price'], 3, '.', ''); @endphp
                     <td>{{ $line['price'] }}€</td>
                     <td>{{ $line['total'] }}€</td>
                 </tr>
                 @endforeach
-            </tbody>
+            </tbody>                      
             <tfoot>
                 <tr style = "border-top: 1px solid black; border-bottom: none !important;">
                     <td colspan="6" style="text-align: right;">Total s/IVA</td>

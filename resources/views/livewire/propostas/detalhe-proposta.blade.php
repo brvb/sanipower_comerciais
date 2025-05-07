@@ -1117,7 +1117,8 @@
                                                                                     background: white;
                                                                                     padding: 20px;
                                                                                     border-radius: 10px;
-                                                                                    width: 300px;
+                                                                                    width: 90%;           /* Responsivo em telas menores */
+                                                                                    max-width: 500px;     /* Maior largura possível */
                                                                                     position: relative;
                                                                                 }
                                                                                 .close {
@@ -1413,12 +1414,12 @@
       
                 </div>
                
-         
+            
             <div class="row">
           
                 <div class="col-md-12 p-0 text-right" style="border-bottom: none;padding: 0;">
                  
-               
+                
                     <br/>
                     <table class="float-right table init-datatable">
                         <tbody>
@@ -1476,7 +1477,7 @@
                      </div>
 
                      <div class="col-xl-12 col-xs-12">
- 
+
                         <div class="form-group">
                             <label>Validade da Proposta</label>
                             <div class="input-group date">
@@ -1562,7 +1563,7 @@
                         $("#modalProposta").modal();
                     });
             </script>
-            <style>
+            {{-- <style>
             .container {
             -webkit-overflow-scrolling: touch;
             overflow-y: scroll;
@@ -1630,7 +1631,7 @@
             -webkit-transition: all 0.3s ease;
                     transition: all 0.3s ease;
             }
-            </style>
+            </style> --}}
 <div class="modal fade" id="modalProposta" tabindex="-1" role="dialog" aria-labelledby="modalProposta" aria-hidden="true" >
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content">
