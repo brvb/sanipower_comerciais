@@ -209,9 +209,8 @@
                     $imageExists = false;
                     if(session($proposta['id'].'IMGS') == 1) {
                         $imgName = ProdutosDB::where('ref', $line['reference'])->value('imagem');
+                        $imgName = explode(';', $imgName)[0];
                         $imgPath = "https://storage.sanipower.pt/storage/produtos/{$line['family_number']}/{$imgName}.jpg";
-            
-                        // Checagem simples por headers HTTP (apenas se estiver acessando URL externa)
                         $headers = @get_headers($imgPath);
                         if ($headers && strpos($headers[0], '200') !== false) {
                             $imageExists = true;
@@ -227,7 +226,7 @@
                         <div class="product-ref-img">
                             <div class="product-ref-text">{{ $line['reference'] }}</div>
                             @if($imageExists)
-                                <img src="{{ $imgPath }}" alt="Imagem produto" style="max-width: 60px; margin-top: 5px;">
+                                <img src="{{ $imgPath }}" alt="Imagem produto" style="max-width: 90px; margin-top: 5px;">
                             @endif
                         </div>                        
                     </td>

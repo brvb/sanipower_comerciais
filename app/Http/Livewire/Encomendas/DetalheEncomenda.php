@@ -1169,7 +1169,7 @@ class DetalheEncomenda extends Component
             }
         }
 
-        if($this->transportadora == false || $this->entrega_obra == false)
+        if($this->transportadora == false && $this->entrega_obra == false)
         {
             $this->moradaFinalizar = ''; 
             $this->codpostalFinalizar = ''; 

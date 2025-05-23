@@ -21,9 +21,8 @@
             <ul class="nav nav-pills card-header-pills">
                 <li class="nav-item">
                     <a href="#tab6" data-toggle="tab" class="nav-link {{ $tabDetalhesPropostas }}">Artigos</a>
-                    
                 </li>
-              
+                
                 <li class="nav-item">
                    <a href="#tab4" data-toggle="tab" class="nav-link {{ $tabDetail }}">Detalhes</a>
                 </li>
@@ -78,7 +77,7 @@
 
         <div class="card-body" id="scrollModalBody" style="overflow-y:auto;max-height:70vh;padding-right: 0;">
             <div class="tab-content">
-           
+            
                 <div class="tab-pane fade {{ $tabDetail }}" id="tab4">
                     <div style="display:flex;align-items: center;">
                         <h4 class="card-title" style="margin-bottom: 0;">{{ $proposta->budget }} - {{ $proposta->name }} </h4>
@@ -679,8 +678,6 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    
-                           
                     <div class="input-group mb-2">
                         <textarea type="text" class="form-control" cols="4" rows="4" style="resize: none;" wire:model.defer="comentarioEncomenda"></textarea>
                     </div>
@@ -756,7 +753,7 @@
                 moreComments();
             });
         });
-
+        
         jQuery(document).ready(function() {
             const url = new URL(window.location.href);
             if (!url.searchParams.has('reloaded')) {

@@ -23,97 +23,80 @@
         text-align: center;
         padding: 9px 0px;
     }
-
-        /*  DATEPICKER */
-
-        .datepicker {
-            z-index: 1051 !important;
-            /* ou qualquer valor maior que o z-index do modal */
-        }
-
-        .datepicker .day,
-        .datepicker .dow {
-            padding: 5px 10px !important;
-            /* Ajuste o padding conforme necessário */
-        }
-
-        .datepicker table tr td {
-            width: 30px !important;
-            /* Ajuste a largura das células conforme necessário */
-        }
-
-        .datepicker .prev,
-        .datepicker .datepicker-switch,
-        .datepicker .next {
-            text-align: center !important;
-        }
-
-        .datepicker table tr td.day {
-            cursor: pointer;
-        }
-
-        .datepicker table tr td.day:hover {
-            background-color: #1791ba;
-            /* Ajuste a cor de fundo conforme necessário */
-        }
-
-        #scroll-col-9::-webkit-scrollbar{
-            height: 0.6rem;
-        }
-        #scroll-col-9::-webkit-scrollbar-thumb{
-            background-color: rgb(121, 121, 121);
-            border-radius: 0.1rem;
-        }
-        #scroll-col-9::-webkit-scrollbar{
-            width: 0.6rem;
-        }
-
-        #scroll-col-9::-webkit-scrollbar{
-            height: 0.6rem;
-        }
-        #scroll-col-9::-webkit-scrollbar-thumb{
-            background-color: rgb(121, 121, 121);
-            border-radius: 0.1rem;
-        }
-        #scroll-col-9::-webkit-scrollbar{
-            width: 0.6rem;
-        }
-        .navbar2 {
-            height: auto;
-        }
-        #scroll-col-9 {
-            height: auto;
-            max-height: none;
-        }
-       
-        #navbar2::-webkit-scrollbar{
-            height: 0.6rem;
-        }
-        #navbar2::-webkit-scrollbar-thumb{
-            background-color: rgb(121, 121, 121);
-            border-radius: 0.1rem;
-        }
-        #navbar2::-webkit-scrollbar{
-            width: 0.6rem;
-        }
-
-        #navbar2::-webkit-scrollbar{
-            height: 0.6rem;
-        }
-        #navbar2::-webkit-scrollbar-thumb{
-            background-color: rgb(121, 121, 121);
-            border-radius: 0.1rem;
-        }
-        #navbar2::-webkit-scrollbar{
-            width: 0.6rem;
-        }
-        .navbar-hidden{
-            display: none !important;
-        }
-
-        .navbar-hidden #scroll-col-9 {
-            width: 100%;
-        }
+    .datepicker {
+        z-index: 1051 !important;
+    }
+    .datepicker .day,
+    .datepicker .dow {
+        padding: 5px 10px !important;
+    }
+    .datepicker table tr td {
+        width: 30px !important;
+    }
+    .datepicker .prev,
+    .datepicker .datepicker-switch,
+    .datepicker .next {
+        text-align: center !important;
+    }
+    .datepicker table tr td.day {
+        cursor: pointer;
+    }
+    .datepicker table tr td.day:hover {
+        background-color: #1791ba;
+    }
+    #scroll-col-9::-webkit-scrollbar{
+        height: 0.6rem;
+    }
+    #scroll-col-9::-webkit-scrollbar-thumb{
+        background-color: rgb(121, 121, 121);
+        border-radius: 0.1rem;
+    }
+    #scroll-col-9::-webkit-scrollbar{
+        width: 0.6rem;
+    }
+    #scroll-col-9::-webkit-scrollbar{
+        height: 0.6rem;
+    }
+    #scroll-col-9::-webkit-scrollbar-thumb{
+        background-color: rgb(121, 121, 121);
+        border-radius: 0.1rem;
+    }
+    #scroll-col-9::-webkit-scrollbar{
+        width: 0.6rem;
+    }
+    .navbar2 {
+        height: auto;
+    }
+    #scroll-col-9 {
+        height: auto;
+        max-height: none;
+    }
+    #navbar2::-webkit-scrollbar{
+        height: 0.6rem;
+    }
+    #navbar2::-webkit-scrollbar-thumb{
+        background-color: rgb(121, 121, 121);
+        border-radius: 0.1rem;
+    }
+    #navbar2::-webkit-scrollbar{
+        width: 0.6rem;
+    }
+    #navbar2::-webkit-scrollbar{
+        height: 0.6rem;
+    }
+    #navbar2::-webkit-scrollbar-thumb{
+        background-color: rgb(121, 121, 121);
+        border-radius: 0.1rem;
+    }
+    #navbar2::-webkit-scrollbar{
+        width: 0.6rem;
+    }
+    .navbar-hidden{
+        display: none !important;
+    }
+    .navbar-hidden #scroll-col-9 {
+        width: 100%;
+    }
 </style>
     <!--  LOADING -->
     @if ($showLoaderPrincipal == true)
@@ -257,7 +240,6 @@
                                         <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->no}}" readonly>
                                     </div>
                                 </div>
-                            
 
                             </div>
                             <div class="col-xl-4">
@@ -342,15 +324,22 @@
                                         <input type="text" class="form-control" value="{{$detalhesCliente->customers[0]->email}}" readonly>
                                     </div>
                                 </div>
-
                             </div>
                             <div class="col-xl-4">
-
                             
                             </div>
 
                             <div class="col-xl-4">
 
+                                <div class="form-group">
+                                    <label>Plafond</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-carolina"><i class="ti-money text-light"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="{{ number_format($detalhesCliente->customers[0]->plafond,3)}}€" readonly>
+                                    </div>
+                                </div>
                                 
                             </div>
                         </div>
@@ -369,7 +358,6 @@
                                 </div>
                             </div>
                             <div class="col-xl-4">
-                            
                             
                             
                             </div>
@@ -465,8 +453,7 @@
                                                 </div>
                                             </div>
 
-                                            <a href="javascript:void(0)" class="buttonGoback"><i
-                                                    class="ti ti-arrow-left IconGoback"></i>Produtos</a>
+                                            <a href="javascript:void(0)" class="buttonGoback"><i class="ti ti-arrow-left IconGoback"></i>Produtos</a>
                                             <h2>{{ $cat->name }}</h2>
                                             <div class="row">
                                             {{-- vinicius hello --}}
@@ -497,7 +484,6 @@
                                                                         </a>
                                                                     </div>
                                                                 </div>
-
 
                                                                 {{-- <div class="col-4">
                                                                     <h5 class="title-description-family"
@@ -865,7 +851,6 @@
                                                 @else
                                                     @if(session('CampProds') !== null)
                                                         @if($products->count())
-                                                        
                                                             @foreach ($products as $prodt)
                                                                 <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-3">
                                                                     <div class="card card-decoration card-outline-primary border border-2">
@@ -1033,7 +1018,6 @@
                                                                                                                 <div class="dropdownIcon">
                                                                                                                     <i class="ti-package text-light dropdownIcon-toggle" style="margin:0;padding:0;"></i>
                                                                                                                 
-                                                                                                                
                                                                                                                     <ul class="dropdownIcon-menu" style="color:black;left:-350px!important;">
                                                                                                                         <li><i class="fa fa-play icon-play"></i></li>
                                                                                                                         <li style="border-bottom: 1px solid;">
@@ -1117,8 +1101,8 @@
                                                                                     background: white;
                                                                                     padding: 20px;
                                                                                     border-radius: 10px;
-                                                                                    width: 90%;           /* Responsivo em telas menores */
-                                                                                    max-width: 500px;     /* Maior largura possível */
+                                                                                    width: 90%;
+                                                                                    max-width: 500px;
                                                                                     position: relative;
                                                                                 }
                                                                                 .close {
@@ -1169,7 +1153,6 @@
                                                                                 </div>
                                                                         
                                                                                 <div>
-                                                                                    
                                                                                     <button class="btn btn-md btn-primary" id="openModal"><i class="ti-info"></i> Descrição Produto</button>
                                                                                 </div>
                                                                                 <div>
@@ -1206,7 +1189,7 @@
                     $ValorTotalComIva = 0;
                 @endphp
                 <div class="row" style="align-items: center;">
-                 
+                
                     @if($allkit)
                     <div class="col-md-12 p-0">
                     
@@ -1399,7 +1382,6 @@
                             </label>
                         </div> --}}
                        
-
                     </div>
                     {{-- <div class="col-md-12 p-0 d-flex"  style="text-align:right;margin-bottom: 15px;justify-content: flex-end;">
                         <div class="btn-Add-itens-kit">

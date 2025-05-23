@@ -276,6 +276,7 @@ class DetalheCliente extends Component
 
     public function render()
     {
+        // dd($this->detailsClientes);
         return view('livewire.clientes.detalhe-cliente',["detalhesCliente" => $this->detailsClientes, "analisesCliente" =>$this->analysisClientes, "vendasAnuais" =>$this->analysisAnualClientes ]);
     }
 }

@@ -263,7 +263,16 @@
                                 </div>
 
                                 <div class="col-xl-4">
-
+                                    
+                                    <div class="form-group">
+                                        <label>Plafond</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text bg-carolina"><i class="ti-money text-light"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control" value="{{ number_format($detalhesCliente->customers[0]->plafond,3)}}€" readonly>
+                                        </div>
+                                    </div>
                                     
                                 </div>
                             </div>

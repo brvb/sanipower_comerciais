@@ -44,6 +44,9 @@
                         @php
                             $DataInicial = $_GET['dataInicio'] ?? now()->subDays(30)->format('Y-m-d');
                             $DataFinal = $_GET['dataFim'] ?? now()->format('Y-m-d');
+
+                            $DateIniAnalise = $_GET['DateIniAnalise'] ?? now()->subDays(30)->format('Y-m-d');
+                            $DateEndAnalise = $_GET['DateEndAnalise'] ?? now()->format('Y-m-d');
                         @endphp
                     
                         <div class="row mb-1">
@@ -97,7 +100,7 @@
                                             @endforeach
                                         @endif
                                     </tbody>
-                                </table>                        
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -148,7 +151,7 @@
                             tbody.innerHTML = '';
                             linhasOrdenadas.forEach(linha => tbody.appendChild(linha));
                     
-                            aplicarFiltroPorIntervalo(); // Reaplica o filtro após ordenação
+                            aplicarFiltroPorIntervalo();
                         });
                     });
                     </script>                     
@@ -164,17 +167,24 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <div class="row mb-2">
-                                <div class="col-md-6 col-12">
-                                    <label class="mt-2">Data inicial</label>
-                                    <input type="date" id="data-inicial" class="form-control" value="{{ $this->DateIniAnalise }}">
+                            <div class="card-body">
+                                <div class="row mb-2">
+                                    <form class="w-100 d-flex align-items-end justify-content-start flex-wrap gap-3">
+                                        <div class="col-md-5 col-10">
+                                            <label class="mt-2">Data inicial</label>
+                                            <input type="date" id="data-inicial" name="DateIniAnalise" class="form-control" value="{{ $DateIniAnalise }}" wire:model.defer="DateIniAnalise">
+                                        </div>
+                                        <div class="col-md-5 col-10">
+                                            <label class="mt-2">Data final</label>
+                                            <input type="date" id="data-final" name="DateEndAnalise" class="form-control" value="{{ $DateEndAnalise }}" wire:model.defer="DateEndAnalise">
+                                        </div>
+                                        <div class="form-group" style = 'Margin-right:20px;'>
+                                            <button type="submit" class="btn btn-primary" wire:click.prevent="carregarFamilias">
+                                                Filtrar
+                                            </button>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="col-md-6 col-12">
-                                    <label class="mt-2">Data final</label>
-                                    <input type="date" id="data-final" class="form-control" value="{{ $this->DateEndAnalise }}">
-                                </div>
-                            </div>
                             <div class="table-wrapper">
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-hover" id="tabela-cliente2">
@@ -346,14 +356,12 @@
         current.setDate(current.getDate() + 1);
     }
 
-    // Encontra o índice da data padrão recebida do PHP
     const defaultStartDate = startInput.dataset.defaultDate;
     const defaultEndDate = endInput.dataset.defaultDate;
 
     const startIndex = dates.indexOf(defaultStartDate);
     const endIndex = dates.indexOf(defaultEndDate);
 
-    // Define os limites e os valores iniciais dos sliders
     startInput.min = 0;
     endInput.min = 0;
     startInput.max = dates.length - 1;
@@ -380,7 +388,6 @@
 
     updateLabels();
 </script>
-
 
 <script>
     document.addEventListener('livewire:load', function () {
