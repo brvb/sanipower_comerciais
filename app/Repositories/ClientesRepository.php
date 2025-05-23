@@ -435,7 +435,9 @@ class ClientesRepository implements ClientesInterface
         curl_close($curl);
      
         $response_decoded = json_decode($response);
-       
+        
+        // dd(env('SANIPOWER_URL_DIGITAL').'/api/customers/GetCustomers?perPage='.$perPage.'&Page='.$page.'&Salesman_number='.$idPhcUser.$string, $response_decoded);
+
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         if($response_decoded != null)
         {

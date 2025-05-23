@@ -1,3 +1,4 @@
+<?php use App\Models\ProdutosDB; ?>
 @php
      $proposta = json_decode($proposta, true);
     //  dd($proposta);
@@ -22,7 +23,6 @@
             padding: 0;
         }
         .header {
-            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -36,7 +36,7 @@
         .container {
             width: 100%;
             margin: auto;
-            padding-top: 100px;
+            padding-top: 30px;
         }
         .info-section {
             display: flex;
@@ -103,14 +103,67 @@
         .footer-logo img {
             height: 50px;
         }
+        .table-products tr {
+            page-break-inside: avoid;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .product-ref-img {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            text-align: center;
+        }
+
+        .product-ref-img > *:first-child {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .product-description {
+            text-align: left;
+        }
+
+        .product-obs {
+            font-size: 8px;
+            color: #555;
+            margin-top: 5px;
+            white-space: pre-line;
+            word-break: break-word;
+            padding-left: 15px;
+            text-align: left !important;
+        }
+        .product-ref-text {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        @page {
+            margin-top: 30px;
+            @top-center {
+                content: element(header);
+            }
+        }
+
+        .header {
+            position: running(header);
+            text-align: left;
+            /* padding: 20px; */
+            background-color: white;
+        }
+
     </style>
 </head>
 <body>
 
     <!-- Header -->
-    <header class="header">
-        <img src="https://sanipower.pt/img/sanidigital.png" alt="Sanipower Logo">
-    </header>
+    <htmlpageheader name="myHeader">
+        <img src="https://sanipower.pt/img/sanidigital.png" style="height:50px;">
+    </htmlpageheader>
+    
+    <sethtmlpageheader name="myHeader" value="on" show-this-page="1" />
+    
+    
 
     <!-- Main Content -->
     <main class="container">
@@ -148,28 +201,57 @@
             </thead>
             <tbody>
                 @foreach ($proposta['lines'] as $line)
-                @php
-					$pvp = floatval($line['pvp']);
-					$pvp_formatado = number_format($pvp, 3, '.', '');
-				@endphp
-                <tr style = "border-bottom: none !important; border-top: none !important;">
-                    <td>{{ $line['reference'] }}</td>
-                    <td>{{ $line['description'] }}</td>
-                    <td>{{ trim(number_format(floatval($line['quantity']), 0)) }}</td>
-                    <td>{{ floatval($pvp_formatado) }}€</td>
+                @php            
+                    if(session($proposta['id'].'DSC') == 1) {
+                        $obs = ProdutosDB::where('ref', $line['reference'])->value('obs');
+                    }
+            
+                    $imageExists = false;
+                    if(session($proposta['id'].'IMGS') == 1) {
+                        $imgName = ProdutosDB::where('ref', $line['reference'])->value('imagem');
+                        $imgName = explode(';', $imgName)[0];
+                        $imgPath = "https://storage.sanipower.pt/storage/produtos/{$line['family_number']}/{$imgName}.jpg";
+                        $headers = @get_headers($imgPath);
+                        if ($headers && strpos($headers[0], '200') !== false) {
+                            $imageExists = true;
+                        }
+                    }
+            
+                    $pvp = floatval($line['pvp']);
+                    $pvp_formatado = number_format($pvp, 3, '.', '');
+                @endphp
+            
+                <tr class="table-line">
                     <td>
-                    {{ number_format($line['discount'], 0) }}%
-                    @if($line['discount2'] > 0)
-                    +{{ number_format($line['discount2'], 0) }}%
-                    @endif</td>
-                    <?php
-					$line['price'] = number_format($line['price'], 3, '.', '');			
-					?>
+                        <div class="product-ref-img">
+                            <div class="product-ref-text">{{ $line['reference'] }}</div>
+                            @if($imageExists)
+                                <img src="{{ $imgPath }}" alt="Imagem produto" style="max-width: 90px; margin-top: 5px;">
+                            @endif
+                        </div>                        
+                    </td>
+                    <td class="product-description">
+                        <b>{{ $line['description'] }}</b>
+                        @if(!empty($obs))
+                            <div class="product-obs">
+                                {!! nl2br(e($obs)) !!}
+                            </div>
+                        @endif
+                    </td>
+                    <td>{{ trim(number_format(floatval($line['quantity']), 0)) }}</td>
+                    <td>{{ $pvp_formatado }}€</td>
+                    <td>
+                        {{ number_format($line['discount'], 0) }}%
+                        @if($line['discount2'] > 0)
+                        +{{ number_format($line['discount2'], 0) }}%
+                        @endif
+                    </td>
+                    @php $line['price'] = number_format($line['price'], 3, '.', ''); @endphp
                     <td>{{ $line['price'] }}€</td>
                     <td>{{ $line['total'] }}€</td>
                 </tr>
                 @endforeach
-            </tbody>
+            </tbody>                      
             <tfoot>
                 <tr style = "border-top: 1px solid black; border-bottom: none !important;">
                     <td colspan="6" style="text-align: right;">Total s/IVA</td>

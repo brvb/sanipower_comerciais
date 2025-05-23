@@ -17,7 +17,6 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Session;
 
 
-
 class Analise extends Component
 {
     public $table;
@@ -47,20 +46,15 @@ class Analise extends Component
     {
         $id = Auth::user()->id_phc;
 
-        $this->DateIniAnalise = Session::get('DateIniAnalise') ?? now()->startOfMonth()->format('Y-m-d');
-        $this->DateEndAnalise = Session::get('DateEndAnalise') ?? now()->format('Y-m-d');
-
-        $this->analysisClientes = $this->clientesRepository->getListagemAnaliseFamily($this->DateIniAnalise, $this->DateEndAnalise, 0, $id);
         $this->analysisAnualClientes = $this->clientesRepository->getListagemAnaliseAnual($id, 0);
 
-        // Valores iniciais (últimos 30 dias)
-        // $this->dataFim = now()->format('d-m-Y');
         $this->dataFim = '12-04-2025';
-        // $this->dataInicio = now()->subDays(30)->format('d-m-Y');
+
         $this->dataInicio = '01-03-2025';
 
-
         Session::put('clientes', $this->carregarClientes());
+
+        Session::put('analysisClientes', $this->carregarFamilias());
     }
 
     public function carregarClientes()
@@ -86,52 +80,46 @@ class Analise extends Component
         $response = curl_exec($curl);
         
         curl_close($curl);
-
+        
         $response_decoded = json_decode($response);
         
         return $response_decoded;
     }
 
-    public function AlterDateIniAnalise($date)
+    public function carregarFamilias()
     {
-        // dd('AQUI');
-        $this->DateIniAnalise = $date;
-        Session::put('DateIniAnalise', $this->DateIniAnalise);
+        $id = Auth::user()->id_phc;
 
-        // return redirect()->route('Analise');
-        $this->emit('refreshPage');
-    }
+        $this->DateIniAnalise = $_GET['DateIniAnalise'] ?? now()->subDays(30)->format('Y-m-d');
+        $this->DateEndAnalise = $_GET['DateEndAnalise'] ?? now()->format('Y-m-d');
 
-    public function AlterDateEndAnalise($date)
-    {
-        // dd('AQUI2');
-        $this->DateEndAnalise = $date;
-        Session::put('DateEndAnalise', $this->DateEndAnalise);
+        // dd($this->DateIniAnalise, $this->DateEndAnalise);
 
-        // return redirect()->route('Analise');
-        $this->emit('refreshPage');
+        $this->analysisClientes = $this->clientesRepository->getListagemAnaliseFamily($this->DateIniAnalise, $this->DateEndAnalise, 0, $id);
+        
+        return $this->analysisClientes;
     }
 
     public function render()
     {
-        if(!isset($this->analysisClientes))
-        {
-            $id = Auth::user()->id_phc;
-
-            $this->DateIniAnalise = Session::get('DateIniAnalise') ?? now()->startOfMonth()->format('Y-m-d');
-            $this->DateEndAnalise = Session::get('DateEndAnalise') ?? now()->format('Y-m-d');
-
-            $this->analysisClientes = $this->clientesRepository->getListagemAnaliseFamily($this->DateIniAnalise, $this->DateEndAnalise, 0, $id);
-        }
-
         if(!isset($this->analysisAnualClientes))
         {
             $id = Auth::user()->id_phc;
 
             $this->analysisAnualClientes = $this->clientesRepository->getListagemAnaliseAnual($id, 0);
         }
-        
-        return view('livewire.Analise.analise', ["analisesCliente" =>$this->analysisClientes, "vendasAnuais" =>$this->analysisAnualClientes, "clientes" =>$this->clientes ]);
+
+        $this->analysisClientes = session('analysisClientes');
+
+        if(isset($this->analysisClientes['success']))
+        {
+            if($this->analysisClientes['success'] == false)
+            {
+                $this->analysisClientes = null;
+            }
+        }
+
+        return view('livewire.Analise.analise', ["analisesCliente" => $this->analysisClientes, "vendasAnuais" =>$this->analysisAnualClientes, "clientes" =>$this->clientes ]);
 
     }
 }

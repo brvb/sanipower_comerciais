@@ -12,9 +12,6 @@
                 font-size: 10px;
             }
         }
-    
-       
-    
     </style>
     <center>
     <div class="col-md-9">

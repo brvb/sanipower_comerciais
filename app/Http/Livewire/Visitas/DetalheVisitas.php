@@ -427,7 +427,7 @@ class DetalheVisitas extends Component
                 }
             }else{
                 $newPath = str_replace('temp/', 'anexos/', $file);
-                dd($file);
+                // dd($file);
                 $filename = ltrim($file, 'temp/');
 
                 $updatedPaths[] = [
@@ -885,42 +885,49 @@ class DetalheVisitas extends Component
 
 
         $grupos = GrupoEmail::where('local_funcionamento', 'RelatorioVisita')->get();
+        // dd($visit);
+        if($visit['comentario_financeiro'] != '' || $this->anexos != '')
+        {
+            $grupoCC = GrupoEmail::where('local_funcionamento', 'VisitFinanceiro')->get();
+        }
         // dd($grupos);
         if(isset($grupos)){
             $this->emailArray = [];
+
             foreach ($grupos as $grupo) {
                 $emails = array_map('trim', explode(',', $grupo->emails));
                 
                 $this->emailArray = array_merge($this->emailArray, $emails);
             }
 
-            // $this->emailArray[] = Auth::user()->email;
-
+            if(isset($grupoCC)){
+                foreach ($grupoCC as $grupo) {
+                    $emails = array_map('trim', explode(',', $grupo->emails));
+                    
+                    $this->emailArray = array_merge($this->emailArray, $emails);
+                }
+            }
             $this->emailArray = array_unique($this->emailArray);
 
-        // foreach($this->emailArray as $i => $email)
-        // {
-        //     // dd($getVisitaID, $visit);
-        //     Mail::to($email)->send(new SendRelatorio($pdfContents, json_encode($getVisitaID), json_encode($visit)));
-        // }
+            // dd($this->emailArray);
 
-        Mail::to(Auth::user()->email) // Pode ser um destinatário fixo ou um genérico
-        ->bcc($this->emailArray) // Adiciona todos os e-mails como BCC
-        ->send(new SendRelatorio($pdfContents, json_encode($getVisitaID), json_encode($visit)));
+            Mail::to(Auth::user()->email) // Pode ser um destinatário fixo ou um genérico
+            ->bcc($this->emailArray) // Adiciona todos os e-mails como BCC
+            ->send(new SendRelatorio($pdfContents, json_encode($getVisitaID), json_encode($visit)));
 
-        $responseArray = $sendPHC->getData(true);
-        
-        if($responseArray["success"] == true){
-            session()->flash('success', "Visita registada e finalizada com sucesso");
-            return redirect()->route('visitas.info',["id" => $getVisitaID->id]);
-        }
-        else {
+            $responseArray = $sendPHC->getData(true);
             
-            session()->flash('warning', "Não foi possivel adicionar visita!");
-            return redirect()->route('visitas.info',["id" => $getVisitaID->id]);
-        }
+            if($responseArray["success"] == true){
+                session()->flash('success', "Visita registada e finalizada com sucesso");
+                return redirect()->route('visitas.info',["id" => $getVisitaID->id]);
+            }
+            else {
+                
+                session()->flash('warning', "Não foi possivel adicionar visita!");
+                return redirect()->route('visitas.info',["id" => $getVisitaID->id]);
+            }
 
-    }
+        }
 }
 
     public function openModalSaveVisita()

@@ -123,6 +123,10 @@ class PropostaInfo extends Component
     public $emailArray;
     public $emailSend;
 
+    public $IMGSPDF;
+
+    public $DSCPDF;
+
     public $propostaComentarioId;
 
     public function boot(ClientesInterface $clientesRepository, EncomendasInterface $encomendasRepository, PropostasInterface $PropostasRepository)
@@ -268,6 +272,26 @@ class PropostaInfo extends Component
 
     public function gerarPdfProposta($proposta)
     {
+        // dd($proposta);
+        $idSession = $proposta['id'];
+        $idSessionDSC = $idSession.'DSC';
+        $idSessionIMGS = $idSession.'IMGS';
+
+        if($this->DSCPDF == true)
+        {
+            Session::put($idSessionDSC, 1);
+        }else
+        {
+            Session::put($idSessionDSC, 0);
+        }
+
+        if($this->IMGSPDF == true)
+        {
+            Session::put($idSessionIMGS, 1);
+        }else
+        {
+            Session::put($idSessionIMGS, 0);
+        }
 
         if (!$proposta) {
             return redirect()->back()->with('error', 'Proposta não encontrada.');
@@ -318,6 +342,12 @@ class PropostaInfo extends Component
     {
         
         $this->dispatchBrowserEvent('open-modal-adjudicar-proposta', ["proposta" => $proposta]);
+    }
+
+    public function confPDF($proposta)
+    {
+        
+        $this->dispatchBrowserEvent('open-modal-conf-pdf-proposta', ["proposta" => $proposta]);
     }
 
     public function adjudicarProposta($proposta, $status)

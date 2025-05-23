@@ -372,7 +372,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if($analise != null)
+                                    @if($analise['object'] != null)
                                     @foreach ($analise['object'] as $index => $item)
                                         @php
                                             if (is_array($item)) {

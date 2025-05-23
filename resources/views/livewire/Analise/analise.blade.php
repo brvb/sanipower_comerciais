@@ -44,24 +44,35 @@
                         @php
                             $DataInicial = $_GET['dataInicio'] ?? now()->subDays(30)->format('Y-m-d');
                             $DataFinal = $_GET['dataFim'] ?? now()->format('Y-m-d');
+
+                            $DateIniAnalise = $_GET['DateIniAnalise'] ?? now()->subDays(30)->format('Y-m-d');
+                            $DateEndAnalise = $_GET['DateEndAnalise'] ?? now()->format('Y-m-d');
                         @endphp
                     
                         <div class="row mb-1">
                             <form class="w-100 d-flex align-items-end justify-content-start flex-wrap gap-3">
-                                <div class="form-group me-3">
+                                <div class="form-group me-3" style = 'Margin-right:10px;'   >
                                     <label for="dataInicio">Data Inicial</label>
                                     <input type="date" class="form-control" id="dataInicio" name="dataInicio" value="{{ $DataInicial }}"  wire:model.defer="dataInicio">
                                 </div>
                                 
-                                <div class="form-group me-3">
+                                <div class="form-group me-3" style = 'Margin-right:10px;'>
                                     <label for="dataFim">Data Final</label>
                                     <input type="date" class="form-control" id="dataFim" name="dataFim" value="{{ $DataFinal }}"  wire:model.defer="dataFim">
                                 </div>
                                 
-                                <div class="form-group">
+                                <div class="form-group" style = 'Margin-right:20px;'>
                                     <button type="submit" class="btn btn-primary" wire:click.prevent="carregarClientes">
                                         Filtrar
                                     </button>
+                                </div>
+                                <div class="form-group me-3">
+                                    <label for="minValue">Valor Mínimo (€)</label>
+                                    <input type="number" class="form-control" id="minValue" step="0.01" placeholder="0.00">
+                                </div>
+                                <div class="form-group me-3">
+                                    <label for="maxValue">Valor Máximo (€)</label>
+                                    <input type="number" class="form-control" id="maxValue" step="0.01" placeholder="99999.99">
                                 </div>
                             </form>
                         </div>
@@ -89,11 +100,61 @@
                                             @endforeach
                                         @endif
                                     </tbody>
-                                </table>                        
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const tabela = document.getElementById('tabela-cliente3');
+                        const cabecalho = tabela.querySelector('thead');
+                        let ordemDescendente = true;
+                    
+                        function getValorNumerico(celula) {
+                            return parseFloat(
+                                celula.textContent.replace('€', '').replace(/\./g, '').replace(',', '.')
+                            );
+                        }
+                    
+                        function aplicarFiltroPorIntervalo() {
+                            const min = parseFloat(document.getElementById('minValue').value) || 0;
+                            const max = parseFloat(document.getElementById('maxValue').value) || Infinity;
+                    
+                            const linhas = tabela.querySelectorAll('tbody tr');
+                            linhas.forEach(linha => {
+                                const valor = getValorNumerico(linha.children[2]);
+                                linha.style.display = (valor >= min && valor <= max) ? '' : 'none';
+                            });
+                        }
+                    
+                        document.getElementById('minValue').addEventListener('input', aplicarFiltroPorIntervalo);
+                        document.getElementById('maxValue').addEventListener('input', aplicarFiltroPorIntervalo);
+                    
+                        cabecalho.addEventListener('click', function (e) {
+                            const th = e.target.closest('th');
+                            if (!th) return;
+                            const colunaIndex = Array.from(th.parentNode.children).indexOf(th);
+                            if (colunaIndex !== 2) return;
+                    
+                            const linhas = Array.from(tabela.querySelectorAll('tbody tr'));
+                    
+                            const linhasOrdenadas = linhas.sort((a, b) => {
+                                const valorA = getValorNumerico(a.children[colunaIndex]);
+                                const valorB = getValorNumerico(b.children[colunaIndex]);
+                                return ordemDescendente ? valorB - valorA : valorA - valorB;
+                            });
+                    
+                            ordemDescendente = !ordemDescendente;
+                    
+                            const tbody = tabela.querySelector('tbody');
+                            tbody.innerHTML = '';
+                            linhasOrdenadas.forEach(linha => tbody.appendChild(linha));
+                    
+                            aplicarFiltroPorIntervalo();
+                        });
+                    });
+                    </script>                     
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card mb-3">
@@ -106,17 +167,24 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <div class="row mb-2">
-                                <div class="col-md-6 col-12">
-                                    <label class="mt-2">Data inicial</label>
-                                    <input type="date" id="data-inicial" class="form-control" value="{{ $this->DateIniAnalise }}">
+                            <div class="card-body">
+                                <div class="row mb-2">
+                                    <form class="w-100 d-flex align-items-end justify-content-start flex-wrap gap-3">
+                                        <div class="col-md-5 col-10">
+                                            <label class="mt-2">Data inicial</label>
+                                            <input type="date" id="data-inicial" name="DateIniAnalise" class="form-control" value="{{ $DateIniAnalise }}" wire:model.defer="DateIniAnalise">
+                                        </div>
+                                        <div class="col-md-5 col-10">
+                                            <label class="mt-2">Data final</label>
+                                            <input type="date" id="data-final" name="DateEndAnalise" class="form-control" value="{{ $DateEndAnalise }}" wire:model.defer="DateEndAnalise">
+                                        </div>
+                                        <div class="form-group" style = 'Margin-right:20px;'>
+                                            <button type="submit" class="btn btn-primary" wire:click.prevent="carregarFamilias">
+                                                Filtrar
+                                            </button>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="col-md-6 col-12">
-                                    <label class="mt-2">Data final</label>
-                                    <input type="date" id="data-final" class="form-control" value="{{ $this->DateEndAnalise }}">
-                                </div>
-                            </div>
                             <div class="table-wrapper">
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-hover" id="tabela-cliente2">
@@ -288,14 +356,12 @@
         current.setDate(current.getDate() + 1);
     }
 
-    // Encontra o índice da data padrão recebida do PHP
     const defaultStartDate = startInput.dataset.defaultDate;
     const defaultEndDate = endInput.dataset.defaultDate;
 
     const startIndex = dates.indexOf(defaultStartDate);
     const endIndex = dates.indexOf(defaultEndDate);
 
-    // Define os limites e os valores iniciais dos sliders
     startInput.min = 0;
     endInput.min = 0;
     startInput.max = dates.length - 1;
@@ -322,7 +388,6 @@
 
     updateLabels();
 </script>
-
 
 <script>
     document.addEventListener('livewire:load', function () {

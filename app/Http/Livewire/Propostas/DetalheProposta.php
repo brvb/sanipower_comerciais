@@ -1890,31 +1890,30 @@ class DetalheProposta extends Component
 
         // $this->getCategoriesAll = $this->PropostasRepository->getCategorias();
         // dd($detailProduto);
+            if($detailProduto != "")
+            {
+                $link = ProdutosDB::where('ref', $detailProduto->product[0]->referense)
+                ->value('link');
+                $descricao = ProdutosDB::where('ref', $detailProduto->product[0]->referense)
+                ->value('seo_descricao');
+                $medida = ProdutosDB::where('ref', $detailProduto->product[0]->referense)
+                ->value('Medida');
+                $desc_medida = ProdutosDB::where('ref', $detailProduto->product[0]->referense)
+                ->value('desc_medida');
+                $obs = ProdutosDB::where('ref', $detailProduto->product[0]->referense)
+                ->value('obs');
 
-        // if($detailProduto != "")
-        // {
-        //     $link = ProdutosDB::where('ref', $detailProduto->product[0]->referense)
-        //     ->value('link');
-        //     $descricao = ProdutosDB::where('ref', $detailProduto->product[0]->referense)
-        //     ->value('seo_descricao');
-        //     $medida = ProdutosDB::where('ref', $detailProduto->product[0]->referense)
-        //     ->value('Medida');
-        //     $desc_medida = ProdutosDB::where('ref', $detailProduto->product[0]->referense)
-        //     ->value('desc_medida');
-        //     $obs = ProdutosDB::where('ref', $detailProduto->product[0]->referense)
-        //     ->value('obs');
+                $temp = array(
+                    'id' => $medida,
+                    'mesure' => $desc_medida,
+                    'desc' => $obs,
+                );
+                $Product_characteristics[] = $temp;
 
-        //     $temp = array(
-        //         'id' => $medida,
-        //         'mesure' => $desc_medida,
-        //         'desc' => $obs,
-        //     );
-        //     $Product_characteristics[] = $temp;
-
-        //     session(['Product_characteristics' => $Product_characteristics]);
-        //     session(['link' => $link]);
-        //     session(['descricao' => $descricao]);
-        // }
+                session(['Product_characteristics' => $Product_characteristics]);
+                session(['link' => $link]);
+                session(['descricao' => $obs]);
+            }
 
         return view('livewire.propostas.detalhe-proposta', [
             "products" => $products,

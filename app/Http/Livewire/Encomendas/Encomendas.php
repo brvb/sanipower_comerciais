@@ -578,7 +578,7 @@ class Encomendas extends Component
 
             return view('pageErro');
         }
-      
+        // dd($this->Analise);
         return view('livewire.encomendas.encomendas',["encomendas" => $this->encomendas, "analise" => $this->Analise]);
     }
 }
